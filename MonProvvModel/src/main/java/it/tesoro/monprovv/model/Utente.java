@@ -65,7 +65,7 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
     @JoinColumn(name="UTENTE_ASTAGE", referencedColumnName="ID_UTENTE_ASTAGE")
 	@Valid
 	private UtenteAstage utenteAstage;
-	
+//	
 	
 //	@Transient
 //	private String pageAction;
