@@ -7,7 +7,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "MENU")
@@ -23,16 +27,27 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 	private Integer id;
 
 	@Column(name = "DESCRIZIONE", length = 240)
+	@NotNull
 	private String descrizione;
 
 	@Column(name = "ID_PARENT_MENU")
 	private Integer idParentMenu;
 
-	@Column(name = "ID_FUNZIONE")
-	private Integer idFunzione;
+	@ManyToOne(targetEntity=Funzione.class)
+    @JoinColumn(name="ID_FUNZIONE", referencedColumnName="ID_FUNZIONE")
+	@Valid
+	private Funzione funzione;
 
 	@Column(name = "ORDINAMENTO")
 	private Integer ordinamento;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getDescrizione() {
 		return descrizione;
@@ -50,12 +65,12 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 		this.idParentMenu = idParentMenu;
 	}
 
-	public Integer getIdFunzione() {
-		return idFunzione;
+	public Funzione getFunzione() {
+		return funzione;
 	}
 
-	public void setIdFunzione(Integer idFunzione) {
-		this.idFunzione = idFunzione;
+	public void setFunzione(Funzione funzione) {
+		this.funzione = funzione;
 	}
 
 	public Integer getOrdinamento() {
@@ -66,12 +81,6 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 		this.ordinamento = ordinamento;
 	}
 
-	public Integer getId() {
-		return id;
-	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 }

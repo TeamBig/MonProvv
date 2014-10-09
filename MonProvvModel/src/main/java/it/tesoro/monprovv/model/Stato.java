@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -27,12 +28,15 @@ public class Stato extends AbstractCommonEntity implements java.io.Serializable 
 	private Integer id;
 	
 	@Column(name = "TIPO", length = 30)
+	@NotNull
 	private String tipo;
 
 	@Column(name = "CODICE", length = 30)
+	@NotNull
 	private String codice;
 
 	@Column(name = "DESCRIZIONE", length = 240)
+	@NotNull
 	private String descrizione;
 
 	public Integer getId() {

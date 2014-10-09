@@ -6,8 +6,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "NOTIFICA")
@@ -18,31 +26,42 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 7136472204232788138L;
 
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_NOTIFICA"))
+	@GeneratedValue(generator = "generator")
 	@Id
 	@Column(name = "ID_NOTIFICA")
 	private Integer id;
 
-	@Column(name = "ID_ORGANO_DESTINATARIO")
-	private Integer idOrganoDestinatario;
+	@ManyToOne(targetEntity=Organo.class)
+    @JoinColumn(name="ID_ORGANO_DESTINATARIO", referencedColumnName="ID_ORGANO")
+	@Valid
+	private Organo organoDestinatario;
 
-	@Column(name = "ID_UTENTE_DESTINATARIO")
-	private Integer idUtenteDestinatario;
+	@ManyToOne(targetEntity=Utente.class)
+    @JoinColumn(name="ID_UTENTE_DESTINATARIO", referencedColumnName="ID_UTENTE")
+	@Valid
+	private Utente utenteDestinatario;
 
-	@Column(name = "ID_UTENTE_MITTORGANO")
+	@ManyToOne(targetEntity=Utente.class)
+    @JoinColumn(name="ID_UTENTE_MITTORGANO", referencedColumnName="ID_UTENTE")
+	@Valid
+	@NotNull
 	private Integer idUtenteMittorgano;
 
 	@Column(name = "OGGETTO", length = 240)
+	@NotNull
 	private String oggetto;
 
 	@Column(name = "TESTO", length = 4000)
+	@NotNull
 	private String testo;
 
 	@Column(name = "LINK_OPERAZIONE", length = 240)
+	@NotNull
 	private String linkOperazione;
 
 	@Column(name = "FLAG_LETTURA", length = 1)
 	private String flagLettura;
-
 
 	public Integer getId() {
 		return id;
@@ -52,20 +71,20 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getIdOrganoDestinatario() {
-		return idOrganoDestinatario;
+	public Organo getOrganoDestinatario() {
+		return organoDestinatario;
 	}
 
-	public void setIdOrganoDestinatario(Integer idOrganoDestinatario) {
-		this.idOrganoDestinatario = idOrganoDestinatario;
+	public void setOrganoDestinatario(Organo organoDestinatario) {
+		this.organoDestinatario = organoDestinatario;
 	}
 
-	public Integer getIdUtenteDestinatario() {
-		return idUtenteDestinatario;
+	public Utente getUtenteDestinatario() {
+		return utenteDestinatario;
 	}
 
-	public void setIdUtenteDestinatario(Integer idUtenteDestinatario) {
-		this.idUtenteDestinatario = idUtenteDestinatario;
+	public void setUtenteDestinatario(Utente utenteDestinatario) {
+		this.utenteDestinatario = utenteDestinatario;
 	}
 
 	public Integer getIdUtenteMittorgano() {
@@ -107,5 +126,7 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 	public void setFlagLettura(String flagLettura) {
 		this.flagLettura = flagLettura;
 	}
+
+	
 
 }

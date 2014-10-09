@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="TIPO_PROVVEDIMENTO")
@@ -22,11 +23,12 @@ public class TipoProvvedimento extends AbstractCommonEntity implements java.io.S
 	private Integer id;
 
 	@Column(name = "CODICE", length = 30)
+	@NotNull
 	private String codice;
 	
 	@Column(name = "DESCRIZIONE", length = 240)
+	@NotNull
 	private String descrizione;
-
 
 	public Integer getId() {
 		return id;

@@ -2,6 +2,11 @@ package it.tesoro.monprovv.exception;
 
 public class DatabaseException extends RuntimeException {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1914194310169807818L;
+
 	public DatabaseException() {
 		super();
 	}

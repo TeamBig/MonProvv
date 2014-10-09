@@ -3,11 +3,24 @@ package it.tesoro.monprovv.model;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
 import java.io.Serializable;
+import java.sql.Clob;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "PROVVEDIMENTO")
@@ -18,10 +31,14 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	 */
 	private static final long serialVersionUID = 3895683101409100101L;
 
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_PROVVEDIMENTO"))
+	@GeneratedValue(generator = "generator")
+	@Id
 	@Column(name = "ID_PROVVEDIMENTO")
 	private Integer id;
 
 	@Column(name = "TIPOLOGIA", length = 240)
+	@NotNull
 	private String tipologia;
 
 	@Column(name = "FONTE_NORMATIVA", length = 240)
@@ -34,25 +51,36 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	private String comma;
 
 	@Column(name = "OGGETTO")
-	private Integer oggetto;
+	private Clob oggetto;
 
 	@Column(name = "PARERE", length = 4000)
 	private String parere;
 
-	@Column(name = "ID_TIPO_PROVVEDIMENTO")
-	private Integer idTipoProvvedimento;
+	@ManyToOne(targetEntity=TipoProvvedimento.class)
+    @JoinColumn(name="ID_TIPO_PROVVEDIMENTO", referencedColumnName="ID_TIPO_PROVVEDIMENTO")
+	@Valid
+	@NotNull
+	private TipoProvvedimento tipoProvvedimento;
 
 	@Column(name = "TERMINE_SCADENZA")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
 	private Date termineScadenza;
 
-	@Column(name = "ID_STATO")
-	private Integer idStato;
+	@ManyToOne(targetEntity=Stato.class)
+    @JoinColumn(name="ID_STATO", referencedColumnName="ID_STATO")
+	@Valid
+	private Stato stato;
 
-	@Column(name = "ID_ORGANO_INSERITORE")
-	private Integer idOrganoInseritore;
-
-	@Column(name = "ID_ORGANO_CAPOFILA")
-	private Integer idOrganoCapofila;
+	@ManyToOne(targetEntity=Organo.class)
+    @JoinColumn(name="ID_ORGANO_INSERITORE", referencedColumnName="ID_ORGANO")
+	@Valid
+	private Organo organoInseritore;
+	
+	@ManyToOne(targetEntity=Organo.class)
+    @JoinColumn(name="ID_ORGANO_CAPOFILA", referencedColumnName="ID_ORGANO")
+	@Valid
+	private Organo organoCapofila;
 
 	public Integer getId() {
 		return id;
@@ -94,11 +122,11 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.comma = comma;
 	}
 
-	public Integer getOggetto() {
+	public Clob getOggetto() {
 		return oggetto;
 	}
 
-	public void setOggetto(Integer oggetto) {
+	public void setOggetto(Clob oggetto) {
 		this.oggetto = oggetto;
 	}
 
@@ -110,12 +138,12 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.parere = parere;
 	}
 
-	public Integer getIdTipoProvvedimento() {
-		return idTipoProvvedimento;
+	public TipoProvvedimento getTipoProvvedimento() {
+		return tipoProvvedimento;
 	}
 
-	public void setIdTipoProvvedimento(Integer idTipoProvvedimento) {
-		this.idTipoProvvedimento = idTipoProvvedimento;
+	public void setTipoProvvedimento(TipoProvvedimento tipoProvvedimento) {
+		this.tipoProvvedimento = tipoProvvedimento;
 	}
 
 	public Date getTermineScadenza() {
@@ -126,28 +154,30 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.termineScadenza = termineScadenza;
 	}
 
-	public Integer getIdStato() {
-		return idStato;
+	public Stato getStato() {
+		return stato;
 	}
 
-	public void setIdStato(Integer idStato) {
-		this.idStato = idStato;
+	public void setStato(Stato stato) {
+		this.stato = stato;
 	}
 
-	public Integer getIdOrganoInseritore() {
-		return idOrganoInseritore;
+	public Organo getOrganoInseritore() {
+		return organoInseritore;
 	}
 
-	public void setIdOrganoInseritore(Integer idOrganoInseritore) {
-		this.idOrganoInseritore = idOrganoInseritore;
+	public void setOrganoInseritore(Organo organoInseritore) {
+		this.organoInseritore = organoInseritore;
 	}
 
-	public Integer getIdOrganoCapofila() {
-		return idOrganoCapofila;
+	public Organo getOrganoCapofila() {
+		return organoCapofila;
 	}
 
-	public void setIdOrganoCapofila(Integer idOrganoCapofila) {
-		this.idOrganoCapofila = idOrganoCapofila;
+	public void setOrganoCapofila(Organo organoCapofila) {
+		this.organoCapofila = organoCapofila;
 	}
+
+	
 
 }

@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 
@@ -18,12 +19,15 @@ public class Ruolo extends AbstractCommonEntity implements java.io.Serializable 
 
 	@Id
 	@Column(name="ID_RUOLO",unique=true, nullable=false)
+	@NotNull
 	private Integer id;
 
 	@Column(name="CODICE",nullable=false,length=60)
+	@NotNull
 	private String codice;
 	
 	@Column(name="DESCRIZIONE",nullable=false,length=240)
+	@NotNull
 	private String descrizione;
 	
 
@@ -34,7 +38,7 @@ public class Ruolo extends AbstractCommonEntity implements java.io.Serializable 
 	}
 
 	/** minimal constructor */
-	public Ruolo(Integer id, String descrizione,String codice) {
+	public Ruolo(Integer id, String descrizione, String codice) {
 		this.id = id;
 		this.descrizione = descrizione;
 		this.codice=codice;

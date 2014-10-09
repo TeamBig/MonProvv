@@ -6,8 +6,16 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 
 @Entity
@@ -19,18 +27,29 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 6367134585044493233L;
 
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_ASSEGNAZIONE"))
+	@GeneratedValue(generator = "generator")
 	@Id
 	@Column(name = "ID_ASSEGNAZIONE")
 	private Integer id;
 
-	@Column(name = "ID_PROVVEDIMENTO")
-	private Integer idProvvedimento;
+	@ManyToOne(targetEntity=Provvedimento.class)
+    @JoinColumn(name="ID_PROVVEDIMENTO", referencedColumnName="ID_PROVVEDIMENTO")
+	@Valid
+	@NotNull
+	private Provvedimento provvedimento;
+	
+	@ManyToOne(targetEntity=Organo.class)
+    @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
+	@Valid
+	@NotNull
+	private Organo organo;
 
-	@Column(name = "ID_ORGANO")
-	private Integer idOrgano;
-
-	@Column(name = "ID_STATO")
-	private Integer idStato;
+	@ManyToOne(targetEntity=Stato.class)
+    @JoinColumn(name="ID_STATO", referencedColumnName="ID_STATO")
+	@Valid
+	@NotNull
+	private Stato stato;
 
 	public Integer getId() {
 		return id;
@@ -40,28 +59,30 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getIdProvvedimento() {
-		return idProvvedimento;
+	public Provvedimento getProvvedimento() {
+		return provvedimento;
 	}
 
-	public void setIdProvvedimento(Integer idProvvedimento) {
-		this.idProvvedimento = idProvvedimento;
+	public void setProvvedimento(Provvedimento provvedimento) {
+		this.provvedimento = provvedimento;
 	}
 
-	public Integer getIdOrgano() {
-		return idOrgano;
+	public Organo getOrgano() {
+		return organo;
 	}
 
-	public void setIdOrgano(Integer idOrgano) {
-		this.idOrgano = idOrgano;
+	public void setOrgano(Organo organo) {
+		this.organo = organo;
 	}
 
-	public Integer getIdStato() {
-		return idStato;
+	public Stato getStato() {
+		return stato;
 	}
 
-	public void setIdStato(Integer idStato) {
-		this.idStato = idStato;
+	public void setStato(Stato stato) {
+		this.stato = stato;
 	}
+	
+	
 
 }
