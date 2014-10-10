@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-3.1.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+						http://www.springframework.org/schema/util 
+						http://www.springframework.org/schema/util/spring-util-3.1.xsd
+       					">
+
+	<!-- CONFIGURAZIONE  -->
+	<util:properties id="config" location="classpath:/monprovv.cfg" />
+	
+	<!--  VIEW RESOLVER -->
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/tiles.xml</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.tiles2.TilesViewResolver" />
+		
+	<!-- FINE  VIEW RESOLVER -->
+	
+	<!-- LOCALIZZAZIONE -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    	<property name="basenames">
+    		<list>
+    			<value>messages-comuni</value>
+    		</list>
+    	</property>
+	</bean>
+	
+	<!-- FINE LOCALIZZAZIONE --> 
+
+	<context:component-scan base-package="it.tesoro.monprovv.web.utils" />
+	<context:component-scan base-package="it.tesoro.monprovv.web.validators" />
+	<context:component-scan base-package="it.tesoro.monprovv.web.controllers" />
+	<context:component-scan base-package="it.tesoro.monprovv.web.decorators" />
+	
+	
+	<!--  GESTIONE RISORSE STATICHE -->
+	<mvc:resources mapping="/img/**"    location="/img/" />
+	<mvc:resources mapping="/fonts/**"   location="/fonts/" />
+	<mvc:resources mapping="/css/**"  location="/css/" />
+	<mvc:resources mapping="/js/**"     location="/js/" />
+	<!--  FINE GESTIONE RISORSE STATICHE -->
+
+	<mvc:annotation-driven>
+		<mvc:argument-resolvers>
+	        <bean class="it.tesoro.pdagiustizia.web.resolvers.DisplayTagWebArgumentResolver"/>
+	    </mvc:argument-resolvers>
+	</mvc:annotation-driven>	
+	
+	<!-- GESTIONE ECCEZIONI -->
+	<bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver">
+		<property name="order" value="1"/>
+	</bean>
+
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="order" value="2"/>
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">exceptionPage</prop>
+				<prop key="java.lang.RuntimeException">exceptionPage</prop> 
+				<prop key="it.tesoro.monprovv.exception.DatabaseException">exceptionPage</prop>
+				<prop key="it.tesoro.monprovv.exception.WebServiceException">exceptionPage</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- FINE GESTIONE ECCEZIONI -->
+	
+	<!-- ESPORTAZIONE FACADE VERSO VISTE JSP -->
+	<bean
+		class="org.springframework.web.context.support.ServletContextAttributeExporter">
+		<property name="attributes">
+			<map>
+				<entry key="sicurezzaFacade">
+					<ref bean="gestioneSicurezzaFacade" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!-- FINE ESPORTAZIONE FACADE VERSO VISTE JSP -->
+	
+ 	
+</beans>

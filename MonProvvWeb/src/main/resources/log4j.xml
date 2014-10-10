@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+
+	<appender name="ROLL"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		
+		<!-- JBOSS --> 
+		<!-- 
+		<param name="file"
+			value="${jboss.server.log.dir}/pda_giustizia.log" />
+		  -->
+		 
+		  
+		<!-- WebLogic -->
+		
+		<param name="file"
+			value="${user.dir}${file.separator}servers${file.separator}${weblogic.Name}${file.separator}logs${file.separator}pda_giustizia.log" />
+		 
+		
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %p - %m%n"/>
+		</layout>
+	</appender>
+	
+	<logger name="it.tesoro.pdagiustizia" additivity="false">
+		<level value="DEBUG"/>
+		<appender-ref ref="ROLL"/>
+	</logger>
+
+	<logger name="it.tesoro.pdagiustizia.dao" additivity="false">
+		<level value="ERROR"/>
+		<appender-ref ref="ROLL"/>
+	</logger>
+
+	<!-- logger di spring-->
+	<logger name="org.springframework" additivity="false">
+		<level value="ERROR"/>
+		<appender-ref ref="ROLL"/>
+	</logger>
+	<!-- logger di Hibernate-->
+	<logger name="org.hibernate" additivity="false">
+		<level value="ERROR"/>
+		<appender-ref ref="ROLL"/>
+	</logger>
+	
+	<root>
+		<level value="ERROR"/>
+		<appender-ref ref="ROLL" />
+	</root>
+
+</log4j:configuration>
