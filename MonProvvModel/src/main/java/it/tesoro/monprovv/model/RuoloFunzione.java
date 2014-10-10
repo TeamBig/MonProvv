@@ -16,31 +16,32 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 @Entity
-@Table(name="RUOLO_UTENTE")
-public class RuoloUtente extends AbstractCommonEntity implements java.io.Serializable {
+@Table(name="RUOLO_FUNZIONE")
+public class RuoloFunzione extends AbstractCommonEntity implements java.io.Serializable {
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7884939203299221849L;
+	private static final long serialVersionUID = 4772733585181781690L;
 
-	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_RUOLO_UTENTE"))
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_RUOLO_FUNZIONE"))
 	@GeneratedValue(generator = "generator")
 	@Id
-	@Column(name="ID_RUOLO_UTENTE",unique=true, nullable=false)
+	@Column(name="ID_RUOLO_FUNZIONE",unique=true, nullable=false)
 	private Integer id;
-
-	@ManyToOne(targetEntity=Utente.class)
-    @JoinColumn(name="ID_UTENTE", referencedColumnName="ID_UTENTE")
-	@Valid
-	@NotNull
-	private Utente utente;
 
 	@ManyToOne(targetEntity=Ruolo.class)
     @JoinColumn(name="ID_RUOLO", referencedColumnName="ID_RUOLO")
 	@Valid
 	@NotNull
 	private Ruolo ruolo;
+	
+	@ManyToOne(targetEntity=Funzione.class)
+    @JoinColumn(name="ID_FUNZIONE", referencedColumnName="ID_FUNZIONE")
+	@Valid
+	@NotNull
+	private Funzione funzione;
 
 	public Integer getId() {
 		return id;
@@ -50,20 +51,20 @@ public class RuoloUtente extends AbstractCommonEntity implements java.io.Seriali
 		this.id = id;
 	}
 
-	public Utente getUtente() {
-		return utente;
-	}
-
-	public void setUtente(Utente utente) {
-		this.utente = utente;
-	}
-
 	public Ruolo getRuolo() {
 		return ruolo;
 	}
 
 	public void setRuolo(Ruolo ruolo) {
 		this.ruolo = ruolo;
+	}
+
+	public Funzione getFunzione() {
+		return funzione;
+	}
+
+	public void setFunzione(Funzione funzione) {
+		this.funzione = funzione;
 	}
 
 }

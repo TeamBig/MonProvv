@@ -1,15 +1,21 @@
 package it.tesoro.monprovv.model;
 
+import it.tesoro.monprovv.model.common.AbstractCommonEntity;
+
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="UTENTE_ASTAGE")
-public class UtenteAstage implements java.io.Serializable {
+public class UtenteAstage extends AbstractCommonEntity implements java.io.Serializable {
 
 	/**
 	 * 
@@ -22,6 +28,7 @@ public class UtenteAstage implements java.io.Serializable {
 
 	@Column(name = "LIVELLO", length = 10)
 	private String livello;
+	
 	@Column(name = "CODICE_FISCALE", length = 16)
 	private String codiceFiscale;
 
@@ -36,11 +43,13 @@ public class UtenteAstage implements java.io.Serializable {
 
 	@Column(name = "EMAIL", length = 500)
 	private String email;
+	
 	@Column(name = "ASSEGNAZIONE_ID_UO")
 	private Integer assegnazioneIdUo;
 
 	@Column(name = "ASSEGNAZIONE_ID_DIP")
 	private Integer assegnazioneIdDip;
+	
 	@Column(name = "ASSEGNAZIONE_NOME_DIP", length = 60)
 	private String assegnazioneNomeDip;
 
@@ -51,12 +60,16 @@ public class UtenteAstage implements java.io.Serializable {
 	private String assegnazioneNomeEstesoUo;
 
 	@Column(name = "DATA_NASCITA")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
 	private Date dataNascita;
 
 	@Column(name = "ID_TIPO_PERSONA")
 	private Integer idTipoPersona;
+	
 	@Column(name = "TIPO_PERSONA", length = 100)
 	private String tipoPersona;
+	
 	@Column(name = "INDIRIZZO_RES", length = 500)
 	private String indirizzoRes;
 
@@ -74,10 +87,13 @@ public class UtenteAstage implements java.io.Serializable {
 
 	@Column(name = "PROVINCIA_RES", length = 2)
 	private String provinciaRes;
+	
 	@Column(name = "PROVINCIA_NAS", length = 2)
 	private String provinciaNas;
+	
 	@Column(name = "PAESE_NAS", length = 1)
 	private String paeseNas;
+	
 	@Column(name = "INDIRIZZO_UO", length = 500)
 	private String indirizzoUo;
 

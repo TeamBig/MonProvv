@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Component("ruoloDAO")
 public class RuoloDAO extends AbstractCommonDAO<Ruolo> {
+
 	
-
-
-
+	
+	
 }

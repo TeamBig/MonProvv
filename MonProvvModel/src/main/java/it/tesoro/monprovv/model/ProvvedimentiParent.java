@@ -17,39 +17,32 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-
 @Entity
-@Table(name="ASSEGNAZIONE")
-public class Assegnazione extends AbstractCommonEntity implements Serializable {
+@Table(name = "PROVVEDIMENTI_PARENT")
+public class ProvvedimentiParent extends AbstractCommonEntity implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6367134585044493233L;
+	private static final long serialVersionUID = -345631099906840341L;
 
-	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_ASSEGNAZIONE"))
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_PROVVEDIMENTI_PARENT"))
 	@GeneratedValue(generator = "generator")
 	@Id
-	@Column(name = "ID_ASSEGNAZIONE")
+	@Column(name = "ID_PROVVEDIMENTI_PARENT")
 	private Integer id;
 
 	@ManyToOne(targetEntity=Provvedimento.class)
-    @JoinColumn(name="ID_PROVVEDIMENTO", referencedColumnName="ID_PROVVEDIMENTO")
+	@JoinColumn(name="ID_PROVVEDIMENTO", referencedColumnName="ID_PROVVEDIMENTO")
 	@Valid
 	@NotNull
 	private Provvedimento provvedimento;
-	
-	@ManyToOne(targetEntity=Organo.class)
-    @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
-	@Valid
-	@NotNull
-	private Organo organo;
 
-	@ManyToOne(targetEntity=Stato.class)
-    @JoinColumn(name="ID_STATO", referencedColumnName="ID_STATO")
+	@ManyToOne(targetEntity=Provvedimento.class)
+	@JoinColumn(name="ID_PROVVEDIMENTO_COLLEGATO", referencedColumnName="ID_PROVVEDIMENTO")
 	@Valid
 	@NotNull
-	private Stato stato;
+	private Provvedimento provvedimentoCollegato;
 
 	public Integer getId() {
 		return id;
@@ -67,22 +60,12 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 		this.provvedimento = provvedimento;
 	}
 
-	public Organo getOrgano() {
-		return organo;
+	public Provvedimento getProvvedimentoCollegato() {
+		return provvedimentoCollegato;
 	}
 
-	public void setOrgano(Organo organo) {
-		this.organo = organo;
+	public void setProvvedimentoCollegato(Provvedimento provvedimentoCollegato) {
+		this.provvedimentoCollegato = provvedimentoCollegato;
 	}
-
-	public Stato getStato() {
-		return stato;
-	}
-
-	public void setStato(Stato stato) {
-		this.stato = stato;
-	}
-	
-	
 
 }
