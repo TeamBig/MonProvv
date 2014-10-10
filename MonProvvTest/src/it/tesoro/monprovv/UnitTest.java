@@ -20,21 +20,29 @@ public class UnitTest {
 	
 	@Test
 	public void test() {
-		
-		Stato stato = new Stato();
-		stato.setTipo("tipo");
-		stato.setCodice("codice");
-		stato.setDescrizione("descrizione");
-		
-		stato.setUtenteInserimento("TEST INS");
-		stato.setDataInserimento(new Date());
-		
-		stato.setUtenteAggiornamento("TEST AGG");
-		stato.setDataAggiornamento(new Date());
-		
-		gestioneUtenteFacade.inserisciStato(stato);
-		
-		
+		try{
+			Stato stato1 = new Stato();
+			stato1.setTipo("tipo");
+			stato1.setCodice("codice");
+			stato1.setDescrizione("descrizione");
+			
+			stato1.setUtenteInserimento("TEST INS");
+			stato1.setDataInserimento(new Date());
+			
+			stato1.setUtenteAggiornamento("TEST AGG");
+			stato1.setDataAggiornamento(new Date());
+			
+					
+			Stato stato2 = new Stato();
+			stato2.setTipo("tipo");
+			stato2.setCodice("codice");
+			stato2.setDescrizione("descrizione");
+			
+			gestioneUtenteFacade.inserisci(stato1, stato2);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
 		gestioneUtenteFacade.testSelect();
 		System.out.println("OK");
 	}
