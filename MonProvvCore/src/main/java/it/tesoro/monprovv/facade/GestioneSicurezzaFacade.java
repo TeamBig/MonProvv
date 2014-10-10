@@ -4,16 +4,17 @@ import it.tesoro.monprovv.dao.FunzioneDAO;
 import it.tesoro.monprovv.dao.MenuDAO;
 import it.tesoro.monprovv.dao.RuoloDAO;
 import it.tesoro.monprovv.dao.RuoloFunzioneDAO;
+import it.tesoro.monprovv.dao.RuoloUtenteDAO;
+import it.tesoro.monprovv.dao.UtenteAstageDAO;
 import it.tesoro.monprovv.dao.UtenteDAO;
-import it.tesoro.monprovv.dao.UtenteEsternoDAO;
-import it.tesoro.monprovv.dao.UtenteRuoloDAO;
-import it.tesoro.monprovv.dao.UtenteRuoloNotificaDAO;
+import it.tesoro.monprovv.dao.UtenteAstageDAO;
+import it.tesoro.monprovv.dao.RuoloUtenteDAO;
 import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Menu;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloFunzione;
 import it.tesoro.monprovv.model.Utente;
-import it.tesoro.monprovv.model.UtenteRuolo;
+import it.tesoro.monprovv.model.RuoloUtente;
 
 import java.util.Date;
 import java.util.List;
@@ -35,10 +36,10 @@ public class GestioneSicurezzaFacade {
     private String oamAbilitato;
 
 	@Autowired 
-	private UtenteRuoloDAO utenteRuoloDAO;
+	private RuoloUtenteDAO ruoloUtenteDAO;
 	
 	@Autowired 
-	private UtenteEsternoDAO utenteEsternoDAO;
+	private UtenteAstageDAO utenteAstageDAO;
 	
 	@Autowired 
 	private UtenteDAO utenteDAO;
@@ -55,9 +56,6 @@ public class GestioneSicurezzaFacade {
 	@Autowired 
 	private FunzioneDAO funzioneDAO;
 	
-	@Autowired
-	private UtenteRuoloNotificaDAO utenteRuoloNotificaDAO;
-
 	private ObjectMapper mapper;
 	
 	private List<Menu> firstLevelMenu;
@@ -106,26 +104,14 @@ public class GestioneSicurezzaFacade {
 		
 	}
 	
-	
-	
-	public List<UtenteRuolo> recuperaUtenteRuoloPerCF(String codiceFiscale) {
+	public List<RuoloUtente> recuperaUtenteRuoloPerCF(String codiceFiscale) {
 		
-		Utente utente = null;
-		List<Utente> utenteList = utenteDAO.findByProperty("utenteEsterno.codiceFiscale", codiceFiscale);
-		if(utenteList != null && !utenteList.isEmpty()){
-			utente = utenteList.get(0);
-			// controllo abilitazione
-			if (utente.isUtenteValido()){
-				return utenteRuoloDAO.findByIdUtente(utente.getId());
-			}
-		}
-		
-		return null;
+		return ruoloUtenteDAO.findByCodiceFiscale(codiceFiscale);
 	}
 	
 	
 	public List<RuoloFunzione> recuperaRuoliFunzione() {
-		return ruoloFunzioneDAO.findAllValid();
+		return ruoloFunzioneDAO.findAll();
 	}
 	
 	public String encodeJSON(HttpServletRequest request) {
@@ -200,18 +186,6 @@ public class GestioneSicurezzaFacade {
 	
 	public List<Ruolo> recuperaRuoli() {
 		return ruoloDAO.findAll();
-	}
-	
-	public void updateDataUltimoAccessoUtente(Integer id){
-		Utente utente=utenteDAO.findById(id);
-		if (utente!=null){
-			utente.setDataUltimoAccesso(new Date());
-			utenteDAO.saveOrUpdate(utente);
-		}
-	}
-	
-	public List<UtenteRuoloNotifica> findNotificheUtente(String codiceRuolo,Integer idUtente){
-		return utenteRuoloNotificaDAO.findNotificheByUtenteAndRuolo(codiceRuolo, idUtente);
 	}
 	
 	public Ruolo recuperaRuolo(String codice) {

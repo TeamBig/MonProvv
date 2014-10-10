@@ -21,8 +21,6 @@ public class CustomUser extends User {
 	private String targetURL;
 	private Date dataUltimoAccesso;
 	private Integer idUtente;
-	private int numNuoveNotifiche;
-	private Ruolo ruoloAttivo;
 	
 
 	public CustomUser(String username, String password, boolean enabled,
@@ -87,22 +85,6 @@ public class CustomUser extends User {
 
 	public void setIdUtente(Integer idUtente) {
 		this.idUtente = idUtente;
-	}
-
-	public int getNumNuoveNotifiche() {
-		return numNuoveNotifiche;
-	}
-
-	public void setNumNuoveNotifiche(int numNuoveNotifiche) {
-		this.numNuoveNotifiche = numNuoveNotifiche;
-	}
-
-	public Ruolo getRuoloAttivo() {
-		return ruoloAttivo;
-	}
-
-	public void setRuoloAttivo(Ruolo ruoloAttivo) {
-		this.ruoloAttivo = ruoloAttivo;
 	}
 
 }

@@ -131,6 +131,25 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 		this.utenteAstage = utenteAstage;
 	}
 
+	public String getCodiceFiscale() {
+		return codiceFiscale;
+	}
+
+
+	public void setCodiceFiscale(String codiceFiscale) {
+		this.codiceFiscale = codiceFiscale;
+	}
+
+
+	public Organo getOrgano() {
+		return organo;
+	}
+
+
+	public void setOrgano(Organo organo) {
+		this.organo = organo;
+	}
+
 
 	@Override
 	public int hashCode() {
