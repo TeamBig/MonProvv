@@ -58,7 +58,7 @@
 
 	<mvc:annotation-driven>
 		<mvc:argument-resolvers>
-	        <bean class="it.tesoro.pdagiustizia.web.resolvers.DisplayTagWebArgumentResolver"/>
+	        <bean class="it.tesoro.monprovv.web.resolvers.DisplayTagWebArgumentResolver"/>
 	    </mvc:argument-resolvers>
 	</mvc:annotation-driven>	
 	

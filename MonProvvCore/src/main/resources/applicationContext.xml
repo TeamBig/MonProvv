@@ -139,6 +139,84 @@
 	++++++++++++++++++++++++++++++++++++++++++++++	
 	 -->
 	 
+	<!--  -->	 
+
 	 
+	 <!-- 
+	++++++++++++++++++++++++++++++++++++++++++++++
+	SICUREZZA
+	++++++++++++++++++++++++++++++++++++++++++++++	
+	 -->
+	
+	<context:component-scan base-package="it.tesoro.monprovv.sicurezza" />
+	
+	<security:http pattern="/css/**" security="none"/>
+  	<security:http pattern="/fonts/**" security="none"/>
+  	<security:http pattern="/img/**" security="none"/>
+	<security:http pattern="/js/**" security="none"/>
+	
+	<security:http use-expressions="true" auto-config="false" entry-point-ref="http403EntryPoint"> 
+
+		<security:intercept-url pattern="/public/**" access="permitAll" />
+		<security:intercept-url pattern="/private/**" access="hasPermission(request.servletPath, 'urlPermission')" />
+		
+		<security:custom-filter ref="oamFilter" position="PRE_AUTH_FILTER" />
+		<security:custom-filter ref="sessionManagementFilter" before="SESSION_MANAGEMENT_FILTER" />
+		<security:logout logout-success-url="#{config['oam.logoutUrl']}" invalidate-session="true" delete-cookies="JSESSIONID"/>
+        <security:expression-handler ref="expressionHandler"/>
+        <security:access-denied-handler error-page="/public/403" />
+	</security:http>
+	
+	<bean id="http403EntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+	
+	<bean id="expressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+        <property name="permissionEvaluator" ref="permissionEvaluator"/>
+	</bean>
+
+	<bean id="oamFilter"
+		class="it.tesoro.monprovv.sicurezza.PdaRequestHeaderAuthenticationFilter">
+		<property name="gestioneSicurezzaFacade" ref="gestioneSicurezzaFacade" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="exceptionIfHeaderMissing" value="false" />
+		<property name="oamAbilitato" value="#{config['oam.abilitato']}" />
+		<property name="oamLogoutUrl" value="#{config['oam.logoutUrl']}" />
+	</bean>
+
+	<bean id="preauthAuthProvider"
+		class="org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider">
+		<property name="preAuthenticatedUserDetailsService">
+			<bean id="userDetailsServiceWrapper"
+				class="org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper">
+				<property name="userDetailsService" ref="userDetailsService" />
+			</bean>
+		</property>
+	</bean>
+
+    <security:authentication-manager alias="authenticationManager">
+      <security:authentication-provider ref="preauthAuthProvider" />
+    </security:authentication-manager>
+
+
+	<bean id="sessionManagementFilter"
+		class="org.springframework.security.web.session.SessionManagementFilter">
+		<constructor-arg name="securityContextRepository"
+			ref="httpSessionSecurityContextRepository" />
+		<property name="invalidSessionStrategy"
+			ref="simpleRedirectInvalidSessionStrategy" />
+	</bean>
+
+	<bean id="simpleRedirectInvalidSessionStrategy"
+		class="org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy">
+		<constructor-arg name="invalidSessionUrl" value="#{config['oam.logoutUrl']}" />
+		<property name="createNewSession" value="true" />
+	</bean>
+	<bean id="httpSessionSecurityContextRepository"
+		class="org.springframework.security.web.context.HttpSessionSecurityContextRepository" />
+
+	 <!-- 
+	++++++++++++++++++++++++++++++++++++++++++++++
+	FINE SICUREZZA
+	++++++++++++++++++++++++++++++++++++++++++++++	
+	 -->	 
 	 
 </beans>
