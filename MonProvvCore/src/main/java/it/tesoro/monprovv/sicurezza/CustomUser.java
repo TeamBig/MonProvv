@@ -2,7 +2,6 @@ package it.tesoro.monprovv.sicurezza;
 
 import it.tesoro.monprovv.model.Ruolo;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;

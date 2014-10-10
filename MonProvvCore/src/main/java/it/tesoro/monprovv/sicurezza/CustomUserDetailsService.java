@@ -2,7 +2,6 @@ package it.tesoro.monprovv.sicurezza;
 
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade.Headers;
-import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloUtente;
 
 import java.util.ArrayList;

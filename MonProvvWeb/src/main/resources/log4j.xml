@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
 	debug="false">
 
@@ -9,14 +9,14 @@
 		<!-- JBOSS --> 
 		<!-- 
 		<param name="file"
-			value="${jboss.server.log.dir}/pda_giustizia.log" />
+			value="${jboss.server.log.dir}/monprovv.log" />
 		  -->
 		 
 		  
 		<!-- WebLogic -->
 		
 		<param name="file"
-			value="${user.dir}${file.separator}servers${file.separator}${weblogic.Name}${file.separator}logs${file.separator}pda_giustizia.log" />
+			value="${user.dir}${file.separator}servers${file.separator}${weblogic.Name}${file.separator}logs${file.separator}monprovv.log" />
 		 
 		
 		<param name="datePattern" value="'.'yyyy-MM-dd" />
@@ -26,21 +26,17 @@
 		</layout>
 	</appender>
 	
-	<logger name="it.tesoro.pdagiustizia" additivity="false">
+	<logger name="it.tesoro.monprovv" additivity="false">
 		<level value="DEBUG"/>
 		<appender-ref ref="ROLL"/>
 	</logger>
 
-	<logger name="it.tesoro.pdagiustizia.dao" additivity="false">
-		<level value="ERROR"/>
-		<appender-ref ref="ROLL"/>
-	</logger>
-
 	<!-- logger di spring-->
-	<logger name="org.springframework" additivity="false">
-		<level value="ERROR"/>
+	<category name="org.springframework" additivity="false">
+		<level value="DEBUG"/>
 		<appender-ref ref="ROLL"/>
-	</logger>
+	</category>
+	
 	<!-- logger di Hibernate-->
 	<logger name="org.hibernate" additivity="false">
 		<level value="ERROR"/>
@@ -49,7 +45,7 @@
 	
 	<root>
 		<level value="ERROR"/>
-		<appender-ref ref="ROLL" />
+		<appender-ref ref="CONSOLE" />
 	</root>
 
 </log4j:configuration>
