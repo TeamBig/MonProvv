@@ -5,7 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Version;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @MappedSuperclass
 public abstract class AbstractCommonEntity implements Serializable {
@@ -16,18 +20,21 @@ public abstract class AbstractCommonEntity implements Serializable {
 	@Version
 	private Integer versione;
 	
-	@Column(name="UTENTE_INSERIMENTO", updatable = false)
+	@Column(name = "UTENTE_INSERIMENTO", updatable = false, length = 60)
 	private String utenteInserimento;
-
-	@Column(name="DATA_INSERIMENTO", updatable = false)
-	private Date dataInserimento;	
-
-	@Column(name="DATA_AGGIORNAMENTO")
-	private Date dataAggiornamento;
-
-	@Column(name="UTENTE_AGGIORNAMENTO")
-	private String utenteAggiornamento;
 	
+	@Column(name = "DATA_INSERIMENTO", updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date dataInserimento;
+	
+	@Column(name = "UTENTE_AGGIORNAMENTO", length = 60)
+	private String utenteAggiornamento;
+
+	@Column(name = "DATA_AGGIORNAMENTO")
+	private Date dataAggiornamento;	
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")	
 	public String getUtenteInserimento() {
 		return utenteInserimento;
 	}

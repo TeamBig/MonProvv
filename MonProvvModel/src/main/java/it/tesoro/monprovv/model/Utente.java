@@ -11,19 +11,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
 
 
 @Entity
 @Table(name="UTENTE")
 public class Utente extends AbstractCommonEntity implements java.io.Serializable {
 
-	private static final long serialVersionUID = -8894686735318320320L;
-	// Fields
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1378680222191646421L;
 
 	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_UTENTE"))
 	@GeneratedValue(generator = "generator")
@@ -31,34 +33,36 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@Column(name="ID_UTENTE",unique=true, nullable=false)
 	private Integer id;
 	
+	@Column(name="COGNOME", length=240)
+	@NotNull
+	private String cognome;
+	
+	@Column(name="NOME", length=240)
+	@NotNull
+	private String nome;
+	
+	@Column(name="CODICE_FISCALE", length=20)
+	@NotNull
+	private String codiceFiscale;
+	
 	@Column(name="EMAIL", length=240)
-	@NotEmpty
+	@NotNull
 	@Email
 	private String email;
 	
-	
-//	@OneToMany(mappedBy = "utente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-//	private List<UtenteRuolo> utenteRuoloList;
-	
-	@Column(name="NOME", length=100)
-	private String nome;
-	
-	@Column(name="COGNOME", length=100)
-	private String cognome;
-	
-	@Column(name="FLG_INT_EST", length=1)
+	@Column(name="FLAG_INT_EST", length=1)
 	private String flagIntEst;
 	
+	@ManyToOne(targetEntity=Organo.class)
+    @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
+	@Valid
+	private Organo organo;
 	
 	@ManyToOne(targetEntity=UtenteAstage.class)
-    @JoinColumn(name="UTENTE_ASTAGE", referencedColumnName="ID_UTENTE_ASTAGE")
+    @JoinColumn(name="ID_UTENTE_ASTAGE", referencedColumnName="ID_UTENTE_ASTAGE")
 	@Valid
 	private UtenteAstage utenteAstage;
-//	
-	
-//	@Transient
-//	private String pageAction;
-	
+
 	@AssertTrue
 	public boolean isUtenteOK() {
 		// ulteriori controlli di validita'
