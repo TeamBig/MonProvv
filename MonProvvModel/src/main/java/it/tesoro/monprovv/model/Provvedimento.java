@@ -5,13 +5,16 @@ import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 import java.io.Serializable;
 import java.sql.Clob;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -81,7 +84,11 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
     @JoinColumn(name="ID_ORGANO_CAPOFILA", referencedColumnName="ID_ORGANO")
 	@Valid
 	private Organo organoCapofila;
-
+	
+	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
+	private List<ProvvedimentiParent> provvedimentiParent;
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -178,6 +185,22 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.organoCapofila = organoCapofila;
 	}
 
+	public List<ProvvedimentiParent> getProvvedimentiParent() {
+		return provvedimentiParent;
+	}
+
+	public void setProvvedimentiParent(List<ProvvedimentiParent> provvedimentiParent) {
+		this.provvedimentiParent = provvedimentiParent;
+	}
+
+//	public List<ProvvedimentiParent> getProvvedimentiParent() {
+//		return provvedimentiParent;
+//	}
+//
+//	public void setProvvedimentiParent(List<ProvvedimentiParent> provvedimentiParent) {
+//		this.provvedimentiParent = provvedimentiParent;
+//	}
+	
 	
 
 }

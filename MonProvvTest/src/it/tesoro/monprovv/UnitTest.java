@@ -32,8 +32,10 @@ public class UnitTest {
 		stato.setUtenteAggiornamento("TEST AGG");
 		stato.setDataAggiornamento(new Date());
 		
-		gestioneUtenteFacade.addStato(stato);
+		gestioneUtenteFacade.inserisciStato(stato);
 		
+		
+		gestioneUtenteFacade.testSelect();
 		System.out.println("OK");
 	}
 
