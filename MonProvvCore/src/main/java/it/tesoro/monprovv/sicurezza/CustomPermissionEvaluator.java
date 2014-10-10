@@ -27,18 +27,11 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	@Autowired
 	private GestioneSicurezzaFacade gestioneSicurezzaFacade;
 	
-
-
 	@Override
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
 		throw new RuntimeException("Id and Class permissions are not supperted by " + this.getClass().toString());
 	}
 	
-	
-	
-	
-
-
 	private Map<String, List<String>> alberoPermessi;
 	
 	public void refreshAlberoPermessi() {
