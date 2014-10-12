@@ -11,7 +11,7 @@ import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Menu;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloFunzione;
-import it.tesoro.monprovv.model.RuoloUtente;
+import it.tesoro.monprovv.model.Utente;
 
 import java.util.List;
 
@@ -100,9 +100,9 @@ public class GestioneSicurezzaFacade {
 		
 	}
 	
-	public List<RuoloUtente> recuperaUtenteRuoloPerCF(String codiceFiscale) {
+	public Utente recuperaUtentePerCF(String codiceFiscale) {
 		
-		return ruoloUtenteDAO.findByCodiceFiscale(codiceFiscale);
+		return utenteDAO.findByCodiceFiscale(codiceFiscale);
 	}
 	
 	

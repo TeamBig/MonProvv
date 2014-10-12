@@ -1,13 +1,18 @@
 package it.tesoro.monprovv.model;
 
+import java.util.List;
+
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
@@ -62,6 +67,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
     @JoinColumn(name="ID_UTENTE_ASTAGE", referencedColumnName="ID_UTENTE_ASTAGE")
 	@Valid
 	private UtenteAstage utenteAstage;
+	
+	@OneToMany(mappedBy = "utente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<RuoloUtente> ruoloUtenteList;
 
 	@AssertTrue
 	public boolean isUtenteOK() {
@@ -148,6 +156,15 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 
 	public void setOrgano(Organo organo) {
 		this.organo = organo;
+	}
+
+	public List<RuoloUtente> getRuoloUtenteList() {
+		return ruoloUtenteList;
+	}
+
+
+	public void setRuoloUtenteList(List<RuoloUtente> ruoloUtenteList) {
+		this.ruoloUtenteList = ruoloUtenteList;
 	}
 
 

@@ -2,8 +2,6 @@ package it.tesoro.monprovv.sicurezza;
 
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,9 +16,9 @@ public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenti
     private GestioneSicurezzaFacade gestioneSicurezzaFacade;
     private boolean exceptionIfHeaderMissing = true;
 
-    private String oamAbilitato;
-    private String oamLogoutUrl;
-    
+//    private String oamAbilitato;
+//    private String oamLogoutUrl;
+//    
     
     
     /**
@@ -69,40 +67,40 @@ public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenti
 			HttpServletResponse response, Authentication authResult) {
 		
 		super.successfulAuthentication(request, response, authResult);
-		CustomUser user = (CustomUser)authResult.getPrincipal();
-
-		//gestioneSicurezzaFacade.updateDataUltimoAccessoUtente(user.getIdUtente());
-
-		if (user.getRuoliDaScegliere() != null) {
-			try {
-				// memorizzo la target url nell'oggetto PdaUser
-				String queryString = request.getQueryString();
-				
-				user.setTargetURL(request.getServletPath() + ( (queryString != null) ? "?" + queryString : ""));
-				
-				response.sendRedirect(request.getContextPath() + "/private/sceltaRuolo");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+//		CustomUser user = (CustomUser)authResult.getPrincipal();
+//
+//		//gestioneSicurezzaFacade.updateDataUltimoAccessoUtente(user.getIdUtente());
+//
+//		if (user.getRuoliDaScegliere() != null) {
+//			try {
+//				// memorizzo la target url nell'oggetto PdaUser
+//				String queryString = request.getQueryString();
+//				
+//				user.setTargetURL(request.getServletPath() + ( (queryString != null) ? "?" + queryString : ""));
+//				
+//				response.sendRedirect(request.getContextPath() + "/private/sceltaRuolo");
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		
 	}
 
-	public String getOamAbilitato() {
-		return oamAbilitato;
-	}
-
-	public void setOamAbilitato(String oamAbilitato) {
-		this.oamAbilitato = oamAbilitato;
-	}
-
-	public String getOamLogoutUrl() {
-		return oamLogoutUrl;
-	}
-
-	public void setOamLogoutUrl(String oamLogoutUrl) {
-		this.oamLogoutUrl = oamLogoutUrl;
-	}
-
+//	public String getOamAbilitato() {
+//		return oamAbilitato;
+//	}
+//
+//	public void setOamAbilitato(String oamAbilitato) {
+//		this.oamAbilitato = oamAbilitato;
+//	}
+//
+//	public String getOamLogoutUrl() {
+//		return oamLogoutUrl;
+//	}
+//
+//	public void setOamLogoutUrl(String oamLogoutUrl) {
+//		this.oamLogoutUrl = oamLogoutUrl;
+//	}
+//
 	
 }

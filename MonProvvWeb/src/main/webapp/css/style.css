@@ -1,0 +1,283 @@
+/** CUSTOM RICERCA **/
+#campiRicerca .form-actions{
+	background-color:inherit;
+}
+
+#campiRicerca .form-horizontal .form-actions {
+	padding-left: 280px;
+}
+
+#campiRicerca .form-horizontal .form-actions {
+	border-top: inherit;
+}
+
+/** CUSTOM INSERIMENTO **/
+.inserimento .form-horizontal .form-actions {
+	padding-left: 280px;
+}
+
+.inserimento .form-actions{
+	background-color:inherit;
+	border: inherit;
+}
+
+.inserimento .table a {
+	text-decoration: inherit;
+}
+
+.inserimento .control-group .control-label {
+	padding-top:inherit;
+	font-weight: bold;
+}
+
+.inserimento .control-group span {
+	padding-top:5px;
+	margin-bottom: 5px;
+}
+
+th.allegati {
+	width: 150px;
+}
+
+th.medium {
+	width: 200px;
+}
+
+/** CUSTOM DETTAGLIO **/
+.dettaglio .control-group .control-label {
+	padding-top:inherit;
+	font-weight: bold;
+}
+.dettaglio .control-group span {
+	padding-top:5px;
+	margin-bottom: 5px;
+}
+
+/** GENERICO **/
+* {
+  border-radius: 0 !important;
+}
+
+body {
+	background-color: #E8E8E8;
+}
+
+.container {
+}
+
+.container {
+	color: #545454;
+	background-color: #FFFFFF;
+	border-left: 4px solid #FFF;
+	border-right: 4px solid #FFF;
+
+}
+
+.form-actions {
+	background-color:inherit;
+}
+
+
+.gray {
+	color: gray;
+}
+
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.center {
+	text-align: center !important; 
+}
+
+.vcenter { 
+	vertical-align: middle !important;
+}
+
+.table a {
+	text-decoration: underline;
+}
+.table .titoloOggetto {
+	min-width: 200px;
+}
+
+.test {
+	  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.underline {
+	border-bottom: 1px solid;
+	border-color: #004383;
+}
+
+.underline > span {
+	border-bottom: 1px solid;
+	display: inline-block;
+	border-color: #004383;
+	color: #004383;
+}
+
+
+#ricercaAvanzata.in {
+	overflow: visible;
+}
+
+.header.container  {
+	height: 170px;
+	background-image: url(../img/bg_banner.png);
+	background-repeat: no-repeat;
+	border-bottom: 1px solid #ccc;
+}
+
+.header.container > .row:first-child {
+	height: 140px;
+}
+
+.utente {
+	display: block;
+	line-height: 30px;
+	background-color: #004383;
+	color: #fff;
+	padding-left: 10px;
+}
+
+.utente > a, .utente > a:visited {
+	color: #fff;
+}
+
+.titolo {
+	/*line-height: 100px;
+	padding-left: 30px;*/
+	padding-top: 25px;
+	text-transform: uppercase;
+}
+
+.navbar.navbar-custom {
+	margin-bottom: 0px;
+	border: none;
+	padding-left: 0px;
+	padding-right: 0px;
+	background: #193E62;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#193E62', endColorstr='#193E62',GradientType=0 ); /* IE6-8 */
+}
+
+.navbar.navbar-custom .nav>li>a,  .navbar .nav>li>a:visited, .navbar .dropdown-menu>li>a, .navbar .dropdown-menu>li>a:visited {
+	color: #fff;
+	font-weight: bold;
+	text-shadow: inherit;
+}
+
+.navbar.navbar-custom .nav>li>a:focus, .navbar .nav>li>a:hover {
+	color: #fff;
+}
+
+.navbar .dropdown-menu>li>a:hover {
+	background-color: #093697;
+	background-image: none;
+}
+
+.navbar .nav li.dropdown.open>.dropdown-toggle, .navbar .nav li.dropdown.active>.dropdown-toggle, .navbar .nav li.dropdown.open.active>.dropdown-toggle {
+	color: #fff;
+	background-color: #093697;
+}
+
+.navbar .nav li.dropdown>.dropdown-toggle .caret {
+	border-top-color: #FFF;
+	border-bottom-color: #FFF;
+}
+
+.navbar .dropdown-menu {
+	background-color: #555;
+	margin-top: -1px;
+}
+
+.navbar .dropdown-menu:before,
+.navbar .dropdown-menu:after {
+  display:none !important;
+}
+
+.popover {
+	color: #545454; 
+	max-width: 500px;
+	line-height: 20px;
+}
+
+.inserimento table a {
+	color: #545454; 
+}
+
+.table thead th {
+	background: #004383;
+	color: #fff;
+}
+
+.appbreadcrumb.container  {
+	height: 40px;
+	border-bottom: 1px solid #ccc;
+}
+
+.appbreadcrumb.container .titoloBreadcrumb {
+	color: #005782;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.appbreadcrumb.container span {
+	line-height: 40px;
+}
+
+#insertNoteAllegatiModal{
+	width: 750px !important;
+}
+
+ #insertNoteAllegatiModal .modal-body {
+    max-height: 625px;
+} 
+
+#btnRicercaAvanzata:hover {
+	cursor: pointer;
+}
+
+#btnRicercaAvanzata:hover i {
+	text-decoration: none;
+}
+
+#modalCronologia.modal {
+	width: 700px;
+	margin-left: -420px;
+}
+
+.color-capofila {
+	background: #EBF8FF;
+}
+
+i.color-capofila {
+	color: #EBF8FF;
+	background: #FFF;
+}
+
+.color-assegnatario {
+	background: #E4FFE6;
+}
+
+i.color-assegnatario {
+	color: #E4FFE6;
+	background: #FFF;
+}
+
+.img_logomef {
+	margin: 1em 2em 0px 0px;
+}
+
+a.download {
+	color: inherit;
+	text-decoration: underline !important;
+}
+
+ul.multiselect-container {
+	max-height: 100px; 
+	overflow-y: auto; 
+	overflow-x: hidden;
+}

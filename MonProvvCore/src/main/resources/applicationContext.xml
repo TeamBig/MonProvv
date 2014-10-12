@@ -140,7 +140,19 @@
 	++++++++++++++++++++++++++++++++++++++++++++++	
 	 -->
 	 
-	<!--  -->	 
+	<!-- 
+	++++++++++++++++++++++++++++++++++++++++++++++
+	CACHE SERVICE
+	++++++++++++++++++++++++++++++++++++++++++++++	
+	 -->
+
+	<context:component-scan base-package="it.tesoro.monprovv.cache" />
+	
+	<!-- 
+	++++++++++++++++++++++++++++++++++++++++++++++
+	FINE CACHE SERVICE
+	++++++++++++++++++++++++++++++++++++++++++++++	
+	 --> 
 
 	 
 	 <!-- 
@@ -179,8 +191,10 @@
 		<property name="gestioneSicurezzaFacade" ref="gestioneSicurezzaFacade" />
 		<property name="authenticationManager" ref="authenticationManager" />
 		<property name="exceptionIfHeaderMissing" value="false" />
+		<!-- 
 		<property name="oamAbilitato" value="#{config['oam.abilitato']}" />
 		<property name="oamLogoutUrl" value="#{config['oam.logoutUrl']}" />
+		 -->
 	</bean>
 
 	<bean id="preauthAuthProvider"

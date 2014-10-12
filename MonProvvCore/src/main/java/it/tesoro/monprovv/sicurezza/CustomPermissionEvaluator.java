@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,8 +20,8 @@ import org.springframework.util.AntPathMatcher;
 @Component("permissionEvaluator")
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 	
-    @Value("#{config['oam.abilitato']}")
-    private String oamAbilitato;
+//    @Value("#{config['oam.abilitato']}")
+//    private String oamAbilitato;
 	
 	@Autowired
 	private GestioneSicurezzaFacade gestioneSicurezzaFacade;
@@ -53,34 +52,41 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-		if (alberoPermessi == null) 
-			refreshAlberoPermessi();
-		
-		// il parametro "permission" e' ignorato in questa configurazione
-		// targetDomainObject == oggetto request 
-		String requestUrl = (String)targetDomainObject; //((SecurityContextHolderAwareRequestWrapper)targetDomainObject).getServletPath();
-		
-		
-		AntPathMatcher matcher = new AntPathMatcher();
-		int matchCount = 0;
-		int authCount = 0;
-		
-		Iterator<String> iter = alberoPermessi.keySet().iterator();
-		
-		while (iter.hasNext()) {
+
+		// GESTIONE URL PERMISSION
+		if (permission instanceof String && "urlPermission".equals((String)permission)) {
+
+			if (alberoPermessi == null) 
+				refreshAlberoPermessi();
 			
-			String url = iter.next();
-			if (matcher.match(url, requestUrl)) {
-				matchCount++;
-				for (GrantedAuthority roleUser : authentication.getAuthorities()) {
-					if (alberoPermessi.get(url).contains(roleUser.getAuthority()))
-						authCount++;
+			String requestUrl = (String)targetDomainObject; 
+						
+			AntPathMatcher matcher = new AntPathMatcher();
+			int matchCount = 0;
+			int authCount = 0;
+			
+			Iterator<String> iter = alberoPermessi.keySet().iterator();
+			
+			while (iter.hasNext()) {
+				
+				String url = iter.next();
+				if (matcher.match(url, requestUrl)) {
+					matchCount++;
+					for (GrantedAuthority roleUser : authentication.getAuthorities()) {
+						if (alberoPermessi.get(url).contains(roleUser.getAuthority()))
+							authCount++;
+					}
+					
 				}
 				
 			}
 			
+			return (matchCount == authCount);			
 		}
 		
-		return (matchCount == authCount);
+		// GESTIONE ALTRI PERMESSI
+		// TODO
+
+		throw new RuntimeException("Specificare un tipo di permesso da controllare!!");
 	}	
 }

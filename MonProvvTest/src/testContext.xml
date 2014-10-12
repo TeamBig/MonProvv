@@ -26,7 +26,7 @@
 
 	<bean id="dataSourceTest" class="com.mchange.v2.c3p0.ComboPooledDataSource" >
 	        <property name="driverClass" value="oracle.jdbc.OracleDriver" />
-	        <property name="jdbcUrl" value="jdbc:oracle:thin:@foxer.tesoro.it:1521/foxer" />
+	        <property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521/XE" />
 	        <property name="user" value="MONPROVV" />
 	        <property name="password" value="MONPROVV" /> 
 	 </bean>	

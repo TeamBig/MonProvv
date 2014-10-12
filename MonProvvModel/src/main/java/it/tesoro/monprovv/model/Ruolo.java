@@ -17,6 +17,10 @@ public class Ruolo extends AbstractCommonEntity implements java.io.Serializable 
 	private static final long serialVersionUID = 2334105001244493370L;
 	// Fields
 
+	public static final String ROLE_USER = "ROLE_USER";
+	public static final String ROLE_ADMIN = "ROLE_ADMIN";
+	public static final String ROLE_INSERITORE = "ROLE_INSERITORE";
+	
 	@Id
 	@Column(name="ID_RUOLO",unique=true, nullable=false)
 	@NotNull

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wls:weblogic-application xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-application" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd http://xmlns.oracle.com/weblogic/weblogic-application http://xmlns.oracle.com/weblogic/weblogic-application/1.0/weblogic-application.xsd">
+    <!--weblogic-version:10.3.2-->
+    <wls:application-param>
+        <wls:param-name>webapp.encoding.default</wls:param-name>
+        <wls:param-value>UTF-8</wls:param-value>
+    </wls:application-param>
+	<wls:prefer-application-packages>
+	   <wls:package-name>antlr.*</wls:package-name>
+	   <wls:package-name>antlr.collections.*</wls:package-name>
+	   <wls:package-name>antlr.collections.impl.*</wls:package-name>
+	   <wls:package-name>antlr.debug.misc.*</wls:package-name>
+	   <wls:package-name>javax.persistence.*</wls:package-name>
+	   <wls:package-name>javax.persistence.spi.*</wls:package-name>
+	   <wls:package-name>oracle.core.lmx.*</wls:package-name>
+	   <wls:package-name>oracle.core.lvf.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.aq.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.connector.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.dcn.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.diagnostics.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.driver.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.internal.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.oci.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.oracore.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.pool.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.rowset.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.util.*</wls:package-name>
+	   <wls:package-name>oracle.jdbc.xa.*</wls:package-name>
+	   <wls:package-name>oracle.jpub.runtime.*</wls:package-name>
+	   <wls:package-name>oracle.net.ano.*</wls:package-name>
+	   <wls:package-name>oracle.net.aso.*</wls:package-name>
+	   <wls:package-name>oracle.net.jdbc.*</wls:package-name>
+	   <wls:package-name>oracle.net.jndi.*</wls:package-name>
+	   <wls:package-name>oracle.net.ns.*</wls:package-name>
+	   <wls:package-name>oracle.net.nt.*</wls:package-name>
+	   <wls:package-name>oracle.net.resolver.*</wls:package-name>
+	   <wls:package-name>oracle.security.o3logon.*</wls:package-name>
+	   <wls:package-name>oracle.security.o5logon.*</wls:package-name>
+	   <wls:package-name>oracle.sql.*</wls:package-name>
+	   <wls:package-name>oracle.sql.converter.*</wls:package-name>
+	   <wls:package-name>org.apache.commons.*</wls:package-name>
+	</wls:prefer-application-packages>
+</wls:weblogic-application>

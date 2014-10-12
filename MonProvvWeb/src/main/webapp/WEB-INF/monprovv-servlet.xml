@@ -19,7 +19,7 @@
 	
 	<!--  VIEW RESOLVER -->
 	<bean id="tilesConfigurer"
-		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>
 				<value>/WEB-INF/tiles.xml</value>
@@ -28,7 +28,7 @@
 	</bean>
 
 	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.tiles2.TilesViewResolver" />
+		class="org.springframework.web.servlet.view.tiles3.TilesViewResolver" />
 		
 	<!-- FINE  VIEW RESOLVER -->
 	
@@ -51,7 +51,7 @@
 	
 	<!--  GESTIONE RISORSE STATICHE -->
 	<mvc:resources mapping="/img/**"    location="/img/" />
-	<mvc:resources mapping="/fonts/**"   location="/fonts/" />
+	<mvc:resources mapping="/font/**"   location="/font/" />
 	<mvc:resources mapping="/css/**"  location="/css/" />
 	<mvc:resources mapping="/js/**"     location="/js/" />
 	<!--  FINE GESTIONE RISORSE STATICHE -->
@@ -83,6 +83,7 @@
 	<!-- FINE GESTIONE ECCEZIONI -->
 	
 	<!-- ESPORTAZIONE FACADE VERSO VISTE JSP -->
+	<!-- 
 	<bean
 		class="org.springframework.web.context.support.ServletContextAttributeExporter">
 		<property name="attributes">
@@ -93,6 +94,7 @@
 			</map>
 		</property>
 	</bean>
+	 -->
 	<!-- FINE ESPORTAZIONE FACADE VERSO VISTE JSP -->
 	
  	

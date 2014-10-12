@@ -35,7 +35,7 @@ public class UnitTest {
 		gestioneUtenteFacade.inserisciStato(stato);
 		
 		
-		gestioneUtenteFacade.testSelect();
+		//gestioneUtenteFacade.testSelect();
 		System.out.println("OK");
 	}
 

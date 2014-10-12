@@ -9,239 +9,50 @@
         <put-attribute name="menu" value="/template/menu.jsp" />
         <put-attribute name="alert" value="/template/alert.jsp" />
         <put-attribute name="footer" value="/template/footer.jsp" />
-        <put-attribute name="secapplet" value="/template/secapplet.jsp" />
-		<put-attribute name="pageName" value="#TEMPLATE#" />        
+		<put-attribute name="titolo" value="#TEMPLATE#" />        
     </definition>	
     
     <definition name="403" extends="template">
     	<put-attribute name="breadcrumb" value="" />
 		<put-attribute name="content" value="/views/empty.jsp" />
-		<put-attribute name="pageName" value="403.title" />
-		<put-attribute name="secapplet" value="" /> 
+		<put-attribute name="titolo" value="403.title" />
 	</definition>
 
 	<definition name="404" extends="template">
    		<put-attribute name="breadcrumb" value="" />
 		<put-attribute name="content" value="/views/empty.jsp" />
-		<put-attribute name="pageName" value="404.title" />
-		<put-attribute name="secapplet" value="" /> 
+		<put-attribute name="titolo" value="404.title" />
 	</definition>
 	<definition name="500" extends="template">
    		<put-attribute name="breadcrumb" value="" />
 		<put-attribute name="content" value="/views/empty.jsp" />
-		<put-attribute name="pageName" value="500.title" />
-		<put-attribute name="secapplet" value="" /> 
+		<put-attribute name="titolo" value="500.title" />
 	</definition>
 	
 	<definition name="timeout" extends="template">
 		<put-attribute name="breadcrumb" value="" />
 		<put-attribute name="content" value="/views/empty.jsp" />
-		<put-attribute name="pageName" value="timeout.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-
-    <definition name="refresh" extends="template">
-   		<put-attribute name="breadcrumb" value="" />
-   		<put-attribute name="menu" value="" />
-		<put-attribute name="content" value="/views/empty.jsp" />
-		<put-attribute name="pageName" value="refresh.title" />
-	</definition>
-
-    <definition name="loginNoOAM" extends="template">
-    	<put-attribute name="breadcrumb" value="" />
-		<put-attribute name="content" value="/views/loginNoOAM.jsp" />
-		<put-attribute name="pageName" value="loginNoOAM.title" />
+		<put-attribute name="titolo" value="timeout.title" />
 	</definition>
 	
-	 <definition name="logoutNoOAM" extends="template">
+	<definition name="logout" extends="template">
 		<put-attribute name="breadcrumb" value="" />
-		<put-attribute name="content" value="/views/logoutNoOAM.jsp" />
-		<put-attribute name="pageName" value="logoutNoOAM.title" />
-		<put-attribute name="secapplet" value="" />
+		<put-attribute name="content" value="/views/empty.jsp" />
+		<put-attribute name="titolo" value="logout.title" />
 	</definition>
-	
+
 	<definition name="exceptionPage" extends="template">
 		<put-attribute name="breadcrumb" value="" />
 		<put-attribute name="content" value="/views/exceptionPage.jsp" />
-		<put-attribute name="pageName" value="exceptionPage.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	
-	<definition name="sceltaRuolo" extends="template">
-		<put-attribute name="breadcrumb" value="" />
-		<put-attribute name="menu" value="" />
-		<put-attribute name="content" value="/views/sceltaRuolo.jsp" />
-		<put-attribute name="pageName" value="sceltaRuolo.title" />
+		<put-attribute name="titolo" value="exceptionPage.title" />
 	</definition>
 	
 	 
     <definition name="home" extends="template">
 		<put-attribute name="content" value="/views/home.jsp" />
-		<put-attribute name="pageName" value="home.title" />
+		<put-attribute name="titolo" value="home.title" />
 	</definition>
    
     
-	<definition name="listaUtenti" extends="template">
-		<put-attribute name="content" value="/views/listaUtenti.jsp" />
-		<put-attribute name="pageName" value="listaUtenti.title" />
-	</definition>
-	
-	<definition name="modificaUtente" extends="template">
-		<put-attribute name="content" value="/views/modificaUtente.jsp" />
-		<put-attribute name="pageName" value="modificaUtente.title" />
-	</definition>
-	<definition name="cancellaUtente" extends="template">
-		<put-attribute name="content" value="/views/cancellaUtente.jsp" />
-		<put-attribute name="pageName" value="cancellaUtenti.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	<definition name="abilitaDisabilitaUtente" extends="template">
-		<put-attribute name="content" value="/views/abilitaDisabilitaUtente.jsp" />
-		<put-attribute name="pageName" value="abilitaDisabilitaUtenti.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-    <definition name="listaUtentiEsterni" extends="template">
-        <put-attribute name="content" value="/views/listaUtentiEsterni.jsp" />
-        <put-attribute name="pageName" value="listaUtentiEsterni.title" />
-    </definition>
-    
-	<definition name="listaUffici" extends="template">
-		<put-attribute name="content" value="/views/listaUffici.jsp" />
-		<put-attribute name="pageName" value="listaUffici.title" />
-	</definition>
-	
-	<definition name="ricercaUfficio" extends="template">
-		<put-attribute name="content" value="/views/ricercaUfficio.jsp" />
-		<put-attribute name="pageName" value="ricercaUfficio.title" />
-	</definition>
-	
-	<definition name="consultazioneAgenda" extends="template">
-		<put-attribute name="content">
-			<definition template="/template/template_consultazione_reg.jsp">
-                <put-attribute name="consultazione_content" value="/views/consultazione_reg/consultazioneAgenda.jsp"/>
-                <put-attribute name="linkSelected" value="key.agenda" />
-            </definition>
-		</put-attribute>
-		<put-attribute name="pageName" value="ricercaRegistri.titleAgenda" />
-	</definition>
-	
-	<definition name="consultazioneScadenze" extends="template">
-		<put-attribute name="content">
-			<definition template="/template/template_consultazione_reg.jsp">
-                 <put-attribute name="consultazione_content" value="/views/consultazione_reg/consultazioneScadenze.jsp"/>
-                 <put-attribute name="linkSelected" value="key.scadenze" />
-            </definition>
-		</put-attribute>
-		<put-attribute name="pageName" value="ricercaRegistri.titleScadenze" />
-	</definition>
-	
-	<definition name="consultazioneFascicoli" extends="template">
-		<put-attribute name="content">
-			<definition template="/template/template_consultazione_reg.jsp">
-                <put-attribute name="consultazione_content" value="/views/consultazione_reg/consultazioneFascicoliPersonali.jsp"/>
-                <put-attribute name="linkSelected" value="key.fascicoli" />
-            </definition>
-		</put-attribute>
-		<put-attribute name="pageName" value="ricercaRegistri.titleFascicoli" />
-	</definition>
-	
-	<definition name="consultazioneDocumenti" extends="template">
-		<put-attribute name="content">
-			<definition template="/template/template_consultazione_reg.jsp">
-                <put-attribute name="consultazione_content" value="/views/consultazione_reg/consultazioneDocumenti.jsp"/>
-                <put-attribute name="linkSelected" value="key.documenti" />
-            </definition>
-		</put-attribute>
-		<put-attribute name="pageName" value="ricercaRegistri.titleDocumenti" />
-	</definition>
-	
-	<definition name="consultazioneArchivio" extends="template">
-		<put-attribute name="content">
-			<definition template="/template/template_consultazione_reg.jsp">
-               <put-attribute name="consultazione_content" value="/views/consultazione_reg/consultazioneArchivio.jsp"/>
-               <put-attribute name="linkSelected" value="key.archivio" />
-            </definition>
-		</put-attribute>
-		<put-attribute name="pageName" value="ricercaRegistri.titleArchivio" />
-	</definition>
 
-	<definition name="listaFascicoli" extends="template">
-		<put-attribute name="content" value="/views/listaFascicoli.jsp" />
-		<put-attribute name="pageName" value="listaFascicoli.title" />
-	</definition>
-
-	<definition name="dettaglioFascicolo" extends="template">
-		<put-attribute name="content" value="/views/dettaglioFascicolo.jsp" />
-		<put-attribute name="pageName" value="dettaglioFascicolo.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	
-	<definition name="dettaglioUfficio" extends="template">
-		<put-attribute name="content" value="/views/dettaglioUfficio.jsp" />
-		<put-attribute name="pageName" value="dettaglioUfficio.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	
-	<definition name="listaIndirizzi" extends="template">
-		<put-attribute name="content" value="/views/listaIndirizzi.jsp" />
-		<put-attribute name="pageName" value="listaIndirizzi.title" />
-	</definition>
-	
-	<definition name="dettaglioNotifica" extends="template">
-		<put-attribute name="content" value="/views/dettaglioNotifica.jsp" />
-		<put-attribute name="pageName" value="dettaglioNotifica.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	
-	<definition name="listaEventi" extends="template">
-		<put-attribute name="content" value="/views/calendarioEventi.jsp" />
-		<put-attribute name="pageName" value="listaEventi.title" />
-	</definition>
-	
-	<definition name="verificaUtente" extends="template">
-		<put-attribute name="content" value="/views/verificaUtente.jsp" />
-		<put-attribute name="pageName" value="verificaUtente.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	<definition name="confermaCancellazione" extends="template">
-		<put-attribute name="content" value="/views/confermaCancellazione.jsp" />
-		<put-attribute name="pageName" value="confermaCancellazione.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	
-	<definition name="listaNotifiche" extends="template">
-		<put-attribute name="content" value="/views/listaNotifiche.jsp" />
-		<put-attribute name="pageName" value="listaNotifiche.title" />
-	</definition>
-	<definition name="listaNotificheArchiviate" extends="template">
-		<put-attribute name="content" value="/views/listaNotificheArchiviate.jsp" />
-		<put-attribute name="pageName" value="listaNotificheArchiviate.title" />
-	</definition>
-		<definition name="gestioneNotifica" extends="template">
-		<put-attribute name="content" value="/views/operazioneNotifica.jsp" />
-		<put-attribute name="pageName" value="gestioneNotifica.title" />
-	</definition>
-	<definition name="dettaglioNotificaArchivio" extends="template">
-		<put-attribute name="content" value="/views/dettaglioNotificaArchivio.jsp" />
-		<put-attribute name="pageName" value="dettaglioNotificaArchivio.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	<definition name="gestioneNotificaArchivio" extends="template">
-		<put-attribute name="content" value="/views/operazioneNotificaArchivio.jsp" />
-		<put-attribute name="pageName" value="gestioneNotificaArchivio.title" />
-	</definition>
-	<definition name="dettaglioDocumento" extends="template">
-		<put-attribute name="content" value="/views/dettaglioDocumento.jsp" />
-		<put-attribute name="pageName" value="dettaglioDocumento.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	<definition name="noDownload" extends="template">
-		<put-attribute name="content" value="/views/noDownload.jsp" />
-		<put-attribute name="pageName" value="noDownload.title" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
-	<definition name="testView" extends="template">
-		<put-attribute name="content" value="/views/testview.jsp" />
-		<put-attribute name="secapplet" value="" />
-	</definition>
 </tiles-definitions>
