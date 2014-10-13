@@ -20,7 +20,6 @@ public class UnitTest {
 	
 	@Test
 	public void test() {
-<<<<<<< HEAD
 		try{
 			Stato stato1 = new Stato();
 			stato1.setTipo("tipo");
@@ -45,24 +44,6 @@ public class UnitTest {
 		}
 
 		gestioneUtenteFacade.testSelect();
-=======
-		
-		Stato stato = new Stato();
-		stato.setTipo("tipo");
-		stato.setCodice("codice");
-		stato.setDescrizione("descrizione");
-		
-		stato.setUtenteInserimento("TEST INS");
-		stato.setDataInserimento(new Date());
-		
-		stato.setUtenteAggiornamento("TEST AGG");
-		stato.setDataAggiornamento(new Date());
-		
-		gestioneUtenteFacade.inserisciStato(stato);
-		
-		
-		//gestioneUtenteFacade.testSelect();
->>>>>>> ea7a6353450365b496cba237e2b413a7a912123c
 		System.out.println("OK");
 	}
 
