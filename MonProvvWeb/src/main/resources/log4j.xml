@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+	
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+      <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="%d - %p - %m%n" />
+      </layout>
+	</appender>	
+
+	<appender name="ROLL"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		
+		<!-- JBOSS --> 
+		<!-- 
+		<param name="file"
+			value="${jboss.server.log.dir}/monprovv.log" />
+		  -->
+		 
+		  
+		<!-- WebLogic -->
+		
+		<param name="file"
+			value="${user.dir}${file.separator}servers${file.separator}${weblogic.Name}${file.separator}logs${file.separator}monprovv.log" />
+		 
+		
+		<param name="datePattern" value="'.'yyyy-MM-dd" />
+		<param name="append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d - %p - %m%n"/>
+		</layout>
+	</appender>
+	
+	<logger name="it.tesoro.monprovv" additivity="false">
+		<level value="DEBUG"/>
+		<appender-ref ref="ROLL"/>
+	</logger>
+
+	<!-- logger di spring-->
+	<category name="org.springframework" additivity="false">
+		<level value="DEBUG"/>
+		<appender-ref ref="CONSOLE"/>
+	</category>
+	
+	<!-- logger di Hibernate-->
+	<logger name="org.hibernate" additivity="false">
+		<level value="ERROR"/>
+		<appender-ref ref="ROLL"/>
+	</logger>
+	
+	<root>
+		<level value="ERROR"/>
+		<appender-ref ref="CONSOLE" />
+	</root>
+
+</log4j:configuration>

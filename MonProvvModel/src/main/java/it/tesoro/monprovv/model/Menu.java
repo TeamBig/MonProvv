@@ -30,8 +30,9 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 	@NotNull
 	private String descrizione;
 
-	@Column(name = "ID_PARENT_MENU")
-	private Integer idParentMenu;
+	@ManyToOne(targetEntity=Menu.class)
+    @JoinColumn(name="ID_PARENT_MENU", referencedColumnName="ID_MENU")
+	private Menu parentMenu;
 
 	@ManyToOne(targetEntity=Funzione.class)
     @JoinColumn(name="ID_FUNZIONE", referencedColumnName="ID_FUNZIONE")
@@ -57,12 +58,12 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 		this.descrizione = descrizione;
 	}
 
-	public Integer getIdParentMenu() {
-		return idParentMenu;
+	public Menu getParentMenu() {
+		return parentMenu;
 	}
 
-	public void setIdParentMenu(Integer idParentMenu) {
-		this.idParentMenu = idParentMenu;
+	public void setParentMenu(Menu parentMenu) {
+		this.parentMenu = parentMenu;
 	}
 
 	public Funzione getFunzione() {

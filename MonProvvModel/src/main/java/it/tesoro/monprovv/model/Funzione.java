@@ -29,7 +29,7 @@ public class Funzione extends AbstractCommonEntity implements Serializable {
 	private String url;
 
 	@Column(name = "FLG_LINKABLE", length = 1)
-	private String flgLinkable;
+	private String linkable;
 
 	public Integer getId() {
 		return id;
@@ -55,12 +55,13 @@ public class Funzione extends AbstractCommonEntity implements Serializable {
 		this.url = url;
 	}
 
-	public String getFlgLinkable() {
-		return flgLinkable;
+	public String getLinkable() {
+		return linkable;
 	}
 
-	public void setFlgLinkable(String flgLinkable) {
-		this.flgLinkable = flgLinkable;
+	public void setLinkable(String linkable) {
+		this.linkable = linkable;
 	}
+
 
 }
