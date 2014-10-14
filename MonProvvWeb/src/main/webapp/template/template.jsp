@@ -72,10 +72,14 @@
 	<div class="container header">
 		<div class="row">
 			<div class="span7">
+<<<<<<< HEAD
 				<h1 class="titolo"><img alt="Monitoraggio Provvedimenti" src="${base}/img/mon_prov_header.png"/></h1>
+=======
+				<h1 class="titolo"><img alt="Monitoraggio Provvedimenti" src="${base}/img/mon_prov_header.png"/>€</h1>
+>>>>>>> branch 'master' of https://github.com/TeamBig/MonProvv/
 			</div>
 			<div class="span5" id="login">
-				<tiles:insertAttribute name="header" />		
+				<tiles:insertAttribute name="header" />
 				
 				<div class="pull-right img_logomef">
 					<img class="pull-right" src="${base}img/logo_mef.png" alt="Logo - MEF (ministero dell'Economia e delle Finanze)" />

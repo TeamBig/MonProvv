@@ -31,7 +31,7 @@
   		 -->
   		 
   		 <li>
-  		 	<a href="#" id="vaiaricerca">Home <i class="icon-home"></i></a>
+  		 	<a href="/monprovv/" id="vaiaricerca">Home <i class="icon-home"></i></a>
   		 </li>
   		 
 		<c:forEach items="${firstLevelMenu}" var="menu">
