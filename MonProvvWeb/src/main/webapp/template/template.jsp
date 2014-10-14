@@ -72,7 +72,7 @@
 	<div class="container header">
 		<div class="row">
 			<div class="span7">
-				<h1 class="titolo"><img alt="Monitoraggio Provvedimenti" src="${base}/img/mon_prov_header.png"/>​</h1>
+				<h1 class="titolo"><img alt="Monitoraggio Provvedimenti" src="${base}/img/mon_prov_header.png"/></h1>
 			</div>
 			<div class="span5" id="login">
 				<tiles:insertAttribute name="header" />		
