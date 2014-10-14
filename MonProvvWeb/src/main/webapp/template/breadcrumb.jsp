@@ -7,7 +7,7 @@
 		<div class="row">
 			<div class="span12">
 				<span class="titoloBreadcrumb">Ti trovi in: </span>
-				<span>Home &gt;&nbsp;
+				<span>
 				
 					<c:set var="path" value="${fn:replace(requestScope['javax.servlet.forward.request_uri'], '/home', '')}" />
 					
