@@ -35,6 +35,10 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 
 	@Column(name = "DENOMINAZIONE_ESTESA", length = 2000)
 	private String denominazioneEstesa;
+	
+	@Column(name="FLAG_CONCERTANTE", length=1)
+	private String flagConcertante;
+	
 
 	public Integer getId() {
 		return id;
@@ -58,6 +62,14 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 
 	public void setDenominazioneEstesa(String denominazioneEstesa) {
 		this.denominazioneEstesa = denominazioneEstesa;
+	}
+
+	public String getFlagConcertante() {
+		return flagConcertante;
+	}
+
+	public void setFlagConcertante(String flagConcertante) {
+		this.flagConcertante = flagConcertante;
 	}
 
 }

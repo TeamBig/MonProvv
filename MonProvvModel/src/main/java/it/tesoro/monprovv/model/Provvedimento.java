@@ -40,10 +40,6 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Column(name = "ID_PROVVEDIMENTO")
 	private Integer id;
 
-	@Column(name = "TIPOLOGIA", length = 240)
-	@NotNull
-	private String tipologia;
-
 	@Column(name = "FONTE_NORMATIVA", length = 240)
 	private String fonteNormativa;
 
@@ -65,6 +61,18 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@NotNull
 	private TipoProvvedimento tipoProvvedimento;
 
+	@ManyToOne(targetEntity=TipoProvvDaAdottare.class)
+    @JoinColumn(name="ID_TIPO_PROVV_DA_ADOTTARE", referencedColumnName="ID_TIPO_PROVV_DA_ADOTTARE")
+	@Valid
+	@NotNull
+	private TipoProvvDaAdottare tipoProvvDaAdottare;
+	
+	@ManyToOne(targetEntity=Governo.class)
+    @JoinColumn(name="ID_GOVERNO", referencedColumnName="ID_GOVERNO")
+	@Valid
+	@NotNull
+	private Governo governo;
+	
 	@Column(name = "TERMINE_SCADENZA")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")
@@ -85,6 +93,12 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Valid
 	private Organo organoCapofila;
 	
+	@ManyToOne(targetEntity=Organo.class)
+    @JoinColumn(name="ID_ORGANO_CONCERTANTE", referencedColumnName="ID_ORGANO")
+	@Valid
+	private Organo organoConcertante;
+	
+	
 	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
 	private List<ProvvedimentiParent> provvedimentiParent;
 	
@@ -95,14 +109,6 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getTipologia() {
-		return tipologia;
-	}
-
-	public void setTipologia(String tipologia) {
-		this.tipologia = tipologia;
 	}
 
 	public String getFonteNormativa() {
@@ -193,14 +199,12 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.provvedimentiParent = provvedimentiParent;
 	}
 
-//	public List<ProvvedimentiParent> getProvvedimentiParent() {
-//		return provvedimentiParent;
-//	}
-//
-//	public void setProvvedimentiParent(List<ProvvedimentiParent> provvedimentiParent) {
-//		this.provvedimentiParent = provvedimentiParent;
-//	}
-	
-	
+	public Organo getOrganoConcertante() {
+		return organoConcertante;
+	}
+
+	public void setOrganoConcertante(Organo organoConcertante) {
+		this.organoConcertante = organoConcertante;
+	}
 
 }
