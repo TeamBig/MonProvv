@@ -14,6 +14,7 @@
 //_hiddenCategory_\:http\://java.sun.com/jstl/xml_rt=false
 //_hiddenCategory_\:http\://tiles.apache.org/tags-tiles=false
 //_hiddenCategory_\:http\://tiles.apache.org/tags-tiles-extras=false
+//_hiddenCategory_\:http\://velocity.apache.org/velocity-view=false
 //_hiddenCategory_\:http\://www.springframework.org/security/tags=false
 //_hiddenCategory_\:http\://www.springframework.org/tags=false
 //_hiddenCategory_\:http\://www.springframework.org/tags/form=false

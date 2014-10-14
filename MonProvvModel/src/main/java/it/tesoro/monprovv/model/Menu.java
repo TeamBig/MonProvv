@@ -3,12 +3,17 @@ package it.tesoro.monprovv.model;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -42,6 +47,11 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 	@Column(name = "ORDINAMENTO")
 	private Integer ordinamento;
 
+	@OneToMany(cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    @JoinColumn(name="ID_PARENT_MENU")
+	@OrderBy("ordinamento")
+	private List<Menu> secondLevelList;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -82,6 +92,39 @@ public class Menu extends AbstractCommonEntity implements Serializable {
 		this.ordinamento = ordinamento;
 	}
 
+	public List<Menu> getSecondLevelList() {
+		return secondLevelList;
+	}
 
+	public void setSecondLevelList(List<Menu> secondLevelList) {
+		this.secondLevelList = secondLevelList;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Menu other = (Menu) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	
 
 }

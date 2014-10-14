@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
@@ -140,11 +141,22 @@ public class GestioneSicurezzaController {
 	
 	@RequestMapping(value= {"/private/home", "/private"}, method = RequestMethod.GET)
 	public String caricaHomepagePrivata(Model model, SecurityContextHolderAwareRequestWrapper request)  {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		System.out.println(auth.getPrincipal());
+
+		
 		return "home";
 	}
 	
 	@RequestMapping(value= {"/public/home", "/public"}, method = RequestMethod.GET)
 	public String caricaHomepagePubblica(Model model)  {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		System.out.println(auth.getPrincipal());
+		
 		return "home";
 	}
 	
