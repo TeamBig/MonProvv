@@ -37,6 +37,7 @@
     	<property name="basenames">
     		<list>
     			<value>messages-comuni</value>
+    			<value>messages-provvedimento</value>
     		</list>
     	</property>
 	</bean>
