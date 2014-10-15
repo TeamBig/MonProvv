@@ -7,6 +7,7 @@ import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -477,5 +478,35 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 			throw new DatabaseException(re);
 		}
 	}
+	
+//	public List<T> findByProperty(HashMap<String,Object> parametri) {
+//		try {
+//			String queryString = "from " + nomeOggetto + " as model";
+//
+//			int cont = 0;
+//
+//			Object[] parametriValues = new Object[parametri.size()];
+//
+//			for(Map.Entry<String,Object> entry : parametri.entrySet())
+//			{
+//				cont++;
+//				if(cont == 1)
+//				{
+//					queryString += " where model." + entry.getKey() + "= ?";
+//				}
+//				else
+//				{
+//					queryString += " and model." + entry.getKey() + "= ?";
+//				}
+//
+//				parametriValues[cont-1] = entry.getValue();				
+//			}
+//
+//			return .find(queryString, parametriValues);
+//		} catch (RuntimeException re) {
+//			log.error("find by property name failed", re);
+//			throw re;
+//		}
+//	}
 	
 }

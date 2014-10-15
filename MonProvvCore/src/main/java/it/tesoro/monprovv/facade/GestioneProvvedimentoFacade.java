@@ -6,6 +6,7 @@ import it.tesoro.monprovv.dao.StatoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
@@ -71,6 +72,12 @@ public class GestioneProvvedimentoFacade {
 		order.add("descrizione");
 		List<TipoProvvDaAdottare> listaTipoProvvedimento = tipoProvvDaAdottareDAO.findAll(1, order);
 		return listaTipoProvvedimento;
+	}
+	
+	public List<Provvedimento> initAllProvvedimenti(Integer page){
+		List<String> order = new ArrayList<String>();
+		List<Provvedimento> list = provvedimentoDAO.findAll(page, order);
+		return list;
 	}
 
 }
