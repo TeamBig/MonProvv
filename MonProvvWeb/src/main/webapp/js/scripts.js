@@ -72,18 +72,18 @@ $(document).ready(function() {
     	window.location.href = "modifica.html";
     });
     
-    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
-    	window.location.href = "dettaglio.html";
-    });
-    
-    $('#risultatiRicerca .table > tbody > tr:eq(1)').click(function() {
-    	window.location.href = "dettaglio_assegnatario.html";
-    });
-    
-    $('#risultatiRicerca .table > tbody > tr:eq(2)').click(function() {
-    	window.location.href = "dettaglio_non_assegnatario.html";
-    });
-    
+//    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
+//    	window.location.href = "dettaglio.html";
+//    });
+//    
+//    $('#risultatiRicerca .table > tbody > tr:eq(1)').click(function() {
+//    	window.location.href = "dettaglio_assegnatario.html";
+//    });
+//    
+//    $('#risultatiRicerca .table > tbody > tr:eq(2)').click(function() {
+//    	window.location.href = "dettaglio_non_assegnatario.html";
+//    });
+//    
     
     $("#salvaModifica").click(function() {
     	window.location.href = "dettaglio.html";
@@ -122,17 +122,26 @@ $(document).ready(function() {
     	window.location.href = "modifica.html";
     });
     
-    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
-    	window.location.href = "dettaglio.html";
+    $('#risultatiRicerca .table > tbody > tr').click(function() {
+    	var customerId = $(this).find("td:first").html();  
+    	var currentUrl = $(location).attr('href'); 
+    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+    	
     });
     
-    $('#risultatiRicerca .table > tbody > tr:eq(1)').click(function() {
-    	window.location.href = "dettaglio_assegnatario.html";
-    });
     
-    $('#risultatiRicerca .table > tbody > tr:eq(2)').click(function() {
-    	window.location.href = "dettaglio_non_assegnatario.html";
-    });
+
+//    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
+//    	window.location.href = "dettaglio.html";
+//    });
+//    
+//    $('#risultatiRicerca .table > tbody > tr:eq(1)').click(function() {
+//    	window.location.href = "dettaglio_assegnatario.html";
+//    });
+//    
+//    $('#risultatiRicerca .table > tbody > tr:eq(2)').click(function() {
+//    	window.location.href = "dettaglio_non_assegnatario.html";
+//    });
     
     
     $("#salvaModifica").click(function() {

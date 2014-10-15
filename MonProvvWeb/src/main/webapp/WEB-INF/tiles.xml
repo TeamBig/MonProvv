@@ -54,7 +54,17 @@
 	</definition>
 	
 	<definition name="entiHomeEnti" extends="template">
-		<put-attribute name="content" value="/views/home.jsp" />
+		<put-attribute name="content" value="/views/homeEnti.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
+	</definition>
+	
+	<definition name="entiDettaglioEnte" extends="template">
+		<put-attribute name="content" value="/views/dettEnte.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
+	</definition>
+	
+	<definition name="entiEditEnte" extends="template">
+		<put-attribute name="content" value="/views/editEnte.jsp" />
 		<put-attribute name="titolo" value="home.title.enti" />
 	</definition>
 	

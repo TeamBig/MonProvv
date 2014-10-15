@@ -37,6 +37,7 @@
     	<property name="basenames">
     		<list>
     			<value>messages-comuni</value>
+    			<value>messages-enti</value>
     		</list>
     	</property>
 	</bean>
