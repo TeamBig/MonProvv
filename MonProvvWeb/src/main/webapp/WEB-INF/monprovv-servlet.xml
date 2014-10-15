@@ -38,6 +38,7 @@
     		<list>
     			<value>messages-comuni</value>
     			<value>messages-enti</value>
+    			<value>messages-provvedimento</value>
     		</list>
     	</property>
 	</bean>

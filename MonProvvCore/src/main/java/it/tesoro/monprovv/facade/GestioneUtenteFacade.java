@@ -48,7 +48,7 @@ public class GestioneUtenteFacade {
 		System.out.println(" C ");
 		
 		for(ProvvedimentiParent tmp:p.getProvvedimentiParent()){
-			System.out.println("* " + tmp.getProvvedimentoCollegato().getTipologia() );
+			//System.out.println("* " + tmp.getProvvedimentoCollegato().getTipologia() );
 			//System.out.println("* " + tmp.getIdProvvedimentoCollegato());
 		}
 		

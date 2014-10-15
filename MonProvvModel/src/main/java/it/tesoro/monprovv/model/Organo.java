@@ -37,7 +37,7 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	private String denominazioneEstesa;
 	
 	
-	@Column(name = "FLAG_CONCERTANTE", length = 1)
+	@Column(name="FLAG_CONCERTANTE", length=1)
 	private String flagConcertante;
 	
 	public String getConcertante() {

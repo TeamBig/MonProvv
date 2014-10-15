@@ -94,13 +94,8 @@
 	
 	<tiles:insertAttribute name="alert" />
 	
-	<div class="container">
-		<div class="row">
-			<div class="span12">
-				<tiles:insertAttribute name="content" />
-			</div>
-		</div>
-	</div>
+
+	<tiles:insertAttribute name="content" />
 	
 	
 	<tiles:insertAttribute name="footer" />

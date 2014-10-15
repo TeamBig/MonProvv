@@ -1,177 +1,152 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <div class="container collapse" id="campiRicerca">
-	<div class="row">
-		<div class="span12">
-			<h3 class="underline">
-				<span>Ricerca provvedimento</span>
-			</h3>
-		</div>
-	</div>
-	<div class="row">
-		<div class="span6">
-			<div class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" for="governo">Governo</label>
-					<div class="controls">
-						<select id="governo" class="input-xlarge">
-							<option>Tutti</option>
-							<option>Monti</option>
-							<option>Letta</option>
-							<option>Renzi</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="art">Art.</label>
-					<div class="controls">
-						<input type="text" id="art" class="input-small">
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="titoloOggetto">Titolo /
-						Oggetto</label>
-					<div class="controls">
-						<input type="text" id="titoloOggetto" class="input-xlarge">
-					</div>
-				</div>
-
-				<div class="control-group">
-					<div class="controls">
-						<h5>
-							<a data-toggle="collapse" data-target="#ricercaAvanzata"
-								id="btnRicercaAvanzata"> Ricerca avanzata <i
-								class="icon-caret-down icon-large" id="btnRicAvDown"></i> <i
-								class="icon-caret-up icon-large" id="btnRicAvUp"></i>
-							</a>
-						</h5>
-					</div>
-				</div>
-
+	<springform:form modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" action="${action_url}">
+		<div class="row">
+			<div class="span12">
+				<h3 class="underline">
+					<span>Ricerca provvedimento</span>
+				</h3>
 			</div>
 		</div>
-		<div class="span6">
-			<div class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" for="tipologia">Tipologia</label>
-					<div class="controls">
-						<select id="tipologia" class="input-xlarge">
-							<option>Tutte</option>
-							<option>Proponente MEF</option>
-							<option>Concertante MEF</option>
-							<option>Concerto preventivo</option>
-						</select>
+		<div class="row">
+			<div class="span6">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<springform:label path="tipoGoverno" cssClass="control-label" for="governo"><spring:message code="label.tipoGoverno"/></springform:label>
+						<div class="controls">
+							<springform:select path="tipoGoverno" items="${listaGoverno}" id="governo" cssClass="input-xlarge" itemValue="id" itemLabel="denominazione" />
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="comma">Comma</label>
-					<div class="controls">
-						<input type="text" id="comma" class="input-small">
+
+					<div class="control-group">
+						<label class="control-label" for="art">Art.</label>
+						<div class="controls">
+							<input type="text" id="art" class="input-small">
+						</div>
 					</div>
+
+					<div class="control-group">
+						<label class="control-label" for="titoloOggetto">Titolo /
+							Oggetto</label>
+						<div class="controls">
+							<input type="text" id="titoloOggetto" class="input-xlarge">
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="controls">
+							<h5>
+								<a data-toggle="collapse" data-target="#ricercaAvanzata"
+									id="btnRicercaAvanzata"> Ricerca avanzata <i
+									class="icon-caret-down icon-large" id="btnRicAvDown"></i> <i
+									class="icon-caret-up icon-large" id="btnRicAvUp"></i>
+								</a>
+							</h5>
+						</div>
+					</div>
+
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="statoDiAttuazione">Stato
-						di attuazione</label>
-					<div class="controls">
-						<select id="statoDiAttuazione" class="input-xlarge">
-							<option>Tutti gli stati</option>
-							<option>Inserito</option>
-							<option>Sospeso</option>
-							<option>Fine lavorazione</option>
-							<option>Chiusura lavori</option>
-							<option>Adottato</option>
-							<option>Non attuabile</option>
-							<option>Superato</option>
-						</select>
+			</div>
+			<div class="span6">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<springform:label path="tipologia" cssClass="control-label" for="tipologia"><spring:message code="label.tipologia"/></springform:label>
+						<div class="controls">
+							<springform:select path="tipologia" items="${listaTipologia}" id="tipologia" cssClass="input-xlarge" itemValue="codice" itemLabel="descrizione" />
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="comma">Comma</label>
+						<div class="controls">
+							<input type="text" id="comma" class="input-small">
+						</div>
+					</div>
+					<div class="control-group">
+						<springform:label path="statoDiAttuazione" cssClass="control-label" for="statoDiAttuazione"><spring:message code="label.statoAttuazione"/></springform:label>
+						<div class="controls">
+							<springform:select path="statoDiAttuazione" items="${listaStatoDiAttuazione}" id="statoDiAttuazione" cssClass="input-xlarge" itemValue="codice" itemLabel="descrizione" />
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="row collapse" id="ricercaAvanzata">
-		<div class="span6">
-			<div class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" for="dataDa">Termine di
-						scadenza</label>
-					<div class="controls form-inline">
-						<label for="dp1v">Da&nbsp;</label> <input type="text" id="dp1v"
-							class="input-small" maxlength="10" placeholder="GG/MM/AAAAA">&nbsp;
-						<i class="icon-calendar icon-large" id="dp1"></i> <label
-							for="dp2v">&nbsp;&nbsp;A&nbsp;</label> <input type="text"
-							id="dp2v" class="input-small" maxlength="10"
-							placeholder="GG/MM/AAAAA">&nbsp;<i
-							class="icon-calendar icon-large" id="dp2"></i>
+		<div class="row collapse" id="ricercaAvanzata">
+			<div class="span6">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="dataDa">Termine di
+							scadenza</label>
+						<div class="controls form-inline">
+							<label for="dp1v">Da&nbsp;</label> <input type="text" id="dp1v"
+								class="input-small" maxlength="10" placeholder="GG/MM/AAAAA">&nbsp;
+							<i class="icon-calendar icon-large" id="dp1"></i> <label
+								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> <input type="text"
+								id="dp2v" class="input-small" maxlength="10"
+								placeholder="GG/MM/AAAAA">&nbsp;<i
+								class="icon-calendar icon-large" id="dp2"></i>
+						</div>
 					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="inputFonte">Fonte
-						normativa</label>
-					<div class="controls">
-						<input type="text" id="inputFonte" class="input-xlarge">
+					<div class="control-group">
+						<label class="control-label" for="inputFonte">Fonte
+							normativa</label>
+						<div class="controls">
+							<input type="text" id="inputFonte" class="input-xlarge">
+						</div>
 					</div>
-				</div>
 
+				</div>
 			</div>
-		</div>
-		<div class="span6">
-			<div class="form-horizontal">
+			<div class="span6">
+				<div class="form-horizontal">
 
-				<div class="control-group">
-					<label class="control-label" for="provvDaAdottare">Provvedimento
-						da adottare</label>
-					<div class="controls">
-						<select id="provvDaAdottare" class="input-xlarge">
-							<option>Tutti</option>
-							<option>Convenzione</option>
-							<option>D.I.</option>
-							<option>D.M.</option>
-							<option>Decreto direttoriale</option>
-							<option>d.P.C.M.</option>
-							<option>DPR (regolamento delegificazione)</option>
-							<option>Altro</option>
-						</select>
+					<div class="control-group">
+						<springform:label path="tipoProvvDaAdottare" cssClass="control-label" for="tipoProvvDaAdottare"><spring:message code="label.provvDaAdottare"/></springform:label>
+						<div class="controls">
+							<springform:select path="tipoProvvDaAdottare" items="${listaTipoProvvDaAdottare}" id="tipoProvvDaAdottare" cssClass="input-xlarge" itemValue="id" itemLabel="descrizione" />
+						</div>
 					</div>
-				</div>
 
-				<div class="control-group">
-					<label class="control-label" for="enteAssegnatario">Amm./uffici
-						coinvolti</label>
-					<div class="controls">
-						<select id="enteAssegnatario" class="input-xlarge multiselect"
-							multiple="multiple">
-							<option>Tutti</option>
-							<option>Agenzia Entrate e Territorio</option>
-							<option>Agenzia Dogane e Monopoli</option>
-							<option>Agenzia Entrate</option>
-							<option>Dipartimento finanze (DLTFF)</option>
-							<option>Dip.to Tesoro</option>
-							<option>Guardia di finanza</option>
-							<option>Ragioneria Generale dello Stato</option>
-						</select>
+					<div class="control-group">
+						<label class="control-label" for="enteAssegnatario">Amm./uffici
+							coinvolti</label>
+						<div class="controls">
+							<select id="enteAssegnatario" class="input-xlarge multiselect"
+								multiple="multiple">
+								<option>Tutti</option>
+								<option>Agenzia Entrate e Territorio</option>
+								<option>Agenzia Dogane e Monopoli</option>
+								<option>Agenzia Entrate</option>
+								<option>Dipartimento finanze (DLTFF)</option>
+								<option>Dip.to Tesoro</option>
+								<option>Guardia di finanza</option>
+								<option>Ragioneria Generale dello Stato</option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="span12">
-			<div class="form-horizontal">
-				<div class="control-group">
-					<div class="form-actions pull-right">
-						<button type="submit" class="btn " id="ricerca">
-							Ricerca &nbsp;<i class="icon-search"></i>
-						</button>
-						<button type="button" class="btn " id="annulla">
-							Pulisci &nbsp;<i class="icon-eraser"></i>
-						</button>
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<div class="form-actions pull-right">
+							<button type="submit" class="btn " id="ricerca">
+								Ricerca &nbsp;<i class="icon-search"></i>
+							</button>
+							<button type="button" class="btn " id="annulla">
+								Pulisci &nbsp;<i class="icon-eraser"></i>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</springform:form>
 </div>
 <div class="container" id="risultatiRicerca">
 	<div class="row">
@@ -345,8 +320,8 @@
 						<td>66</td>
 						<td>D.I.</td>
 						<td class="titoloOggetto"><span>Definizione delle
-								modalità per i pagamento in via telematica dell’imposta di bollo
-								dovuta per istanze e atti e provvedimenti anche attraverso
+								modalità per i pagamento in via telematica dell’imposta di
+								bollo dovuta per istanze e atti e provvedimenti anche attraverso
 								utilizzo di carte di credito</span></td>
 						<td>Adottato</td>
 						<td>Dip.to tesoro</td>
