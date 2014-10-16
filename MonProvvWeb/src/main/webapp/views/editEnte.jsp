@@ -18,60 +18,68 @@
 		<div class="span12">
 			<springform:form action="/private/admin/enti/edit" method="post" commandName="organoToEdit" cssClass="form-horizontal">
 
-				<h3 class="text-left underline">
-					<span>Dettaglio Ente</span>
-				</h3>
-				
 				<springform:hidden path="id"/>
 				<springform:hidden path="versione"/>
 				
-				<div class="control-group">
-					<label class="control-label" for="denominazione">${denominazioneHeader}</label>
-					<div class="controls">
-					
-					>>>>${unitaOrgAstage}<<<<
-						<c:if test="${not empty unitaOrgAstage}">
-							<springform:input path="denominazione" cssClass="input-large" readonly="true"/>
-						</c:if>
-						
-						<c:if test="${empty unitaOrgAstage}">
-							<springform:input path="denominazione" cssClass="input-large"/>
-						</c:if>
-					
-					</div>
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label" for="denominazioneEstesa">${denominazioneEstesaHeader}</label>
-					<div class="controls">
-						<c:choose>
-							<c:when test="tipo = 'Interno'">
-								<springform:textarea path="denominazioneEstesa" id="denominazioneEstesa" cssClass="input-xlarge" cols="30" rows="4" readonly="true"/>
-							</c:when>
-							<c:otherwise>
-								<springform:textarea path="denominazioneEstesa" id="denominazioneEstesa" cssClass="input-xlarge" cols="30" rows="4"/>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</div>
-				
-				<div class="control-group">
-					<label class="control-label" for="flagConcertante">${enteConcertanteHeader}</label>
-					<div class="controls">
-						<springform:radiobuttons path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/>
-					</div>
-				</div>
+				<h3 class="text-left underline">
+					<span>Modifica Ente</span>
+				</h3>
 
-				<div class="control-group">
-					<span class="control-label">${enteTipoHeader}</span>
-					<div class="controls">
-						<span>${organoToEdit.tipo}</span>
+				<div class="row">
+					<div class="span10 offset2 dettaglio">
+						<div class="control-group">
+							<span class="control-label">Id</span>
+							<div class="controls">
+								<span>${organoToEdit.id}</span>
+							</div>
+						</div>	
+						<div class="control-group">
+							<label class="control-label" for="denominazione">${denominazioneHeader}</label>
+							<div class="controls">
+								<span>
+									<c:if test="${not empty organoToEdit.unitaOrgAstage}">
+										<springform:input path="denominazione" cssClass="input-xlarge" readonly="true"/>
+									</c:if>
+									
+									<c:if test="${empty organoToEdit.unitaOrgAstage}">
+										<springform:input path="denominazione" cssClass="input-xlarge"/>
+									</c:if>
+								</span>
+							</div>
+						</div>	
+						
+						<div class="control-group">
+							<label class="control-label" for="denominazioneEstesa">${denominazioneEstesaHeader}</label>
+							<div class="controls">
+								<span>
+									<c:if test="${not empty organoToEdit.unitaOrgAstage}">
+										<springform:textarea path="denominazioneEstesa" id="denominazioneEstesa" cssClass="input-xlarge" cols="30" rows="4" readonly="true"/>
+									</c:if>
+									
+									<c:if test="${empty organoToEdit.unitaOrgAstage}">
+										<springform:textarea path="denominazioneEstesa" id="denominazioneEstesa" cssClass="input-xlarge" cols="30" rows="4"/>
+									</c:if>
+								</span>
+							</div>
+						</div>
+				
+						<div class="control-group">
+							<label class="control-label" for="flagConcertante">${enteConcertanteHeader}</label>
+							<div class="controls">
+								<span><springform:radiobuttons path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<span class="control-label">${enteTipoHeader}</span>
+							<div class="controls">
+								<span>${organoToEdit.tipo}</span>
+							</div>
+						</div>
+
+				
 					</div>
 				</div>
-				
-				
-				
-				
 
 			</springform:form>
 		</div>
