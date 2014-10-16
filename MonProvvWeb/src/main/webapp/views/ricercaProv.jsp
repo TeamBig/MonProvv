@@ -1,9 +1,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
+
+<spring:message var="idHeader" code="listaProvvedimenti.header.id" />
+<spring:message var="governoHeader" code="listaProvvedimenti.header.governo" />
+<spring:message var="tipologiaHeader" code="listaProvvedimenti.header.tipologia" />
+<spring:message var="fonteNormativaHeader" code="listaProvvedimenti.header.fonteNormativa" />
+<spring:message var="artHeader" code="listaProvvedimenti.header.art" />
+<spring:message var="commaHeader" code="listaProvvedimenti.header.comma" />
+<spring:message var="provvDaAdottareHeader" code="listaProvvedimenti.header.provvDaAdottare" />
+<spring:message var="titoloOggettoHeader" code="listaProvvedimenti.header.titoloOggetto" />
+<spring:message var="statoDiAttuazioneHeader" code="listaProvvedimenti.header.statoDiAttuazione" />
+<spring:message var="capofilaHeader" code="listaProvvedimenti.header.capofila" />
+<spring:message var="proponenteHeader" code="listaProvvedimenti.header.proponente" />
+<spring:message var="assegnazioneHeader" code="listaProvvedimenti.header.assegnazione" />
+<spring:message var="allegatiHeader" code="listaProvvedimenti.header.allegati" />
 
 <div class="container collapse" id="campiRicerca">
-	<springform:form modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" action="${action_url}">
+	<springform:form modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" action="#" method="POST">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline">
@@ -17,14 +34,17 @@
 					<div class="control-group">
 						<springform:label path="tipoGoverno" cssClass="control-label" for="governo"><spring:message code="label.tipoGoverno"/></springform:label>
 						<div class="controls">
-							<springform:select path="tipoGoverno" items="${listaGoverno}" id="governo" cssClass="input-xlarge" itemValue="id" itemLabel="denominazione" />
+							<springform:select path="tipoGoverno" id="governo" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaGoverno}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label" for="art">Art.</label>
 						<div class="controls">
-							<input type="text" id="art" class="input-small">
+							<springform:input path="art" cssClass="input-small"/>
 						</div>
 					</div>
 
@@ -32,7 +52,7 @@
 						<label class="control-label" for="titoloOggetto">Titolo /
 							Oggetto</label>
 						<div class="controls">
-							<input type="text" id="titoloOggetto" class="input-xlarge">
+							<springform:input path="titoloOggetto" cssClass="input-xlarge"/>
 						</div>
 					</div>
 
@@ -55,19 +75,25 @@
 					<div class="control-group">
 						<springform:label path="tipologia" cssClass="control-label" for="tipologia"><spring:message code="label.tipologia"/></springform:label>
 						<div class="controls">
-							<springform:select path="tipologia" items="${listaTipologia}" id="tipologia" cssClass="input-xlarge" itemValue="codice" itemLabel="descrizione" />
+							<springform:select path="tipologia" id="tipologia" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaTipologia}" itemValue="codice" itemLabel="descrizione" />
+							</springform:select>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="comma">Comma</label>
 						<div class="controls">
-							<input type="text" id="comma" class="input-small">
+							<springform:input path="comma" cssClass="input-small"/>
 						</div>
 					</div>
 					<div class="control-group">
 						<springform:label path="statoDiAttuazione" cssClass="control-label" for="statoDiAttuazione"><spring:message code="label.statoAttuazione"/></springform:label>
 						<div class="controls">
-							<springform:select path="statoDiAttuazione" items="${listaStatoDiAttuazione}" id="statoDiAttuazione" cssClass="input-xlarge" itemValue="codice" itemLabel="descrizione" />
+							<springform:select path="statoDiAttuazione"  id="statoDiAttuazione" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaStatoDiAttuazione}" itemValue="codice" itemLabel="descrizione" />
+							</springform:select>
 						</div>
 					</div>
 				</div>
@@ -84,9 +110,8 @@
 							<label for="dp1v">Da&nbsp;</label> <input type="text" id="dp1v"
 								class="input-small" maxlength="10" placeholder="GG/MM/AAAAA">&nbsp;
 							<i class="icon-calendar icon-large" id="dp1"></i> <label
-								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> <input type="text"
-								id="dp2v" class="input-small" maxlength="10"
-								placeholder="GG/MM/AAAAA">&nbsp;<i
+								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> 
+								<springform:input path="dtTermineScadenzaA" id="dp2v" cssClass="input-small" placeholder="GG/MM/AAAAA"/>&nbsp;<i
 								class="icon-calendar icon-large" id="dp2"></i>
 						</div>
 					</div>
@@ -94,7 +119,7 @@
 						<label class="control-label" for="inputFonte">Fonte
 							normativa</label>
 						<div class="controls">
-							<input type="text" id="inputFonte" class="input-xlarge">
+							<springform:input path="fonteNormativa" cssClass="input-xlarge"/>
 						</div>
 					</div>
 
@@ -106,7 +131,10 @@
 					<div class="control-group">
 						<springform:label path="tipoProvvDaAdottare" cssClass="control-label" for="tipoProvvDaAdottare"><spring:message code="label.provvDaAdottare"/></springform:label>
 						<div class="controls">
-							<springform:select path="tipoProvvDaAdottare" items="${listaTipoProvvDaAdottare}" id="tipoProvvDaAdottare" cssClass="input-xlarge" itemValue="id" itemLabel="descrizione" />
+							<springform:select path="tipoProvvDaAdottare" id="tipoProvvDaAdottare" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaTipoProvvDaAdottare}" itemValue="id" itemLabel="descrizione" />
+							</springform:select>
 						</div>
 					</div>
 
@@ -135,7 +163,7 @@
 				<div class="form-horizontal">
 					<div class="control-group">
 						<div class="form-actions pull-right">
-							<button type="submit" class="btn " id="ricerca">
+							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
 							<button type="button" class="btn " id="annulla">
@@ -166,206 +194,38 @@
 	</div>
 	<div class="row">
 		<div class="span12">
-			<table class="table table-hover table-bordered">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Governo</th>
-						<th>Tipologia</th>
-						<th>Fonte nominativa</th>
-						<th>Art.</th>
-						<th>Comma</th>
-						<th>Provv. da adottare</th>
-						<th>Titolo / Oggetto</th>
-						<th>Stato di attuazione</th>
-						<th>Capofila</th>
-						<th>Proponente</th>
-						<th>Assegnazione</th>
-						<th>Allegati</th>
-						<!-- 
-							<th>
-								Elimina 
-							</th>
-							 -->
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="color-capofila">
-						<td><a href="#">1</a></td>
-						<td>Letta</td>
-						<td>Concertante MEF</td>
-						<td>D.L. 145/2013 conv. Legge 9/2014</td>
-						<td>2</td>
-						<td>1 lett. h)</td>
-						<td>D.I.</td>
-						<td class="titoloOggetto"><span>Definizione criteri e
-								modalità di concessione aevolazioni in favore della nuova
-								imprenditorialità nei settori dei beni e dell'erogazione dei
-								servizi</span></td>
-						<td>Inserito</td>
-						<td>Agenzia Dogane e Monopoli</td>
-						<td>Min.affari europei</td>
-						<td class="nowrap">Agenzia Entrate e Territorio&nbsp;&nbsp; <i
-							class="icon-check " title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip " title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br>
-							RGS&nbsp;&nbsp; <i class="icon-remove-sign "
-							title="Assegnazione rifiutata"></i><br> Dipartimento finanze
-							(DLTFF)&nbsp;&nbsp; <i class="icon-check "
-							title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip " title="Allegati inseriti"></i>
-						</td>
-						<td class="center"><i class="icon-paper-clip icon-large gray"
-							title="Allegati al provvedimento presenti"></i></td>
-						<!-- 
-							<td class="center">
-								<i class="icon-trash icon-large gray"></i>
-							</td>
-							 -->
-					</tr>
-					<tr class="color-assegnatario">
-						<td><a href="#">2</a></td>
-						<td>Monti</td>
-						<td>Proponente MEF</td>
-						<td>L. 147/2013</td>
-						<td>1</td>
-						<td>264</td>
-						<td>D.I.</td>
-						<td class="titoloOggetto"><span>Determinazione
-								dell'indennità onnicomprensiva spettante al personale delle
-								Forze armate impiegato ai ses</span></td>
-						<td>Inserito</td>
-						<td>Dip.to Tesoro</td>
-						<td></td>
-						<td class="nowrap">Agenzia Dogane e Monopoli&nbsp;&nbsp; <i
-							class="icon-check" title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br>
-							RGS&nbsp;&nbsp; <i class="icon-remove-sign "
-							title="Assegnazione rifiutata"></i><br>
-						</td>
-						<td class="center"><i class="icon-paper-clip icon-large gray"
-							title="Allegati al provvedimento presenti"></i></td>
-						<!-- 
-							<td class="center">
-								<i class="icon-trash icon-large gray"></i>
-							</td>
-							 -->
-					</tr>
-					<tr>
-						<td><a href="#">3</a></td>
-						<td>Monti</td>
-						<td>Proponente MEF</td>
-						<td>L. 147/2013</td>
-						<td>1</td>
-						<td>269</td>
-						<td>D.I.</td>
-						<td class="titoloOggetto"><span>Determinazione annuale
-								della percentuale (comunque non inferiore al 20%) di cui
-								all’art. 188-bis del TUIR (riduzione forfettaria cambio euro
-								franco svizzero ai fini dell’IRPEF persone fisiche Campione
-								d’Italia).</span></td>
-						<td>Inserito</td>
-						<td>Dip.to Tesoro</td>
-						<td></td>
-						<td class="nowrap">Agenzia Territorio&nbsp;&nbsp; <i
-							class="icon-check" title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br>
-							RGS&nbsp;&nbsp; <i class="icon-remove-sign"
-							title="Assegnazione rifiutata"></i><br>
-						</td>
-						<td class="center"><i class="icon-paper-clip icon-large gray"
-							title="Allegati al provvedimento presenti"></i></td>
-						<!-- 
-							<td class="center">
-								<i class="icon-trash icon-large gray"></i>
-							</td>
-							 -->
-					</tr>
-					<tr>
-						<td><a href="#">4</a></td>
-						<td>Letta</td>
-						<td>Proponente MEF</td>
-						<td>L. 171/2013</td>
-						<td>1</td>
-						<td>8</td>
-						<td>D.I.</td>
-						<td class="titoloOggetto"><span>Ridefinizione delle
-								percentuali di fruizione dei crediti di imposta rideterminati ai
-								sensi del co. 577, nel caso in cui il monitoraggio dei crediti
-								di imposta indichi che sia in procinto di verificarsi uno
-								“splafonamento”.</span></td>
-						<td>Adottato</td>
-						<td>RGS</td>
-						<td></td>
-						<td class="nowrap">Dip.to tesoro&nbsp;&nbsp; <i
-							class="icon-check" title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br> Agenzia
-							Entrate&nbsp;&nbsp; <i class="icon-check"
-							title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br>
-						</td>
-						<td class="center"><i class="icon-paper-clip icon-large gray"
-							title="Allegati al provvedimento presenti"></i></td>
-					</tr>
-					<tr>
-						<td><a href="#">5</a></td>
-						<td>Letta</td>
-						<td>Proponente MEF</td>
-						<td>L. 45/2013</td>
-						<td>2</td>
-						<td>66</td>
-						<td>D.I.</td>
-						<td class="titoloOggetto"><span>Definizione delle
-								modalità per i pagamento in via telematica dell’imposta di
-								bollo dovuta per istanze e atti e provvedimenti anche attraverso
-								utilizzo di carte di credito</span></td>
-						<td>Adottato</td>
-						<td>Dip.to tesoro</td>
-						<td></td>
-						<td class="nowrap">Dip.to finanze&nbsp;&nbsp; <i
-							class="icon-check" title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br>
-							RGS&nbsp;&nbsp; <i class="icon-check"
-							title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br> Agenzia
-							Entrate e Territorio&nbsp;&nbsp; <i class="icon-remove-sign"
-							title="Assegnazione rifiutata"></i><br>
-						</td>
-						<td class="center"><i class="icon-paper-clip icon-large gray"
-							title="Allegati al provvedimento presenti"></i></td>
-					</tr>
-					<tr>
-						<td><a href="#">6</a></td>
-						<td>Letta</td>
-						<td>Proponente MEF</td>
-						<td>L. 5/2012</td>
-						<td>3</td>
-						<td>78</td>
-						<td>D.I.</td>
-						<td class="titoloOggetto"><span>Eventuale definizione
-								di ulteriori criteri per garantire la tracciabilità delle
-								erogazioni liberali in danaro a favore dei partiti politici.</span></td>
-						<td>Sospeso</td>
-						<td>RGS</td>
-						<td></td>
-						<td class="nowrap">Dip.to finanze&nbsp;&nbsp; <i
-							class="icon-remove-sign" title="Assegnazione rifiutata"></i><br>
-							Agenzia Entrate e Territorio&nbsp;&nbsp; <i class="icon-check"
-							title="Assegnazione presa in carico"></i>&nbsp;<i
-							class="icon-paper-clip" title="Allegati inseriti"></i>&nbsp;<i
-							class="icon-file-alt" title="Nota inserita"></i><br>
-						</td>
-						<td class="center"><i class="icon-paper-clip icon-large gray"
-							title="Allegati al provvedimento presenti"></i></td>
-					</tr>
-				</tbody>
-			</table>
+		
+			<c:if test="${tableProvvedimentiSize gt 0}">
+				<div class="row">
+					<div class="span12">
+						
+						<display:table 	name="${listaProvvedimenti}" 
+										pagesize="${risultatiPerPagina}" 
+										requestURI="" sort="external" partialList="true"
+										size="${tableProvvedimentiSize}" id="provvedimento" 
+										class="table table-hover table-bordered"
+										summary="Elenco Provvedimenti">
+
+							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${governoHeader}" property="governo.denominazione" headerScope="col" />
+							<display:column title="${tipologiaHeader}" property="tipoProvvedimento.descrizione" headerScope="col" />
+							<display:column title="${fonteNormativaHeader}" property="fonteNormativa" headerScope="col" />
+							<display:column title="${artHeader}" property="articolo" headerScope="col" />
+							<display:column title="${commaHeader}" property="comma" headerScope="col" />
+							<display:column title="${provvDaAdottareHeader}" property="tipoProvvDaAdottare.descrizione" headerScope="col" />
+							<display:column title="${titoloOggettoHeader}" property="oggetto" headerScope="col" />
+							<display:column title="${statoDiAttuazioneHeader}" property="stato.descrizione" headerScope="col" />
+							<display:column title="${capofilaHeader}" property="organoCapofila.denominazione" headerScope="col" />
+							<display:column title="${proponenteHeader}" property="organoConcertante.denominazione" headerScope="col" />
+							<display:column title="${assegnazioneHeader}" property="organoConcertante.denominazione" headerScope="col" />
+							<display:column title="${allegatiHeader}" property="organoConcertante.denominazione" headerScope="col" />
+
+						</display:table>
+						
+					</div>
+				</div>
+			
+			</c:if>
 		</div>
 		<div class="span12">
 			<button type="submit" class="btn pull-right" id="esportaXLS"
@@ -376,20 +236,20 @@
 			<ul class="unstyled">
 				<li><span class="icon-stack"> <i
 						class="icon-sign-blank icon-stack-base color-capofila"></i>
-				</span> <span> Provvedimenti inseriti o di cui si è capofila </span></li>
+				</span> <span> Provvedimenti inseriti o di cui si e' capofila </span></li>
 				<li><span class="icon-stack"> <i
 						class="icon-sign-blank icon-stack-base color-assegnatario"></i>
 				</span> <span> Provvedimenti assegnati </span></li>
 			</ul>
 
 
-			<div class="pagination pagination-centered">
+			<!-- <div class="pagination pagination-centered">
 				<ul>
 					<li><a class="disabled" href="#">&#171;</a></li>
 					<li><a class="active" href="#">1</a></li>
 					<li><a class="disabled" href="#">&#187;</a></li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
