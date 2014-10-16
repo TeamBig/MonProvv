@@ -4,6 +4,7 @@ package it.tesoro.monprovv.facade;
 
 import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.Utente;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,11 @@ public class GestioneEntiFacade {
 	private OrganoDAO organoDAO;
 	
 	public Organo recuperaOrganoById(Integer id) {
-		return organoDAO.findById(id);
+		Organo organo = null;
+		if(id!=null){
+			organo = organoDAO.findById(id);
+		}
+		return organo;
 	}
 	
 	public List<Organo> recuperaAllOrgano() {

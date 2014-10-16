@@ -99,7 +99,7 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	private Organo organoConcertante;
 	
 	
-	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
+	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.LAZY, mappedBy="provvedimento")
 	private List<ProvvedimentiParent> provvedimentiParent;
 	
 	

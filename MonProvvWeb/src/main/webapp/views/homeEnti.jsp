@@ -5,14 +5,14 @@
 
 <spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
 
-
 <spring:message var="idHeader" code="listaOrgani.header.id" />
 <spring:message var="denominazioneHeader" code="listaOrgani.header.denominazione" />
 <spring:message var="denominazioneEstesaHeader" code="listaOrgani.header.denominazione.estesa" />
 <spring:message var="enteConcertanteHeader" code="listaOrgani.header.ente.concertante" />
+<spring:message var="enteTipoHeader" code="listaOrgani.header.ente.tipo" />
 
 
-<div class="container" id="risultatiRicerca">
+<div class="container" id="risultatiRicercaEnte">
 	<div class="row">
 		<div class="span12">
 
@@ -33,7 +33,8 @@
 						
 						<display:table 	name="${listaOrgani}" 
 										pagesize="${risultatiPerPagina}" 
-										requestURI="" sort="external" partialList="true"
+										requestURI="" sort="external" partialList="true" 
+										uid="tableEntiUID"
 										size="${tableOrganiRisultatiSize}" id="organo" 
 										class="table table-hover table-bordered"
 										summary="Elenco Enti">
@@ -42,6 +43,8 @@
 							<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
 							<display:column title="${denominazioneEstesaHeader}" property="denominazioneEstesa" headerScope="col" />
 							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
+							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
+							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" />
 							
 						</display:table>
 						

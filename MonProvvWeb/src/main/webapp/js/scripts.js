@@ -129,6 +129,13 @@ $(document).ready(function() {
     	
     });
     
+    $('#risultatiRicercaEnte .table > tbody > tr').click(function() {
+    	var customerId = $(this).find("td:first").html();  
+    	var currentUrl = $(location).attr('href'); 
+    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+    	
+    });
+    
     
 
 //    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {

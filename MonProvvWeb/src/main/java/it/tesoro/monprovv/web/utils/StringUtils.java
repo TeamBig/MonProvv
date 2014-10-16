@@ -3,11 +3,11 @@ package it.tesoro.monprovv.web.utils;
 public class StringUtils {
 
 	public static boolean isEmpty(Object obj) {
-		boolean result = true;
+		boolean result = false;
 		if (obj != null) {
 			result = ((String) obj).trim().equals("");
 		} else {
-			result = false;
+			result = true;
 		}
 		return result;
 	}
