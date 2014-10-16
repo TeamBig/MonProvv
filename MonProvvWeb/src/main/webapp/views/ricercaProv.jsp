@@ -20,7 +20,7 @@
 <spring:message var="allegatiHeader" code="listaProvvedimenti.header.allegati" />
 
 <div class="container collapse" id="campiRicerca">
-	<springform:form modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" action="${action_url}">
+	<springform:form modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" action="#" method="POST">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline">
@@ -34,14 +34,17 @@
 					<div class="control-group">
 						<springform:label path="tipoGoverno" cssClass="control-label" for="governo"><spring:message code="label.tipoGoverno"/></springform:label>
 						<div class="controls">
-							<springform:select path="tipoGoverno" items="${listaGoverno}" id="governo" cssClass="input-xlarge" itemValue="id" itemLabel="denominazione" />
+							<springform:select path="tipoGoverno" id="governo" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaGoverno}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label" for="art">Art.</label>
 						<div class="controls">
-							<input type="text" id="art" class="input-small">
+							<springform:input path="art" cssClass="input-small"/>
 						</div>
 					</div>
 
@@ -49,7 +52,7 @@
 						<label class="control-label" for="titoloOggetto">Titolo /
 							Oggetto</label>
 						<div class="controls">
-							<input type="text" id="titoloOggetto" class="input-xlarge">
+							<springform:input path="titoloOggetto" cssClass="input-xlarge"/>
 						</div>
 					</div>
 
@@ -72,19 +75,25 @@
 					<div class="control-group">
 						<springform:label path="tipologia" cssClass="control-label" for="tipologia"><spring:message code="label.tipologia"/></springform:label>
 						<div class="controls">
-							<springform:select path="tipologia" items="${listaTipologia}" id="tipologia" cssClass="input-xlarge" itemValue="codice" itemLabel="descrizione" />
+							<springform:select path="tipologia" id="tipologia" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaTipologia}" itemValue="codice" itemLabel="descrizione" />
+							</springform:select>
 						</div>
 					</div>
 					<div class="control-group">
 						<label class="control-label" for="comma">Comma</label>
 						<div class="controls">
-							<input type="text" id="comma" class="input-small">
+							<springform:input path="comma" cssClass="input-small"/>
 						</div>
 					</div>
 					<div class="control-group">
 						<springform:label path="statoDiAttuazione" cssClass="control-label" for="statoDiAttuazione"><spring:message code="label.statoAttuazione"/></springform:label>
 						<div class="controls">
-							<springform:select path="statoDiAttuazione" items="${listaStatoDiAttuazione}" id="statoDiAttuazione" cssClass="input-xlarge" itemValue="codice" itemLabel="descrizione" />
+							<springform:select path="statoDiAttuazione"  id="statoDiAttuazione" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaStatoDiAttuazione}" itemValue="codice" itemLabel="descrizione" />
+							</springform:select>
 						</div>
 					</div>
 				</div>
@@ -101,9 +110,8 @@
 							<label for="dp1v">Da&nbsp;</label> <input type="text" id="dp1v"
 								class="input-small" maxlength="10" placeholder="GG/MM/AAAAA">&nbsp;
 							<i class="icon-calendar icon-large" id="dp1"></i> <label
-								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> <input type="text"
-								id="dp2v" class="input-small" maxlength="10"
-								placeholder="GG/MM/AAAAA">&nbsp;<i
+								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> 
+								<springform:input path="dtTermineScadenzaA" id="dp2v" cssClass="input-small" placeholder="GG/MM/AAAAA"/>&nbsp;<i
 								class="icon-calendar icon-large" id="dp2"></i>
 						</div>
 					</div>
@@ -111,7 +119,7 @@
 						<label class="control-label" for="inputFonte">Fonte
 							normativa</label>
 						<div class="controls">
-							<input type="text" id="inputFonte" class="input-xlarge">
+							<springform:input path="fonteNormativa" cssClass="input-xlarge"/>
 						</div>
 					</div>
 
@@ -123,7 +131,10 @@
 					<div class="control-group">
 						<springform:label path="tipoProvvDaAdottare" cssClass="control-label" for="tipoProvvDaAdottare"><spring:message code="label.provvDaAdottare"/></springform:label>
 						<div class="controls">
-							<springform:select path="tipoProvvDaAdottare" items="${listaTipoProvvDaAdottare}" id="tipoProvvDaAdottare" cssClass="input-xlarge" itemValue="id" itemLabel="descrizione" />
+							<springform:select path="tipoProvvDaAdottare" id="tipoProvvDaAdottare" cssClass="input-xlarge" >
+								<springform:option value="">Tutti</springform:option>
+								<springform:options items="${listaTipoProvvDaAdottare}" itemValue="id" itemLabel="descrizione" />
+							</springform:select>
 						</div>
 					</div>
 
@@ -152,7 +163,7 @@
 				<div class="form-horizontal">
 					<div class="control-group">
 						<div class="form-actions pull-right">
-							<button type="submit" class="btn " id="ricerca">
+							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
 							<button type="button" class="btn " id="annulla">
@@ -232,13 +243,13 @@
 			</ul>
 
 
-			<div class="pagination pagination-centered">
+			<!-- <div class="pagination pagination-centered">
 				<ul>
 					<li><a class="disabled" href="#">&#171;</a></li>
 					<li><a class="active" href="#">1</a></li>
 					<li><a class="disabled" href="#">&#187;</a></li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>

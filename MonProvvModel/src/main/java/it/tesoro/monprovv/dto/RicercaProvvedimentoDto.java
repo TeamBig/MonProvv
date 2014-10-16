@@ -1,16 +1,16 @@
 package it.tesoro.monprovv.dto;
 
-import java.util.Date;
-
+import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 
+import java.util.Date;
+
 public class RicercaProvvedimentoDto {
 
-	private Stato cercaPerStato;
 	private Stato statoDiAttuazione;
-	private String tipoGoverno;
+	private Governo tipoGoverno;
 	private TipoProvvedimento tipologia;
 	private String art;
 	private String comma;
@@ -20,13 +20,6 @@ public class RicercaProvvedimentoDto {
 	private String fonteNormativa;
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
 
-	public Stato getCercaPerStato() {
-		return cercaPerStato;
-	}
-
-	public void setCercaPerStato(Stato cercaPerStato) {
-		this.cercaPerStato = cercaPerStato;
-	}
 
 	public String getArt() {
 		return art;
@@ -76,11 +69,11 @@ public class RicercaProvvedimentoDto {
 		this.fonteNormativa = fonteNormativa;
 	}
 
-	public String getTipoGoverno() {
+	public Governo getTipoGoverno() {
 		return tipoGoverno;
 	}
 
-	public void setTipoGoverno(String tipoGoverno) {
+	public void setTipoGoverno(Governo tipoGoverno) {
 		this.tipoGoverno = tipoGoverno;
 	}
 

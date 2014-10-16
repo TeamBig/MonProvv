@@ -1,14 +1,20 @@
 package it.tesoro.monprovv.web.utils;
 
+import java.util.Collection;
+
 public class StringUtils {
 
 	public static boolean isEmpty(Object obj) {
-		boolean result = true;
-		if (obj != null) {
-			result = ((String) obj).trim().equals("");
-		} else {
-			result = false;
+		boolean result = obj == null;
+
+		if (!result) {
+			if (obj instanceof String) {
+				result = ((String) obj).length() == 0;
+			} else if (obj instanceof Collection<?>) {
+				result = ((Collection<?>) obj).isEmpty();
+			}
 		}
+
 		return result;
 	}
 	

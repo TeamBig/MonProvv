@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class GestioneProvvedimentoController {
@@ -30,10 +31,10 @@ public class GestioneProvvedimentoController {
 	@Autowired
 	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
 
-	@RequestMapping(value = { "/private/ricercaProv" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
-		RicercaProvvedimentoDto ricerca = new RicercaProvvedimentoDto();
-		model.addAttribute("ricercaProvvedimenti", ricerca);
+		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
+		model.addAttribute("ricercaProvvedimenti", dto);
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
 		if(ps!=null){
 			listProvvedimenti = initAllProvvedimenti(ps.getPage());
@@ -44,6 +45,39 @@ public class GestioneProvvedimentoController {
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 		return "ricercaProv";
 	}
+	
+//	@ModelAttribute("ricercaProvvedimenti")
+//	public RicercaProvvedimentoDto ricercaProvvedimentiDto(){
+//		return new RicercaProvvedimentoDto();
+//	}
+	
+	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.POST)
+	public String processRegistration(Model model, 
+			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
+			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps
+			) {
+
+		System.out.println("RICERCA");
+		model.addAttribute("tipoGoverno", provvedimento.getTipoGoverno());
+
+		return "ricercaProv";
+	}
+	//***** DETTAGLIO PROVVEDIMENTO ******//
+//	@RequestMapping(value = { "/private/provvedimentoDettaglio" } , method = RequestMethod.GET)
+//	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
+//		RicercaProvvedimentoDto ricerca = new RicercaProvvedimentoDto();
+//		model.addAttribute("ricercaProvvedimenti", ricerca);
+//		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
+//		if(ps!=null){
+//			listProvvedimenti = initAllProvvedimenti(ps.getPage());
+//		} else {
+//			listProvvedimenti = initAllProvvedimenti(1);
+//		}
+//		model.addAttribute("tableProvvedimentiSize", listProvvedimenti.size());
+//		model.addAttribute("listaProvvedimenti", listProvvedimenti);
+//		return "ricercaProv";
+//	}
+	
 
 	private List<Provvedimento> initAllProvvedimenti(Integer page) {
 		return gestioneProvvedimentoFacade.initAllProvvedimenti(page);
