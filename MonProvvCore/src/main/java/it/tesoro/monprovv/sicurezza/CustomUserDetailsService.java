@@ -47,6 +47,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Ruolo ruoloCorrente = null;
 		ArrayList<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
+		Ruolo ruoloAdmin = null;
 		for (int i = 0; i < utente.getRuoloUtenteList().size(); i++) {
 			authorities.add(new SimpleGrantedAuthority(utente.getRuoloUtenteList().get(i).getRuolo().getCodice()));
 			
@@ -54,7 +55,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 				&& (!utente.getRuoloUtenteList().get(i).getRuolo().getCodice().equals(Ruolo.ROLE_ADMIN)) ) {
 				ruoloCorrente = utente.getRuoloUtenteList().get(i).getRuolo();
 			}
+			
+			if (utente.getRuoloUtenteList().get(i).getRuolo().getCodice().equals(Ruolo.ROLE_ADMIN)) {
+				ruoloAdmin = utente.getRuoloUtenteList().get(i).getRuolo();
+			}
 		
+		}
+		
+		if ((ruoloCorrente == null) && (ruoloAdmin != null)) {
+			ruoloCorrente = ruoloAdmin;
 		}
 		
 		// creazione utente

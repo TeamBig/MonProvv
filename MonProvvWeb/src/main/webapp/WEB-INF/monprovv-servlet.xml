@@ -4,6 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
 						http://www.springframework.org/schema/context 
@@ -12,11 +13,13 @@
 						http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
 						http://www.springframework.org/schema/util 
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd
+						http://www.springframework.org/schema/security
+						http://www.springframework.org/schema/security/spring-security-3.2.xsd
        					">
 
 	<!-- CONFIGURAZIONE  -->
 	<util:properties id="config" location="classpath:/monprovv.cfg" />
-	
+
 	<!--  VIEW RESOLVER -->
 	<bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
@@ -42,7 +45,7 @@
 	</bean>
 	
 	<!-- FINE LOCALIZZAZIONE --> 
-
+	<context:annotation-config />
 	<context:component-scan base-package="it.tesoro.monprovv.web.utils" />
 	<context:component-scan base-package="it.tesoro.monprovv.web.validators" />
 	<context:component-scan base-package="it.tesoro.monprovv.web.controllers" />
@@ -97,5 +100,11 @@
 	 -->
 	<!-- FINE ESPORTAZIONE FACADE VERSO VISTE JSP -->
 	
- 	
+
+
+	<!-- SICUREZZA WEB -->
+	<security:global-method-security pre-post-annotations="enabled">
+		<security:expression-handler ref="methodExpressionHandler" />
+	</security:global-method-security>	
+   		 	
 </beans>

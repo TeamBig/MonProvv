@@ -53,6 +53,9 @@
 		<put-attribute name="titolo" value="home.title" />
 	</definition>
    
-    
+    <definition name="test" extends="template">
+		<put-attribute name="content" value="/views/test.jsp" />
+		<put-attribute name="titolo" value="home.title" />
+	</definition>
 
 </tiles-definitions>
