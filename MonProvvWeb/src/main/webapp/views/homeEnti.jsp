@@ -15,12 +15,13 @@
 <div class="container" id="risultatiRicercaEnte">
 	<div class="row">
 		<div class="span12">
-
-			<springform:form method="post">
+			
+			<c:url value="/private/admin/enti" var="formPath" />
+			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
 
 				<h3 class="text-left underline">
 					<span>Elenco Enti</span>
-					<button type="submit" class="btn btn-primary pull-right" id="nuovo">Nuovo Ente &nbsp;<i class="icon-plus"></i></button>
+					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="OK">Nuovo Ente &nbsp;<i class="icon-plus"></i></button>
 					<button class="btn pull-right" id="toggleRicerca" data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">Toggle ricerca &nbsp;<i class="icon-search"></i></button>
 				</h3>
 

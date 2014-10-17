@@ -15,28 +15,33 @@
 
 <div class="container" id="risultatiRicerca">
 
-	<c:url value="/private/admin/enti/edit" var="formPath" />
+	<c:url value="/private/admin/enti/nuovo" var="formPath" />
 
 	<springform:form action="${formPath}" method="POST" commandName="organoToEdit" cssClass="form-horizontal">
 		<div class="row">
 			<div class="span12">
-				<springform:hidden path="id"/>
+				
 				<springform:hidden path="unitaOrgAstage"/>
-				<springform:hidden path="versione"/>
+
 				
 				<h3 class="text-left underline">
-					<span>Modifica Ente</span>
+					<span>Nuovo Ente</span>
 				</h3>
-
+				
 				<div class="row">
 					<div class="span10 offset2 dettaglio">
+
 						<div class="control-group">
-							<span class="control-label">Id</span>
+							<span class="control-label">${enteTipoHeader}</span>
 							<div class="controls">
-								<span>${organoToEdit.id}</span>
+							<springform:select path="flgInternoEsterno" cssClass="input-xlarge" id="tipoNuovoOrgano">
+								<springform:option value=""></springform:option>
+								<springform:options items="${tipos}" itemLabel="descrizione" itemValue="codice" />
+							</springform:select>
 							</div>
-						</div>	
-						<div class="control-group">
+						</div>
+						
+						<div class="control-group" id="denominazioneNuovoOrganoDiv">
 							<label class="control-label" for="denominazione">${denominazioneHeader}</label>
 							<div class="controls">
 								<span>
@@ -51,7 +56,7 @@
 							</div>
 						</div>	
 						
-						<div class="control-group">
+						<div class="control-group" id="denominazioneEstesaNuovoOrganoDiv">
 							<label class="control-label" for="denominazioneEstesa">${denominazioneEstesaHeader}</label>
 							<div class="controls">
 								<span>
@@ -65,6 +70,10 @@
 								</span>
 							</div>
 						</div>
+						
+						<div class="control-group" id="listaOrganiInterniNuovoOrganoDiv">
+						INTERNI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						</div>
 				
 						<div class="control-group">
 							<label class="control-label" for="flagConcertante">${enteConcertanteHeader}</label>
@@ -73,12 +82,7 @@
 							</div>
 						</div>
 						
-						<div class="control-group">
-							<span class="control-label">${enteTipoHeader}</span>
-							<div class="controls">
-								<span>${organoToEdit.tipo}</span>
-							</div>
-						</div>
+						
 
 				
 					</div>

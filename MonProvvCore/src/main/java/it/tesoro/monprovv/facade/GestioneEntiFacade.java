@@ -34,19 +34,17 @@ public class GestioneEntiFacade {
 		return organoDAO.findAll();
 	}
 	
-	
 	public List<Organo> recuperaOrgano(int page) {
 		String[] order = new String[] { "denominazione" };
 		return organoDAO.findByPropertyNotNull("denominazione", page, Arrays.asList(order) );
 	}
 
-	public UnitaOrgAstage recuperaunitaOrgAstageByOrganizationId(Integer organizationId) {
-		List<UnitaOrgAstage> list = unitaOrgAstageDAO.findByProperty("organizationId", organizationId);
-		if(list.size()>0){
-			return list.get(0);
-		}else{
-			return null;
-		}
+	public UnitaOrgAstage recuperaunitaOrgAstageById(Integer id) {
+		return unitaOrgAstageDAO.findById(id);
+	}
+	
+	public Organo aggiornaOrgano(Organo organo){
+		return organoDAO.merge(organo);		
 	}
 	
 }

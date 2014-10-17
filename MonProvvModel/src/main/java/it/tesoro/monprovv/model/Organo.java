@@ -5,6 +5,7 @@ import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
@@ -47,13 +48,15 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	@Column(name="FLAG_CONCERTANTE", length=1)
 	private String flagConcertante;
 	
+	@Transient
+	private String flgInternoEsterno;
+	
 	public String getConcertante() {
 		return ("S".equals(flagConcertante))?"Concertante":"Non Concertante" ;
 	}
 	
-	@ManyToOne(targetEntity=UnitaOrgAstage.class)
+	@ManyToOne(targetEntity=UnitaOrgAstage.class, cascade = CascadeType.ALL)
     @JoinColumn(name="ORGANIZATION_ID", referencedColumnName="ORGANIZATION_ID")
-	@Valid
 	private UnitaOrgAstage unitaOrgAstage;
 	
 	public String getTipo(){
@@ -143,4 +146,13 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 		this.utenteList = utenteList;
 	}
 
+	public String getFlgInternoEsterno() {
+		return flgInternoEsterno;
+	}
+
+	public void setFlgInternoEsterno(String flgInternoEsterno) {
+		this.flgInternoEsterno = flgInternoEsterno;
+	}
+
+	
 }

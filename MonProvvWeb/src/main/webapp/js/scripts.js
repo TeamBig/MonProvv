@@ -122,22 +122,6 @@ $(document).ready(function() {
     	window.location.href = "modifica.html";
     });
     
-    $('#risultatiRicerca .table > tbody > tr').click(function() {
-    	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('href'); 
-    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
-    	
-    });
-    
-    $('#risultatiRicercaEnte .table > tbody > tr').click(function() {
-    	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('href'); 
-    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
-    	
-    });
-    
-    
-
 //    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
 //    	window.location.href = "dettaglio.html";
 //    });
@@ -282,5 +266,57 @@ $(document).ready(function() {
     	} else {
     		$("#proponenteDiv").hide();
     	}
+    }); 
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////7
+    
+    
+    
+    $('#risultatiRicerca .table > tbody > tr').click(function() {
+    	var customerId = $(this).find("td:first").html();  
+    	var currentUrl = $(location).attr('href'); 
+    	window.location.href = currentUrl+"/dettaglio/"+customerId;
+    	
+    });
+    
+    $('#risultatiRicercaEnte .table > tbody > tr').click(function() {
+    	var customerId = $(this).find("td:first").html();  
+    	var currentUrl = $(location).attr('href'); 
+    	window.location.href = currentUrl+"/dettaglio/"+customerId;
+    	
+    });
+    
+    
+    $("#denominazioneNuovoOrganoDiv").hide();
+    $("#denominazioneEstesaNuovoOrganoDiv").hide();
+    $("#listaOrganiInterniNuovoOrganoDiv").hide();
+    
+    $('#tipoNuovoOrgano').on('change', function () {
+    	var val = $(this).val();
+    	var option1 = "E"; //Esterna
+    	var option2 = "I"; //Interna
+    	if( val==option1){
+    		$("#denominazioneNuovoOrganoDiv").show();
+    		$("#denominazioneEstesaNuovoOrganoDiv").show();
+    		$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    	}else if( val==option1){
+			$("#denominazioneNuovoOrganoDiv").hide();
+			$("#denominazioneEstesaNuovoOrganoDiv").hide();
+			$("#listaOrganiInterniNuovoOrganoDiv").show();
+    	}else{
+    		$("#denominazioneNuovoOrganoDiv").hide();
+			$("#denominazioneEstesaNuovoOrganoDiv").hide();
+			$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    	}
+
     });  
+    
+    
+    
+    
+
+    
+    
 });

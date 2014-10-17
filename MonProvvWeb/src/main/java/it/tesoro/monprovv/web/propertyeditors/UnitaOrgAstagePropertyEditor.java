@@ -19,7 +19,7 @@ public class UnitaOrgAstagePropertyEditor extends PropertyEditorSupport {
 	public String getAsText() {
 		UnitaOrgAstage unitaOrgAstage = (UnitaOrgAstage)getValue();
 		if (unitaOrgAstage != null) {
-			return unitaOrgAstage.getOrganizationId().toString();
+			return unitaOrgAstage.getId().toString();
 		}
 		return null;
 	}
@@ -27,7 +27,7 @@ public class UnitaOrgAstagePropertyEditor extends PropertyEditorSupport {
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		if(!StringUtils.isEmpty(text)){
-			setValue(gestioneEntiFacade.recuperaunitaOrgAstageByOrganizationId(Integer.parseInt(text)));
+			setValue(gestioneEntiFacade.recuperaunitaOrgAstageById(Integer.parseInt(text)));
 		}
 	}
 
