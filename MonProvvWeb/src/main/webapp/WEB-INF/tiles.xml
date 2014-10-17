@@ -68,6 +68,11 @@
 		<put-attribute name="titolo" value="home.title.enti" />
 	</definition>
 	
+	<definition name="entiNewEnte" extends="template">
+		<put-attribute name="content" value="/views/newEnte.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
+	</definition>
+	
 	<definition name="ricercaProv" extends="template">
 		<put-attribute name="content" value="/views/ricercaProv.jsp" />
 		<put-attribute name="titolo" value="ricercaProv.title" />

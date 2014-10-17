@@ -18,17 +18,16 @@ public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Seri
 	 */
 	private static final long serialVersionUID = 8250069854147254919L;
 	
-	
 	@Id
-	@Column(name="CONTATORE",unique=true, nullable=false)
+	@Column(name = "ORGANIZATION_ID",unique=true, nullable=false)
 	private Integer id;
+
+	@Column(name="CONTATORE",unique=true, nullable=false)
+	private Integer contatore;
 	
 	@Column(name = "LIVELLO")
 	private Integer livello;
 
-	@Column(name = "ORGANIZATION_ID")
-	private Integer organizationId;
-	
 	@Column(name = "NOME", length = 60)
 	private String nome;
 
@@ -93,6 +92,32 @@ public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Seri
 	private String flagFisso;
 
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnitaOrgAstage other = (UnitaOrgAstage) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -101,20 +126,20 @@ public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Seri
 		this.id = id;
 	}
 
+	public Integer getContatore() {
+		return contatore;
+	}
+
+	public void setContatore(Integer contatore) {
+		this.contatore = contatore;
+	}
+
 	public Integer getLivello() {
 		return livello;
 	}
 
 	public void setLivello(Integer livello) {
 		this.livello = livello;
-	}
-
-	public Integer getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Integer organizationId) {
-		this.organizationId = organizationId;
 	}
 
 	public String getNome() {
@@ -284,6 +309,7 @@ public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Seri
 	public void setFlagFisso(String flagFisso) {
 		this.flagFisso = flagFisso;
 	}
+
 
 	
 }

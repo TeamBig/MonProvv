@@ -21,7 +21,9 @@
 	<div class="row">
 		<div class="span12">
 		
-			<springform:form method="post" commandName="organoToEdit" cssClass="form-horizontal">
+		<c:url value="/private/admin/enti/dettaglio" var="formPath" />
+
+		<springform:form action="${formPath}" method="post" commandName="organoToEdit" cssClass="form-horizontal">
 				
 				<springform:hidden path="id"/>
 				<springform:hidden path="denominazione"/>
@@ -114,8 +116,8 @@
 
 				<div class="control-group">
 					<div class="pull-right">
-						<button type="submit" class="btn" id="indietro" name="buttonBack" value="OK">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
 						<button type="submit" class="btn" id="modifica" name="buttonModify" value="OK">Modifica &nbsp;<i class="icon-edit"></i></button>
+						<button type="submit" class="btn" id="indietro" name="buttonBack" value="OK">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
 					</div>
 				</div>
 			</springform:form>
