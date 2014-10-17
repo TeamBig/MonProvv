@@ -1,65 +1,93 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
+
+<spring:message var="idHeader" code="listaProvvedimenti.header.id" />
+<spring:message var="governoHeader" code="listaProvvedimenti.header.governo" />
+<spring:message var="tipologiaHeader" code="listaProvvedimenti.header.tipologia" />
+<spring:message var="fonteNormativaHeader" code="listaProvvedimenti.header.fonteNormativa" />
+<spring:message var="artHeader" code="listaProvvedimenti.header.art" />
+<spring:message var="commaHeader" code="listaProvvedimenti.header.comma" />
+<spring:message var="provvDaAdottareHeader" code="listaProvvedimenti.header.provvDaAdottare" />
+<spring:message var="titoloOggettoHeader" code="listaProvvedimenti.header.titoloOggetto" />
+
+<spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
+<spring:message var="parereHeader" code="label.termineDiScadenza" />
+
+<spring:message var="statoDiAttuazioneHeader" code="listaProvvedimenti.header.statoDiAttuazione" />
+<spring:message var="capofilaHeader" code="listaProvvedimenti.header.capofila" />
+<spring:message var="proponenteHeader" code="listaProvvedimenti.header.proponente" />
+<spring:message var="assegnazioneHeader" code="listaProvvedimenti.header.assegnazione" />
+<spring:message var="allegatiHeader" code="listaProvvedimenti.header.allegati" />
+
+<spring:message var="descrizioneHeader" code="listaAllegati.header.descrizione" />
+<spring:message var="dimensioneHeader" code="listaAllegati.header.dimensione" />
+
+
+
+
 	<div class="container inserimento">
 		<div class="row">
 			<div class="span12">
 				<h3 class="text-left underline"><span>Dettaglio Provvedimento</span></h3>
 			</div>
 		</div>
-		<form class="form-horizontal">
+		<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
-							<label class="control-label">Governo</label>
+							<span class="control-label">${governoHeader}</span>
 							<div class="controls">
-								<span>Letta</span>
+								<span>${provvedimentoDettaglio.governo.denominazione}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label">Tipologia</label>
+							<span class="control-label">${tipologiaHeader}</span>
 							<div class="controls">
-								<span>Concertante MEF</span>
+								<span>${provvedimentoDettaglio.tipoProvvedimento.descrizione}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label">Fonte
-								normativa</label>
+							<span class="control-label">${fonteNormativaHeader}</span>
 							<div class="controls">
-								<span>D.L. 145/2013 conv. Legge 9/2014</span>
+								<span>${provvedimentoDettaglio.fonteNormativa}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="art">Art.</label>
+							<span class="control-label" >${artHeader}</span>
 							<div class="controls">
-								<span>2</span>
+								<span>${provvedimentoDettaglio.articolo}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="comma">Comma</label>
+							<span class="control-label">${commaHeader}</span>
 							<div class="controls">
-								<span>1 lett. h)</span>
+								<span>${provvedimentoDettaglio.comma}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="provvDaAdottare">Provvedimento da adottare</label>
+							<span class="control-label">${provvDaAdottareHeader}</span>
 							<div class="controls">
-								<span>D.I.</span>
+								<span>${provvedimentoDettaglio.tipoProvvDaAdottare.descrizione}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="titoloOggetto">Titolo /
-								Oggetto</label>
+							<span class="control-label">${titoloOggettoHeader}</span>
 							<div class="controls">
-								<span>Definizione criteri e modalità di concessione aevolazioni in favore della nuova imprenditorialità nei settori dei beni e dell'erogazione dei servizi</span>
+								<span>${provvedimentoDettaglio.oggetto}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="titoloOggetto">Termine di scadenza</label>
+							<span class="control-label">${termineDiScadenzaHeader}</span>
 							<div class="controls">
-								<span>21/01/2014</span>
+								<span>${provvedimentoDettaglio.termineScadenza}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="statoDiAttuazioneDettaglio">Stato
-								di attuazione</label>
+							<label class="control-label" for="statoDiAttuazioneDettaglio">${statoDiAttuazioneHeader}</label>
 							<div class="controls">
 								<select id="statoDiAttuazioneDettaglio" class="input-xlarge">
 									<option>Inserito</option>
@@ -73,54 +101,54 @@
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="enteCapofila">Capofila (DD)</label>
+							<label class="control-label" for="enteCapofila">${capofilaHeader}</label>
 							<div class="controls">
-								<span>Agenzia Dogane e Monopoli</span>
+								<span>${provvedimentoDettaglio.organoCapofila.denominazione}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="proponente">Proponente
-								(DD)</label>
+							<label class="control-label" for="proponente">${proponenteHeader}</label>
 							<div class="controls">
-								<span>Min.affari europei</span>
+								<span>${provvedimentoDettaglio.organoConcertante.denominazione}</span>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="proponente">Parere</label>
+							<label class="control-label" for="proponente">${parereHeader}</label>
 							<div class="controls">
-								<span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</span>
+								<span>${provvedimentoDettaglio.parere}</span>
 							</div>
 						</div>
 				</div>
 			</div>
 			<!-- Allegati insert -->
-			<div class="row">
-				<div class="span12">
-					<h3 class="text-left underline">
-						<span>Allegati</span>
-					</h3>
+			<c:if test="${tableAllegatiSize gt 0}">
+				<div class="row">
+					<div class="span12">
+						<h3 class="text-left underline">
+							<span>Allegati</span>
+						</h3>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="span12">	
-					<table class="table table-hover table-bordered" style="width: 100%">
-						<thead>
-							<tr>
-								<th>Id</th>
-								<th>Descrizione</th>
-								<th>Dimensione</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td class="vcenter"><a href="" class="download">Documento 1</a></td>
-								<td>200 kb</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="row">
+					<div class="span12">	
+						<display:table 	name="${listaAllegati}" 
+											requestURI="" sort="external" partialList="false"
+											 id="allegato" 
+											class="table table-hover table-bordered"
+											summary="Elenco Allegati" style="width: 100%">
+	
+								<display:column title="${idHeader}" property="id" headerScope="col" />
+								<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
+									<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+									<a href="${urlDownload}" class="download">${allegato.nomefile}</a>
+								</display:column>
+								<display:column title="${dimensioneHeader}" headerScope="col">
+									<c:out value="${allegato.dimensione} Kb"></c:out>
+								</display:column>
+						</display:table>
+					</div>
 				</div>
-			</div>
+			</c:if>
 			<!-- allegati end -->
 			<div class="row">
 				<div class="span12">
@@ -244,20 +272,20 @@
 					</div>
 				</div>
 			</div>
-		</form>
-		<div class="row">
-			<div class="span12">
-				<div class="form-horizontal">
-					<div class="control-group">
-						<div class="form-actions pull-right">
-							<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
-							<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
-							<button type="submit" class="btn" id="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+			<div class="row">
+				<div class="span12">
+					<div class="form-horizontal">
+						<div class="control-group">
+							<div class="form-actions pull-right">
+								<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
+								<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								<button type="submit" class="btn" id="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</springform:form>
 	</div>
 	
 	

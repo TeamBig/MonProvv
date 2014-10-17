@@ -1,6 +1,5 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
-import freemarker.template.utility.StringUtil;
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.web.utils.StringUtils;

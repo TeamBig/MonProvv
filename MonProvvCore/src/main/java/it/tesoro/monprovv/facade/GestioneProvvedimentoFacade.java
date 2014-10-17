@@ -1,11 +1,13 @@
 package it.tesoro.monprovv.facade;
 
+import it.tesoro.monprovv.dao.AllegatoDAO;
 import it.tesoro.monprovv.dao.GovernoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
@@ -35,13 +37,11 @@ public class GestioneProvvedimentoFacade {
 	
 	@Autowired 
 	private TipoProvvDaAdottareDAO tipoProvvDaAdottareDAO;
+
+	@Autowired 
+	private AllegatoDAO allegatoDAO;
 	
-	public List<TipoProvvedimento> initTipoProvvedimento(){
-		List<String> orderTipoProvvedimento = new ArrayList<String>();
-		orderTipoProvvedimento.add("descrizione");
-		List<TipoProvvedimento> listaTipoProvvedimento = tipoProvvedimentoDAO.findAll(1, orderTipoProvvedimento);
-		return listaTipoProvvedimento;
-	}
+	
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
@@ -79,6 +79,16 @@ public class GestioneProvvedimentoFacade {
 		List<String> order = new ArrayList<String>();
 		List<Provvedimento> list = provvedimentoDAO.findAll(page, order);
 		return list;
+	}
+	
+	public Provvedimento ricercaProvvedimentoById(Integer id){
+		Provvedimento prov = provvedimentoDAO.findById(id);
+		return prov;
+	}
+
+	public Allegato getAllegatoById(Integer allegatoId) {
+		Allegato allegato  = allegatoDAO.findById(allegatoId);
+		return allegato;
 	}
 
 }

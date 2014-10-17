@@ -21,6 +21,8 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -102,6 +104,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.LAZY, mappedBy="provvedimento")
 	private List<ProvvedimentiParent> provvedimentiParent;
 	
+	@OneToMany(targetEntity=Allegato.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Allegato> allegatiList;
 	
 	public Integer getId() {
 		return id;
@@ -221,6 +226,15 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setGoverno(Governo governo) {
 		this.governo = governo;
+	}
+	
+
+	public List<Allegato> getAllegatiList() {
+		return allegatiList;
+	}
+
+	public void setAllegatiList(List<Allegato> allegatiList) {
+		this.allegatiList = allegatiList;
 	}
 
 	@Override

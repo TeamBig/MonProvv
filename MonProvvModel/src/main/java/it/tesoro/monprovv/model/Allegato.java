@@ -3,6 +3,7 @@ package it.tesoro.monprovv.model;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
 import java.io.Serializable;
+import java.sql.Blob;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +48,7 @@ public class Allegato extends AbstractCommonEntity implements Serializable {
 	private String nomefile;
 
 	@Column(name = "CONTENUTO")
-	private Integer contenuto;
+	private Blob contenuto;
 
 	@Column(name = "DIMENSIONE")
 	private Integer dimensione;
@@ -90,11 +91,11 @@ public class Allegato extends AbstractCommonEntity implements Serializable {
 		this.nomefile = nomefile;
 	}
 
-	public Integer getContenuto() {
+	public Blob getContenuto() {
 		return contenuto;
 	}
 
-	public void setContenuto(Integer contenuto) {
+	public void setContenuto(Blob contenuto) {
 		this.contenuto = contenuto;
 	}
 
@@ -120,6 +121,31 @@ public class Allegato extends AbstractCommonEntity implements Serializable {
 
 	public void setFlagVisibile(String flagVisibile) {
 		this.flagVisibile = flagVisibile;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Allegato other = (Allegato) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 

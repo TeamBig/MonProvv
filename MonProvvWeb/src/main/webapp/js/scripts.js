@@ -125,14 +125,14 @@ $(document).ready(function() {
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('href'); 
-    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+    	window.location.href = currentUrl+"/dettaglio/"+customerId;
     	
     });
     
     $('#risultatiRicercaEnte .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('href'); 
-    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+    	window.location.href = currentUrl+"/dettaglio/"+customerId;
     	
     });
     
