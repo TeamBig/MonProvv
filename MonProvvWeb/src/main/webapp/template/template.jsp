@@ -72,10 +72,10 @@
 	<div class="container header">
 		<div class="row">
 			<div class="span7">
-				<h1 class="titolo"><img alt="Monitoraggio Provvedimenti" src="${base}/img/mon_prov_header.png"/>​</h1>
+				<h1 class="titolo"><img alt="Monitoraggio Provvedimenti" src="${base}/img/mon_prov_header.png"/></h1>
 			</div>
 			<div class="span5" id="login">
-				<tiles:insertAttribute name="header" />		
+				<tiles:insertAttribute name="header" />
 				
 				<div class="pull-right img_logomef">
 					<img class="pull-right" src="${base}img/logo_mef.png" alt="Logo - MEF (ministero dell'Economia e delle Finanze)" />
@@ -94,13 +94,8 @@
 	
 	<tiles:insertAttribute name="alert" />
 	
-	<div class="container">
-		<div class="row">
-			<div class="span12">
-				<tiles:insertAttribute name="content" />
-			</div>
-		</div>
-	</div>
+
+	<tiles:insertAttribute name="content" />
 	
 	
 	<tiles:insertAttribute name="footer" />

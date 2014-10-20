@@ -27,10 +27,9 @@ public class GestioneUtenteFacade {
 	@Autowired
 	private ProvvedimentoDAO provvedimentoDAO;
 	
-	public void inserisciStato(Stato stato){
-		statoDAO.save(stato);
-		stato.setUtenteInserimento(null);
-		statoDAO.save(stato);
+	public void inserisci(Stato stato1, Stato stato2){
+		System.out.println(statoDAO.save(stato1));
+		System.out.println(statoDAO.save(stato2));
 	}
 
 

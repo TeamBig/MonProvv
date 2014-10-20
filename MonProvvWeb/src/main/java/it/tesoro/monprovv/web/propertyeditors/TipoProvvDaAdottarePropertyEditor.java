@@ -1,25 +1,25 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
-import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.web.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 
-public class StatoPropertyEditor extends PropertyEditorSupport {
+public class TipoProvvDaAdottarePropertyEditor extends PropertyEditorSupport {
 
 	private GestioneTipologicaFacade tipologicaFacade;
 	
-	public StatoPropertyEditor(GestioneTipologicaFacade tipologicaFacade) {
+	public TipoProvvDaAdottarePropertyEditor(GestioneTipologicaFacade tipologicaFacade) {
 		super();
 		this.tipologicaFacade = tipologicaFacade;
 	}
 
 	@Override
 	public String getAsText() {
-		Stato stato = (Stato)getValue();
-		if (stato != null) {
-			return stato.getId().toString();
+		TipoProvvDaAdottare tipoProvvDaAdottare = (TipoProvvDaAdottare)getValue();
+		if (tipoProvvDaAdottare != null) {
+			return tipoProvvDaAdottare.getId().toString();
 		}
 		return null;
 	}
@@ -27,9 +27,8 @@ public class StatoPropertyEditor extends PropertyEditorSupport {
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		if(!StringUtils.isEmpty(text)){
-			setValue(tipologicaFacade.recuperaStatoById(Integer.parseInt(text)));
+			setValue(tipologicaFacade.recuperaTipoProvvDaAdottareById(Integer.parseInt(text)));
 		}
 	}
 
-	
 }

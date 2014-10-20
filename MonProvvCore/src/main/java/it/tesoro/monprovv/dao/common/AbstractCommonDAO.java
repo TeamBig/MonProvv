@@ -7,6 +7,7 @@ import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -475,6 +476,41 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 		} catch (Exception re) {
 			log.error("find all  instances by criteria failed", re);
 			throw new DatabaseException(re);
+		}
+	}
+	
+	public List<T> findByProperty(HashMap<String,Object> parametri) {
+		try {
+			Query query;
+			String queryString = "from " + nomeOggetto + " as model";
+
+			int cont = 0;
+
+			for(Map.Entry<String,Object> entry : parametri.entrySet())
+			{
+				cont++;
+				if(cont == 1)
+				{
+					queryString += " where model." + entry.getKey() + "= :"+entry.getKey();
+				}
+				else
+				{
+					queryString += " and model." + entry.getKey() + "= :"+entry.getKey();
+				}
+				
+			}
+			query = currentSession().createQuery(queryString);
+			
+			for(Map.Entry<String,Object> entry : parametri.entrySet())
+			{
+				query.setParameter(entry.getKey(), entry.getValue());	
+			}
+			
+			return query.list();
+
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
 		}
 	}
 	
