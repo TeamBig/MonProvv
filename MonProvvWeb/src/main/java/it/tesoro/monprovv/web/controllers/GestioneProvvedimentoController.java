@@ -64,9 +64,14 @@ public class GestioneProvvedimentoController {
 			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
 			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps
 			) {
-
-		System.out.println("RICERCA");
-		model.addAttribute("tipoGoverno", provvedimento.getTipoGoverno());
+		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
+		if(ps!=null){
+			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, ps.getPage());
+		} else {
+			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, 1);
+		}
+		model.addAttribute("tableProvvedimentiSize", listProvvedimenti.size());
+		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 
 		return "ricercaProv";
 	}

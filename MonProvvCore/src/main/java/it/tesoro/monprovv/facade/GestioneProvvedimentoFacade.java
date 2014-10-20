@@ -15,10 +15,12 @@ import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component("gestioneProvvedimentoFacade")
 public class GestioneProvvedimentoFacade {
@@ -57,8 +59,34 @@ public class GestioneProvvedimentoFacade {
 		return listaGoverno;
 	}
 	
-	public void ricercaProvvedimenti(RicercaProvvedimentoDto ricercaProvvDto){
-		
+	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		if(!StringUtils.isEmpty(provvDto.getArt())){
+			params.put("articolo", provvDto.getArt());
+		}
+		if(!StringUtils.isEmpty(provvDto.getComma())){
+			params.put("comma", provvDto.getComma());
+		}
+		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto())){
+			params.put("oggetto", provvDto.getTitoloOggetto());
+		}
+		if(!StringUtils.isEmpty(provvDto.getFonteNormativa())){
+			params.put("fonteNormativa", provvDto.getFonteNormativa());
+		}
+		if(!StringUtils.isEmpty(provvDto.getTipologia())){
+			params.put("tipologia", provvDto.getTipologia());
+		}
+		if(!StringUtils.isEmpty(provvDto.getTipoGoverno())){
+			params.put("governo", provvDto.getTipoGoverno());
+		}
+		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione())){
+			params.put("stato", provvDto.getStatoDiAttuazione());
+		}
+		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare())){
+			params.put("tipoProvvDaAdottare", provvDto.getTipoProvvDaAdottare());
+		}
+		List<Provvedimento> listaProvvedimenti = provvedimentoDAO.findByProperty(params);
+		return listaProvvedimenti;
 	}
 
 	public List<TipoProvvedimento> initTipologia() {
