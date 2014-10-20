@@ -1,14 +1,20 @@
 package it.tesoro.monprovv.facade;
 
+import it.tesoro.monprovv.dao.AssegnazioneDAO;
+import it.tesoro.monprovv.dao.CondizioneDAO;
 import it.tesoro.monprovv.dao.FunzioneDAO;
 import it.tesoro.monprovv.dao.MenuDAO;
+import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.RuoloDAO;
 import it.tesoro.monprovv.dao.RuoloFunzioneDAO;
 import it.tesoro.monprovv.dao.RuoloUtenteDAO;
 import it.tesoro.monprovv.dao.UtenteAstageDAO;
 import it.tesoro.monprovv.dao.UtenteDAO;
+import it.tesoro.monprovv.model.Assegnazione;
+import it.tesoro.monprovv.model.Condizione;
 import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Menu;
+import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloFunzione;
 import it.tesoro.monprovv.model.Utente;
@@ -51,6 +57,15 @@ public class GestioneSicurezzaFacade {
 	
 	@Autowired 
 	private FunzioneDAO funzioneDAO;
+	
+	@Autowired 
+	private CondizioneDAO condizioneDAO;
+	
+	@Autowired 
+	private AssegnazioneDAO assegnazioneDAO;
+	
+	@Autowired 
+	private ProvvedimentoDAO provvedimentoDAO;
 	
 	private ObjectMapper mapper;
 	
@@ -109,6 +124,10 @@ public class GestioneSicurezzaFacade {
 	public List<RuoloFunzione> recuperaRuoliFunzione() {
 		return ruoloFunzioneDAO.findAll();
 	}
+
+	public List<Condizione> recuperaCondizione() {
+		return condizioneDAO.findAll();
+	}	
 	
 	public String encodeJSON(HttpServletRequest request) {
 		
@@ -187,4 +206,13 @@ public class GestioneSicurezzaFacade {
 	public Ruolo recuperaRuolo(String codice) {
 		return ruoloDAO.findByCodiceRuolo(codice);
 	}
+	
+	public Provvedimento recuperaProvvedimento(String id) {
+		return provvedimentoDAO.findById(Integer.parseInt(id));
+	}
+	
+	public Assegnazione recuperaAssegnazione(String id) {
+		return assegnazioneDAO.findById(Integer.parseInt(id));
+	}
+
 }
