@@ -72,6 +72,7 @@ public class GestioneProvvedimentoController {
 		}
 		model.addAttribute("tableProvvedimentiSize", listProvvedimenti.size());
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
+		
 
 		return "ricercaProv";
 	}
