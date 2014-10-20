@@ -82,9 +82,15 @@
 		<put-attribute name="content" value="/views/provvedimentoDettaglio.jsp" />
 		<put-attribute name="titolo" value="provvedimentoDettaglio.title" />
 	</definition>
+	
     <definition name="test" extends="template">
 		<put-attribute name="content" value="/views/test.jsp" />
 		<put-attribute name="titolo" value="home.title" />
+	</definition>
+	
+	<definition name="provvedimentoModifica" extends="template">
+		<put-attribute name="content" value="/views/provvedimentoModifica.jsp" />
+		<put-attribute name="titolo" value="provvedimentoModifica.title" />
 	</definition>
 
 </tiles-definitions>

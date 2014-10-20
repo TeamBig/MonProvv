@@ -479,6 +479,7 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<T> findByProperty(HashMap<String,Object> parametri) {
 		try {
 			Query query;

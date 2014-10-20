@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class GestioneProvvedimentoController {
@@ -92,12 +93,42 @@ public class GestioneProvvedimentoController {
 		return retVal;
 	}
 	
+	@RequestMapping(value = { "/private/ricercaProv/dettaglio/{idProvvedimento}" } , method = RequestMethod.POST)
+	public String dettaglioSubmit(Model model,@PathVariable("idProvvedimento") int id, @RequestParam String action) {
+		String retVal = "ricercaProv";
+		if(StringUtils.isNotEmpty(id)){
+			if(action.equals("Modifica")){
+				retVal = "redirect:/private/ricercaProv/modifica/"+id;	
+			}
+			if(action.equals("Salva")){
+				
+			}
+		}
+		return retVal;
+	}
+	
+	//***** MODIFICA PROVVEDIMENTO ******//
+	@RequestMapping(value = { "/private/ricercaProv/modifica/{idProvvedimento}" } , method = RequestMethod.GET)
+	public String modificaProvvedimento(Model model,@PathVariable("idProvvedimento") int id) {
+		String retVal = "ricercaProv";
+		if(StringUtils.isNotEmpty(id)){
+			Provvedimento provvedimentoDettaglio = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+			model.addAttribute("provvedimentoDettaglio", provvedimentoDettaglio);
+			List<Allegato> listaAllegati = provvedimentoDettaglio.getAllegatiList();
+			model.addAttribute("tableAllegatiSize", listaAllegati.size());
+			model.addAttribute("listaAllegati", listaAllegati);
+			
+			retVal = "provvedimentoModifica";
+		}
+		return retVal;
+	}
+	
 	@RequestMapping(value={"/private/ricercaProv/downloadAllegato/{allegatoId}"}, method = RequestMethod.GET)
 	public String downloadAllegato(Model model, @PathVariable("allegatoId") Integer allegatoId,HttpServletResponse response) {
 		Allegato doc = gestioneProvvedimentoFacade.getAllegatoById(allegatoId);
 		try {
 			response.setHeader("Content-Disposition", "inline;filename=\""
-					+ doc.getNomefile()+"."+doc.getMimetype() + "\"");
+					+ doc.getNomefile() + "\"");
 			OutputStream out = response.getOutputStream();
 			response.setContentType("application/octet-stream");
 			response.setContentLength((int) doc.getContenuto().length());

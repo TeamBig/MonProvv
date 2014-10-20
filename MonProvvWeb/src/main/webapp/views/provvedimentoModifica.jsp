@@ -39,83 +39,87 @@
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
-							<span class="control-label">${governoHeader}</span>
+							<label class="control-label" for="governo">Governo</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.governo.denominazione}</span>
+								<springform:select path="governo" id="governo" cssClass="input-xlarge" >
+									<springform:options items="${listaGoverno}" itemValue="id" itemLabel="denominazione" />
+								</springform:select>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${tipologiaHeader}</span>
+							<label class="control-label" for="tipologia">${tipologiaHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.tipoProvvedimento.descrizione}</span>
+								<springform:select path="tipoProvvedimento" id="tipologia" cssClass="input-xlarge" >
+									<springform:options items="${listaTipologia}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${fonteNormativaHeader}</span>
+							<label class="control-label" for="fonteNormativa">${fonteNormativaHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.fonteNormativa}</span>
+								<%-- <span>${provvedimentoDettaglio.fonteNormativa}</span> --%>
+								<springform:input path="fonteNormativa" id="fonteNormativa" cssClass="input-xlarge"/>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label" >${artHeader}</span>
+							<label class="control-label" for="articolo" >${artHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.articolo}</span>
+								<%-- <span>${provvedimentoDettaglio.articolo}</span> --%>
+								<springform:input path="articolo" id="articolo" cssClass="input-small"/>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${commaHeader}</span>
+							<label class="control-label" for="comma">${commaHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.comma}</span>
+								<%-- <span>${provvedimentoDettaglio.comma}</span> --%>
+								<springform:input path="comma" id="comma" cssClass="input-small"/>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${provvDaAdottareHeader}</span>
+							<label class="control-label" for="tipoProvvDaAdottare">${provvDaAdottareHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.tipoProvvDaAdottare.descrizione}</span>
+								<%-- <span>${provvedimentoDettaglio.tipoProvvDaAdottare.descrizione}</span> --%>
+								<springform:select path="tipoProvvDaAdottare" id="tipoProvvDaAdottare" cssClass="input-xlarge" >
+									<springform:options items="${listaTipoProvvDaAdottare}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${titoloOggettoHeader}</span>
+							<label class="control-label" for="titoloOggetto">${titoloOggettoHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.oggetto}</span>
+								<%-- <span>${provvedimentoDettaglio.oggetto}</span> --%>
+								<springform:input path="oggetto" id="titoloOggetto" cssClass="input-xlarge"/>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${termineDiScadenzaHeader}</span>
+							<label class="control-label" for="dp1v">${termineDiScadenzaHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.termineScadenza}</span>
+								<%-- <span>${provvedimentoDettaglio.termineScadenza}</span> --%>
+								<springform:input type="text" id="dp1v" path="termineScadenza" class="input-xlarge" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="statoDiAttuazioneDettaglio">${statoDiAttuazioneHeader}</label>
+							<label class="control-label" for="statoDiAttuazione">${statoDiAttuazioneHeader}</label>
 							<div class="controls">
-								<select id="statoDiAttuazioneDettaglio" class="input-xlarge">
-									<option>Inserito</option>
-									<option>Sospeso</option>
-									<option selected>Fine lavorazione</option>
-									<option>Chiusura lavori</option>
-									<option>Adottato</option>
-									<option>Non attuabile</option>
-									<option>Superato</option>
-								</select>
+								<springform:select path="stato" id="statoDiAttuazione" cssClass="input-xlarge" >
+									<springform:options items="${listaStatoDiAttuazione}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
 							</div>
 						</div>
 						<div class="control-group">
 							<label class="control-label" for="enteCapofila">${capofilaHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.organoCapofila.denominazione}</span>
+								<%-- <span>${provvedimentoDettaglio.organoCapofila.denominazione}</span> --%>
+								<springform:select path="organoCapofila" id="enteCapofila" cssClass="input-xlarge" >
+									<springform:options items="${listaOrganoCapofila}" itemValue="id" itemLabel="denominazione" />
+								</springform:select>
 							</div>
 						</div>
 						<div class="control-group">
-							<span class="control-label">${proponenteHeader}</span>
+							<label class="control-label" for="parere">${parereHeader}</label>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.organoConcertante.denominazione}</span>
-							</div>
-						</div>
-						<div class="control-group">
-							<span class="control-label">${parereHeader}</span>
-							<div class="controls">
-								<span>${provvedimentoDettaglio.parere}</span>
+								<%-- <span>${provvedimentoDettaglio.parere}</span> --%>
+								<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
 							</div>
 						</div>
 				</div>
@@ -140,7 +144,7 @@
 								<display:column title="${idHeader}" property="id" headerScope="col" />
 								<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
 									<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-									<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
+									<a href="${urlDownload}" class="download">${allegato.nomefile}</a>
 								</display:column>
 								<display:column title="${dimensioneHeader}" headerScope="col">
 									<c:out value="${allegato.dimensione} Kb"></c:out>
@@ -149,6 +153,30 @@
 					</div>
 				</div>
 			</c:if>
+			<div class="row">
+				<div class="span12">	
+					<div class="control-group">
+						<label class="control-label" for="allegato">File da allegare</label>
+						<div class="controls">
+							<input type="text" id="allegato" class="input-xlarge" />
+							<button type="button" id="insertEnte" class="btn">Sfoglia</button>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="descrizione">Descrizione</label>
+						<div class="controls">
+							<input type="text" id="allegato" class="input-xxlarge" />
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="controls">
+							<button type="button" id="insertEnte" class="btn">
+								Aggiungi <i class="icon-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- allegati end -->
 			<div class="row">
 				<div class="span12">
@@ -279,7 +307,7 @@
 							<div class="form-actions pull-right">
 								<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
 								<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
-								<springform:button type="submit" class="btn" id="modifica" name="action" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></springform:button>
+								<button type="submit" class="btn" id="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
 							</div>
 						</div>
 					</div>
