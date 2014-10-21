@@ -77,7 +77,7 @@
 						<div class="controls">
 							<springform:select path="tipologia" id="tipologia" cssClass="input-xlarge" >
 								<springform:option value="">Tutti</springform:option>
-								<springform:options items="${listaTipologia}" itemValue="codice" itemLabel="descrizione" />
+								<springform:options items="${listaTipologia}" itemValue="id" itemLabel="descrizione" />
 							</springform:select>
 						</div>
 					</div>
@@ -92,7 +92,7 @@
 						<div class="controls">
 							<springform:select path="statoDiAttuazione"  id="statoDiAttuazione" cssClass="input-xlarge" >
 								<springform:option value="">Tutti</springform:option>
-								<springform:options items="${listaStatoDiAttuazione}" itemValue="codice" itemLabel="descrizione" />
+								<springform:options items="${listaStatoDiAttuazione}" itemValue="id" itemLabel="descrizione" />
 							</springform:select>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 						<label class="control-label" for="inputFonte">Fonte
 							normativa</label>
 						<div class="controls">
-							<springform:input path="fonteNormativa" cssClass="input-xlarge"/>
+							<springform:input path="fonteNormativa" id="inputFonte" cssClass="input-xlarge"/>
 						</div>
 					</div>
 

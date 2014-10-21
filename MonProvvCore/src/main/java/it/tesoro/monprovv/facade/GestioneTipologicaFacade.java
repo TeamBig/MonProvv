@@ -27,6 +27,12 @@ public class GestioneTipologicaFacade {
 	@Autowired
 	private TipoProvvDaAdottareDAO tipoProvvDaAdottareDAO;
 
+	
+//	public Stato recuperaStatoByCod(String cod) {
+//		List<Stato> statoList = statoDAO.findByProperty("codice", cod);
+//		return statoList.size()>0?statoList.get(0):null;
+//	}
+	
 	public Stato recuperaStatoById(Integer id) {
 		return statoDAO.findById(id);
 	}

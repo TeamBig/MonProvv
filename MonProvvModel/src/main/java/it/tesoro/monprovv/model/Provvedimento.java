@@ -100,13 +100,17 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Valid
 	private Organo organoConcertante;
 	
-	
 	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.LAZY, mappedBy="provvedimento")
 	private List<ProvvedimentiParent> provvedimentiParent;
 	
 	@OneToMany(targetEntity=Allegato.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Allegato> allegatiList;
+	
+	@OneToMany(targetEntity=Assegnazione.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<Assegnazione> assegnazioneList;
+	
 	
 	public Integer getId() {
 		return id;
@@ -235,6 +239,15 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setAllegatiList(List<Allegato> allegatiList) {
 		this.allegatiList = allegatiList;
+	}
+
+
+	public List<Assegnazione> getAssegnazioneList() {
+		return assegnazioneList;
+	}
+
+	public void setAssegnazioneList(List<Assegnazione> assegnazioneList) {
+		this.assegnazioneList = assegnazioneList;
 	}
 
 	@Override
