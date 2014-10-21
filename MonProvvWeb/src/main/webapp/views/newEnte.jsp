@@ -46,10 +46,16 @@
 						<div class="control-group" id="listaOrganiInterniNuovoOrganoDiv">
 							<label class="control-label" for="unitaOrgAstage">${enteInternoHeader}</label>
 							<div class="controls">
+								<springform:input path="denominazione" id="autocompleteUo" cssClass="input-xlarge"/>
+								
+								<springform:hidden path="unitaOrgAstage" id="hiddenIdUo"/>
+								<%--
 								<springform:select path="unitaOrgAstage" cssClass="input-xlarge" id="tipoNuovoOrgano">
 									<springform:option value=""></springform:option>
 									<springform:options items="${organiInterni}" itemLabel="nome" itemValue="id" />
 								</springform:select>
+								--%>
+								
 							</div>
 						</div>
 						

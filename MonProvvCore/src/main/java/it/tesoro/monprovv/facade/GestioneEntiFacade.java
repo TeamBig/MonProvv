@@ -9,6 +9,7 @@ import it.tesoro.monprovv.model.UnitaOrgAstage;
 import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,6 @@ public class GestioneEntiFacade {
 			organo = organoDAO.findById(id);
 		}
 		return organo;
-	}
-	
-	public List<Organo> recuperaAllOrgano() {
-		return organoDAO.findAll();
 	}
 	
 	public List<Organo> recuperaOrgano(int page) {
@@ -87,6 +84,16 @@ public class GestioneEntiFacade {
 	
 	public List<UnitaOrgAstage> recuperaUnitaOrgAstageNonUsati() {
 		return unitaOrgAstageDAO.findByHqlQuery("from UnitaOrgAstage u where u.id not in ( select o.unitaOrgAstage.id from Organo o where o.unitaOrgAstage is not null ) order by nome ");
+	}
+	
+	public List<UnitaOrgAstage> recuperaUnitaOrgAstageNonUsati(String nome) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("nome", "%"+nome.toUpperCase()+"%");
+		String hql = "from UnitaOrgAstage u where upper(u.nome) like :nome and u.id not in ( select o.unitaOrgAstage.id from Organo o where o.unitaOrgAstage is not null ) order by nome asc";
+		return unitaOrgAstageDAO.findByHqlQuery(hql, params);
+		
+		
+		
 	}
 
 	public void inserisciOrgano(Organo organo) {

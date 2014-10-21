@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CacheService {
 	
+	public static final String KEY_LISTA_UO = "KEY_LISTA_UO";
+	
 	@Value("#{config['cache.intervallo']}")
 	private Integer cacheInterval;
 	

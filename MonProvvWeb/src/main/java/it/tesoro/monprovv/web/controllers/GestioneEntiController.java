@@ -1,10 +1,12 @@
 package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.annotations.PagingAndSorting;
+import it.tesoro.monprovv.cache.CacheService;
 import it.tesoro.monprovv.dto.CodiceDescrizioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.UnitaOrgAstage;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.utils.StringUtils;
 import it.tesoro.monprovv.web.validators.EnteValidator;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -44,6 +47,9 @@ public class GestioneEntiController {
 	
 	@Autowired
 	protected EnteValidator enteValidator;
+	
+	@Autowired
+	private CacheService cacheService;
 
 	private final String tableEntiUID = "organo";
 	
@@ -143,8 +149,7 @@ public class GestioneEntiController {
 				
 				gestioneEntiFacade.inserisciOrgano(organoToEdit);
 				
-				request.getSession(false).removeAttribute("listaUnitaOrgAstageNonUsati");
-						
+										
 			}else{
 
 				for (FieldError f : errors.getFieldErrors()) {
@@ -170,11 +175,22 @@ public class GestioneEntiController {
 		tipos.add( new CodiceDescrizioneDto("E","Esterno") ); 
 		model.addAttribute("tipos", tipos );
 		
-		if(request.getSession(false).getAttribute("listaUnitaOrgAstageNonUsati") == null){
-			request.getSession(false).setAttribute("listaUnitaOrgAstageNonUsati", gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati());
-		}
+//		List<UnitaOrgAstage> listaUo = (List<UnitaOrgAstage>)cacheService.getFromCache(CacheService.KEY_LISTA_UO);
+//		if (listaUo == null)  {
+//			listaUo = gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati();
+//			cacheService.addToCache(CacheService.KEY_LISTA_UO, listaUo);
+//		}
+//
+//		model.addAttribute("organiInterni", listaUo );
+	}
+	
+	@RequestMapping(value= {"/private/admin/enti/nuovo/autocompletamento"}, method = RequestMethod.GET)
+	@ResponseBody
+	public List<UnitaOrgAstage> autocompletamentoUo(@RequestParam("query") String query)  {
 		
-		model.addAttribute("organiInterni", request.getSession(false).getAttribute("listaUnitaOrgAstageNonUsati") );
+		List<UnitaOrgAstage> result = gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati(query);
+		return result;
+		
 	}
 	
 	

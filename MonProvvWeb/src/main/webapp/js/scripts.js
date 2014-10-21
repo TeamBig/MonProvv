@@ -337,6 +337,28 @@ $(document).ready(function() {
 
     }
     
+    $('#autocompleteUo').attr('autocomplete','off');
+    $('#autocompleteUo').typeahead({
+    	minLength: 2,
+        source: function(query, process) {
+            objects = [];
+            map = {};
+            $.get(
+            		'enti/nuovo/autocompletamento',
+            		{ query: query },
+            		function (data) {
+            			$.each(data, function(i, object) {
+                            map[object.nome] = object;
+                            objects.push(object.nome);
+                        });      
+                        process(objects);
+            		}); 
+        },
+        updater: function(item) {
+            $('#hiddenIdUo').val(map[item].id);
+            return item;
+        }
+    });   
 
     
     
