@@ -3,6 +3,7 @@ package it.tesoro.monprovv.dao.common;
 
 import it.tesoro.monprovv.exception.DatabaseException;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
+import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -512,6 +513,70 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 		} catch (RuntimeException re) {
 			log.error("find by property name failed", re);
 			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public  List<T> findByPattern(List<SearchPatternUtil> searchPatternObjects,int page, List<String> orderByParams)
+	{
+		log.debug("finding all instances by pattern");
+		try {
+			String queryString = "from "+ nomeOggetto +" as model ";
+			for (SearchPatternUtil patternElement:searchPatternObjects){
+				StringBuffer structuredPattern=new StringBuffer();
+				structuredPattern.append("'");
+				if (patternElement.isPreponi()){
+					structuredPattern.append("%");
+				}
+				structuredPattern.append(patternElement.getPattern());
+				if (patternElement.isPostponi()){
+					structuredPattern.append("%");
+				}
+				structuredPattern.append("'");
+				if (searchPatternObjects.indexOf(patternElement)==0){
+					queryString += " where upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+				}else{
+					queryString += " and upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+				}
+			}
+			queryString = addOrderBy(queryString, orderByParams);
+			Query query= currentSession().createQuery(queryString);
+			
+			return query.setFirstResult(maxResult * (page-1)).setMaxResults(maxResult).list();
+		} catch (Exception re) {
+			log.error("find all  instances by pattern failed", re);
+			throw new DatabaseException(re);
+		}
+	}
+	
+	public  int countByPattern(List<SearchPatternUtil> searchPatternObjects) {
+		log.debug("count all instances by pattern");
+		try {
+			String queryString = "select count (*) from "+ nomeOggetto +" as model ";
+			for (SearchPatternUtil patternElement:searchPatternObjects){
+				StringBuffer structuredPattern=new StringBuffer();
+				structuredPattern.append("'");
+				if (patternElement.isPreponi()){
+					structuredPattern.append("%");
+				}
+				structuredPattern.append(patternElement.getPattern());
+				if (patternElement.isPostponi()){
+					structuredPattern.append("%");
+				}
+				structuredPattern.append("'");
+				if (searchPatternObjects.indexOf(patternElement)==0){
+					queryString += " where upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+				}else{
+					queryString += " and upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+				}
+			}
+			Query query= currentSession().createQuery(queryString);
+			int totalRecords = ((Long)query.uniqueResult()).intValue();
+	        return totalRecords;
+	        
+		} catch (Exception re) {
+			log.error("countTotalPagesByPattern failed", re);
+			throw new DatabaseException(re);
 		}
 	}
 	

@@ -281,3 +281,6 @@ ul.multiselect-container {
 	overflow-y: auto; 
 	overflow-x: hidden;
 }
+a.disable {
+	color: gray;
+}
