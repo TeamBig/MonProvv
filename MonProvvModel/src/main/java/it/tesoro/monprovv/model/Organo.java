@@ -5,7 +5,6 @@ import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,16 +47,16 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	@Column(name="FLAG_CONCERTANTE", length=1)
 	private String flagConcertante;
 	
+	@ManyToOne(targetEntity=UnitaOrgAstage.class)
+    @JoinColumn(name="ORGANIZATION_ID", referencedColumnName="ORGANIZATION_ID")
+	private UnitaOrgAstage unitaOrgAstage;	
+	
 	@Transient
 	private String flgInternoEsterno;
 	
 	public String getConcertante() {
 		return ("S".equals(flagConcertante))?"Concertante":"Non Concertante" ;
 	}
-	
-	@ManyToOne(targetEntity=UnitaOrgAstage.class, cascade = CascadeType.ALL)
-    @JoinColumn(name="ORGANIZATION_ID", referencedColumnName="ORGANIZATION_ID")
-	private UnitaOrgAstage unitaOrgAstage;
 	
 	public String getTipo(){
 		if(this.unitaOrgAstage != null){
@@ -107,7 +106,10 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	}
 
 	public String getDenominazione() {
-		return denominazione;
+		if( this.unitaOrgAstage != null )
+			return this.unitaOrgAstage.getNome();
+		else
+			return denominazione;
 	}
 
 	public void setDenominazione(String denominazione) {
@@ -115,7 +117,10 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	}
 
 	public String getDenominazioneEstesa() {
-		return denominazioneEstesa;
+		if( this.unitaOrgAstage != null )
+			return this.unitaOrgAstage.getNomeEsteso();
+		else
+			return denominazioneEstesa;
 	}
 
 	public void setDenominazioneEstesa(String denominazioneEstesa) {

@@ -12,22 +12,71 @@
 <spring:message var="enteTipoHeader" code="listaOrgani.header.ente.tipo" />
 
 
-<div class="container" id="risultatiRicercaEnte">
+
+<div class="container collapse" id="campiRicerca">
+			
+	<c:url value="/private/admin/enti" var="formPath" />
+	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix">
+		<div class="row">
+			<div class="span12">
+				<h3 class="underline"><span>Ricerca Ente</span></h3>
+			</div>
+		</div>			
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${denominazioneHeader}</label>
+						<div class="controls">
+							<springform:input path="denominazione" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<div class="form-actions pull-right">
+							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
+								Ricerca &nbsp;<i class="icon-search"></i>
+							</button>
+							<button type="reset" class="btn " id="annulla">
+								Pulisci &nbsp;<i class="icon-eraser"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</springform:form>
+</div>
+
+
+
+<div class="container" id="risultatiRicerca">
 	<div class="row">
 		<div class="span12">
-			
 			<c:url value="/private/admin/enti" var="formPath" />
 			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
-
 				<h3 class="text-left underline">
-					<span>Elenco Enti</span>
-					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="OK">Nuovo Ente &nbsp;<i class="icon-plus"></i></button>
-					<button class="btn pull-right" id="toggleRicerca" data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">Toggle ricerca &nbsp;<i class="icon-search"></i></button>
+					<span>Elenco provvedimenti</span>
+					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="OK">
+						Nuovo Ente &nbsp;<i class="icon-plus"></i>
+					</button>
+					<button type="button" class="btn pull-right" id="toggleRicerca"
+						data-toggle="collapse" data-target="#campiRicerca"
+						style="margin-right: 10px;">
+						Toggle ricerca &nbsp;<i class="icon-search"></i>
+					</button>
 				</h3>
-
 			</springform:form>
-			
-
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span12">
 			<c:if test="${tableOrganiRisultatiSize gt 0}">
 				<div class="row">
 					<div class="span12">
@@ -35,7 +84,6 @@
 						<display:table 	name="${listaOrgani}" 
 										pagesize="${risultatiPerPagina}" 
 										requestURI="" sort="external" partialList="true" 
-										uid="tableEntiUID"
 										size="${tableOrganiRisultatiSize}" id="organo" 
 										class="table table-hover table-bordered"
 										summary="Elenco Enti">

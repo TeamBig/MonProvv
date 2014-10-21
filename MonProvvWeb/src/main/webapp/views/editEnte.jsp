@@ -21,6 +21,7 @@
 		<div class="row">
 			<div class="span12">
 				<springform:hidden path="id"/>
+				<springform:hidden path="flgInternoEsterno"/>
 				<springform:hidden path="unitaOrgAstage"/>
 				<springform:hidden path="versione"/>
 				

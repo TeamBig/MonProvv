@@ -289,10 +289,10 @@ $(document).ready(function() {
     });
     
     
-    $("#denominazioneNuovoOrganoDiv").hide();
-    $("#denominazioneEstesaNuovoOrganoDiv").hide();
-    $("#listaOrganiInterniNuovoOrganoDiv").hide();
-    
+//    $("#denominazioneNuovoOrganoDiv").hide();
+//    $("#denominazioneEstesaNuovoOrganoDiv").hide();
+//    $("#listaOrganiInterniNuovoOrganoDiv").hide();
+
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
@@ -301,20 +301,49 @@ $(document).ready(function() {
     		$("#denominazioneNuovoOrganoDiv").show();
     		$("#denominazioneEstesaNuovoOrganoDiv").show();
     		$("#listaOrganiInterniNuovoOrganoDiv").hide();
-    	}else if( val==option1){
+    		//Interna
+
+    	}else if( val==option2){
 			$("#denominazioneNuovoOrganoDiv").hide();
 			$("#denominazioneEstesaNuovoOrganoDiv").hide();
 			$("#listaOrganiInterniNuovoOrganoDiv").show();
+    		//Esterna
+    		
     	}else{
     		$("#denominazioneNuovoOrganoDiv").hide();
 			$("#denominazioneEstesaNuovoOrganoDiv").hide();
 			$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    		//NO SELECT
+    		
     	}
 
     });  
     
-    
-    
+    if($('#tipoNuovoOrgano').length > 0){
+    	var val = $('#tipoNuovoOrgano').val();
+    	var option1 = "E"; //Esterna
+    	var option2 = "I"; //Interna
+    	if( val==option1){
+    		$("#denominazioneNuovoOrganoDiv").show();
+    		$("#denominazioneEstesaNuovoOrganoDiv").show();
+    		$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    		//Interna
+
+    	}else if( val==option2){
+			$("#denominazioneNuovoOrganoDiv").hide();
+			$("#denominazioneEstesaNuovoOrganoDiv").hide();
+			$("#listaOrganiInterniNuovoOrganoDiv").show();
+    		//Esterna
+    		
+    	}else{
+    		$("#denominazioneNuovoOrganoDiv").hide();
+			$("#denominazioneEstesaNuovoOrganoDiv").hide();
+			$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    		//NO SELECT
+    		
+    	}
+
+    }
     
 
     

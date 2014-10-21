@@ -1,13 +1,21 @@
 package it.tesoro.monprovv;
 
+import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
+import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -17,6 +25,32 @@ public class UnitTest {
 
 	@Autowired
 	private GestioneUtenteFacade gestioneUtenteFacade;
+	
+	@Autowired 
+	private GestioneEntiFacade gestioneEntiFacade;
+	
+	
+	
+	@Test
+	public void testOrgano(){
+		
+		CustomUser user = new CustomUser("BATCH", "batch", true, true, true, true, new ArrayList<GrantedAuthority>() );
+    	
+		Authentication authentication = new UsernamePasswordAuthenticationToken(user, "batch");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		Organo o = new Organo();
+		o.setDenominazione("aaaa");
+		o.setFlagConcertante("N");
+		o.setUnitaOrgAstage(gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati().get(0) );
+		
+		gestioneEntiFacade.inserisciOrgano(o);
+		
+		
+	}
+	
+	
+	
 	
 	@Test
 	public void test() {

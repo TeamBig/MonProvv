@@ -1,8 +1,8 @@
 package it.tesoro.monprovv.model;
 
-import java.util.Date;
-
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
+
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,12 +12,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name="UNITA_ORG_ASTAGE")
 public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Serializable {
-		
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8250069854147254919L;
-	
+	private static final long serialVersionUID = -5995817291213358570L;
+
 	@Id
 	@Column(name = "ORGANIZATION_ID",unique=true, nullable=false)
 	private Integer id;
@@ -92,6 +92,9 @@ public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Seri
 	private String flagFisso;
 
 
+	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -117,7 +120,8 @@ public class UnitaOrgAstage extends AbstractCommonEntity implements java.io.Seri
 		return true;
 	}
 
-
+	// Property accessors
+	@Override
 	public Integer getId() {
 		return id;
 	}
