@@ -63,16 +63,26 @@ public class GestioneEntiController {
 	
 	
 	@RequestMapping(value= {"/private/admin/enti"}, method = RequestMethod.GET)
-	public String initEntiGet(Model model, @PagingAndSorting(tableId = tableEntiUID) DisplayTagPagingAndSorting ps)  {
+	public String initEntiGet(Model model, 
+			@ModelAttribute("ricercaEnte") Organo ricercaEnte,	
+			@PagingAndSorting(tableId = tableEntiUID) DisplayTagPagingAndSorting ps)  {
 		
 		List<Organo> listaOrgani = new ArrayList<Organo>();
 		if (ps != null) {
-			listaOrgani =gestioneEntiFacade.recuperaOrgano(ps.getPage());
+			if(StringUtils.isEmpty( ricercaEnte.getDenominazione() ) )
+				listaOrgani =gestioneEntiFacade.recuperaOrgano(ps.getPage());
+			else
+				listaOrgani =gestioneEntiFacade.recuperaOrgano(ps.getPage(), ricercaEnte);
 		} else {
 			listaOrgani = gestioneEntiFacade.recuperaOrgano(1);
 		}
 		model.addAttribute("listaOrgani", listaOrgani);
-		model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countAllOrgano());
+		
+		if(StringUtils.isEmpty( ricercaEnte.getDenominazione() ) )
+			model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countOrgano());
+		else
+			model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countOrgano(ricercaEnte));
+		
 		return "entiHomeEnti";
 	}
 	
@@ -80,9 +90,16 @@ public class GestioneEntiController {
 	public String initEntiPost(Model model, 
 			@RequestParam(required = false) String buttonNew, 
 			@RequestParam(required = false) String ricerca, 
+			@RequestParam(required = false) String pulisci, 
 			@ModelAttribute("ricercaEnte") Organo ricercaEnte,				
 			HttpServletRequest request)  {
 		String retval = "entiHomeEnti";
+		
+		if("OK".equals( pulisci )){
+			ricercaEnte = new Organo();
+			model.addAttribute("ricercaEnte",ricercaEnte);
+		}
+		
 		if("OK".equals( buttonNew )){
 			loadCombo4NewEnte(model, request);
 			model.addAttribute("organoToEdit", new Organo());
@@ -90,11 +107,11 @@ public class GestioneEntiController {
 		}else if("OK".equals(ricerca)){
 			List<Organo> listaOrgani = gestioneEntiFacade.recuperaOrgano(1, ricercaEnte);
 			model.addAttribute("listaOrgani", listaOrgani);
-			model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countAllOrgano());
+			model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countOrgano(ricercaEnte));
 		}else{
-			List<Organo> organi = gestioneEntiFacade.recuperaOrgano(1);
-			model.addAttribute("tableOrganiRisultatiSize", organi.size());
-			model.addAttribute("listaOrgani", organi);
+			List<Organo> listaOrgani = gestioneEntiFacade.recuperaOrgano(1);
+			model.addAttribute("listaOrgani", listaOrgani);
+			model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countOrgano());
 		}
 		return retval;
 	}

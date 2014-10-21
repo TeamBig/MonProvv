@@ -6,6 +6,7 @@ import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.UnitaOrgAstageDAO;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
+import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +41,36 @@ public class GestioneEntiFacade {
 		return organoDAO.findAll(page, order);
 	}
 	
+	public int countOrgano() {
+		return organoDAO.countAll();
+	}
+	
 	public List<Organo> recuperaOrgano(int page, Organo criteria) {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		return organoDAO.findAll(page, order);
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		if(criteria.getDenominazione() != null){
+			SearchPatternUtil pattern = new SearchPatternUtil();
+			pattern.setNomeCampo( "denominazione" );
+			pattern.setPattern(criteria.getDenominazione());
+			pattern.setPreponi(true);
+			pattern.setPostponi(true);
+			searchPatternObjects.add(pattern);
+		}
+		return organoDAO.findByPattern(searchPatternObjects, page, order);
+	}
+	
+	public int countOrgano(Organo criteria) {
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		if(criteria.getDenominazione() != null){
+			SearchPatternUtil pattern = new SearchPatternUtil();
+			pattern.setNomeCampo( "denominazione" );
+			pattern.setPattern(criteria.getDenominazione());
+			pattern.setPreponi(true);
+			pattern.setPostponi(true);
+			searchPatternObjects.add(pattern);
+		}
+		return organoDAO.countByPattern(searchPatternObjects);
 	}
 
 	public UnitaOrgAstage recuperaunitaOrgAstageById(Integer id) {
@@ -68,10 +95,6 @@ public class GestioneEntiFacade {
 			organo.setUnitaOrgAstage(uoa);
 		}
 		organoDAO.save(organo);
-	}
-
-	public int countAllOrgano() {
-		return organoDAO.countAll();
 	}
 	
 }

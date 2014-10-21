@@ -276,18 +276,10 @@ $(document).ready(function() {
     
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('href'); 
+    	var currentUrl = $(location).attr('pathname'); 
     	window.location.href = currentUrl+"/dettaglio/"+customerId;
     	
     });
-    
-    $('#risultatiRicercaEnte .table > tbody > tr').click(function() {
-    	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('href'); 
-    	window.location.href = currentUrl+"/dettaglio/"+customerId;
-    	
-    });
-    
     
 //    $("#denominazioneNuovoOrganoDiv").hide();
 //    $("#denominazioneEstesaNuovoOrganoDiv").hide();

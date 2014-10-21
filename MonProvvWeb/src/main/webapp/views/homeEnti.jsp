@@ -16,7 +16,7 @@
 <div class="container collapse" id="campiRicerca">
 			
 	<c:url value="/private/admin/enti" var="formPath" />
-	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix">
+	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline"><span>Ricerca Ente</span></h3>
@@ -42,7 +42,7 @@
 							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
-							<button type="reset" class="btn " id="annulla">
+							<button type="submit" class="btn " id="pulisci" name="pulisci" value="OK">
 								Pulisci &nbsp;<i class="icon-eraser"></i>
 							</button>
 						</div>
