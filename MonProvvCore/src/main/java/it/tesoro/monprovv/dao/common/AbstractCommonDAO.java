@@ -3,10 +3,12 @@ package it.tesoro.monprovv.dao.common;
 
 import it.tesoro.monprovv.exception.DatabaseException;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
@@ -385,19 +388,19 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 	
 	private T aggiornaMetadati(T instance, boolean checkId) {
 		
-//		Date currentDate = new Date();
-//		PdaUser principal = (PdaUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		
-//		if ((instance.getId() == null) && checkId ) {
-//			instance.setUtenteInserimento(principal.getCodiceFiscale());
-//			instance.setDataInserimento(currentDate);
-//		} else {
-//			instance.setUtenteInserimento(principal.getCodiceFiscale());
-//			instance.setDataInserimento(currentDate);
-//		}
-//		
-//		instance.setUtenteAggiornamento(principal.getCodiceFiscale());
-//		instance.setDataAggiornamento(currentDate);
+		Date currentDate = new Date();
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		if ((instance.getId() == null) && checkId ) {
+			instance.setUtenteInserimento(principal.getUsername());
+			instance.setDataInserimento(currentDate);
+		} else {
+			instance.setUtenteInserimento(principal.getUsername());
+			instance.setDataInserimento(currentDate);
+		}
+		
+		instance.setUtenteAggiornamento(principal.getUsername());
+		instance.setDataAggiornamento(currentDate);
 
 		return instance;
 	}
