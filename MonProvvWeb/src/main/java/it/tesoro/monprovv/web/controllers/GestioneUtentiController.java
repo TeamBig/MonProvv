@@ -103,9 +103,8 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		}
 		
 		if("new".equals( buttonNew )){
-			loadCombo4NewUtente(model);
-			model.addAttribute("utenteToEdit", new Utente());
-			retval = "utenteNewUtente";
+			
+			retval = "redirect:/private/admin/utenti/nuovo";
 			
 		}else if("find".equals(buttonFind)){
 			List<Utente> listaUtenti = gestioneUtenteFacade.recupera(1, ricercaUtente);
@@ -134,6 +133,16 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return result;
 	}
 	
+	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.GET)
+	public String nuovoGet(@ModelAttribute("utenteToEdit") Utente utenteToEdit,
+			Model model,
+			HttpServletRequest request)  {
+		
+		loadCombo4NewUtente(model);
+		model.addAttribute("utenteToEdit", new Utente());
+		return "utenteNewUtente";
+		
+	}
 	
 	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST)
 	public String nuovoPost(@ModelAttribute("utenteToEdit") Utente utenteToEdit,
@@ -179,6 +188,8 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 				
 				retval = "utenteNewUtente";
 			}
+			
+		}else if("cancel".equals(buttonCancel)){
 			
 		}
 		

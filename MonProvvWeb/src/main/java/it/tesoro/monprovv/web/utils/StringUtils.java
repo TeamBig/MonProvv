@@ -6,9 +6,39 @@ import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
+	public static boolean mailSyntaxCheck(String email){
+		// Create the Pattern using the regex
+		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+
+		// Match the given string with the pattern
+		Matcher m = p.matcher(email);
+
+		// check whether match is found
+		boolean matchFound = m.matches();
+
+		StringTokenizer st = new StringTokenizer(email, ".");
+		String lastToken = null;
+		while (st.hasMoreTokens()) {
+			lastToken = st.nextToken();
+		}
+
+		// validate the country code
+		if (matchFound && lastToken.length() >= 2
+				&& email.length() - 1 != lastToken.length()) {
+
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+	
 	public static boolean isEmpty(Object obj) {
 		boolean result = obj == null;
 

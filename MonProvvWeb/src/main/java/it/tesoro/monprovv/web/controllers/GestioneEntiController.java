@@ -106,9 +106,7 @@ public class GestioneEntiController {
 		}
 		
 		if("OK".equals( buttonNew )){
-			loadCombo4NewEnte(model, request);
-			model.addAttribute("organoToEdit", new Organo());
-			retval = "entiNewEnte";
+			retval = "redirect:/private/admin/enti/nuovo";
 		}else if("OK".equals(ricerca)){
 			List<Organo> listaOrgani = gestioneEntiFacade.recuperaOrgano(1, ricercaEnte);
 			model.addAttribute("listaOrgani", listaOrgani);
@@ -119,6 +117,17 @@ public class GestioneEntiController {
 			model.addAttribute("tableOrganiRisultatiSize", gestioneEntiFacade.countOrgano());
 		}
 		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/enti/nuovo", method = RequestMethod.GET)
+	public String nuovoGet(@ModelAttribute("organoToEdit") Organo organoToEdit,
+			Model model, 
+			HttpServletRequest request)  {
+		
+		loadCombo4NewEnte(model, request);
+		model.addAttribute("organoToEdit", new Organo());
+		
+		return "entiNewEnte";
 	}
 	
 	@RequestMapping(value = "/private/admin/enti/nuovo", method = RequestMethod.POST)
