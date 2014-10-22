@@ -1,7 +1,6 @@
 package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.annotations.PagingAndSorting;
-import it.tesoro.monprovv.cache.CacheService;
 import it.tesoro.monprovv.dto.CodiceDescrizioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
@@ -48,8 +47,8 @@ public class GestioneEntiController {
 	@Autowired
 	protected EnteValidator enteValidator;
 	
-	@Autowired
-	private CacheService cacheService;
+//	@Autowired
+//	private CacheService cacheService;
 
 	private final String tableEntiUID = "organo";
 	
@@ -149,6 +148,12 @@ public class GestioneEntiController {
 				
 				gestioneEntiFacade.inserisciOrgano(organoToEdit);
 				
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Ente effettuato con successo", false);
+				
+				model.addAttribute("organoToEdit", organoToEdit );
+				model.addAttribute("tableUtentiListOrganiRisultatiSize", 0);
+				
+				retval = "entiDettaglioEnte"; 
 										
 			}else{
 
@@ -242,6 +247,9 @@ public class GestioneEntiController {
 			if( !errors.hasErrors() ){
 				
 				Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
+				
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Ente effettuato con successo", false);
+				
 				model.addAttribute("organoToEdit", organo );
 				model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());
 						
