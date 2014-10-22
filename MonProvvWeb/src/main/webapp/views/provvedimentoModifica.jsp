@@ -154,13 +154,13 @@
 					</div>
 				</div>
 			</c:if>
-			<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="#" method="POST">
+			<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="#" method="POST" enctype="multipart/form-data">
 				<div class="row">
 					<div class="span12">	
 						<div class="control-group">
 							<label class="control-label" for="allegato">File da allegare</label>
 							<div class="controls">
-								<input type="file" name="file" style="display:none;" id="allegatoProvvedimento" />
+								<input type="file" name="allegatoProvvedimento" style="display:none;" id="allegatoProvvedimento" />
 								<input type="text" name="textAllegato" id="textAllegato" class="input-xlarge" />
 								<button type="button" onclick="$('#allegatoProvvedimento').click();" class="btn">Sfoglia</button>
 							</div>
@@ -189,103 +189,40 @@
 			</div>
 			<div class="row">
 				<div class="span12">
-					<table class="table table-hover table-bordered">
-						<thead>
-							<tr>
-								<th class="medium">
-									Organo
-								</th>
-								<th>
-									Presa in carico
-								</th>
-								<th class="medium">
-									Allegati
-								</th>
-								<th>
-									Note
-								</th>
-								<th>
-									Cronologia Modifiche
-								</th>
-								<th class="center">
-									Elimina
-								</th>								
-								<th class="center">
-									Sollecito
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="vcenter">
-									Ag. Territorio 
-								</td>
-								<td class="vcenter center">
-									<i class="icon-check icon-large"></i>
-								</td>
-								<td>
-									<a href="" class="download">Documento 1</a> (PDF - 1Mb)<br>
-									<a href="" class="download">Documento 2</a> (Excel - 350Kb)<br>
-									<a href="" class="download">Documento 3</a> (Testo - 1Kb) <br>
-								</td>
-								<td>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-								</td>
-								<td class="vcenter center">
+								<display:table 	name="${listaAssegnazione}" 
+											requestURI="" sort="external" partialList="false"
+											 id="assegnazione" 
+											class="table table-hover table-bordered"
+											summary="Elenco Assegnatari" style="width: 100%">
+	
+								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" />
+								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
+									<c:choose>
+									      <c:when test="${assegnazione.stato.codice=='ASS'}">
+									      	<i class="icon-check icon-large"></i>
+									      </c:when>
+										  <c:when test="${assegnazione.stato.codice=='RIF'}">
+									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
+									      </c:when>
+									</c:choose>
+								</display:column>
+								<display:column title="${allegatiHeader}" headerScope="col">
+									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
+										<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensione} Kb)</div>
+									</c:forEach>
+								</display:column>
+								<display:column title="${noteHeader}"  headerScope="col" />
+								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
-								</td>	
-								<td class="vcenter center">
-									<i class="icon-trash icon-large gray"></i>
-								</td>
-								<td class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</td>
-							</tr>
- 							<tr>
-								<td>
-									MEF (Dipto finanze)  
-								</td>
-								<td class="vcenter center">
-									<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
-								</td>
-								<td>
-								</td>
-								<td>
-									
-								</td>
-								<td class="vcenter center">
-									<a href="#modalCronologia" data-toggle="modal"><i class="icon-time icon-large" title="Apri cronologia"></i></a>
-								</td>	
-								<td class="vcenter center">
+								</display:column>
+								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
-								</td>
-								<td class="vcenter center">
+								</display:column>
+								<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</td>															
-							</tr>
-							<tr id="assegnatarioDipTesoro">
-								<td class="vcenter">
-									Dip.to Tesoro
-								</td>
-								<td class="vcenter">
-									
-								</td>
-								<td class="vcenter">
-									
-								</td>
-								<td>
-									
-								</td>
-								<td class="vcenter center">
-								</td>									
-								<td class="vcenter center">
-									<a href="#" id="deleteEnte"><i class="icon-trash icon-large gray"></i></a>
-								</td>
-								<td>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+								</display:column>
+						</display:table>
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="enteAssegnatario">Nuovo assegnatario</label>

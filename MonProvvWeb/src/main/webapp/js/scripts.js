@@ -367,24 +367,29 @@ $(document).ready(function() {
 	});
 	
 	$("button#allegatoInserisci").click(function(){
-		var formData = $('form#allegatoForm').serialize();
-		var files = $('input[type=file]');
-		// You should sterilise the file names
-		$.each(files, function(key, value)
-		{
-			formData = formData + '&filenames[]=' + value;
-		});
-		alert(formData);
-//		var data = $('form#allegatoForm').serialize();
-//		var oMyForm = new FormData();
-//		oMyForm.append("file", file.files[0]);
+		var aFormData = new FormData();
+		aFormData.append("filename", $('#allegatoProvvedimento').get(0).files[0]);
+	    $("#allegatoForm input").each(function(i) {
+	        aFormData.append($(this).attr("name"), $(this).val());
+	    });
+		
+		
+		
+//		var formData = $('form#allegatoForm').serialize();
+//		var files = $('input[type=file]');
+//		// You should sterilise the file names
+//		$.each(files, function(key, value)
+//		{
+//			formData = formData + '&filenames[]=' + value;
+//		});
+//		alert(formData);
         $.ajax({
         	type: "GET",
         	url: "inserisciAllegato",
-            data: formData,
-            async: false,
-            contentType: false,
+            data: aFormData,
             cache: false,
+            contentType: false,
+            processData: false,
         	success: function(msg){
         		alert("aggiunto allegato!!");
         		alert(msg);
