@@ -14,7 +14,7 @@
 <spring:message var="enteTipoHeader" code="listaOrgani.header.ente.tipo" />
 
 
-<div class="container" id="risultatiRicerca">
+<div class="container" id="inserimentoEnte">
 
 	<c:url value="/private/admin/enti/nuovo" var="formPath" />
 

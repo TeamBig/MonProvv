@@ -6,6 +6,7 @@ import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
 import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Menu;
+import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
@@ -13,6 +14,7 @@ import it.tesoro.monprovv.model.UnitaOrgAstage;
 import it.tesoro.monprovv.web.propertyeditors.ClobPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.DataPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.GovernoPropertyEditor;
+import it.tesoro.monprovv.web.propertyeditors.OrganoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.StatoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoProvvDaAdottarePropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoProvvedimentoPropertyEditor;
@@ -51,7 +53,7 @@ public class CommonController {
 		binder.registerCustomEditor(Date.class, new DataPropertyEditor());
 		binder.registerCustomEditor(UnitaOrgAstage.class, new UnitaOrgAstagePropertyEditor(gestioneEntiFacade));
 		binder.registerCustomEditor(Clob.class, new ClobPropertyEditor());
-		
+		binder.registerCustomEditor(Organo.class, new OrganoPropertyEditor(gestioneEntiFacade));
 	}
 	
 	

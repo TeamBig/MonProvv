@@ -61,7 +61,7 @@
 			<c:url value="/private/admin/enti" var="formPath" />
 			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
 				<h3 class="text-left underline">
-					<span>Elenco provvedimenti</span>
+					<span>Elenco Enti</span>
 					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="OK">
 						Nuovo Ente &nbsp;<i class="icon-plus"></i>
 					</button>

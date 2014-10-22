@@ -2,11 +2,16 @@ package it.tesoro.monprovv.facade;
 
 
 
+import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.UtenteAstageDAO;
 import it.tesoro.monprovv.dao.UtenteDAO;
+import it.tesoro.monprovv.dto.IdDescrizioneDto;
+import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.model.UtenteAstage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,9 @@ public class GestioneUtenteFacade {
 
 	@Autowired
 	private UtenteDAO utenteDAO;
+	
+	@Autowired
+	private OrganoDAO organoDAO;
 	
 	@Autowired
 	private UtenteAstageDAO utenteAstageDAO;
@@ -48,6 +56,27 @@ public class GestioneUtenteFacade {
 	public int count(Utente ricercaUtente) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public List<IdDescrizioneDto> recuperaOrganiEsterni(String denominazione) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("denominazione", "%"+denominazione.toUpperCase()+"%");
+		String hql = "from Organo u where upper(u.denominazione) like :denominazione and u.unitaOrgAstage is null order by denominazione asc";
+		List<Organo> organi = organoDAO.findByHqlQuery(hql, params);
+		List<IdDescrizioneDto> retval = new ArrayList<IdDescrizioneDto>();
+		for(Organo tmp: organi){
+			retval.add( new IdDescrizioneDto( tmp.getId(), tmp.getDenominazione() ) ); 
+		}
+		return retval;
+		
+	}
+
+	public void inserisciUtente(Utente utente) {
+		if(utente.getUtenteAstage()!=null){
+			UtenteAstage utenteAstage = utenteAstageDAO.findById(utente.getUtenteAstage().getId());
+			utente.setUtenteAstage(utenteAstage);
+		}
+		utenteDAO.save(utente);
 	}
 	
 	
