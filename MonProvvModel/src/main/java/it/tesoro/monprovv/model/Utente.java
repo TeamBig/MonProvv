@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
@@ -62,6 +63,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
     @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
 	@Valid
 	private Organo organo;
+
+	@Transient
+	private String organoDenominazione;
 	
 	@ManyToOne(targetEntity=UtenteAstage.class)
     @JoinColumn(name="ID_UTENTE_ASTAGE", referencedColumnName="ID_UTENTE_ASTAGE")
@@ -71,12 +75,15 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@OneToMany(mappedBy = "utente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	private List<RuoloUtente> ruoloUtenteList;
 
+	public String getTipo(){
+		return ("E".equals( this.flagIntEst )?"Esterno":"Interno" );
+	}
+	
 	@AssertTrue
 	public boolean isUtenteOK() {
 		// ulteriori controlli di validita'
 		return true;
 	}
-	
 
 	// Constructors
 
@@ -158,6 +165,14 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 		this.organo = organo;
 	}
 
+	public String getOrganoDenominazione() {
+		return organoDenominazione;
+	}
+
+	public void setOrganoDenominazione(String organoDenominazione) {
+		this.organoDenominazione = organoDenominazione;
+	}
+	
 	public List<RuoloUtente> getRuoloUtenteList() {
 		return ruoloUtenteList;
 	}

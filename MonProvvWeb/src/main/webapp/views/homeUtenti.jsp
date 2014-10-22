@@ -5,44 +5,36 @@
 
 <spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
 
-<spring:message var="idHeader" code="listaOrgani.header.id" />
-<spring:message var="denominazioneHeader" code="listaOrgani.header.denominazione" />
-<spring:message var="denominazioneEstesaHeader" code="listaOrgani.header.denominazione.estesa" />
-<spring:message var="enteConcertanteHeader" code="listaOrgani.header.ente.concertante" />
-<spring:message var="enteTipoHeader" code="listaOrgani.header.ente.tipo" />
+<spring:message var="idHeader" code="gestione.utente.id" />
+<spring:message var="nomeHeader" code="gestione.utente.nome" />
+<spring:message var="cognomeHeader" code="gestione.utente.cognome" />
+<spring:message var="cfHeader" code="gestione.utente.cf" />
+<spring:message var="emailHeader" code="gestione.utente.email" />
+<spring:message var="tipoHeader" code="gestione.utente.tipo" />
+<spring:message var="enteHeader" code="gestione.utente.ente" />
+
 
 
 
 <div class="container collapse" id="campiRicerca">
 			
-	<c:url value="/private/admin/enti" var="formPath" />
+	<c:url value="/private/admin/utenti" var="formPath" />
 	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline"><span>Ricerca Utenti</span></h3>
 			</div>
 		</div>			
-		<div class="row">
-			<div class="span12">
-				<div class="form-horizontal">
-					<div class="control-group">
-						<label class="control-label" for="denominazione">${denominazioneHeader}</label>
-						<div class="controls">
-							<springform:input path="denominazione" cssClass="input-xlarge"/>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		
 		<div class="row">
 			<div class="span12">
 				<div class="form-horizontal">
 					<div class="control-group">
 						<div class="form-actions pull-right">
-							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
+							<button type="submit" class="btn " id="ricerca" name="buttonFind" value="find">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
-							<button type="submit" class="btn " id="pulisci" name="pulisci" value="OK">
+							<button type="submit" class="btn " id="pulisci" name="buttonClean" value="clean">
 								Pulisci &nbsp;<i class="icon-eraser"></i>
 							</button>
 						</div>
@@ -58,16 +50,14 @@
 <div class="container" id="risultatiRicerca">
 	<div class="row">
 		<div class="span12">
-			<c:url value="/private/admin/enti" var="formPath" />
+			<c:url value="/private/admin/utenti" var="formPath" />
 			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
 				<h3 class="text-left underline">
-					<span>Elenco provvedimenti</span>
-					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="OK">
-						Nuovo Ente &nbsp;<i class="icon-plus"></i>
+					<span>Elenco Utenti</span>
+					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="new">
+						Nuovo Utente &nbsp;<i class="icon-plus"></i>
 					</button>
-					<button type="button" class="btn pull-right" id="toggleRicerca"
-						data-toggle="collapse" data-target="#campiRicerca"
-						style="margin-right: 10px;">
+					<button type="button" class="btn pull-right" id="toggleRicerca"	data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">
 						Toggle ricerca &nbsp;<i class="icon-search"></i>
 					</button>
 				</h3>
@@ -77,23 +67,27 @@
 	
 	<div class="row">
 		<div class="span12">
-			<c:if test="${tableOrganiRisultatiSize gt 0}">
+			<c:if test="${tableRisultatiSize gt 0}">
 				<div class="row">
 					<div class="span12">
 						
-						<display:table 	name="${listaOrgani}" 
+						<display:table 	name="${listaUtenti}" 
 										pagesize="${risultatiPerPagina}" 
-										requestURI="" sort="external" partialList="true" 
-										size="${tableOrganiRisultatiSize}" id="organo" 
+										requestURI="" 
+										sort="external" 
+										partialList="true" 
+										size="${tableRisultatiSize}" 
+										id="utente" 
 										class="table table-hover table-bordered"
 										summary="Elenco Enti">
-
+							
 							<display:column title="${idHeader}" property="id" headerScope="col" />
-							<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
-							<display:column title="${denominazioneEstesaHeader}" property="denominazioneEstesa" headerScope="col" />
-							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
-							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
-							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" />
+							<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
+							<display:column title="${nomeHeader}" property="nome" headerScope="col" />
+							<display:column title="${cfHeader}" property="codiceFiscale" headerScope="col" />
+							<display:column title="${emailHeader}" property="email" headerScope="col" />
+							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
+							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
 							
 						</display:table>
 						

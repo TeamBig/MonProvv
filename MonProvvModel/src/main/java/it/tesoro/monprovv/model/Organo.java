@@ -26,10 +26,11 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "ORGANO")
 public class Organo extends AbstractCommonEntity implements Serializable {
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -88624704588322807L;
+	private static final long serialVersionUID = -7663012449336548619L;
 
 	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_ORGANO"))
 	@GeneratedValue(generator = "generator")
@@ -70,6 +71,8 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Utente> utenteList;
 	
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

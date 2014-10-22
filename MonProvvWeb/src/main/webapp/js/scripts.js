@@ -281,9 +281,9 @@ $(document).ready(function() {
     	
     });
     
-//    $("#denominazioneNuovoOrganoDiv").hide();
-//    $("#denominazioneEstesaNuovoOrganoDiv").hide();
-//    $("#listaOrganiInterniNuovoOrganoDiv").hide();
+    $("#denominazioneNuovoOrganoDiv").hide();
+    $("#denominazioneEstesaNuovoOrganoDiv").hide();
+    $("#listaOrganiInterniNuovoOrganoDiv").hide();
 
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
@@ -360,6 +360,64 @@ $(document).ready(function() {
         }
     });   
     
+    $('#autocompleteUo').on('change', function () {
+    	var organoDenominazione = $.trim( $(this).val() );
+    	if( organoDenominazione=='' ){
+    		$('#hiddenIdUo').val('');
+    	}
+    });
+
+	$("#inserimentoUtenteInternoDiv").hide();
+	$("#inserimentoUtenteEsternoDiv").hide();
+	
+    $('#tipoNuovoUtente').on('change', function () {
+    	var val = $(this).val();
+    	var optionInterno = "I"; //Interna
+    	var optionEsterno = "E"; //Esterna
+    	if(val==optionInterno){
+    		//Inerimento Intenro
+    		$("#inserimentoUtenteInternoDiv").show();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    	}else if(val==optionEsterno){
+    		//Inserimento Esterno
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteEsternoDiv").show();
+    	}else{
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    	}
+    });
+    
+    
+    $('#organoDenominazione').attr('autocomplete','off');
+    $('#organoDenominazione').typeahead({
+    	minLength: 2,
+        source: function(query, process) {
+            objects = [];
+            map = {};
+            $.get(
+            		'utenti/nuovo/autocomporganoesterno',
+            		{ query: query },
+            		function (data) {
+            			$.each(data, function(i, object) {
+                            map[object.descrizione] = object;
+                            objects.push(object.descrizione);
+                        });      
+                        process(objects);
+            		}); 
+        },
+        updater: function(item) {
+            $('#hiddenIdOrgano').val(map[item].id);
+            return item;
+        }
+    });   
+    
+    $('#organoDenominazione').on('change', function () {
+    	var organoDenominazione = $.trim( $(this).val() );
+    	if( organoDenominazione=='' ){
+    		$('#hiddenIdOrgano').val('');
+    	}
+    });
     
     /****** GESTIONE PROVVEDIMENTO ******/
 	$('#allegatoProvvedimento').change(function() {
@@ -423,3 +481,4 @@ $(document).ready(function() {
     
     
 });
+

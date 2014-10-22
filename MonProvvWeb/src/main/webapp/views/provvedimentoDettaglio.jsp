@@ -83,7 +83,7 @@
 						<div class="control-group">
 							<span class="control-label">${titoloOggettoHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.oggetto}</span>
+								<span>${provvedimentoDettaglio.oggettoAsText}</span>
 							</div>
 						</div>
 						<div class="control-group">
