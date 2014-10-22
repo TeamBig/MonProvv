@@ -276,23 +276,15 @@ $(document).ready(function() {
     
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('href'); 
+    	var currentUrl = $(location).attr('pathname'); 
     	window.location.href = currentUrl+"/dettaglio/"+customerId;
     	
     });
-    
-    $('#risultatiRicercaEnte .table > tbody > tr').click(function() {
-    	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('href'); 
-    	window.location.href = currentUrl+"/dettaglio/"+customerId;
-    	
-    });
-    
     
     $("#denominazioneNuovoOrganoDiv").hide();
     $("#denominazioneEstesaNuovoOrganoDiv").hide();
     $("#listaOrganiInterniNuovoOrganoDiv").hide();
-    
+
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
@@ -301,22 +293,187 @@ $(document).ready(function() {
     		$("#denominazioneNuovoOrganoDiv").show();
     		$("#denominazioneEstesaNuovoOrganoDiv").show();
     		$("#listaOrganiInterniNuovoOrganoDiv").hide();
-    	}else if( val==option1){
+    		//Interna
+
+    	}else if( val==option2){
 			$("#denominazioneNuovoOrganoDiv").hide();
 			$("#denominazioneEstesaNuovoOrganoDiv").hide();
 			$("#listaOrganiInterniNuovoOrganoDiv").show();
+    		//Esterna
+    		
     	}else{
     		$("#denominazioneNuovoOrganoDiv").hide();
 			$("#denominazioneEstesaNuovoOrganoDiv").hide();
 			$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    		//NO SELECT
+    		
     	}
 
     });  
     
+    if($('#tipoNuovoOrgano').length > 0){
+    	var val = $('#tipoNuovoOrgano').val();
+    	var option1 = "E"; //Esterna
+    	var option2 = "I"; //Interna
+    	if( val==option1){
+    		$("#denominazioneNuovoOrganoDiv").show();
+    		$("#denominazioneEstesaNuovoOrganoDiv").show();
+    		$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    		//Interna
+
+    	}else if( val==option2){
+			$("#denominazioneNuovoOrganoDiv").hide();
+			$("#denominazioneEstesaNuovoOrganoDiv").hide();
+			$("#listaOrganiInterniNuovoOrganoDiv").show();
+    		//Esterna
+    		
+    	}else{
+    		$("#denominazioneNuovoOrganoDiv").hide();
+			$("#denominazioneEstesaNuovoOrganoDiv").hide();
+			$("#listaOrganiInterniNuovoOrganoDiv").hide();
+    		//NO SELECT
+    		
+    	}
+
+    }
+    
+    $('#autocompleteUo').attr('autocomplete','off');
+    $('#autocompleteUo').typeahead({
+    	minLength: 2,
+        source: function(query, process) {
+            objects = [];
+            map = {};
+            $.get(
+            		'enti/nuovo/autocompletamento',
+            		{ query: query },
+            		function (data) {
+            			$.each(data, function(i, object) {
+                            map[object.nome] = object;
+                            objects.push(object.nome);
+                        });      
+                        process(objects);
+            		}); 
+        },
+        updater: function(item) {
+            $('#hiddenIdUo').val(map[item].id);
+            return item;
+        }
+    });   
+    
+    $('#autocompleteUo').on('change', function () {
+    	var organoDenominazione = $.trim( $(this).val() );
+    	if( organoDenominazione=='' ){
+    		$('#hiddenIdUo').val('');
+    	}
+    });
+
+	$("#inserimentoUtenteInternoDiv").hide();
+	$("#inserimentoUtenteEsternoDiv").hide();
+	
+    $('#tipoNuovoUtente').on('change', function () {
+    	var val = $(this).val();
+    	var optionInterno = "I"; //Interna
+    	var optionEsterno = "E"; //Esterna
+    	if(val==optionInterno){
+    		//Inerimento Intenro
+    		$("#inserimentoUtenteInternoDiv").show();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    	}else if(val==optionEsterno){
+    		//Inserimento Esterno
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteEsternoDiv").show();
+    	}else{
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    	}
+    });
     
     
+    $('#organoDenominazione').attr('autocomplete','off');
+    $('#organoDenominazione').typeahead({
+    	minLength: 2,
+        source: function(query, process) {
+            objects = [];
+            map = {};
+            $.get(
+            		'utenti/nuovo/autocomporganoesterno',
+            		{ query: query },
+            		function (data) {
+            			$.each(data, function(i, object) {
+                            map[object.descrizione] = object;
+                            objects.push(object.descrizione);
+                        });      
+                        process(objects);
+            		}); 
+        },
+        updater: function(item) {
+            $('#hiddenIdOrgano').val(map[item].id);
+            return item;
+        }
+    });   
     
+    $('#organoDenominazione').on('change', function () {
+    	var organoDenominazione = $.trim( $(this).val() );
+    	if( organoDenominazione=='' ){
+    		$('#hiddenIdOrgano').val('');
+    	}
+    });
+    
+    /****** GESTIONE PROVVEDIMENTO ******/
+	$('#allegatoProvvedimento').change(function() {
+		$('#textAllegato').val($(this).val());
+	});
+	
+	$("button#allegatoInserisci").click(function(){
+		var formData = $('form#allegatoForm').serialize();
+		var files = $('input[type=file]');
+		// You should sterilise the file names
+		$.each(files, function(key, value)
+		{
+			formData = formData + '&filenames[]=' + value;
+		});
+		alert(formData);
+//		var data = $('form#allegatoForm').serialize();
+//		var oMyForm = new FormData();
+//		oMyForm.append("file", file.files[0]);
+        $.ajax({
+        	type: "GET",
+        	url: "inserisciAllegato",
+            data: formData,
+            async: false,
+            contentType: false,
+            cache: false,
+        	success: function(msg){
+        		alert("aggiunto allegato!!");
+        		alert(msg);
+        	},
+        	error: function(){
+        		alert("failure");
+        	}
+        });
+	});
+
+	
+//    $.post(
+//    		'provvedimento/aggiungi/allegato',
+//    		{ query: query },
+//    		function (data) {
+//    			$.each(data, function(i, object) {
+//                    map[object.nome] = object;
+//                    objects.push(object.nome);
+//                });      
+//                process(objects);
+//    		}); 
+//	
+//	$.post( "test.php", { func: "getNameAndTime" }, function( data ) {
+//		  console.log( data.name ); // John
+//		  console.log( data.time ); // 2pm
+//		}, "json");
+	$('#allegatoInserisci').click(function() {
+		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
+	});
 
     
     
 });
+

@@ -33,6 +33,7 @@ public abstract class AbstractCommonEntity implements Serializable {
 
 	@Column(name = "DATA_AGGIORNAMENTO")
 	private Date dataAggiornamento;	
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")	
 	public String getUtenteInserimento() {

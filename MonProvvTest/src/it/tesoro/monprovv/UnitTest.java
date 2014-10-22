@@ -1,13 +1,19 @@
 package it.tesoro.monprovv;
 
+import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
-import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -18,33 +24,59 @@ public class UnitTest {
 	@Autowired
 	private GestioneUtenteFacade gestioneUtenteFacade;
 	
+	@Autowired 
+	private GestioneEntiFacade gestioneEntiFacade;
+	
+	
+	
 	@Test
-	public void test() {
-		try{
-			Stato stato1 = new Stato();
-			stato1.setTipo("tipo");
-			stato1.setCodice("codice");
-			stato1.setDescrizione("descrizione");
-			
-			stato1.setUtenteInserimento("TEST INS");
-			stato1.setDataInserimento(new Date());
-			
-			stato1.setUtenteAggiornamento("TEST AGG");
-			stato1.setDataAggiornamento(new Date());
-			
-					
-			Stato stato2 = new Stato();
-			stato2.setTipo("tipo");
-			stato2.setCodice("codice");
-			stato2.setDescrizione("descrizione");
-			
-			gestioneUtenteFacade.inserisci(stato1, stato2);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-		gestioneUtenteFacade.testSelect();
-		System.out.println("OK");
+	public void testOrgano(){
+		
+		CustomUser user = new CustomUser("BATCH", "batch", true, true, true, true, new ArrayList<GrantedAuthority>() );
+    	
+		Authentication authentication = new UsernamePasswordAuthenticationToken(user, "batch");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		Organo o = new Organo();
+		o.setDenominazione("aaaa");
+		o.setFlagConcertante("N");
+		o.setUnitaOrgAstage(gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati().get(0) );
+		
+		gestioneEntiFacade.inserisciOrgano(o);
+		
+		
 	}
+	
+	
+	
+	
+//	@Test
+//	public void test() {
+//		try{
+//			Stato stato1 = new Stato();
+//			stato1.setTipo("tipo");
+//			stato1.setCodice("codice");
+//			stato1.setDescrizione("descrizione");
+//			
+//			stato1.setUtenteInserimento("TEST INS");
+//			stato1.setDataInserimento(new Date());
+//			
+//			stato1.setUtenteAggiornamento("TEST AGG");
+//			stato1.setDataAggiornamento(new Date());
+//			
+//					
+//			Stato stato2 = new Stato();
+//			stato2.setTipo("tipo");
+//			stato2.setCodice("codice");
+//			stato2.setDescrizione("descrizione");
+//			
+//			gestioneUtenteFacade.inserisci(stato1, stato2);
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//
+//		gestioneUtenteFacade.testSelect();
+//		System.out.println("OK");
+//	}
 
 }

@@ -82,9 +82,35 @@
 		<put-attribute name="content" value="/views/provvedimentoDettaglio.jsp" />
 		<put-attribute name="titolo" value="provvedimentoDettaglio.title" />
 	</definition>
+	
     <definition name="test" extends="template">
 		<put-attribute name="content" value="/views/test.jsp" />
 		<put-attribute name="titolo" value="home.title" />
+	</definition>
+	
+	<definition name="provvedimentoModifica" extends="template">
+		<put-attribute name="content" value="/views/provvedimentoModifica.jsp" />
+		<put-attribute name="titolo" value="provvedimentoModifica.title" />
+	</definition>
+	
+	<definition name="utenteHomeUtente" extends="template">
+		<put-attribute name="content" value="/views/homeUtenti.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
+	</definition>
+	
+	<definition name="utenteDettUtente" extends="template">
+		<put-attribute name="content" value="/views/dettUtente.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
+	</definition>
+	
+	<definition name="utenteEditUtente" extends="template">
+		<put-attribute name="content" value="/views/editUtente.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
+	</definition>
+	
+	<definition name="utenteNewUtente" extends="template">
+		<put-attribute name="content" value="/views/newUtente.jsp" />
+		<put-attribute name="titolo" value="home.title.enti" />
 	</definition>
 
 </tiles-definitions>

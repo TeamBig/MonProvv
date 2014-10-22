@@ -1,0 +1,104 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
+
+<spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
+
+<spring:message var="idHeader" code="gestione.utente.id" />
+<spring:message var="nomeHeader" code="gestione.utente.nome" />
+<spring:message var="cognomeHeader" code="gestione.utente.cognome" />
+<spring:message var="cfHeader" code="gestione.utente.cf" />
+<spring:message var="emailHeader" code="gestione.utente.email" />
+<spring:message var="tipoHeader" code="gestione.utente.tipo" />
+<spring:message var="enteHeader" code="gestione.utente.ente" />
+
+
+
+
+<div class="container collapse" id="campiRicerca">
+			
+	<c:url value="/private/admin/utenti" var="formPath" />
+	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
+		<div class="row">
+			<div class="span12">
+				<h3 class="underline"><span>Ricerca Utenti</span></h3>
+			</div>
+		</div>			
+		
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<div class="form-actions pull-right">
+							<button type="submit" class="btn " id="ricerca" name="buttonFind" value="find">
+								Ricerca &nbsp;<i class="icon-search"></i>
+							</button>
+							<button type="submit" class="btn " id="pulisci" name="buttonClean" value="clean">
+								Pulisci &nbsp;<i class="icon-eraser"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</springform:form>
+</div>
+
+
+
+<div class="container" id="risultatiRicerca">
+	<div class="row">
+		<div class="span12">
+			<c:url value="/private/admin/utenti" var="formPath" />
+			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
+				<h3 class="text-left underline">
+					<span>Elenco Utenti</span>
+					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="new">
+						Nuovo Utente &nbsp;<i class="icon-plus"></i>
+					</button>
+					<button type="button" class="btn pull-right" id="toggleRicerca"	data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">
+						Toggle ricerca &nbsp;<i class="icon-search"></i>
+					</button>
+				</h3>
+			</springform:form>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="span12">
+			<c:if test="${tableRisultatiSize gt 0}">
+				<div class="row">
+					<div class="span12">
+						
+						<display:table 	name="${listaUtenti}" 
+										pagesize="${risultatiPerPagina}" 
+										requestURI="" 
+										sort="external" 
+										partialList="true" 
+										size="${tableRisultatiSize}" 
+										id="utente" 
+										class="table table-hover table-bordered"
+										summary="Elenco Enti">
+							
+							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
+							<display:column title="${nomeHeader}" property="nome" headerScope="col" />
+							<display:column title="${cfHeader}" property="codiceFiscale" headerScope="col" />
+							<display:column title="${emailHeader}" property="email" headerScope="col" />
+							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
+							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
+							
+						</display:table>
+						
+					</div>
+				</div>
+			
+			</c:if>
+
+		</div>
+	</div>
+	<div class="row">
+		<div class="span12"></div>
+	</div>
+</div>

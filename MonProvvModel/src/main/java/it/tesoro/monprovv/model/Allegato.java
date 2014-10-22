@@ -53,11 +53,11 @@ public class Allegato extends AbstractCommonEntity implements Serializable {
 	@Column(name = "DIMENSIONE")
 	private Integer dimensione;
 
-	@Column(name = "MIMETYPE", length = 240)
-	private String mimetype;
-
 	@Column(name = "FLAG_VISIBILE", length = 1)
 	private String flagVisibile;
+	
+	@Column(name = "DESCRIZIONE", length = 240)
+	private String descrizione;
 
 	public Integer getId() {
 		return id;
@@ -106,21 +106,21 @@ public class Allegato extends AbstractCommonEntity implements Serializable {
 	public void setDimensione(Integer dimensione) {
 		this.dimensione = dimensione;
 	}
-
-	public String getMimetype() {
-		return mimetype;
-	}
-
-	public void setMimetype(String mimetype) {
-		this.mimetype = mimetype;
-	}
-
+	
 	public String getFlagVisibile() {
 		return flagVisibile;
 	}
 
 	public void setFlagVisibile(String flagVisibile) {
 		this.flagVisibile = flagVisibile;
+	}
+
+	public String getDescrizione() {
+		return descrizione;
+	}
+
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
 	}
 
 	@Override
