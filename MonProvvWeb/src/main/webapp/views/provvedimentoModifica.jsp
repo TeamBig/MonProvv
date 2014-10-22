@@ -124,6 +124,7 @@
 						</div>
 				</div>
 			</div>
+				</springform:form>
 			<!-- Allegati insert -->
 			<c:if test="${tableAllegatiSize gt 0}">
 				<div class="row">
@@ -153,30 +154,33 @@
 					</div>
 				</div>
 			</c:if>
-			<div class="row">
-				<div class="span12">	
-					<div class="control-group">
-						<label class="control-label" for="allegato">File da allegare</label>
-						<div class="controls">
-							<input type="text" id="allegato" class="input-xlarge" />
-							<button type="button" id="insertEnte" class="btn">Sfoglia</button>
+			<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="#" method="POST">
+				<div class="row">
+					<div class="span12">	
+						<div class="control-group">
+							<label class="control-label" for="allegato">File da allegare</label>
+							<div class="controls">
+								<input type="file" name="file" style="display:none;" id="allegatoProvvedimento" />
+								<input type="text" name="textAllegato" id="textAllegato" class="input-xlarge" />
+								<button type="button" onclick="$('#allegatoProvvedimento').click();" class="btn">Sfoglia</button>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="descrizione">Descrizione</label>
-						<div class="controls">
-							<input type="text" id="allegato" class="input-xxlarge" />
+						<div class="control-group">
+							<label class="control-label" for="descrizione">Descrizione</label>
+							<div class="controls">
+								<input type="text" id="descrizioneAllegato" name="descrizioneAllegato" class="input-xxlarge" />
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<button type="button" id="insertEnte" class="btn">
-								Aggiungi <i class="icon-plus"></i>
-							</button>
+						<div class="control-group">
+							<div class="controls">
+								<button type="button" id="allegatoInserisci" class="btn">
+									Aggiungi <i class="icon-plus"></i>
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</springform:form>
 			<!-- allegati end -->
 			<div class="row">
 				<div class="span12">
@@ -313,7 +317,6 @@
 					</div>
 				</div>
 			</div>
-		</springform:form>
 	</div>
 	
 	

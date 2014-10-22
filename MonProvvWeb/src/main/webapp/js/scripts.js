@@ -419,4 +419,61 @@ $(document).ready(function() {
     	}
     });
     
+    /****** GESTIONE PROVVEDIMENTO ******/
+	$('#allegatoProvvedimento').change(function() {
+		$('#textAllegato').val($(this).val());
+	});
+	
+	$("button#allegatoInserisci").click(function(){
+		var formData = $('form#allegatoForm').serialize();
+		var files = $('input[type=file]');
+		// You should sterilise the file names
+		$.each(files, function(key, value)
+		{
+			formData = formData + '&filenames[]=' + value;
+		});
+		alert(formData);
+//		var data = $('form#allegatoForm').serialize();
+//		var oMyForm = new FormData();
+//		oMyForm.append("file", file.files[0]);
+        $.ajax({
+        	type: "GET",
+        	url: "inserisciAllegato",
+            data: formData,
+            async: false,
+            contentType: false,
+            cache: false,
+        	success: function(msg){
+        		alert("aggiunto allegato!!");
+        		alert(msg);
+        	},
+        	error: function(){
+        		alert("failure");
+        	}
+        });
+	});
+
+	
+//    $.post(
+//    		'provvedimento/aggiungi/allegato',
+//    		{ query: query },
+//    		function (data) {
+//    			$.each(data, function(i, object) {
+//                    map[object.nome] = object;
+//                    objects.push(object.nome);
+//                });      
+//                process(objects);
+//    		}); 
+//	
+//	$.post( "test.php", { func: "getNameAndTime" }, function( data ) {
+//		  console.log( data.name ); // John
+//		  console.log( data.time ); // 2pm
+//		}, "json");
+	$('#allegatoInserisci').click(function() {
+		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
+	});
+
+    
+    
 });
+

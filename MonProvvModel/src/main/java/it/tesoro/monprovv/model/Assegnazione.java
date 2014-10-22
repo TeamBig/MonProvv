@@ -92,8 +92,6 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 		this.stato = stato;
 	}
 	
-	
-
 	public List<Allegato> getAllegatoList() {
 		return allegatoList;
 	}

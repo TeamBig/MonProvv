@@ -26,7 +26,13 @@
 <spring:message var="descrizioneHeader" code="listaAllegati.header.descrizione" />
 <spring:message var="dimensioneHeader" code="listaAllegati.header.dimensione" />
 
-
+<spring:message var="organoHeader" code="listaAssegnatari.header.organo" />
+<spring:message var="presaInCaricoHeader" code="listaAssegnatari.header.presaInCarico" />
+<spring:message var="allegatiAssegnatarioHeader" code="listaAssegnatari.header.allegati" />
+<spring:message var="noteHeader" code="listaAssegnatari.header.note" />
+<spring:message var="cronologiaModificheHeader" code="listaAssegnatari.header.cronologiaModifiche" />
+<spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
+<spring:message var="sollecitoHeader" code="listaAssegnatari.header.sollecito" />
 
 
 	<div class="container inserimento">
@@ -157,7 +163,41 @@
 			</div>
 			<div class="row">
 				<div class="span12">
-					<table class="table table-hover table-bordered">
+						<display:table 	name="${listaAssegnazione}" 
+											requestURI="" sort="external" partialList="false"
+											 id="assegnazione" 
+											class="table table-hover table-bordered"
+											summary="Elenco Assegnatari" style="width: 100%">
+	
+								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" />
+								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
+									<c:choose>
+									      <c:when test="${assegnazione.stato.codice=='ASS'}">
+									      	<i class="icon-check icon-large"></i>
+									      </c:when>
+										  <c:when test="${assegnazione.stato.codice=='RIF'}">
+									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
+									      </c:when>
+									</c:choose>
+								</display:column>
+								<display:column title="${allegatiHeader}" headerScope="col">
+									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
+										<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensione} Kb)</div>
+									</c:forEach>
+								</display:column>
+								<display:column title="${noteHeader}"  headerScope="col" />
+								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
+								</display:column>
+								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
+								</display:column>
+								<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
+								</display:column>
+						</display:table>
+<!-- 					<table class="table table-hover table-bordered">
 						<thead>
 							<tr>
 								<th class="medium">
@@ -253,7 +293,7 @@
 								</td>
 							</tr>
 						</tbody>
-					</table>
+					</table> -->
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="enteAssegnatario">Nuovo assegnatario</label>
