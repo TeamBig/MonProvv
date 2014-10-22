@@ -213,7 +213,7 @@
 							<display:column title="${artHeader}" property="articolo" headerScope="col" />
 							<display:column title="${commaHeader}" property="comma" headerScope="col" />
 							<display:column title="${provvDaAdottareHeader}" property="tipoProvvDaAdottare.descrizione" headerScope="col" />
-							<display:column title="${titoloOggettoHeader}" property="oggetto" headerScope="col" />
+							<display:column title="${titoloOggettoHeader}" property="oggettoAsText" headerScope="col" />
 							<display:column title="${statoDiAttuazioneHeader}" property="stato.descrizione" headerScope="col" />
 							<display:column title="${capofilaHeader}" property="organoCapofila.denominazione" headerScope="col" />
 							<display:column title="${proponenteHeader}" property="organoConcertante.denominazione" headerScope="col" />

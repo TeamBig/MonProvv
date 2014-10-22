@@ -17,12 +17,12 @@
 	<security:authentication property="principal.ruoloCorrente.descrizione" var="ruolo" />
 	<security:authentication property="principal.utente.organo.denominazione" var="organo" />
 
-	<span class="utente">Utente: ${nome} ${cognome} (Ruolo ${ruolo}) - ${organo} - <a id="popoverNotifiche" href="#">2 messaggi non letti</a> - 
-		<a href="<c:url value="/j_spring_security_logout" />" title="logout - ${nome} ${cognome}">ESCI</a>
+	<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="#">2 messaggi non letti</a> - 
+		<a href="<c:url value="/j_spring_security_logout" />" title="logout - ${nome} ${cognome}"><i class="icon-signout"></i></a>
 	 </span>
 </security:authorize>
 <security:authorize access="!isAuthenticated()">
-	<span class="utente"><a href="${base}/private">ACCEDI</a></span>
+	<span class="utente"><a href="${base}/private">ACCEDI <i class="icon-signin"></i></a></span>
 </security:authorize>
  
 
