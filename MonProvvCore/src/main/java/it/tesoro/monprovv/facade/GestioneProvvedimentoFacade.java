@@ -13,9 +13,9 @@ import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,35 +59,88 @@ public class GestioneProvvedimentoFacade {
 		return listaGoverno;
 	}
 	
-	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page){
-		HashMap<String, Object> params = new HashMap<String, Object>();
+	
+	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page) {
+		List<String> order = new ArrayList<String>();
+		order.add("id");
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		searchPatternObjects = getCriteriRicercaList(provvDto);
+		return provvedimentoDAO.findByPattern(searchPatternObjects, page, order);
+	}
+	
+	public int countRicercaProvvedimenti(RicercaProvvedimentoDto provvDto) {
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		searchPatternObjects = getCriteriRicercaList(provvDto);
+		return provvedimentoDAO.countByPattern(searchPatternObjects);
+	}
+	
+	private List<SearchPatternUtil> getCriteriRicercaList(RicercaProvvedimentoDto provvDto){
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
 		if(!StringUtils.isEmpty(provvDto.getArt())){
-			params.put("articolo", provvDto.getArt());
+			SearchPatternUtil pattern = new SearchPatternUtil("articolo",provvDto.getArt(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getComma())){
-			params.put("comma", provvDto.getComma());
+			SearchPatternUtil pattern = new SearchPatternUtil("comma",provvDto.getComma(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto())){
-			params.put("oggetto", provvDto.getTitoloOggetto());
+			SearchPatternUtil pattern = new SearchPatternUtil("oggetto",provvDto.getTitoloOggetto(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getFonteNormativa())){
-			params.put("fonteNormativa", provvDto.getFonteNormativa());
+			SearchPatternUtil pattern = new SearchPatternUtil("fonteNormativa",provvDto.getFonteNormativa(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTipologia())){
-			params.put("tipologia", provvDto.getTipologia());
+			SearchPatternUtil pattern = new SearchPatternUtil("tipologia",provvDto.getTipologia().getId().toString(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTipoGoverno())){
-			params.put("governo", provvDto.getTipoGoverno());
+			SearchPatternUtil pattern = new SearchPatternUtil("governo",provvDto.getTipoGoverno().getId().toString(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione())){
-			params.put("stato", provvDto.getStatoDiAttuazione());
+			SearchPatternUtil pattern = new SearchPatternUtil("stato",provvDto.getStatoDiAttuazione().getId().toString(),true,true);
+			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare())){
-			params.put("tipoProvvDaAdottare", provvDto.getTipoProvvDaAdottare());
+			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),true,true);
+			searchPatternObjects.add(pattern);
 		}
-		List<Provvedimento> listaProvvedimenti = provvedimentoDAO.findByProperty(params);
-		return listaProvvedimenti;
+		return searchPatternObjects;		
 	}
+	
+	
+//	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page){
+//		HashMap<String, Object> params = new HashMap<String, Object>();
+//		if(!StringUtils.isEmpty(provvDto.getArt())){
+//			params.put("articolo", provvDto.getArt());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getComma())){
+//			params.put("comma", provvDto.getComma());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto())){
+//			params.put("oggetto", provvDto.getTitoloOggetto());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getFonteNormativa())){
+//			params.put("fonteNormativa", provvDto.getFonteNormativa());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTipologia())){
+//			params.put("tipologia", provvDto.getTipologia());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTipoGoverno())){
+//			params.put("governo", provvDto.getTipoGoverno());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione())){
+//			params.put("stato", provvDto.getStatoDiAttuazione());
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare())){
+//			params.put("tipoProvvDaAdottare", provvDto.getTipoProvvDaAdottare());
+//		}
+//		List<Provvedimento> listaProvvedimenti = provvedimentoDAO.findByProperty(params);
+//		return listaProvvedimenti;
+//	}
 
 	public List<TipoProvvedimento> initTipologia() {
 		List<String> order = new ArrayList<String>();
@@ -117,6 +170,10 @@ public class GestioneProvvedimentoFacade {
 	public Allegato getAllegatoById(Integer allegatoId) {
 		Allegato allegato  = allegatoDAO.findById(allegatoId);
 		return allegato;
+	}
+
+	public Integer countAllProvvedimenti() {
+		return provvedimentoDAO.countAll();
 	}
 
 }

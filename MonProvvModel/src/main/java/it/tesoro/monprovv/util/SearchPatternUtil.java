@@ -13,6 +13,12 @@ public class SearchPatternUtil implements Serializable{
 	
 	public SearchPatternUtil() {
 	}
+	public SearchPatternUtil(String nomeCampo, String pattern, boolean preponi, boolean postponi) {
+		this.nomeCampo = nomeCampo;
+		this.pattern = pattern;
+		this.preponi = preponi;
+		this.postponi = postponi;
+	}
 	
 	public String getNomeCampo() {
 		return nomeCampo;

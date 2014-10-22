@@ -5,6 +5,7 @@ import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
+import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class GestioneProvvedimentoController {
@@ -50,7 +53,7 @@ public class GestioneProvvedimentoController {
 		} else {
 			listProvvedimenti = initAllProvvedimenti(1);
 		}
-		model.addAttribute("tableProvvedimentiSize", listProvvedimenti.size());
+		model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 		return "ricercaProv";
 	}
@@ -67,11 +70,17 @@ public class GestioneProvvedimentoController {
 			) {
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
 		if(ps!=null){
-			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, ps.getPage());
+			if(StringUtils.isEmpty( provvedimento ) )
+				listProvvedimenti = gestioneProvvedimentoFacade.initAllProvvedimenti(ps.getPage());
+			else
+				listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, ps.getPage());
 		} else {
 			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, 1);
 		}
-		model.addAttribute("tableProvvedimentiSize", listProvvedimenti.size());
+		if(StringUtils.isEmpty( provvedimento ) )
+			model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
+		else
+			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 		
 
@@ -87,6 +96,9 @@ public class GestioneProvvedimentoController {
 			List<Allegato> listaAllegati = provvedimentoDettaglio.getAllegatiList();
 			model.addAttribute("tableAllegatiSize", listaAllegati.size());
 			model.addAttribute("listaAllegati", listaAllegati);
+			List<Assegnazione> listaAssegnazione = provvedimentoDettaglio.getAssegnazioneList();
+//			model.addAttribute("listaAssegnazioneSize", listaAssegnazione.size());
+			model.addAttribute("listaAssegnazione", listaAssegnazione);
 			
 			retVal = "provvedimentoDettaglio";
 		}
@@ -144,9 +156,22 @@ public class GestioneProvvedimentoController {
 		return null;
 	}
 	
+	
+	@RequestMapping(value={"/private/ricercaProv/modifica/inserisciAllegato"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String inserisciAllegato(HttpServletRequest request) {
+		request.getParameterMap();
+		request.getParameterNames();
+		System.out.println("herer");
+		
+		return "";
+	}
 
 	private List<Provvedimento> initAllProvvedimenti(Integer page) {
 		return gestioneProvvedimentoFacade.initAllProvvedimenti(page);
+	}
+	private Integer countAllProvvedimenti() {
+		return gestioneProvvedimentoFacade.countAllProvvedimenti();
 	}
 	
 	@ModelAttribute("listaStatoDiAttuazione")
