@@ -2,8 +2,10 @@ package it.tesoro.monprovv.model;
 
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Clob;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
@@ -18,9 +20,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.io.IOUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -111,6 +115,15 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
 	
+	@Transient
+	public String getOggettoAsText() throws IOException, SQLException {
+	
+		if (oggetto != null) {
+			return IOUtils.toString(oggetto.getCharacterStream());
+		}
+		
+		return null;
+	}
 	
 	public Integer getId() {
 		return id;

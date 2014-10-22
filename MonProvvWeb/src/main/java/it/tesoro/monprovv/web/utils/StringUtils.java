@@ -1,14 +1,15 @@
 package it.tesoro.monprovv.web.utils;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.sql.Clob;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
+import org.apache.commons.io.IOUtils;
 
 public class StringUtils {
 
@@ -58,18 +59,10 @@ public class StringUtils {
 	}
 
 	public static String convertClobToString(Clob cl) throws IOException, SQLException {
-		Reader stream = cl.getCharacterStream();
-		BufferedReader reader = new BufferedReader(stream);
-		StringBuffer sb = new StringBuffer();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line);
+		if (cl != null) {
+			return IOUtils.toString(cl.getCharacterStream());
 		}
-		stream.close();
-		if (sb.length() > 0) {
-			return sb.toString();
-		}
-		return "";
+		return null;
 	}
 	
 	@SuppressWarnings("null")

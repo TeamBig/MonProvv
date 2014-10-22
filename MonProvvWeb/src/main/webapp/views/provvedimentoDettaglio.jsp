@@ -83,7 +83,7 @@
 						<div class="control-group">
 							<span class="control-label">${titoloOggettoHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.oggetto}</span>
+								<span>${provvedimentoDettaglio.oggettoAsText}</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -197,103 +197,6 @@
 									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
 								</display:column>
 						</display:table>
-<!-- 					<table class="table table-hover table-bordered">
-						<thead>
-							<tr>
-								<th class="medium">
-									Organo
-								</th>
-								<th>
-									Presa in carico
-								</th>
-								<th class="medium">
-									Allegati
-								</th>
-								<th>
-									Note
-								</th>
-								<th>
-									Cronologia Modifiche
-								</th>
-								<th class="center">
-									Elimina
-								</th>								
-								<th class="center">
-									Sollecito
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="vcenter">
-									Ag. Territorio 
-								</td>
-								<td class="vcenter center">
-									<i class="icon-check icon-large"></i>
-								</td>
-								<td>
-									<a href="" class="download">Documento 1</a> (PDF - 1Mb)<br>
-									<a href="" class="download">Documento 2</a> (Excel - 350Kb)<br>
-									<a href="" class="download">Documento 3</a> (Testo - 1Kb) <br>
-								</td>
-								<td>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-								</td>
-								<td class="vcenter center">
-									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
-								</td>	
-								<td class="vcenter center">
-									<i class="icon-trash icon-large gray"></i>
-								</td>
-								<td class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</td>
-							</tr>
- 							<tr>
-								<td>
-									MEF (Dipto finanze)  
-								</td>
-								<td class="vcenter center">
-									<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
-								</td>
-								<td>
-								</td>
-								<td>
-									
-								</td>
-								<td class="vcenter center">
-									<a href="#modalCronologia" data-toggle="modal"><i class="icon-time icon-large" title="Apri cronologia"></i></a>
-								</td>	
-								<td class="vcenter center">
-									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
-								</td>
-								<td class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</td>															
-							</tr>
-							<tr id="assegnatarioDipTesoro">
-								<td class="vcenter">
-									Dip.to Tesoro
-								</td>
-								<td class="vcenter">
-									
-								</td>
-								<td class="vcenter">
-									
-								</td>
-								<td>
-									
-								</td>
-								<td class="vcenter center">
-								</td>									
-								<td class="vcenter center">
-									<a href="#" id="deleteEnte"><i class="icon-trash icon-large gray"></i></a>
-								</td>
-								<td>
-								</td>
-							</tr>
-						</tbody>
-					</table> -->
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="enteAssegnatario">Nuovo assegnatario</label>
