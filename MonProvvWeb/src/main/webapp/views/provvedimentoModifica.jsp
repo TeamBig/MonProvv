@@ -36,6 +36,7 @@
 			</div>
 		</div>
 		<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
+		<springform:hidden path="id" id="idProvvedimento" />
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
@@ -145,7 +146,7 @@
 								<display:column title="${idHeader}" property="id" headerScope="col" />
 								<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
 									<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-									<a href="${urlDownload}" class="download">${allegato.nomefile}</a>
+									<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 								</display:column>
 								<display:column title="${dimensioneHeader}" headerScope="col">
 									<c:out value="${allegato.dimensione} Kb"></c:out>
@@ -198,10 +199,10 @@
 								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice=='ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
-										  <c:when test="${assegnazione.stato.codice=='RIF'}">
+										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
 									      </c:when>
 									</c:choose>

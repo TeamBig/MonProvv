@@ -104,6 +104,25 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Valid
 	private Organo organoConcertante;
 	
+	@Column(name = "DATA_ATTO")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date dataAtto;
+	
+	@Column(name = "NUMERO_ATTO")
+	private Integer numeroAtto;
+	
+	@Column(name = "COLL_NORMATIVA")
+	private String collNormativa;
+	
+	@Column(name = "NOTE_INTERNE", length = 4000)
+	private String noteInterne;
+	
+	@ManyToOne(targetEntity=TipoAtto.class)
+    @JoinColumn(name="ID_TIPO_ATTO", referencedColumnName="ID_TIPO_ATTO")
+	@Valid
+	private TipoAtto tipoAtto;
+	
 	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.LAZY, mappedBy="provvedimento")
 	private List<ProvvedimentiParent> provvedimentiParent;
 	

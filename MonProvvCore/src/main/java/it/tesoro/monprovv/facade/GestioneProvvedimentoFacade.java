@@ -141,6 +141,11 @@ public class GestioneProvvedimentoFacade {
 //		List<Provvedimento> listaProvvedimenti = provvedimentoDAO.findByProperty(params);
 //		return listaProvvedimenti;
 //	}
+	
+	public Allegato inserisciAllegato(Allegato allegato) {
+		allegatoDAO.save(allegato);
+		return allegato;
+	}
 
 	public List<TipoProvvedimento> initTipologia() {
 		List<String> order = new ArrayList<String>();
