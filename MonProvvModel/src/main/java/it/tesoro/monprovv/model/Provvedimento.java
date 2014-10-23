@@ -112,8 +112,8 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Column(name = "NUMERO_ATTO")
 	private Integer numeroAtto;
 	
-	@Column(name = "COLL_NORMATIVA")
-	private String collNormativa;
+	@Column(name = "COLL_NORMATTIVA")
+	private String collNormattiva;
 	
 	@Column(name = "NOTE_INTERNE", length = 4000)
 	private String noteInterne;
@@ -280,6 +280,46 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setAssegnazioneList(List<Assegnazione> assegnazioneList) {
 		this.assegnazioneList = assegnazioneList;
+	}
+
+	public Date getDataAtto() {
+		return dataAtto;
+	}
+
+	public void setDataAtto(Date dataAtto) {
+		this.dataAtto = dataAtto;
+	}
+
+	public Integer getNumeroAtto() {
+		return numeroAtto;
+	}
+
+	public void setNumeroAtto(Integer numeroAtto) {
+		this.numeroAtto = numeroAtto;
+	}
+
+	public String getCollNormattiva() {
+		return collNormattiva;
+	}
+
+	public void setCollNormattiva(String collNormattiva) {
+		this.collNormattiva = collNormattiva;
+	}
+
+	public String getNoteInterne() {
+		return noteInterne;
+	}
+
+	public void setNoteInterne(String noteInterne) {
+		this.noteInterne = noteInterne;
+	}
+
+	public TipoAtto getTipoAtto() {
+		return tipoAtto;
+	}
+
+	public void setTipoAtto(TipoAtto tipoAtto) {
+		this.tipoAtto = tipoAtto;
 	}
 
 	@Override

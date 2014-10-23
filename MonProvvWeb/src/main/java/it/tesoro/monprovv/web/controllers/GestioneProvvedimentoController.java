@@ -11,8 +11,8 @@ import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.util.StringUtils;
 import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
-import it.tesoro.monprovv.web.utils.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -48,17 +48,30 @@ public class GestioneProvvedimentoController {
 	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
 
 	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.GET)
-	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
+	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
 		model.addAttribute("ricercaProvvedimenti", dto);
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
 		if(ps!=null){
-			listProvvedimenti = initAllProvvedimenti(ps.getPage());
+			if(StringUtils.isEmpty( provvedimento ) )
+				listProvvedimenti = gestioneProvvedimentoFacade.initAllProvvedimenti(ps.getPage());
+			else
+				listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, ps.getPage());
 		} else {
-			listProvvedimenti = initAllProvvedimenti(1);
+			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, 1);
 		}
-		model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
+		if(StringUtils.isEmpty( provvedimento ) )
+			model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
+		else
+			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
+//		if(ps!=null){
+//			listProvvedimenti = initAllProvvedimenti(ps.getPage());
+//		} else {
+//			listProvvedimenti = initAllProvvedimenti(1);
+//		}
+//		model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
+//		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 		return "ricercaProv";
 	}
 	

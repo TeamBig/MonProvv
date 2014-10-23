@@ -1,6 +1,7 @@
 package it.tesoro.monprovv.web.utils;
 
 import it.tesoro.monprovv.model.Allegato;
+import it.tesoro.monprovv.util.StringUtils;
 
 import java.io.Serializable;
 

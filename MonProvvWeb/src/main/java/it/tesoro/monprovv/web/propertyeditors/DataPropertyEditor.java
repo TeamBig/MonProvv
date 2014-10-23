@@ -1,6 +1,6 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
-import it.tesoro.monprovv.web.utils.StringUtils;
+import it.tesoro.monprovv.util.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 import java.text.ParseException;

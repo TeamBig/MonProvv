@@ -6,8 +6,8 @@ import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.IdDescrizioneDto;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.util.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
-import it.tesoro.monprovv.web.utils.StringUtils;
 import it.tesoro.monprovv.web.validators.UtenteValidator;
 
 import java.util.ArrayList;
