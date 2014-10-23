@@ -281,9 +281,9 @@ $(document).ready(function() {
     	
     });
     
-    $("#denominazioneNuovoOrganoDiv").hide();
-    $("#denominazioneEstesaNuovoOrganoDiv").hide();
-    $("#listaOrganiInterniNuovoOrganoDiv").hide();
+//    $("#denominazioneNuovoOrganoDiv").hide();
+//    $("#denominazioneEstesaNuovoOrganoDiv").hide();
+//    $("#listaOrganiInterniNuovoOrganoDiv").hide();
 
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
@@ -344,7 +344,7 @@ $(document).ready(function() {
             objects = [];
             map = {};
             $.get(
-            		'enti/nuovo/autocompletamento',
+            		'nuovo/autocompletamento',
             		{ query: query },
             		function (data) {
             			$.each(data, function(i, object) {
@@ -367,8 +367,8 @@ $(document).ready(function() {
     	}
     });
 
-	$("#inserimentoUtenteInternoDiv").hide();
-	$("#inserimentoUtenteEsternoDiv").hide();
+//	$("#inserimentoUtenteInternoDiv").hide();
+//	$("#inserimentoUtenteEsternoDiv").hide();
 	
     $('#tipoNuovoUtente').on('change', function () {
     	var val = $(this).val();
@@ -377,16 +377,64 @@ $(document).ready(function() {
     	if(val==optionInterno){
     		//Inerimento Intenro
     		$("#inserimentoUtenteInternoDiv").show();
+    		$("#inserimentoUtenteInternoDivOrg").show();
     		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#cognome").attr('disabled', true);
+    		$("#nome").attr('disabled', true);
+    		$("#codiceFiscale").attr('disabled', true);
+    		$("#email").attr('disabled', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
     		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
     		$("#inserimentoUtenteEsternoDiv").show();
+    		$("#cognome").removeAttr('disabled');
+    		$("#nome").removeAttr('disabled');
+    		$("#codiceFiscale").removeAttr('disabled');
+    		$("#email").removeAttr('disabled');
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
     		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
+    		$("#cognome").attr('disabled', true);
+    		$("#nome").attr('disabled', true);
+    		$("#codiceFiscale").attr('disabled', true);
+    		$("#email").attr('disabled', true);
     	}
     });
+    
+    if($('#tipoNuovoUtente').length > 0){
+    	var val = $('#tipoNuovoUtente').val();
+    	var optionInterno = "I"; //Interna
+    	var optionEsterno = "E"; //Esterna
+    	if(val==optionInterno){
+    		//Inerimento Intenro
+    		$("#inserimentoUtenteInternoDiv").show();
+    		$("#inserimentoUtenteInternoDivOrg").show();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#cognome").attr('disabled', true);
+    		$("#nome").attr('disabled', true);
+    		$("#codiceFiscale").attr('disabled', true);
+    		$("#email").attr('disabled', true);
+    	}else if(val==optionEsterno){
+    		//Inserimento Esterno
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
+    		$("#inserimentoUtenteEsternoDiv").show();
+    		$("#cognome").removeAttr('disabled');
+    		$("#nome").removeAttr('disabled');
+    		$("#codiceFiscale").removeAttr('disabled');
+    		$("#email").removeAttr('disabled');
+    	}else{
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
+    		$("#cognome").attr('disabled', true);
+    		$("#nome").attr('disabled', true);
+    		$("#codiceFiscale").attr('disabled', true);
+    		$("#email").attr('disabled', true);
+    	}
+    }
     
     
     $('#organoDenominazione').attr('autocomplete','off');
@@ -396,7 +444,7 @@ $(document).ready(function() {
             objects = [];
             map = {};
             $.get(
-            		'utenti/nuovo/autocomporganoesterno',
+            		'nuovo/autocomporganoesterno',
             		{ query: query },
             		function (data) {
             			$.each(data, function(i, object) {
