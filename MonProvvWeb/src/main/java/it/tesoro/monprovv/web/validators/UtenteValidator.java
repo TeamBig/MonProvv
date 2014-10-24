@@ -1,7 +1,7 @@
 package it.tesoro.monprovv.web.validators;
 
 import it.tesoro.monprovv.model.Utente;
-import it.tesoro.monprovv.web.utils.StringUtils;
+import it.tesoro.monprovv.util.StringUtils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

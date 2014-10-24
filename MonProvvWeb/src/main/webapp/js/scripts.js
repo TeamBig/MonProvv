@@ -473,58 +473,35 @@ $(document).ready(function() {
 	});
 	
 	$("button#allegatoInserisci").click(function(){
-		var aFormData = new FormData();
-		aFormData.append("filename", $('#allegatoProvvedimento').get(0).files[0]);
-	    $("#allegatoForm input").each(function(i) {
-	        aFormData.append($(this).attr("name"), $(this).val());
+			var formData = new FormData();
+		jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
+			formData.append('file', file);
+		});
+	    $("#allegatoForm input[type=text]").each(function(i) {
+	    	formData.append($(this).attr("name"), $(this).val());
 	    });
-		
-		
-		
-//		var formData = $('form#allegatoForm').serialize();
-//		var files = $('input[type=file]');
-//		// You should sterilise the file names
-//		$.each(files, function(key, value)
-//		{
-//			formData = formData + '&filenames[]=' + value;
-//		});
-//		alert(formData);
+	    formData.append('idProvvedimento', $('#idProvvedimento').val());
+
         $.ajax({
-        	type: "GET",
-        	url: "inserisciAllegato",
-            data: aFormData,
-            cache: false,
-            contentType: false,
-            processData: false,
-        	success: function(msg){
-        		alert("aggiunto allegato!!");
-        		alert(msg);
+        	type: 'POST',
+        	url: 'inserisciAllegato',
+            data: formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				$('#allegato > tbody:last').append(response);
+				//var data = jQuery.parseJSON(response);
         	},
         	error: function(){
-        		alert("failure");
+        		alert("Inserimento non riuscito");
         	}
         });
 	});
 
-	
-//    $.post(
-//    		'provvedimento/aggiungi/allegato',
-//    		{ query: query },
-//    		function (data) {
-//    			$.each(data, function(i, object) {
-//                    map[object.nome] = object;
-//                    objects.push(object.nome);
-//                });      
-//                process(objects);
-//    		}); 
-//	
-//	$.post( "test.php", { func: "getNameAndTime" }, function( data ) {
-//		  console.log( data.name ); // John
-//		  console.log( data.time ); // 2pm
-//		}, "json");
-	$('#allegatoInserisci').click(function() {
-		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
-	});
+//	$('#allegatoInserisci').click(function() {
+//		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
+//	});
 
     
     

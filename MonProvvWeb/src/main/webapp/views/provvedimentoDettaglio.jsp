@@ -149,7 +149,7 @@
 									<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 								</display:column>
 								<display:column title="${dimensioneHeader}" headerScope="col">
-									<c:out value="${allegato.dimensione} Kb"></c:out>
+									<c:out value="${allegato.dimensioneAsText}"></c:out>
 								</display:column>
 						</display:table>
 					</div>
@@ -172,10 +172,10 @@
 								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice=='ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
-										  <c:when test="${assegnazione.stato.codice=='RIF'}">
+										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
 									      </c:when>
 									</c:choose>

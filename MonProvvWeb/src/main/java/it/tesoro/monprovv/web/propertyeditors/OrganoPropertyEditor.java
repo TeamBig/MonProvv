@@ -2,7 +2,7 @@ package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.model.Organo;
-import it.tesoro.monprovv.web.utils.StringUtils;
+import it.tesoro.monprovv.util.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 

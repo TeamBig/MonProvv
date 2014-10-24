@@ -47,17 +47,17 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 	@Column(name = "ASSEGNAZIONE_ID_UO")
 	private Integer assegnazioneIdUo;
 
-	@Column(name = "ASSEGNAZIONE_ID_DIP")
-	private Integer assegnazioneIdDip;
-	
-	@Column(name = "ASSEGNAZIONE_NOME_DIP", length = 60)
-	private String assegnazioneNomeDip;
-
-	@Column(name = "ASSEGNAZIONE_NOME_UO", length = 60)
-	private String assegnazioneNomeUo;
-
-	@Column(name = "ASSEGNAZIONE_NOME_ESTESO_UO", length = 400)
-	private String assegnazioneNomeEstesoUo;
+//	@Column(name = "ASSEGNAZIONE_ID_DIP")
+//	private Integer assegnazioneIdDip;
+//	
+//	@Column(name = "ASSEGNAZIONE_NOME_DIP", length = 60)
+//	private String assegnazioneNomeDip;
+//
+//	@Column(name = "ASSEGNAZIONE_NOME_UO", length = 60)
+//	private String assegnazioneNomeUo;
+//
+//	@Column(name = "ASSEGNAZIONE_NOME_ESTESO_UO", length = 400)
+//	private String assegnazioneNomeEstesoUo;
 
 	@Column(name = "DATA_NASCITA")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -170,37 +170,37 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 		this.assegnazioneIdUo = assegnazioneIdUo;
 	}
 
-	public Integer getAssegnazioneIdDip() {
-		return assegnazioneIdDip;
-	}
-
-	public void setAssegnazioneIdDip(Integer assegnazioneIdDip) {
-		this.assegnazioneIdDip = assegnazioneIdDip;
-	}
-
-	public String getAssegnazioneNomeDip() {
-		return assegnazioneNomeDip;
-	}
-
-	public void setAssegnazioneNomeDip(String assegnazioneNomeDip) {
-		this.assegnazioneNomeDip = assegnazioneNomeDip;
-	}
-
-	public String getAssegnazioneNomeUo() {
-		return assegnazioneNomeUo;
-	}
-
-	public void setAssegnazioneNomeUo(String assegnazioneNomeUo) {
-		this.assegnazioneNomeUo = assegnazioneNomeUo;
-	}
-
-	public String getAssegnazioneNomeEstesoUo() {
-		return assegnazioneNomeEstesoUo;
-	}
-
-	public void setAssegnazioneNomeEstesoUo(String assegnazioneNomeEstesoUo) {
-		this.assegnazioneNomeEstesoUo = assegnazioneNomeEstesoUo;
-	}
+//	public Integer getAssegnazioneIdDip() {
+//		return assegnazioneIdDip;
+//	}
+//
+//	public void setAssegnazioneIdDip(Integer assegnazioneIdDip) {
+//		this.assegnazioneIdDip = assegnazioneIdDip;
+//	}
+//
+//	public String getAssegnazioneNomeDip() {
+//		return assegnazioneNomeDip;
+//	}
+//
+//	public void setAssegnazioneNomeDip(String assegnazioneNomeDip) {
+//		this.assegnazioneNomeDip = assegnazioneNomeDip;
+//	}
+//
+//	public String getAssegnazioneNomeUo() {
+//		return assegnazioneNomeUo;
+//	}
+//
+//	public void setAssegnazioneNomeUo(String assegnazioneNomeUo) {
+//		this.assegnazioneNomeUo = assegnazioneNomeUo;
+//	}
+//
+//	public String getAssegnazioneNomeEstesoUo() {
+//		return assegnazioneNomeEstesoUo;
+//	}
+//
+//	public void setAssegnazioneNomeEstesoUo(String assegnazioneNomeEstesoUo) {
+//		this.assegnazioneNomeEstesoUo = assegnazioneNomeEstesoUo;
+//	}
 
 	public Date getDataNascita() {
 		return dataNascita;
