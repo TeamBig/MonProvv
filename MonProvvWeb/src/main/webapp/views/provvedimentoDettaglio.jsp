@@ -169,7 +169,7 @@
 											class="table table-hover table-bordered"
 											summary="Elenco Assegnatari" style="width: 100%">
 	
-								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" />
+								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
 									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
@@ -180,13 +180,13 @@
 									      </c:when>
 									</c:choose>
 								</display:column>
-								<display:column title="${allegatiHeader}" headerScope="col">
+								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
 										<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensione} Kb)</div>
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensioneAsText})</div>
 									</c:forEach>
 								</display:column>
-								<display:column title="${noteHeader}"  headerScope="col" />
+								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
 								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
 								</display:column>

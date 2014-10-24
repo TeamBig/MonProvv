@@ -2,8 +2,10 @@ package it.tesoro.monprovv.model;
 
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Clob;
+import java.sql.SQLException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,9 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.io.IOUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -75,6 +79,16 @@ public class Nota extends AbstractCommonEntity implements Serializable {
 
 	public void setFlagVisibile(String flagVisibile) {
 		this.flagVisibile = flagVisibile;
+	}
+	
+	@Transient
+	public String getTestoAsText() throws IOException, SQLException {
+	
+		if (testo != null) {
+			return IOUtils.toString(testo.getCharacterStream());
+		}
+		
+		return null;
 	}
 
 	@Override
