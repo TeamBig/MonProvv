@@ -4,6 +4,7 @@ import it.tesoro.monprovv.annotations.PagingAndSorting;
 import it.tesoro.monprovv.dto.CodiceDescrizioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.IdDescrizioneDto;
+import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.util.StringUtils;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,30 +59,25 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	}
 	
 	@ModelAttribute("ricercaUtente")
-	public Utente ricercaUtente(HttpServletRequest request) {
-		return new Utente();
+	public UtenteDto ricercaUtente(HttpServletRequest request, @ModelAttribute("ricercaUtente") UtenteDto ricercaUtente) {
+		if(ricercaUtente!=null)
+			return ricercaUtente;
+		else
+			return new UtenteDto();
 	}
 	
 	@RequestMapping(value= {"/private/admin/utenti"}, method = RequestMethod.GET)
 	public String initGet(Model model, 
-			@ModelAttribute("ricercaUtente") Utente ricercaUtente,	
+			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,	
 			@PagingAndSorting(tableId = tableUtenteUID) DisplayTagPagingAndSorting ps)  {
 		
 		List<Utente> listaUtenti = new ArrayList<Utente>();
 		int tableRisultatiSize = 0;
 		
-		if(StringUtils.isEmpty( ricercaUtente.getCodiceFiscale() ) ){
-			//Find All
-			listaUtenti =gestioneUtenteFacade.recupera( (ps != null)? ps.getPage() : 1);	
-			tableRisultatiSize = gestioneUtenteFacade.count();
-			
-		}else{
-			//Ho impostato un filtro
-			listaUtenti =gestioneUtenteFacade.recupera( ((ps != null)? ps.getPage() : 1), ricercaUtente);	
-			tableRisultatiSize = gestioneUtenteFacade.count(ricercaUtente);
-		
-		}
-		
+		//Ho impostato un filtro
+		listaUtenti =gestioneUtenteFacade.recupera( ((ps != null)? ps.getPage() : 1), ricercaUtente);	
+		tableRisultatiSize = gestioneUtenteFacade.count(ricercaUtente);
+
 		model.addAttribute("listaUtenti", listaUtenti);
 		model.addAttribute("tableRisultatiSize", tableRisultatiSize);	
 		
@@ -93,12 +90,12 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 			@RequestParam(required = false) String buttonNew, 
 			@RequestParam(required = false) String buttonFind, 
 			@RequestParam(required = false) String buttonClean, 
-			@ModelAttribute("ricercaUtente") Utente ricercaUtente,				
+			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,				
 			HttpServletRequest request)  {
 		String retval = "utenteHomeUtente";
 		
 		if("clean".equals( buttonClean )){
-			ricercaUtente = new Utente();
+			ricercaUtente = new UtenteDto();
 			model.addAttribute("ricercaUtente", ricercaUtente);
 		}
 		
@@ -126,10 +123,17 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		model.addAttribute("tipos", tipos );
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/nuovo/autocomporganoesterno"}, method = RequestMethod.GET)
+	@RequestMapping(value= {"/private/admin/utenti/nuovo/autocomporganoesterno", "/private/admin/utenti/modifica/{1}/autocomporganoesterno"}, method = RequestMethod.GET)
 	@ResponseBody
-	public List<IdDescrizioneDto> autocompletamentoUo(@RequestParam("query") String query)  {
+	public List<IdDescrizioneDto> autocompletamentoUo(@RequestParam("query") String query){
 		List<IdDescrizioneDto> result = gestioneUtenteFacade.recuperaOrganiEsterni(query);
+		return result;
+	}
+	
+	@RequestMapping(value= {"/private/admin/utenti/nuovo/autocomputenteinterno"}, method = RequestMethod.GET)
+	@ResponseBody
+	public List<UtenteDto> autocompletamentoUtenteInterno(@RequestParam("query") String query){
+		List<UtenteDto> result = gestioneUtenteFacade.recuperaUtentiInterni(query);
 		return result;
 	}
 	
@@ -151,50 +155,109 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 			@RequestParam(required = false) String buttonCancel,
 			BindingResult errors, 
 			HttpServletRequest request)  {
-		
-		
-		String retval = "redirect:/private/admin/utenti";
-		
+	
+		String retval = "redirect:/private/admin/utenti";	
 		if("save".equals(buttonSave)){
-			
 			utenteValidator.validate(utenteToEdit, errors);
-			
-			if( !errors.hasErrors() ){
-			
+			if( !errors.hasErrors() ){			
 				if( "I".equals( utenteToEdit.getFlagIntEst() ) ) {
 					//Interno
-
 				}else{
 					//Esterno
-
-				}
-				
-				gestioneUtenteFacade.inserisciUtente(utenteToEdit);
-				
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);
-				
-				model.addAttribute("utenteToEdit", utenteToEdit );
-				
-				retval = "utenteDettUtente"; 
-										
+					utenteToEdit.setUtenteAstage(null);
+				}				
+				gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
+				model.addAttribute("utenteToEdit", utenteToEdit );				
+				retval = "utenteDettUtente"; 										
 			}else{
-
 				for (FieldError f : errors.getFieldErrors()) {
 					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 				}
-				
 				loadCombo4NewUtente(model);
 				model.addAttribute("utenteToEdit", utenteToEdit);
-				
 				retval = "utenteNewUtente";
 			}
-			
 		}else if("cancel".equals(buttonCancel)){
-			
 		}
-		
 		return retval;
 	}
 	
+	@RequestMapping(value= {"/private/admin/utenti/dettaglio/{id}"}, method = RequestMethod.GET)
+	public String dettaglioGet(Model model, @PathVariable("id") String id)  {
+		String retVal = "utenteHomeUtente";
+		if( StringUtils.isNotEmpty(id) ){
+			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
+			model.addAttribute("utenteToEdit", utente );
+			retVal = "utenteDettUtente";
+		}
+		return retVal;
+	}
+	
+	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.POST)
+	public String dettaglioPost(@ModelAttribute("utenteToEdit") Utente utente, 
+							Model model,
+							@RequestParam(required = false) String buttonBack, 
+							@RequestParam(required = false) String buttonModify)  {
+		
+		String retVal = "utenteDettUtente";
+		
+		if("back".equals(buttonBack)){
+			retVal = "redirect:/private/admin/utenti";
+		}else if("modify".equals(buttonModify)){
+			retVal = "redirect:/private/admin/utenti/modifica/"+utente.getId();
+		}
+		
+		return retVal;
+	}
+	
+	@RequestMapping(value= {"/private/admin/utenti/modifica/{id}"}, method = RequestMethod.GET)
+	public String modificaGet(Model model, @PathVariable("id") String id)  {
+		String retVal = "utenteHomeUtente";
+		if( StringUtils.isNotEmpty(id) ){
+			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
+			model.addAttribute("utenteToEdit", utente );
+			retVal = "utenteEditUtente";
+		}
+		return retVal;
+	}
+	
+	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.POST)
+	public String modificaPost(@ModelAttribute("utenteToEdit") Utente utente,
+			Model model,
+			@RequestParam(required = false) String buttonSave, 
+			@RequestParam(required = false) String buttonCancel,
+			BindingResult errors, HttpServletRequest request
+			)  {
+		String retVal = "utenteDettUtente";
+		
+		if("save".equals( buttonSave )){
+			
+			utenteValidator.validate(utente, errors);
+			
+			if( !errors.hasErrors() ){
+				
+				Utente newUtente = gestioneUtenteFacade.aggiornaUtente(utente);
+				
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);
+				
+				model.addAttribute("utenteToEdit", newUtente );
+						
+			}else{
+				for (FieldError f : errors.getFieldErrors()) {
+					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+				}
+				model.addAttribute("utenteToEdit", utente);
+				retVal = "utenteEditUtente";
+			}
+		
+		}
+		
+		if("cancel".equals( buttonCancel )){
+			model.addAttribute("utenteToEdit", gestioneUtenteFacade.recuperaUtenteById(utente.getId()));
+		}
+		
+		return retVal;
+	}
 	
 }

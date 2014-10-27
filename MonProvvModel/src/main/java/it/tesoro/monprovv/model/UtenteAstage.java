@@ -108,7 +108,8 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 
 	@Column(name = "PROVINCIA_UO", length = 2)
 	private String provinciaUo;
-
+	
+	@Override
 	public Integer getId() {
 		return id;
 	}

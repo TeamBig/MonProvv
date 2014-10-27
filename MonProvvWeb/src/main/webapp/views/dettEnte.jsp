@@ -38,12 +38,14 @@
 				
 				<div class="row">
 					<div class="span10 offset2 dettaglio">
+						
 						<div class="control-group">
-							<span class="control-label">Id</span>
+							<span class="control-label">${enteTipoHeader}</span>
 							<div class="controls">
-								<span>${organoToEdit.id}</span>
+								<span>${organoToEdit.tipo}</span>
 							</div>
-						</div>			
+						</div>
+							
 						<div class="control-group">
 							<span class="control-label">${denominazioneHeader}</span>
 							<div class="controls">
@@ -63,15 +65,7 @@
 							<div class="controls">
 								<span>${organoToEdit.concertante}</span>
 							</div>
-						</div>
-						
-						<div class="control-group">
-							<span class="control-label">${enteTipoHeader}</span>
-							<div class="controls">
-								<span>${organoToEdit.tipo}</span>
-							</div>
-						</div>
-						
+						</div>	
 								
 					</div>
 				</div>

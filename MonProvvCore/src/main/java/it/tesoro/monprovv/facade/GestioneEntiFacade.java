@@ -90,7 +90,7 @@ public class GestioneEntiFacade {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("nome", "%"+nome.toUpperCase()+"%");
 		String hql = "from UnitaOrgAstage u where upper(u.nome) like :nome and u.id not in ( select o.unitaOrgAstage.id from Organo o where o.unitaOrgAstage is not null ) order by nome asc";
-		return unitaOrgAstageDAO.findByHqlQuery(hql, params);
+		return unitaOrgAstageDAO.findByHqlQueryNumeroRecord(hql, params, 10);
 		
 		
 		

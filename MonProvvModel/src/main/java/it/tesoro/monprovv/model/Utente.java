@@ -172,7 +172,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	}
 
 	public String getOrganoDenominazione() {
-		return organoDenominazione;
+		if(this.organo!=null)
+			return organo.getDenominazione();
+		else
+			return organoDenominazione;
 	}
 
 	public void setOrganoDenominazione(String organoDenominazione) {

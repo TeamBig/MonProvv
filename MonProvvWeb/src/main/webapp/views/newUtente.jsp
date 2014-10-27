@@ -104,13 +104,16 @@
 								<label class="control-label" for="ente">${enteHeader}</label>
 								<div class="controls">
 									<span>
-										<springform:input path="organoDenominazione" id="organoDenominazione" cssClass="input-xlarge"/>
+										<springform:input path="organoDenominazione" id="organoDenominazioneEst" cssClass="input-xlarge"/>
 									</span>
 								</div>
 							</div>
 						</div>
 						
 						<springform:hidden path="organo" id="hiddenIdOrgano"/>
+						<springform:hidden path="utenteAstage" id="hiddenUtenteAstage"/>
+
+						
 					</div>
 				</div>
 				

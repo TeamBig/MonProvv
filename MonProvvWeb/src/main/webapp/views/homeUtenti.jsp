@@ -19,13 +19,48 @@
 <div class="container collapse" id="campiRicerca">
 			
 	<c:url value="/private/admin/utenti" var="formPath" />
-	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
+	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline"><span>Ricerca Utenti</span></h3>
 			</div>
 		</div>			
-		
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${nomeHeader}</label>
+						<div class="controls">
+							<springform:input path="nome" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${cognomeHeader}</label>
+						<div class="controls">
+							<springform:input path="cognome" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${cfHeader}</label>
+						<div class="controls">
+							<springform:input path="codiceFiscale" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="span12">
 				<div class="form-horizontal">
@@ -51,7 +86,7 @@
 	<div class="row">
 		<div class="span12">
 			<c:url value="/private/admin/utenti" var="formPath" />
-			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
+			<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
 				<h3 class="text-left underline">
 					<span>Elenco Utenti</span>
 					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="new">

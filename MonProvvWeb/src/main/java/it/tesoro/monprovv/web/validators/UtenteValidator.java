@@ -26,7 +26,11 @@ public class UtenteValidator implements Validator {
 			
 			if("I".equals( utente.getFlagIntEst() )){
 				
-				
+				if(StringUtils.isEmpty(utente.getNominativo()))
+					errors.rejectValue("cognome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un nominativo");
+				else
+				if(StringUtils.isEmpty(utente.getUtenteAstage()))
+					errors.rejectValue("cognome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un nominativo valido");
 				
 			}else{
 				
