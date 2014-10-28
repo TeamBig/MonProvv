@@ -285,6 +285,8 @@ $(document).ready(function() {
 //    $("#denominazioneEstesaNuovoOrganoDiv").hide();
 //    $("#listaOrganiInterniNuovoOrganoDiv").hide();
 
+    /****** GESTIONE AMMINISTRAZIONE ******/
+
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
@@ -467,43 +469,7 @@ $(document).ready(function() {
     	}
     });
     
-    /****** GESTIONE PROVVEDIMENTO ******/
-	$('#allegatoProvvedimento').change(function() {
-		$('#textAllegato').val($(this).val());
-	});
-	
-	$("button#allegatoInserisci").click(function(){
-			var formData = new FormData();
-		jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
-			formData.append('file', file);
-		});
-	    $("#allegatoForm input[type=text]").each(function(i) {
-	    	formData.append($(this).attr("name"), $(this).val());
-	    });
-	    formData.append('idProvvedimento', $('#idProvvedimento').val());
-
-        $.ajax({
-        	type: 'POST',
-        	url: 'inserisciAllegato',
-            data: formData,
-			dataType : 'text',
-			processData : false,
-			contentType : false,
-			success : function(response) {
-				$('#allegato > tbody:last').append(response);
-				//var data = jQuery.parseJSON(response);
-        	},
-        	error: function(){
-        		alert("Inserimento non riuscito");
-        	}
-        });
-	});
-
-//	$('#allegatoInserisci').click(function() {
-//		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
-//	});
-	
-	$('#nominativoUtente').attr('autocomplete','off');
+    	$('#nominativoUtente').attr('autocomplete','off');
     $('#nominativoUtente').typeahead({
     	minLength: 2,
         source: function(query, process) {
@@ -547,33 +513,118 @@ $(document).ready(function() {
         	$('#hiddenUtenteAstage').val('');
     	}
     });
+    
+    /****** FINE GESTIONE AMMINISTRAZIONE ******/
+    
+    /****** GESTIONE PROVVEDIMENTO ******/
+	$('#allegatoProvvedimento').change(function() {
+		$('#textAllegato').val($(this).val());
+	});
+	
+	$("button#allegatoInserisci").click(function(){
+			var formData = new FormData();
+		jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
+			formData.append('file', file);
+		});
+	    $("#allegatoForm input[type=text]").each(function(i) {
+	    	formData.append($(this).attr("name"), $(this).val());
+	    });
+	    formData.append('idProvvedimento', $('#idProvvedimento').val());
 
-//    $("a#delete4risultatiRicerca").click(function(){
-//    	var id = $(this).parent().siblings(":first").text();    	
-//    	var currentUrl = $(location).attr('pathname');
-//    	var deleteEsito = 'KO';
-//        $.ajax({
-//        	type: 'GET',
-//        	url: currentUrl+'/delete/'+id,
-//			dataType : 'text',
-//			processData : false,
-//			contentType : false,
-//			success : function(response) {
-//				alert('Success');
-//				deleteEsito = 'OK';
-//				
-//        	},
-//        	error: function(){
-//        		alert("Cancellazione non riuscita");
-//        	}
-//        });
-//    	
-//        if( deleteEsito == 'OK' ){
-//        	$(this).parent().parent().remove();
-//        }
-//    	
-//    });
-    
-    
+        $.ajax({
+        	type: 'POST',
+        	url: 'inserisciAllegato',
+            data: formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				eliminaNessunRisultatoAllegato();
+				resetFormAllegati();
+				$('#allegato > tbody:last').append(response);
+				//var data = jQuery.parseJSON(response);
+        	},
+        	error: function(){
+        		alert("Inserimento non riuscito");
+        	}
+        });
+	});
+
+	function eliminaNessunRisultatoAllegato(){
+		if($("#allegato tr.empty")) {
+			$("#allegato tr.empty").fadeOut( 500 );
+		}
+	}
+	function eliminaNessunRisultatoAssegnatario(){
+		if($("#assegnazione tr.empty")) {
+			$("#assegnazione tr.empty").fadeOut( 500 );
+		}
+	}
+	
+	function resetFormAllegati(){
+		$('#allegatoForm').find("input[type=text],input[type=file]").val("");
+	}
+	
+	$("button#aggiornaProvvedimento").click(function(){
+		$( "#provvedimentoModifica" ).submit();
+	});
+	
+	$("button#annullaModificaProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'Annulla')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("button#modificaProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'Modifica')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("a#eliminaAllegato").click(function(){
+		var idAllegato = $(this).parent().siblings(":first").text(); 
+		var trTableToDelete = $(this).parent().parent();
+	    alert(idAllegato);
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'deleteAllegato/'+idAllegato,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				trTableToDelete.remove();
+	    	},
+	    	error: function(){
+	    		alert("error");
+	    	}
+	    });
+	});
+	
+	
+	$("button#insertAssegnatario").click(function(){
+		var formData = $('#assegnazioneForm').serialize();
+	
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'inserisciAssegnatario',
+	        data: formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				eliminaNessunRisultatoAssegnatario();
+				$('#assegnazione > tbody:last').append(response);
+	    	},
+	    	error: function(){
+	    		alert("Inserimento non riuscito");
+	    	}
+	    });
+	});
+    /****** FINE GESTIONE PROVVEDIMENTO ******/
+
 });
 

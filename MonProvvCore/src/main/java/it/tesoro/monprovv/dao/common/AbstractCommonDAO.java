@@ -667,5 +667,20 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<T> findAll(List<String> orderByParams) {
+		log.debug("finding all "+nomeOggetto +" instances");
+		try {
+			String queryString = "from "+nomeOggetto;
+			
+			queryString = addOrderBy(queryString, orderByParams);	
+			
+			Query query= currentSession().createQuery(queryString);
+			return query.list();
+		} catch (Exception re) {
+			log.error("find all failed", re);
+			throw new DatabaseException(re);
+		}
+	}
 }
 	
