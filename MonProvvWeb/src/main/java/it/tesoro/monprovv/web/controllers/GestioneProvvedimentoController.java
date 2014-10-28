@@ -167,7 +167,7 @@ public class GestioneProvvedimentoController {
 				retVal= "redirect:/private/ricercaProv";
 			}
 			if(action.equals("noteallegati")){
-				retVal= "redirect:/private/noteAllegatiProv/"+id;
+				retVal= "redirect:/private/ricercaProv/noteAllegatiProv/"+id;
 			}
 		}
 		return retVal;
