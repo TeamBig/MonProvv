@@ -46,7 +46,7 @@
 						<div class="control-group" id="listaOrganiInterniNuovoOrganoDiv">
 							<label class="control-label" for="unitaOrgAstage">${enteInternoHeader}</label>
 							<div class="controls">
-								<springform:input path="denominazione" id="autocompleteUo" cssClass="input-xlarge"/>
+								<springform:input path="denominazioneAstage" id="autocompleteUo" cssClass="input-xlarge"/>
 								
 								<springform:hidden path="unitaOrgAstage" id="hiddenIdUo"/>
 								<%--
@@ -89,8 +89,8 @@
 				
 				<div class="control-group">
 					<div class="pull-right">
-						<button type="submit" class="btn btn-primary" id="indietro" name="buttonSave" value="OK">Salva &nbsp;<i class="icon-save"></i></button>
-						<button type="submit" class="btn" id="modifica" name="buttonCancel" value="OK">Annulla &nbsp;<i class="icon-undo"></i></button>
+						<button type="submit" class="btn btn-primary" id="salva" name="buttonSave" value="save">Salva &nbsp;<i class="icon-save"></i></button>
+						<button type="submit" class="btn" id="annulla" name="buttonCancel" value="cancel">Annulla &nbsp;<i class="icon-undo"></i></button>
 					</div>
 				</div>
 			</div>

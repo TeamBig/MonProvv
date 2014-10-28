@@ -281,9 +281,11 @@ $(document).ready(function() {
     	
     });
     
-    $("#denominazioneNuovoOrganoDiv").hide();
-    $("#denominazioneEstesaNuovoOrganoDiv").hide();
-    $("#listaOrganiInterniNuovoOrganoDiv").hide();
+//    $("#denominazioneNuovoOrganoDiv").hide();
+//    $("#denominazioneEstesaNuovoOrganoDiv").hide();
+//    $("#listaOrganiInterniNuovoOrganoDiv").hide();
+
+    /****** GESTIONE AMMINISTRAZIONE ******/
 
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
@@ -344,7 +346,7 @@ $(document).ready(function() {
             objects = [];
             map = {};
             $.get(
-            		'enti/nuovo/autocompletamento',
+            		'nuovo/autocompletamento',
             		{ query: query },
             		function (data) {
             			$.each(data, function(i, object) {
@@ -367,8 +369,8 @@ $(document).ready(function() {
     	}
     });
 
-	$("#inserimentoUtenteInternoDiv").hide();
-	$("#inserimentoUtenteEsternoDiv").hide();
+//	$("#inserimentoUtenteInternoDiv").hide();
+//	$("#inserimentoUtenteEsternoDiv").hide();
 	
     $('#tipoNuovoUtente').on('change', function () {
     	var val = $(this).val();
@@ -377,26 +379,74 @@ $(document).ready(function() {
     	if(val==optionInterno){
     		//Inerimento Intenro
     		$("#inserimentoUtenteInternoDiv").show();
+    		$("#inserimentoUtenteInternoDivOrg").show();
     		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
     		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
     		$("#inserimentoUtenteEsternoDiv").show();
+    		$("#cognome").attr('readonly', false);
+    		$("#nome").attr('readonly', false);
+    		$("#codiceFiscale").attr('readonly', false);
+    		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
     		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
     	}
     });
     
+    if($('#tipoNuovoUtente').length > 0){
+    	var val = $('#tipoNuovoUtente').val();
+    	var optionInterno = "I"; //Interna
+    	var optionEsterno = "E"; //Esterna
+    	if(val==optionInterno){
+    		//Inerimento Intenro
+    		$("#inserimentoUtenteInternoDiv").show();
+    		$("#inserimentoUtenteInternoDivOrg").show();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
+    	}else if(val==optionEsterno){
+    		//Inserimento Esterno
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
+    		$("#inserimentoUtenteEsternoDiv").show();
+    		$("#cognome").attr('readonly', false);
+    		$("#nome").attr('readonly', false);
+    		$("#codiceFiscale").attr('readonly', false);
+    		$("#email").attr('readonly', false);
+    	}else{
+    		$("#inserimentoUtenteInternoDiv").hide();
+    		$("#inserimentoUtenteEsternoDiv").hide();
+    		$("#inserimentoUtenteInternoDivOrg").hide();
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
+    	}
+    }
     
-    $('#organoDenominazione').attr('autocomplete','off');
-    $('#organoDenominazione').typeahead({
+    
+    $('#organoDenominazioneEst').attr('autocomplete','off');
+    $('#organoDenominazioneEst').typeahead({
     	minLength: 2,
         source: function(query, process) {
             objects = [];
             map = {};
             $.get(
-            		'utenti/nuovo/autocomporganoesterno',
+            		$(location).attr('pathname')+'/autocomporganoesterno',
             		{ query: query },
             		function (data) {
             			$.each(data, function(i, object) {
@@ -412,12 +462,59 @@ $(document).ready(function() {
         }
     });   
     
-    $('#organoDenominazione').on('change', function () {
+    $('#organoDenominazioneEst').on('change', function () {
     	var organoDenominazione = $.trim( $(this).val() );
     	if( organoDenominazione=='' ){
     		$('#hiddenIdOrgano').val('');
     	}
     });
+    
+    	$('#nominativoUtente').attr('autocomplete','off');
+    $('#nominativoUtente').typeahead({
+    	minLength: 2,
+        source: function(query, process) {
+            objects = [];
+            map = {};
+            $.get(
+            		'nuovo/autocomputenteinterno',
+            		{ query: query },
+            		function (data) {
+            			$.each(data, function(i, object) {
+                            map[object.cognome+' '+object.nome] = object;
+                            objects.push(object.cognome+' '+object.nome);
+                        });      
+                        process(objects);
+            		}); 
+        },
+        matcher: function(item){
+        	return true;
+        },
+        updater: function(item) {
+        	$('#cognome').val(map[item].cognome);
+        	$('#nome').val(map[item].nome);
+        	$('#codiceFiscale').val(map[item].codiceFiscale);
+        	$('#email').val(map[item].email);
+        	$('#organoDenominazioneInterni').val(map[item].organo);
+        	$('#organo').val(map[item].idOrgano);
+        	$('#hiddenUtenteAstage').val(map[item].id);
+            return item;
+        }
+    });   
+    
+    $('#nominativoUtente').on('change', function () {
+    	var nominativoUtente = $.trim( $(this).val() );
+    	if( nominativoUtente=='' ){
+    		$('#cognome').val('');
+        	$('#nome').val('');
+        	$('#codiceFiscale').val('');
+        	$('#email').val('');
+        	$('#organoDenominazioneInterni').val('');
+        	$('#organo').val('');
+        	$('#hiddenUtenteAstage').val('');
+    	}
+    });
+    
+    /****** FINE GESTIONE AMMINISTRAZIONE ******/
     
     /****** GESTIONE PROVVEDIMENTO ******/
 	$('#allegatoProvvedimento').change(function() {
@@ -425,55 +522,109 @@ $(document).ready(function() {
 	});
 	
 	$("button#allegatoInserisci").click(function(){
-		var formData = $('form#allegatoForm').serialize();
-		var files = $('input[type=file]');
-		// You should sterilise the file names
-		$.each(files, function(key, value)
-		{
-			formData = formData + '&filenames[]=' + value;
+			var formData = new FormData();
+		jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
+			formData.append('file', file);
 		});
-		alert(formData);
-//		var data = $('form#allegatoForm').serialize();
-//		var oMyForm = new FormData();
-//		oMyForm.append("file", file.files[0]);
+	    $("#allegatoForm input[type=text]").each(function(i) {
+	    	formData.append($(this).attr("name"), $(this).val());
+	    });
+	    formData.append('idProvvedimento', $('#idProvvedimento').val());
+
         $.ajax({
-        	type: "GET",
-        	url: "inserisciAllegato",
+        	type: 'POST',
+        	url: 'inserisciAllegato',
             data: formData,
-            async: false,
-            contentType: false,
-            cache: false,
-        	success: function(msg){
-        		alert("aggiunto allegato!!");
-        		alert(msg);
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				eliminaNessunRisultatoAllegato();
+				resetFormAllegati();
+				$('#allegato > tbody:last').append(response);
+				//var data = jQuery.parseJSON(response);
         	},
         	error: function(){
-        		alert("failure");
+        		alert("Inserimento non riuscito");
         	}
         });
 	});
 
+	function eliminaNessunRisultatoAllegato(){
+		if($("#allegato tr.empty")) {
+			$("#allegato tr.empty").fadeOut( 500 );
+		}
+	}
+	function eliminaNessunRisultatoAssegnatario(){
+		if($("#assegnazione tr.empty")) {
+			$("#assegnazione tr.empty").fadeOut( 500 );
+		}
+	}
 	
-//    $.post(
-//    		'provvedimento/aggiungi/allegato',
-//    		{ query: query },
-//    		function (data) {
-//    			$.each(data, function(i, object) {
-//                    map[object.nome] = object;
-//                    objects.push(object.nome);
-//                });      
-//                process(objects);
-//    		}); 
-//	
-//	$.post( "test.php", { func: "getNameAndTime" }, function( data ) {
-//		  console.log( data.name ); // John
-//		  console.log( data.time ); // 2pm
-//		}, "json");
-	$('#allegatoInserisci').click(function() {
-		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
+	function resetFormAllegati(){
+		$('#allegatoForm').find("input[type=text],input[type=file]").val("");
+	}
+	
+	$("button#aggiornaProvvedimento").click(function(){
+		$( "#provvedimentoModifica" ).submit();
 	});
+	
+	$("button#annullaModificaProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'Annulla')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("button#modificaProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'Modifica')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("a#eliminaAllegato").click(function(){
+		var idAllegato = $(this).parent().siblings(":first").text(); 
+		var trTableToDelete = $(this).parent().parent();
+	    alert(idAllegato);
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'deleteAllegato/'+idAllegato,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				trTableToDelete.remove();
+	    	},
+	    	error: function(){
+	    		alert("error");
+	    	}
+	    });
+	});
+	
+	
+	$("button#insertAssegnatario").click(function(){
+		var formData = $('#assegnazioneForm').serialize();
+	
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'inserisciAssegnatario',
+	        data: formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				eliminaNessunRisultatoAssegnatario();
+				$('#assegnazione > tbody:last').append(response);
+	    	},
+	    	error: function(){
+	    		alert("Inserimento non riuscito");
+	    	}
+	    });
+	});
+    /****** FINE GESTIONE PROVVEDIMENTO ******/
 
-    
-    
 });
 

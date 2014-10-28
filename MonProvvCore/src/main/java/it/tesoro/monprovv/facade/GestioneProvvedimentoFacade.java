@@ -1,18 +1,25 @@
 package it.tesoro.monprovv.facade;
 
 import it.tesoro.monprovv.dao.AllegatoDAO;
+import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.GovernoDAO;
+import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
+import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.model.Allegato;
+import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.util.Constants;
 import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.util.ArrayList;
@@ -43,19 +50,27 @@ public class GestioneProvvedimentoFacade {
 	@Autowired 
 	private AllegatoDAO allegatoDAO;
 	
+	@Autowired 
+	private TipoAttoDAO tipoAttoDAO;
+	
+	@Autowired 
+	private OrganoDAO organoDAO;
+	
+	@Autowired 
+	private AssegnazioneDAO assegnazioneDAO;
 	
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
-		List<Stato> listaStati = statoDAO.findAll(1, order);
+		List<Stato> listaStati = statoDAO.findAll(order);
 		return listaStati;
 	}
 	
 	public List<Governo> initGoverno(){
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Governo> listaGoverno = governoDAO.findAll(1, order);
+		List<Governo> listaGoverno = governoDAO.findAll(order);
 		return listaGoverno;
 	}
 	
@@ -93,19 +108,19 @@ public class GestioneProvvedimentoFacade {
 			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTipologia())){
-			SearchPatternUtil pattern = new SearchPatternUtil("tipologia",provvDto.getTipologia().getId().toString(),true,true);
+			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvedimento",provvDto.getTipologia().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTipoGoverno())){
-			SearchPatternUtil pattern = new SearchPatternUtil("governo",provvDto.getTipoGoverno().getId().toString(),true,true);
+			SearchPatternUtil pattern = new SearchPatternUtil("governo",provvDto.getTipoGoverno().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione())){
-			SearchPatternUtil pattern = new SearchPatternUtil("stato",provvDto.getStatoDiAttuazione().getId().toString(),true,true);
+			SearchPatternUtil pattern = new SearchPatternUtil("stato",provvDto.getStatoDiAttuazione().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
 		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare())){
-			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),true,true);
+			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
 		return searchPatternObjects;		
@@ -141,18 +156,23 @@ public class GestioneProvvedimentoFacade {
 //		List<Provvedimento> listaProvvedimenti = provvedimentoDAO.findByProperty(params);
 //		return listaProvvedimenti;
 //	}
+	
+	public Allegato inserisciAllegato(Allegato allegato) {
+		allegatoDAO.save(allegato);
+		return allegato;
+	}
 
 	public List<TipoProvvedimento> initTipologia() {
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
-		List<TipoProvvedimento> listaTipoProvvedimento = tipoProvvedimentoDAO.findAll(1, order);
+		List<TipoProvvedimento> listaTipoProvvedimento = tipoProvvedimentoDAO.findAll(order);
 		return listaTipoProvvedimento;
 	}
 
 	public List<TipoProvvDaAdottare> initTipoProvvDaAdottare() {
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
-		List<TipoProvvDaAdottare> listaTipoProvvedimento = tipoProvvDaAdottareDAO.findAll(1, order);
+		List<TipoProvvDaAdottare> listaTipoProvvedimento = tipoProvvDaAdottareDAO.findAll(order);
 		return listaTipoProvvedimento;
 	}
 	
@@ -174,6 +194,44 @@ public class GestioneProvvedimentoFacade {
 
 	public Integer countAllProvvedimenti() {
 		return provvedimentoDAO.countAll();
+	}
+	
+	public List<TipoAtto> initTipoAtto() {
+		List<String> order = new ArrayList<String>();
+		order.add("descrizione");
+		List<TipoAtto> listaTipoAtto = tipoAttoDAO.findAll(order);
+		return listaTipoAtto;
+	}
+
+	public Provvedimento aggiornaProvvedimento(Provvedimento provvedimento) {
+		Provvedimento provvRecuperato = provvedimentoDAO.findById(provvedimento.getId());
+		provvRecuperato = provvRecuperato.getProvvedimentoToUpdate(provvedimento);
+		Provvedimento provMerge = provvedimentoDAO.merge(provvRecuperato);
+		return provMerge;
+	}
+
+	public void eliminaAllegato(Integer idAllegato) {
+		Allegato allegatoToDelete = allegatoDAO.findById(idAllegato);
+		allegatoDAO.delete(allegatoToDelete);
+	}
+
+	public Assegnazione inserisciAssegnazione(Integer idProvv, Integer idOrgano) {
+		Assegnazione assegnazione = new Assegnazione();
+		Provvedimento provv = provvedimentoDAO.findById(idProvv);
+		Organo organo = organoDAO.findById(idOrgano);
+		Stato stato = statoDAO.findById(1);
+		assegnazione.setOrgano(organo);
+		assegnazione.setProvvedimento(provv);
+		assegnazione.setStato(stato);
+		assegnazioneDAO.save(assegnazione);
+		return assegnazione;
+	}
+
+	public List<Organo> initOrgani() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> listaOrgani = organoDAO.findAll(order);
+		return listaOrgani;
 	}
 
 }

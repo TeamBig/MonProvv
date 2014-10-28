@@ -48,6 +48,12 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	@Column(name="FLAG_CONCERTANTE", length=1)
 	private String flagConcertante;
 	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
+	
+	@Transient
+	private String denominazioneAstage;
+	
 	@ManyToOne(targetEntity=UnitaOrgAstage.class)
     @JoinColumn(name="ORGANIZATION_ID", referencedColumnName="ORGANIZATION_ID")
 	private UnitaOrgAstage unitaOrgAstage;	
@@ -114,6 +120,14 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 		else
 			return denominazione;
 	}
+	
+	public String getDenominazioneAstage() {
+		return denominazioneAstage;
+	}
+
+	public void setDenominazioneAstage(String denominazioneAstage) {
+		this.denominazioneAstage = denominazioneAstage;
+	}
 
 	public void setDenominazione(String denominazione) {
 		this.denominazione = denominazione;
@@ -162,5 +176,12 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 		this.flgInternoEsterno = flgInternoEsterno;
 	}
 
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
 	
 }

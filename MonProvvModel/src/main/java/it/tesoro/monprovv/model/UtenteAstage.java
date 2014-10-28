@@ -7,6 +7,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -44,20 +46,21 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 	@Column(name = "EMAIL", length = 500)
 	private String email;
 	
-	@Column(name = "ASSEGNAZIONE_ID_UO")
-	private Integer assegnazioneIdUo;
+	@ManyToOne(targetEntity=UnitaOrgAstage.class)
+    @JoinColumn(name="ASSEGNAZIONE_ID_UO", referencedColumnName="ORGANIZATION_ID")
+	private UnitaOrgAstage uo;
 
-	@Column(name = "ASSEGNAZIONE_ID_DIP")
-	private Integer assegnazioneIdDip;
-	
-	@Column(name = "ASSEGNAZIONE_NOME_DIP", length = 60)
-	private String assegnazioneNomeDip;
-
-	@Column(name = "ASSEGNAZIONE_NOME_UO", length = 60)
-	private String assegnazioneNomeUo;
-
-	@Column(name = "ASSEGNAZIONE_NOME_ESTESO_UO", length = 400)
-	private String assegnazioneNomeEstesoUo;
+//	@Column(name = "ASSEGNAZIONE_ID_DIP")
+//	private Integer assegnazioneIdDip;
+//	
+//	@Column(name = "ASSEGNAZIONE_NOME_DIP", length = 60)
+//	private String assegnazioneNomeDip;
+//
+//	@Column(name = "ASSEGNAZIONE_NOME_UO", length = 60)
+//	private String assegnazioneNomeUo;
+//
+//	@Column(name = "ASSEGNAZIONE_NOME_ESTESO_UO", length = 400)
+//	private String assegnazioneNomeEstesoUo;
 
 	@Column(name = "DATA_NASCITA")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -105,7 +108,8 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 
 	@Column(name = "PROVINCIA_UO", length = 2)
 	private String provinciaUo;
-
+	
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -162,44 +166,12 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 		this.email = email;
 	}
 
-	public Integer getAssegnazioneIdUo() {
-		return assegnazioneIdUo;
+	public UnitaOrgAstage getUo() {
+		return uo;
 	}
 
-	public void setAssegnazioneIdUo(Integer assegnazioneIdUo) {
-		this.assegnazioneIdUo = assegnazioneIdUo;
-	}
-
-	public Integer getAssegnazioneIdDip() {
-		return assegnazioneIdDip;
-	}
-
-	public void setAssegnazioneIdDip(Integer assegnazioneIdDip) {
-		this.assegnazioneIdDip = assegnazioneIdDip;
-	}
-
-	public String getAssegnazioneNomeDip() {
-		return assegnazioneNomeDip;
-	}
-
-	public void setAssegnazioneNomeDip(String assegnazioneNomeDip) {
-		this.assegnazioneNomeDip = assegnazioneNomeDip;
-	}
-
-	public String getAssegnazioneNomeUo() {
-		return assegnazioneNomeUo;
-	}
-
-	public void setAssegnazioneNomeUo(String assegnazioneNomeUo) {
-		this.assegnazioneNomeUo = assegnazioneNomeUo;
-	}
-
-	public String getAssegnazioneNomeEstesoUo() {
-		return assegnazioneNomeEstesoUo;
-	}
-
-	public void setAssegnazioneNomeEstesoUo(String assegnazioneNomeEstesoUo) {
-		this.assegnazioneNomeEstesoUo = assegnazioneNomeEstesoUo;
+	public void setUo(UnitaOrgAstage uo) {
+		this.uo = uo;
 	}
 
 	public Date getDataNascita() {

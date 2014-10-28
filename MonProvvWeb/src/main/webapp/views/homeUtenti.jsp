@@ -12,6 +12,7 @@
 <spring:message var="emailHeader" code="gestione.utente.email" />
 <spring:message var="tipoHeader" code="gestione.utente.tipo" />
 <spring:message var="enteHeader" code="gestione.utente.ente" />
+<spring:message var="eliminaHeader" code="gestione.utente.elimina" />
 
 
 
@@ -19,13 +20,48 @@
 <div class="container collapse" id="campiRicerca">
 			
 	<c:url value="/private/admin/utenti" var="formPath" />
-	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
+	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline"><span>Ricerca Utenti</span></h3>
 			</div>
 		</div>			
-		
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${nomeHeader}</label>
+						<div class="controls">
+							<springform:input path="nome" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${cognomeHeader}</label>
+						<div class="controls">
+							<springform:input path="cognome" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="denominazione">${cfHeader}</label>
+						<div class="controls">
+							<springform:input path="codiceFiscale" cssClass="input-xlarge"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="span12">
 				<div class="form-horizontal">
@@ -51,10 +87,10 @@
 	<div class="row">
 		<div class="span12">
 			<c:url value="/private/admin/utenti" var="formPath" />
-			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
+			<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
 				<h3 class="text-left underline">
 					<span>Elenco Utenti</span>
-					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="new">
+					<button type="submit" class="btn btn-primary pull-right" id="nuovo" name="buttonNew" value="new">
 						Nuovo Utente &nbsp;<i class="icon-plus"></i>
 					</button>
 					<button type="button" class="btn pull-right" id="toggleRicerca"	data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">
@@ -71,6 +107,8 @@
 				<div class="row">
 					<div class="span12">
 						
+						<c:url value="/private/admin/utenti/delete" var="deletePath" />
+						
 						<display:table 	name="${listaUtenti}" 
 										pagesize="${risultatiPerPagina}" 
 										requestURI="" 
@@ -81,13 +119,16 @@
 										class="table table-hover table-bordered"
 										summary="Elenco Enti">
 							
-							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
 							<display:column title="${nomeHeader}" property="nome" headerScope="col" />
 							<display:column title="${cfHeader}" property="codiceFiscale" headerScope="col" />
 							<display:column title="${emailHeader}" property="email" headerScope="col" />
 							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
 							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
+							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
+								<a href="${deletePath}/${utente.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray"></i></a>
+							</display:column>
 							
 						</display:table>
 						

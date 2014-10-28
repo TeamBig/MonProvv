@@ -15,7 +15,7 @@
 
 <div class="container" id="risultatiRicerca">
 
-	<c:url value="/private/admin/enti/edit" var="formPath" />
+	<c:url value="/private/admin/enti/modifica" var="formPath" />
 
 	<springform:form action="${formPath}" method="POST" commandName="organoToEdit" cssClass="form-horizontal">
 		<div class="row">
@@ -87,8 +87,8 @@
 				
 				<div class="control-group">
 					<div class="pull-right">
-						<button type="submit" class="btn btn-primary" id="indietro" name="buttonSave" value="OK">Salva &nbsp;<i class="icon-save"></i></button>
-						<button type="submit" class="btn" id="modifica" name="buttonCancel" value="OK">Annulla &nbsp;<i class="icon-undo"></i></button>
+						<button type="submit" class="btn btn-primary" id="salva" name="buttonSave" value="save">Salva &nbsp;<i class="icon-save"></i></button>
+						<button type="submit" class="btn" id="annulla" name="buttonCancel" value="cancel">Annulla &nbsp;<i class="icon-undo"></i></button>
 					</div>
 				</div>
 			</div>

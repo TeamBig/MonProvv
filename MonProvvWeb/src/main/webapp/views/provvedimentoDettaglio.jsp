@@ -13,6 +13,10 @@
 <spring:message var="commaHeader" code="listaProvvedimenti.header.comma" />
 <spring:message var="provvDaAdottareHeader" code="listaProvvedimenti.header.provvDaAdottare" />
 <spring:message var="titoloOggettoHeader" code="listaProvvedimenti.header.titoloOggetto" />
+<spring:message var="tipoAttoHeader" code="listaProvvedimenti.header.tipoAtto" />
+<spring:message var="dataAttoHeader" code="listaProvvedimenti.header.dataAtto" />
+<spring:message var="numeroAttoHeader" code="listaProvvedimenti.header.numeroAtto" />
+<spring:message var="collNormattivaHeader" code="listaProvvedimenti.header.collNormattiva" />
 
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
 <spring:message var="parereHeader" code="label.termineDiScadenza" />
@@ -63,6 +67,24 @@
 							</div>
 						</div>
 						<div class="control-group">
+							<span class="control-label" >${tipoAttoHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.tipoAtto.descrizione}</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<span class="control-label" >${dataAttoHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.dataAtto}</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<span class="control-label" >${numeroAttoHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.numeroAtto}</span>
+							</div>
+						</div>
+						<div class="control-group">
 							<span class="control-label" >${artHeader}</span>
 							<div class="controls">
 								<span>${provvedimentoDettaglio.articolo}</span>
@@ -72,6 +94,12 @@
 							<span class="control-label">${commaHeader}</span>
 							<div class="controls">
 								<span>${provvedimentoDettaglio.comma}</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<span class="control-label" >${collNormattivaHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.collNormattiva}</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -126,35 +154,34 @@
 						</div>
 				</div>
 			</div>
+			</springform:form>
 			<!-- Allegati insert -->
-			<c:if test="${tableAllegatiSize gt 0}">
-				<div class="row">
-					<div class="span12">
-						<h3 class="text-left underline">
-							<span>Allegati</span>
-						</h3>
-					</div>
+			<div class="row">
+				<div class="span12">
+					<h3 class="text-left underline">
+						<span>Allegati</span>
+					</h3>
 				</div>
-				<div class="row">
-					<div class="span12">	
-						<display:table 	name="${listaAllegati}" 
-											requestURI="" sort="external" partialList="false"
-											 id="allegato" 
-											class="table table-hover table-bordered"
-											summary="Elenco Allegati" style="width: 100%">
-	
-								<display:column title="${idHeader}" property="id" headerScope="col" />
-								<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
-									<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-									<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
-								</display:column>
-								<display:column title="${dimensioneHeader}" headerScope="col">
-									<c:out value="${allegato.dimensione} Kb"></c:out>
-								</display:column>
-						</display:table>
-					</div>
+			</div>
+			<div class="row">
+				<div class="span12">	
+					<display:table 	name="${listaAllegati}" 
+										requestURI="" sort="external" partialList="false"
+										 id="allegato" 
+										class="table table-hover table-bordered"
+										summary="Elenco Allegati" style="width: 100%">
+
+							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
+								<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
+							</display:column>
+							<display:column title="${dimensioneHeader}" headerScope="col">
+								<c:out value="${allegato.dimensioneAsText}"></c:out>
+							</display:column>
+					</display:table>
 				</div>
-			</c:if>
+			</div>
 			<!-- allegati end -->
 			<div class="row">
 				<div class="span12">
@@ -169,24 +196,25 @@
 											class="table table-hover table-bordered"
 											summary="Elenco Assegnatari" style="width: 100%">
 	
-								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" />
+								<display:column title="${idHeader}" property="id" headerClass="medium" headerScope="col" class="medium" />
+								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice=='ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
-										  <c:when test="${assegnazione.stato.codice=='RIF'}">
+										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
 									      </c:when>
 									</c:choose>
 								</display:column>
-								<display:column title="${allegatiHeader}" headerScope="col">
+								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
 										<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensione} Kb)</div>
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensioneAsText})</div>
 									</c:forEach>
 								</display:column>
-								<display:column title="${noteHeader}"  headerScope="col" />
+								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
 								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
 								</display:column>
@@ -197,120 +225,19 @@
 									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
 								</display:column>
 						</display:table>
-<!-- 					<table class="table table-hover table-bordered">
-						<thead>
-							<tr>
-								<th class="medium">
-									Organo
-								</th>
-								<th>
-									Presa in carico
-								</th>
-								<th class="medium">
-									Allegati
-								</th>
-								<th>
-									Note
-								</th>
-								<th>
-									Cronologia Modifiche
-								</th>
-								<th class="center">
-									Elimina
-								</th>								
-								<th class="center">
-									Sollecito
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="vcenter">
-									Ag. Territorio 
-								</td>
-								<td class="vcenter center">
-									<i class="icon-check icon-large"></i>
-								</td>
-								<td>
-									<a href="" class="download">Documento 1</a> (PDF - 1Mb)<br>
-									<a href="" class="download">Documento 2</a> (Excel - 350Kb)<br>
-									<a href="" class="download">Documento 3</a> (Testo - 1Kb) <br>
-								</td>
-								<td>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-								</td>
-								<td class="vcenter center">
-									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
-								</td>	
-								<td class="vcenter center">
-									<i class="icon-trash icon-large gray"></i>
-								</td>
-								<td class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</td>
-							</tr>
- 							<tr>
-								<td>
-									MEF (Dipto finanze)  
-								</td>
-								<td class="vcenter center">
-									<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
-								</td>
-								<td>
-								</td>
-								<td>
-									
-								</td>
-								<td class="vcenter center">
-									<a href="#modalCronologia" data-toggle="modal"><i class="icon-time icon-large" title="Apri cronologia"></i></a>
-								</td>	
-								<td class="vcenter center">
-									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
-								</td>
-								<td class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</td>															
-							</tr>
-							<tr id="assegnatarioDipTesoro">
-								<td class="vcenter">
-									Dip.to Tesoro
-								</td>
-								<td class="vcenter">
-									
-								</td>
-								<td class="vcenter">
-									
-								</td>
-								<td>
-									
-								</td>
-								<td class="vcenter center">
-								</td>									
-								<td class="vcenter center">
-									<a href="#" id="deleteEnte"><i class="icon-trash icon-large gray"></i></a>
-								</td>
-								<td>
-								</td>
-							</tr>
-						</tbody>
-					</table> -->
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="enteAssegnatario">Nuovo assegnatario</label>
-					<div class="controls">
-						<select id="enteAssegnatario" class="span3">
-									<option>Sceglierne uno...</option>  
-									<option>Agenzia Entrate e Territorio                                                                                                 </option>
-									<option>Agenzia Dogane e Monopoli                                                                                                    </option>
-									<option>Agenzia Entrate                                                                                                              </option>
-									<option>Dipartimento finanze (DLTFF)                                                                                                 </option>
-									<option>Dip.to Tesoro                                                                                                                </option>
-									<option>Guardia di finanza                                                                                                           </option>
-									<option>Ragioneria Generale dello Stato                                                                                              </option>
-						</select>
-						<button type="button" id="insertEnte" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+					<springform:hidden path="provvedimento.id" id="idProvvedimento"/>
+					<div class="control-group">
+						<label class="control-label" for="organo">Nuovo assegnatario</label>
+						<div class="controls">
+							<springform:select path="organo" id="organo" cssClass="input-xlarge" >
+								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
+							<button type="button" id="insertAssegnatario" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+						</div>
 					</div>
-				</div>
+				</springform:form>
 			</div>
 			<div class="row">
 				<div class="span12">
@@ -318,14 +245,13 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
-								<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
-								<springform:button type="submit" class="btn" id="modifica" name="action" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></springform:button>
+								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</springform:form>
 	</div>
 	
 	

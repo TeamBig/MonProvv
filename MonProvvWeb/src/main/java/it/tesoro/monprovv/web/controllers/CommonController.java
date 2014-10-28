@@ -3,11 +3,13 @@ package it.tesoro.monprovv.web.controllers;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
+import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Menu;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
@@ -16,6 +18,7 @@ import it.tesoro.monprovv.web.propertyeditors.DataPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.GovernoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.OrganoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.StatoPropertyEditor;
+import it.tesoro.monprovv.web.propertyeditors.TipoAttoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoProvvDaAdottarePropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoProvvedimentoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.UnitaOrgAstagePropertyEditor;
@@ -44,6 +47,9 @@ public class CommonController {
 	@Autowired
 	private GestioneEntiFacade gestioneEntiFacade;
 	
+	@Autowired
+	private GestioneUtenteFacade gestioneUtenteFacade;
+	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		binder.registerCustomEditor(Stato.class, new StatoPropertyEditor(tipologicaFacade));
@@ -54,6 +60,7 @@ public class CommonController {
 		binder.registerCustomEditor(UnitaOrgAstage.class, new UnitaOrgAstagePropertyEditor(gestioneEntiFacade));
 		binder.registerCustomEditor(Clob.class, new ClobPropertyEditor());
 		binder.registerCustomEditor(Organo.class, new OrganoPropertyEditor(gestioneEntiFacade));
+		binder.registerCustomEditor(TipoAtto.class, new TipoAttoPropertyEditor(tipologicaFacade));
 	}
 	
 	

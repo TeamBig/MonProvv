@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -59,6 +60,9 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	@OneToMany(targetEntity=Allegato.class, fetch=FetchType.EAGER, mappedBy="assegnazione")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Allegato> allegatoList;
+	
+	@OneToOne(targetEntity=Nota.class, fetch=FetchType.EAGER, mappedBy="assegnazione")
+	private Nota nota;
 
 	public Integer getId() {
 		return id;
@@ -98,6 +102,14 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 
 	public void setAllegatoList(List<Allegato> allegatoList) {
 		this.allegatoList = allegatoList;
+	}
+
+	public Nota getNota() {
+		return nota;
+	}
+
+	public void setNota(Nota nota) {
+		this.nota = nota;
 	}
 
 	@Override

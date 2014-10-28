@@ -284,3 +284,7 @@ ul.multiselect-container {
 a.disable {
 	color: gray;
 }
+
+.hidden {
+  display:none !important;
+}

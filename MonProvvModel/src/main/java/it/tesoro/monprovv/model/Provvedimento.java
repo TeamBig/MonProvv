@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +40,25 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	 * 
 	 */
 	private static final long serialVersionUID = 3895683101409100101L;
+	
+	public Provvedimento getProvvedimentoToUpdate(Provvedimento prov){
+		this.setArticolo(prov.getArticolo());
+		this.setComma(prov.getComma());
+		this.setGoverno(prov.getGoverno());
+		this.setCollNormattiva(prov.getCollNormattiva());
+		this.setDataAtto(prov.getDataAtto());
+		this.setNoteInterne(prov.getNoteInterne());
+		this.setNumeroAtto(prov.getNumeroAtto());
+		this.setOggetto(prov.getOggetto());
+		this.setParere(prov.getParere());
+		this.setStato(prov.getStato());
+		this.setTermineScadenza(prov.getTermineScadenza());
+		this.setTipoAtto(prov.getTipoAtto());
+		this.setTipoProvvDaAdottare(prov.getTipoProvvDaAdottare());
+		this.setTipoProvvedimento(prov.getTipoProvvedimento());
+		this.setVersione(prov.getVersione());
+		return this;
+	}
 
 	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_PROVVEDIMENTO"))
 	@GeneratedValue(generator = "generator")
@@ -104,16 +124,37 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Valid
 	private Organo organoConcertante;
 	
+	@Column(name = "DATA_ATTO")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date dataAtto;
+	
+	@Column(name = "NUMERO_ATTO")
+	private Integer numeroAtto;
+	
+	@Column(name = "COLL_NORMATTIVA")
+	private String collNormattiva;
+	
+	@Column(name = "NOTE_INTERNE", length = 4000)
+	private String noteInterne;
+	
+	@ManyToOne(targetEntity=TipoAtto.class)
+    @JoinColumn(name="ID_TIPO_ATTO", referencedColumnName="ID_TIPO_ATTO")
+	@Valid
+	private TipoAtto tipoAtto;
+	
 	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.LAZY, mappedBy="provvedimento")
 	private List<ProvvedimentiParent> provvedimentiParent;
 	
 	@OneToMany(targetEntity=Allegato.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
+	@OrderBy("id ASC")
 	private List<Allegato> allegatiList;
 	
 	@OneToMany(targetEntity=Assegnazione.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
+
 	
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
@@ -261,6 +302,46 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setAssegnazioneList(List<Assegnazione> assegnazioneList) {
 		this.assegnazioneList = assegnazioneList;
+	}
+
+	public Date getDataAtto() {
+		return dataAtto;
+	}
+
+	public void setDataAtto(Date dataAtto) {
+		this.dataAtto = dataAtto;
+	}
+
+	public Integer getNumeroAtto() {
+		return numeroAtto;
+	}
+
+	public void setNumeroAtto(Integer numeroAtto) {
+		this.numeroAtto = numeroAtto;
+	}
+
+	public String getCollNormattiva() {
+		return collNormattiva;
+	}
+
+	public void setCollNormattiva(String collNormattiva) {
+		this.collNormattiva = collNormattiva;
+	}
+
+	public String getNoteInterne() {
+		return noteInterne;
+	}
+
+	public void setNoteInterne(String noteInterne) {
+		this.noteInterne = noteInterne;
+	}
+
+	public TipoAtto getTipoAtto() {
+		return tipoAtto;
+	}
+
+	public void setTipoAtto(TipoAtto tipoAtto) {
+		this.tipoAtto = tipoAtto;
 	}
 
 	@Override

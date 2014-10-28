@@ -1,25 +1,25 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
-import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.util.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 
-public class GovernoPropertyEditor extends PropertyEditorSupport {
+public class TipoAttoPropertyEditor extends PropertyEditorSupport {
 
 	private GestioneTipologicaFacade tipologicaFacade;
 	
-	public GovernoPropertyEditor(GestioneTipologicaFacade tipologicaFacade) {
+	public TipoAttoPropertyEditor(GestioneTipologicaFacade tipologicaFacade) {
 		super();
 		this.tipologicaFacade = tipologicaFacade;
 	}
 
 	@Override
 	public String getAsText() {
-		Governo governo = (Governo)getValue();
-		if (governo != null) {
-			return governo.getId().toString();
+		TipoAtto tipoAtto = (TipoAtto)getValue();
+		if (tipoAtto != null) {
+			return tipoAtto.getId().toString();
 		}
 		return null;
 	}
@@ -27,8 +27,9 @@ public class GovernoPropertyEditor extends PropertyEditorSupport {
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		if(!StringUtils.isEmpty(text)){
-			setValue(tipologicaFacade.recuperaGovernoById(Integer.parseInt(text)));
+			setValue(tipologicaFacade.recuperaTipoAttoById(Integer.parseInt(text)));
 		}
 	}
 
+	
 }

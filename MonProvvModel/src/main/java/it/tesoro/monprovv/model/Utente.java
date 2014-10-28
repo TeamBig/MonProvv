@@ -47,6 +47,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@NotNull
 	private String nome;
 	
+	@Transient
+	private String nominativo;
+	
 	@Column(name="CODICE_FISCALE", length=20)
 	@NotNull
 	private String codiceFiscale;
@@ -59,6 +62,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@Column(name="FLAG_INT_EST", length=1)
 	private String flagIntEst;
 	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
+	
 	@ManyToOne(targetEntity=Organo.class)
     @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
 	@Valid
@@ -66,6 +72,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 
 	@Transient
 	private String organoDenominazione;
+	
+	@Transient
+	private String organoDenominazioneInterni;
 	
 	@ManyToOne(targetEntity=UtenteAstage.class)
     @JoinColumn(name="ID_UTENTE_ASTAGE", referencedColumnName="ID_UTENTE_ASTAGE")
@@ -166,7 +175,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	}
 
 	public String getOrganoDenominazione() {
-		return organoDenominazione;
+		if(this.organo!=null)
+			return organo.getDenominazione();
+		else
+			return organoDenominazione;
 	}
 
 	public void setOrganoDenominazione(String organoDenominazione) {
@@ -181,7 +193,32 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	public void setRuoloUtenteList(List<RuoloUtente> ruoloUtenteList) {
 		this.ruoloUtenteList = ruoloUtenteList;
 	}
+	
+	public String getNominativo() {
+		return nominativo;
+	}
 
+	public void setNominativo(String nominativo) {
+		this.nominativo = nominativo;
+	}
+	
+	
+
+	public String getOrganoDenominazioneInterni() {
+		return organoDenominazioneInterni;
+	}
+
+	public void setOrganoDenominazioneInterni(String organoDenominazioneInterni) {
+		this.organoDenominazioneInterni = organoDenominazioneInterni;
+	}
+
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
 
 	@Override
 	public int hashCode() {
