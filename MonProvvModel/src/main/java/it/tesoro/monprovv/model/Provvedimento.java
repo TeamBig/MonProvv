@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +40,25 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	 * 
 	 */
 	private static final long serialVersionUID = 3895683101409100101L;
+	
+	public Provvedimento getProvvedimentoToUpdate(Provvedimento prov){
+		this.setArticolo(prov.getArticolo());
+		this.setComma(prov.getComma());
+		this.setGoverno(prov.getGoverno());
+		this.setCollNormattiva(prov.getCollNormattiva());
+		this.setDataAtto(prov.getDataAtto());
+		this.setNoteInterne(prov.getNoteInterne());
+		this.setNumeroAtto(prov.getNumeroAtto());
+		this.setOggetto(prov.getOggetto());
+		this.setParere(prov.getParere());
+		this.setStato(prov.getStato());
+		this.setTermineScadenza(prov.getTermineScadenza());
+		this.setTipoAtto(prov.getTipoAtto());
+		this.setTipoProvvDaAdottare(prov.getTipoProvvDaAdottare());
+		this.setTipoProvvedimento(prov.getTipoProvvedimento());
+		this.setVersione(prov.getVersione());
+		return this;
+	}
 
 	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_PROVVEDIMENTO"))
 	@GeneratedValue(generator = "generator")
@@ -128,11 +148,13 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	
 	@OneToMany(targetEntity=Allegato.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
+	@OrderBy("id ASC")
 	private List<Allegato> allegatiList;
 	
 	@OneToMany(targetEntity=Assegnazione.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
+
 	
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {

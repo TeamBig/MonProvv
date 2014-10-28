@@ -490,6 +490,8 @@ $(document).ready(function() {
 			processData : false,
 			contentType : false,
 			success : function(response) {
+				eliminaNessunRisultatoAllegato();
+				resetFormAllegati();
 				$('#allegato > tbody:last').append(response);
 				//var data = jQuery.parseJSON(response);
         	},
@@ -499,11 +501,81 @@ $(document).ready(function() {
         });
 	});
 
-//	$('#allegatoInserisci').click(function() {
-//		$('#allegato > tbody:last').append('<tr><td>3</td><td>Fileaasd a.doc</td><td>300Mb</td></tr>');
-//	});
+	function eliminaNessunRisultatoAllegato(){
+		if($("#allegato tr.empty")) {
+			$("#allegato tr.empty").fadeOut( 500 );
+		}
+	}
+	function eliminaNessunRisultatoAssegnatario(){
+		if($("#assegnazione tr.empty")) {
+			$("#assegnazione tr.empty").fadeOut( 500 );
+		}
+	}
+	
+	function resetFormAllegati(){
+		$('#allegatoForm').find("input[type=text],input[type=file]").val("");
+	}
+	
+	$("button#aggiornaProvvedimento").click(function(){
+		$( "#provvedimentoModifica" ).submit();
+	});
+	
+	$("button#annullaModificaProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'Annulla')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("button#modificaProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'Modifica')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("a#eliminaAllegato").click(function(){
+		var idAllegato = $(this).parent().siblings(":first").text(); 
+		var trTableToDelete = $(this).parent().parent();
+	    alert(idAllegato);
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'deleteAllegato/'+idAllegato,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				trTableToDelete.remove();
+	    	},
+	    	error: function(){
+	    		alert("error");
+	    	}
+	    });
+	});
+	
+	
+	$("button#insertAssegnatario").click(function(){
+		var formData = $('#assegnazioneForm').serialize();
+	
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'inserisciAssegnatario',
+	        data: formData,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				eliminaNessunRisultatoAssegnatario();
+				$('#assegnazione > tbody:last').append(response);
+	    	},
+	    	error: function(){
+	    		alert("Inserimento non riuscito");
+	    	}
+	    });
+	});
+    /****** FINE GESTIONE PROVVEDIMENTO ******/
 
-    
-    
 });
 

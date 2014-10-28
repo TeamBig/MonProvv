@@ -2,10 +2,12 @@ package it.tesoro.monprovv.facade;
 
 import it.tesoro.monprovv.dao.GovernoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
+import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 
@@ -26,6 +28,9 @@ public class GestioneTipologicaFacade {
 	
 	@Autowired
 	private TipoProvvDaAdottareDAO tipoProvvDaAdottareDAO;
+	
+	@Autowired
+	private TipoAttoDAO tipoAttoDAO;
 
 	
 //	public Stato recuperaStatoByCod(String cod) {
@@ -47,5 +52,9 @@ public class GestioneTipologicaFacade {
 
 	public TipoProvvDaAdottare recuperaTipoProvvDaAdottareById(Integer id) {
 		return tipoProvvDaAdottareDAO.findById(id);
+	}
+
+	public TipoAtto recuperaTipoAttoById(Integer id) {
+		return tipoAttoDAO.findById(id);
 	}
 }

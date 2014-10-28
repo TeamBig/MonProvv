@@ -13,6 +13,10 @@
 <spring:message var="commaHeader" code="listaProvvedimenti.header.comma" />
 <spring:message var="provvDaAdottareHeader" code="listaProvvedimenti.header.provvDaAdottare" />
 <spring:message var="titoloOggettoHeader" code="listaProvvedimenti.header.titoloOggetto" />
+<spring:message var="tipoAttoHeader" code="listaProvvedimenti.header.tipoAtto" />
+<spring:message var="dataAttoHeader" code="listaProvvedimenti.header.dataAtto" />
+<spring:message var="numeroAttoHeader" code="listaProvvedimenti.header.numeroAtto" />
+<spring:message var="collNormattivaHeader" code="listaProvvedimenti.header.collNormattiva" />
 
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
 <spring:message var="parereHeader" code="label.termineDiScadenza" />
@@ -63,6 +67,24 @@
 							</div>
 						</div>
 						<div class="control-group">
+							<span class="control-label" >${tipoAttoHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.tipoAtto.descrizione}</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<span class="control-label" >${dataAttoHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.dataAtto}</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<span class="control-label" >${numeroAttoHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.numeroAtto}</span>
+							</div>
+						</div>
+						<div class="control-group">
 							<span class="control-label" >${artHeader}</span>
 							<div class="controls">
 								<span>${provvedimentoDettaglio.articolo}</span>
@@ -72,6 +94,12 @@
 							<span class="control-label">${commaHeader}</span>
 							<div class="controls">
 								<span>${provvedimentoDettaglio.comma}</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<span class="control-label" >${collNormattivaHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.collNormattiva}</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -126,35 +154,34 @@
 						</div>
 				</div>
 			</div>
+			</springform:form>
 			<!-- Allegati insert -->
-			<c:if test="${tableAllegatiSize gt 0}">
-				<div class="row">
-					<div class="span12">
-						<h3 class="text-left underline">
-							<span>Allegati</span>
-						</h3>
-					</div>
+			<div class="row">
+				<div class="span12">
+					<h3 class="text-left underline">
+						<span>Allegati</span>
+					</h3>
 				</div>
-				<div class="row">
-					<div class="span12">	
-						<display:table 	name="${listaAllegati}" 
-											requestURI="" sort="external" partialList="false"
-											 id="allegato" 
-											class="table table-hover table-bordered"
-											summary="Elenco Allegati" style="width: 100%">
-	
-								<display:column title="${idHeader}" property="id" headerScope="col" />
-								<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
-									<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-									<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
-								</display:column>
-								<display:column title="${dimensioneHeader}" headerScope="col">
-									<c:out value="${allegato.dimensioneAsText}"></c:out>
-								</display:column>
-						</display:table>
-					</div>
+			</div>
+			<div class="row">
+				<div class="span12">	
+					<display:table 	name="${listaAllegati}" 
+										requestURI="" sort="external" partialList="false"
+										 id="allegato" 
+										class="table table-hover table-bordered"
+										summary="Elenco Allegati" style="width: 100%">
+
+							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
+								<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
+							</display:column>
+							<display:column title="${dimensioneHeader}" headerScope="col">
+								<c:out value="${allegato.dimensioneAsText}"></c:out>
+							</display:column>
+					</display:table>
 				</div>
-			</c:if>
+			</div>
 			<!-- allegati end -->
 			<div class="row">
 				<div class="span12">
@@ -169,6 +196,7 @@
 											class="table table-hover table-bordered"
 											summary="Elenco Assegnatari" style="width: 100%">
 	
+								<display:column title="${idHeader}" property="id" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
@@ -198,22 +226,18 @@
 								</display:column>
 						</display:table>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="enteAssegnatario">Nuovo assegnatario</label>
-					<div class="controls">
-						<select id="enteAssegnatario" class="span3">
-									<option>Sceglierne uno...</option>  
-									<option>Agenzia Entrate e Territorio                                                                                                 </option>
-									<option>Agenzia Dogane e Monopoli                                                                                                    </option>
-									<option>Agenzia Entrate                                                                                                              </option>
-									<option>Dipartimento finanze (DLTFF)                                                                                                 </option>
-									<option>Dip.to Tesoro                                                                                                                </option>
-									<option>Guardia di finanza                                                                                                           </option>
-									<option>Ragioneria Generale dello Stato                                                                                              </option>
-						</select>
-						<button type="button" id="insertEnte" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+					<springform:hidden path="provvedimento.id" id="idProvvedimento"/>
+					<div class="control-group">
+						<label class="control-label" for="organo">Nuovo assegnatario</label>
+						<div class="controls">
+							<springform:select path="organo" id="organo" cssClass="input-xlarge" >
+								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
+							<button type="button" id="insertAssegnatario" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+						</div>
 					</div>
-				</div>
+				</springform:form>
 			</div>
 			<div class="row">
 				<div class="span12">
@@ -221,14 +245,13 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
-								<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
-								<springform:button type="submit" class="btn" id="modifica" name="action" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></springform:button>
+								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</springform:form>
 	</div>
 	
 	

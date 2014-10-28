@@ -7,12 +7,16 @@ import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
+import it.tesoro.monprovv.web.validators.EnteValidator;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -27,9 +31,11 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +44,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class GestioneProvvedimentoController {
@@ -46,9 +53,15 @@ public class GestioneProvvedimentoController {
 
 	@Autowired
 	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
+	
+	@Autowired
+	private AlertUtils alertUtils;
+	
+	@Autowired
+	protected EnteValidator enteValidator;
 
 	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.GET)
-	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
+	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedfimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
 		model.addAttribute("ricercaProvvedimenti", dto);
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
@@ -110,17 +123,36 @@ public class GestioneProvvedimentoController {
 		if(StringUtils.isNotEmpty(id)){
 			Provvedimento provvedimentoDettaglio = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
 			model.addAttribute("provvedimentoDettaglio", provvedimentoDettaglio);
-			List<Allegato> listaAllegati = provvedimentoDettaglio.getAllegatiList();
-			model.addAttribute("tableAllegatiSize", listaAllegati.size());
-			model.addAttribute("listaAllegati", listaAllegati);
-			List<Assegnazione> listaAssegnazione = provvedimentoDettaglio.getAssegnazioneList();
-//			model.addAttribute("listaAssegnazioneSize", listaAssegnazione.size());
-			model.addAttribute("listaAssegnazione", listaAssegnazione);
-			
+			caricaTabelleInferiore(model, provvedimentoDettaglio);			
 			retVal = "provvedimentoDettaglio";
 		}
 		return retVal;
 	}
+	
+//	@RequestMapping(value = { "/private/ricercaProv/dettaglio/{id:[\\d]+}/{name}" } , method = RequestMethod.GET)
+//	public String dettaglioReturn(Model model,@PathVariable("id") int id, @PathVariable("name") String alert,@RequestParam(required = false) String action){
+//		Provvedimento provvedimentoDettaglio = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+//		model.addAttribute("provvedimentoDettaglio", provvedimentoDettaglio);
+//		caricaTabelleInferiore(model, provvedimentoDettaglio);			
+//		if(StringUtils.isNotEmpty(alert)){
+//			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Provvedimento effettuato con successo", false);
+//		}
+//		return "provvedimentoDettaglio";
+//	}
+	
+//	@RequestMapping(value = { "/private/ricercaProv/dettaglio/{id:[\\d]+}/{name}" } , method = RequestMethod.POST)
+//	public String dettaglioSubmitPost(Model model,@PathVariable("id") int id, @PathVariable("name") String alert,@RequestParam(required = false) String action) {
+//		String retVal = "ricercaProv";
+//		if(StringUtils.isNotEmpty(id)){
+//			if(action.equals("Modifica")){
+//				retVal = "redirect:/private/ricercaProv/modifica/"+id;	
+//			}
+//			if(action.equals("Salva")){
+//				
+//			}
+//		}
+//		return retVal;
+//	}
 	
 	@RequestMapping(value = { "/private/ricercaProv/dettaglio/{idProvvedimento}" } , method = RequestMethod.POST)
 	public String dettaglioSubmit(Model model,@PathVariable("idProvvedimento") int id, @RequestParam String action) {
@@ -132,6 +164,9 @@ public class GestioneProvvedimentoController {
 			if(action.equals("Salva")){
 				
 			}
+			if(action.equals("Annulla")){
+				retVal= "redirect:/private/ricercaProv";
+			}
 		}
 		return retVal;
 	}
@@ -141,17 +176,37 @@ public class GestioneProvvedimentoController {
 	public String modificaProvvedimento(Model model,@PathVariable("idProvvedimento") int id) {
 		String retVal = "ricercaProv";
 		if(StringUtils.isNotEmpty(id)){
-			Provvedimento provvedimentoDettaglio = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
-			model.addAttribute("provvedimentoDettaglio", provvedimentoDettaglio);
-			List<Allegato> listaAllegati = provvedimentoDettaglio.getAllegatiList();
-			model.addAttribute("tableAllegatiSize", listaAllegati.size());
-			model.addAttribute("listaAllegati", listaAllegati);
-			List<Assegnazione> listaAssegnazione = provvedimentoDettaglio.getAssegnazioneList();
-//			model.addAttribute("listaAssegnazioneSize", listaAssegnazione.size());
-			model.addAttribute("listaAssegnazione", listaAssegnazione);
+			Provvedimento provvedimentoModifica = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+			model.addAttribute("provvedimentoModifica", provvedimentoModifica);
+			caricaTabelleInferiore(model, provvedimentoModifica);
 			retVal = "provvedimentoModifica";
 		}
 		return retVal;
+	}
+
+	private void caricaTabelleInferiore(Model model,
+			Provvedimento provvedimentoModifica) {
+		List<Allegato> listaAllegati = provvedimentoModifica.getAllegatiList();
+		model.addAttribute("listaAllegati", listaAllegati);
+		List<Assegnazione> listaAssegnazione = provvedimentoModifica.getAssegnazioneList();
+		model.addAttribute("listaAssegnazione", listaAssegnazione);
+		Assegnazione assegnazioneNew = new Assegnazione();
+		assegnazioneNew.setProvvedimento(provvedimentoModifica);
+		model.addAttribute("assegnatarioNew", assegnazioneNew);
+	}
+	
+	
+	//SALVA MODIFICA PROVVEDIMENTO
+	@RequestMapping(value = { "/private/ricercaProv/modifica" } , method = RequestMethod.POST)
+	public String salvaModificaProvvedimento(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento,
+			BindingResult errors, RedirectAttributes redirectAttributes
+			) {
+		Provvedimento provvAggiornato = gestioneProvvedimentoFacade.aggiornaProvvedimento(provvedimento);
+		
+		model.addAttribute("provvedimentoDettaglio", provvAggiornato);
+		caricaTabelleInferiore(model,provvAggiornato);
+		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Provvedimento effettuato con successo", false);
+		return "redirect:/private/ricercaProv/dettaglio/"+provvedimento.getId();
 	}
 	
 	@RequestMapping(value={"/private/ricercaProv/downloadAllegato/{allegatoId}"}, method = RequestMethod.GET)
@@ -201,9 +256,23 @@ public class GestioneProvvedimentoController {
 		return null;
 	}
 	
-	private List<Provvedimento> initAllProvvedimenti(Integer page) {
-		return gestioneProvvedimentoFacade.initAllProvvedimenti(page);
+	@RequestMapping(value={"/private/ricercaProv/modifica/deleteAllegato/{idAllegato}"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String deleteAllegato(@PathVariable("idAllegato") Integer idAllegato) {
+		gestioneProvvedimentoFacade.eliminaAllegato(idAllegato);
+		return null;
 	}
+	
+	@RequestMapping(value={"/private/ricercaProv/dettaglio/inserisciAssegnatario"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String inserisciAssegnatario(@RequestParam("provvedimento.id") String idProvvedimento,@RequestParam("organo") String idOrgano ) {
+		Integer idProvv = Integer.parseInt(idProvvedimento);
+		Integer idOrg = Integer.parseInt(idOrgano);
+		
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
+		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione);
+	}
+
 	private Integer countAllProvvedimenti() {
 		return gestioneProvvedimentoFacade.countAllProvvedimenti();
 	}
@@ -226,5 +295,15 @@ public class GestioneProvvedimentoController {
 	@ModelAttribute("listaTipoProvvDaAdottare")
 	private List<TipoProvvDaAdottare> initTipoProvvDaAdottare() {
 		return gestioneProvvedimentoFacade.initTipoProvvDaAdottare();
+	}
+	
+	@ModelAttribute("listaTipoAtto")
+	private List<TipoAtto> initTipoAtto() {
+		return gestioneProvvedimentoFacade.initTipoAtto();
+	}
+	
+	@ModelAttribute("listaOrgani")
+	private List<Organo> initOrgani() {
+		return gestioneProvvedimentoFacade.initOrgani();
 	}
 }
