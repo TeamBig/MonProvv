@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class GestioneUtentiController {
@@ -70,19 +71,15 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	public String initGet(Model model, 
 			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,	
 			@PagingAndSorting(tableId = tableUtenteUID) DisplayTagPagingAndSorting ps)  {
-		
-		List<Utente> listaUtenti = new ArrayList<Utente>();
-		int tableRisultatiSize = 0;
-		
-		//Ho impostato un filtro
-		listaUtenti =gestioneUtenteFacade.recupera( ((ps != null)? ps.getPage() : 1), ricercaUtente);	
-		tableRisultatiSize = gestioneUtenteFacade.count(ricercaUtente);
-
-		model.addAttribute("listaUtenti", listaUtenti);
-		model.addAttribute("tableRisultatiSize", tableRisultatiSize);	
-		
-		
+		initModel(model, ricercaUtente, ps);	
 		return "utenteHomeUtente";
+	}
+
+	private void initModel(Model model, UtenteDto ricercaUtente, DisplayTagPagingAndSorting ps) {
+		List<Utente> listaUtenti = gestioneUtenteFacade.recupera( ((ps != null)? ps.getPage() : 1), ricercaUtente);
+		int tableRisultatiSize = gestioneUtenteFacade.count(ricercaUtente);
+		model.addAttribute("listaUtenti", listaUtenti);
+		model.addAttribute("tableRisultatiSize", tableRisultatiSize);
 	}
 	
 	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST)
@@ -100,18 +97,9 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		}
 		
 		if("new".equals( buttonNew )){
-			
 			retval = "redirect:/private/admin/utenti/nuovo";
-			
-		}else if("find".equals(buttonFind)){
-			List<Utente> listaUtenti = gestioneUtenteFacade.recupera(1, ricercaUtente);
-			model.addAttribute("listaUtenti", listaUtenti);
-			model.addAttribute("tableRisultatiSize", gestioneUtenteFacade.count(ricercaUtente));
-			
-		}else{
-			model.addAttribute("listaEnti", gestioneUtenteFacade.recupera(1));
-			model.addAttribute("tableRisultatiSize", gestioneUtenteFacade.count());
-			
+		}else {
+			initModel(model, ricercaUtente, null);	
 		}
 		return retval;
 	}
@@ -137,15 +125,21 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return result;
 	}
 	
+	@RequestMapping(value= {"/private/admin/utenti/delete/{id}"}, method = RequestMethod.GET)
+	public String deleteGet(@PathVariable("id") int id, RedirectAttributes redirectAttributes)  {
+		String retval = "redirect:/private/admin/utenti";	
+		gestioneUtenteFacade.eliminazioneLogica(id);
+		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Utente effettuato con successo", false);	
+		return retval;
+	}
+	
 	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.GET)
 	public String nuovoGet(@ModelAttribute("utenteToEdit") Utente utenteToEdit,
 			Model model,
 			HttpServletRequest request)  {
-		
 		loadCombo4NewUtente(model);
 		model.addAttribute("utenteToEdit", new Utente());
-		return "utenteNewUtente";
-		
+		return "utenteNewUtente";	
 	}
 	
 	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST)
@@ -166,6 +160,7 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 					//Esterno
 					utenteToEdit.setUtenteAstage(null);
 				}				
+				utenteToEdit.setFlagAttivo("S");
 				gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
 				model.addAttribute("utenteToEdit", utenteToEdit );				
@@ -201,7 +196,6 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 							@RequestParam(required = false) String buttonModify)  {
 		
 		String retVal = "utenteDettUtente";
-		
 		if("back".equals(buttonBack)){
 			retVal = "redirect:/private/admin/utenti";
 		}else if("modify".equals(buttonModify)){

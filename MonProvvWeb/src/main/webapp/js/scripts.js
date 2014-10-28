@@ -548,6 +548,31 @@ $(document).ready(function() {
     	}
     });
 
+//    $("a#delete4risultatiRicerca").click(function(){
+//    	var id = $(this).parent().siblings(":first").text();    	
+//    	var currentUrl = $(location).attr('pathname');
+//    	var deleteEsito = 'KO';
+//        $.ajax({
+//        	type: 'GET',
+//        	url: currentUrl+'/delete/'+id,
+//			dataType : 'text',
+//			processData : false,
+//			contentType : false,
+//			success : function(response) {
+//				alert('Success');
+//				deleteEsito = 'OK';
+//				
+//        	},
+//        	error: function(){
+//        		alert("Cancellazione non riuscita");
+//        	}
+//        });
+//    	
+//        if( deleteEsito == 'OK' ){
+//        	$(this).parent().parent().remove();
+//        }
+//    	
+//    });
     
     
 });

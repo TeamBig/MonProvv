@@ -48,6 +48,9 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	@Column(name="FLAG_CONCERTANTE", length=1)
 	private String flagConcertante;
 	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
+	
 	@Transient
 	private String denominazioneAstage;
 	
@@ -173,5 +176,12 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 		this.flgInternoEsterno = flgInternoEsterno;
 	}
 
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
 	
 }

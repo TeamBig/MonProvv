@@ -110,8 +110,8 @@
 
 				<div class="control-group">
 					<div class="pull-right">
-						<button type="submit" class="btn" id="modifica" name="buttonModify" value="OK">Modifica &nbsp;<i class="icon-edit"></i></button>
-						<button type="submit" class="btn" id="indietro" name="buttonBack" value="OK">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
+						<button type="submit" class="btn" id="modifica" name="buttonModify" value="modify">Modifica &nbsp;<i class="icon-edit"></i></button>
+						<button type="submit" class="btn" id="indietro" name="buttonBack" value="back">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
 					</div>
 				</div>
 			</springform:form>

@@ -32,41 +32,45 @@ public class GestioneEntiFacade {
 		return organo;
 	}
 	
-	public List<Organo> recuperaOrgano(int page) {
-		List<String> order = new ArrayList<String>();
-		order.add("denominazione");
-		return organoDAO.findAll(page, order);
-	}
+//	public List<Organo> recuperaOrgano(int page) {
+//		List<String> order = new ArrayList<String>();
+//		order.add("denominazione");
+//		return organoDAO.findAll(page, order);
+//	}
 	
-	public int countOrgano() {
-		return organoDAO.countAll();
-	}
+//	public int countOrgano() {
+//		return organoDAO.countAll();
+//	}
 	
 	public List<Organo> recuperaOrgano(int page, Organo criteria) {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
+		List<SearchPatternUtil> searchPatternObjects = popolaCritera(criteria);
+		return organoDAO.findByPattern(searchPatternObjects, page, order);
+	}
+
+	private List<SearchPatternUtil> popolaCritera(Organo criteria) {
 		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		SearchPatternUtil pattern = null;
 		if(criteria.getDenominazione() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
+			pattern = new SearchPatternUtil();
 			pattern.setNomeCampo( "denominazione" );
 			pattern.setPattern(criteria.getDenominazione());
 			pattern.setPreponi(true);
 			pattern.setPostponi(true);
 			searchPatternObjects.add(pattern);
 		}
-		return organoDAO.findByPattern(searchPatternObjects, page, order);
+		pattern = new SearchPatternUtil();
+		pattern.setNomeCampo( "flagAttivo" );
+		pattern.setPattern(criteria.getFlagAttivo());
+		pattern.setPreponi(false);
+		pattern.setPostponi(false);
+		searchPatternObjects.add(pattern);
+		return searchPatternObjects;
 	}
 	
 	public int countOrgano(Organo criteria) {
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		if(criteria.getDenominazione() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "denominazione" );
-			pattern.setPattern(criteria.getDenominazione());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
+		List<SearchPatternUtil> searchPatternObjects = popolaCritera(criteria);
 		return organoDAO.countByPattern(searchPatternObjects);
 	}
 
@@ -102,6 +106,14 @@ public class GestioneEntiFacade {
 			organo.setUnitaOrgAstage(uoa);
 		}
 		organoDAO.save(organo);
+	}
+
+	public void eliminazioneLogica(Integer id) {
+		if(id != null){
+			Organo organo = organoDAO.findById(id);
+			organo.setFlagAttivo("N");
+			organoDAO.merge(organo);
+		}		
 	}
 	
 }

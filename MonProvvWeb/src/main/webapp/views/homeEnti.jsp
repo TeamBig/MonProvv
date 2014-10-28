@@ -10,12 +10,14 @@
 <spring:message var="denominazioneEstesaHeader" code="listaOrgani.header.denominazione.estesa" />
 <spring:message var="enteConcertanteHeader" code="listaOrgani.header.ente.concertante" />
 <spring:message var="enteTipoHeader" code="listaOrgani.header.ente.tipo" />
+<spring:message var="eliminaHeader" code="listaOrgani.header.ente.elimina" />
 
 
 
 <div class="container collapse" id="campiRicerca">
 			
 	<c:url value="/private/admin/enti" var="formPath" />
+	
 	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
@@ -39,10 +41,10 @@
 				<div class="form-horizontal">
 					<div class="control-group">
 						<div class="form-actions pull-right">
-							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
+							<button type="submit" class="btn " id="ricerca" name="buttonFind" value="find">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
-							<button type="submit" class="btn " id="pulisci" name="pulisci" value="OK">
+							<button type="submit" class="btn " id="pulisci" name="buttonClean" value="clean">
 								Pulisci &nbsp;<i class="icon-eraser"></i>
 							</button>
 						</div>
@@ -62,7 +64,7 @@
 			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
 				<h3 class="text-left underline">
 					<span>Elenco Enti</span>
-					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="OK">
+					<button type="submit" class="btn btn-primary pull-right" id="nuovo" name="buttonNew" value="new">
 						Nuovo Ente &nbsp;<i class="icon-plus"></i>
 					</button>
 					<button type="button" class="btn pull-right" id="toggleRicerca"
@@ -81,20 +83,26 @@
 				<div class="row">
 					<div class="span12">
 						
+						<c:url value="/private/admin/enti/delete" var="deletePath" />
+						
 						<display:table 	name="${listaOrgani}" 
 										pagesize="${risultatiPerPagina}" 
 										requestURI="" sort="external" partialList="true" 
-										size="${tableOrganiRisultatiSize}" id="organo" 
+										size="${tableOrganiRisultatiSize}" 
+										id="organo" 
 										class="table table-hover table-bordered"
 										summary="Elenco Enti">
 
-							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
 							<display:column title="${denominazioneEstesaHeader}" property="denominazioneEstesa" headerScope="col" />
 							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
 							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
 							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" />
-							
+							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
+								<a href="${deletePath}/${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray"></i></a>
+							</display:column>
+						
 						</display:table>
 						
 					</div>

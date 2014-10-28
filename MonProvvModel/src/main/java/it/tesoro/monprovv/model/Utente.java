@@ -62,6 +62,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@Column(name="FLAG_INT_EST", length=1)
 	private String flagIntEst;
 	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
+	
 	@ManyToOne(targetEntity=Organo.class)
     @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
 	@Valid
@@ -207,6 +210,14 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 
 	public void setOrganoDenominazioneInterni(String organoDenominazioneInterni) {
 		this.organoDenominazioneInterni = organoDenominazioneInterni;
+	}
+
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
 	}
 
 	@Override

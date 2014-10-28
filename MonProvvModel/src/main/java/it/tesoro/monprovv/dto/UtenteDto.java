@@ -23,6 +23,12 @@ public class UtenteDto implements Serializable{
 	
 	private Integer idOrgano;
 
+	private String flagAttivo;
+	
+	public UtenteDto(){
+		this.flagAttivo = "S";
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -79,5 +85,11 @@ public class UtenteDto implements Serializable{
 		this.idOrgano = idOrgano;
 	}
 	
-	
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
 }

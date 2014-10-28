@@ -12,6 +12,7 @@
 <spring:message var="emailHeader" code="gestione.utente.email" />
 <spring:message var="tipoHeader" code="gestione.utente.tipo" />
 <spring:message var="enteHeader" code="gestione.utente.ente" />
+<spring:message var="eliminaHeader" code="gestione.utente.elimina" />
 
 
 
@@ -89,7 +90,7 @@
 			<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
 				<h3 class="text-left underline">
 					<span>Elenco Utenti</span>
-					<button type="submit" class="btn btn-primary pull-right" id="buttonNew" name="buttonNew" value="new">
+					<button type="submit" class="btn btn-primary pull-right" id="nuovo" name="buttonNew" value="new">
 						Nuovo Utente &nbsp;<i class="icon-plus"></i>
 					</button>
 					<button type="button" class="btn pull-right" id="toggleRicerca"	data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">
@@ -106,6 +107,8 @@
 				<div class="row">
 					<div class="span12">
 						
+						<c:url value="/private/admin/utenti/delete" var="deletePath" />
+						
 						<display:table 	name="${listaUtenti}" 
 										pagesize="${risultatiPerPagina}" 
 										requestURI="" 
@@ -116,13 +119,16 @@
 										class="table table-hover table-bordered"
 										summary="Elenco Enti">
 							
-							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
 							<display:column title="${nomeHeader}" property="nome" headerScope="col" />
 							<display:column title="${cfHeader}" property="codiceFiscale" headerScope="col" />
 							<display:column title="${emailHeader}" property="email" headerScope="col" />
 							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
 							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
+							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
+								<a href="${deletePath}/${utente.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray"></i></a>
+							</display:column>
 							
 						</display:table>
 						

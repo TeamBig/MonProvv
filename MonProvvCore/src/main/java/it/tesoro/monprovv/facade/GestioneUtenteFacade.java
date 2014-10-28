@@ -41,53 +41,26 @@ public class GestioneUtenteFacade {
 		return utente;
 	}
 
-	public List<Utente> recupera(int page) {
-		List<String> order = new ArrayList<String>();
-		order.add("cognome");
-		order.add("nome");
-		return utenteDAO.findAll(page, order);
-	}
+//	public List<Utente> recupera(int page) {
+//		List<String> order = new ArrayList<String>();
+//		order.add("cognome");
+//		order.add("nome");
+//		return utenteDAO.findAll(page, order);
+//	}
 
 	public List<Utente> recupera(int page, UtenteDto criteria) {
 		List<String> order = new ArrayList<String>();
 		order.add("cognome");
 		order.add("nome");
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		if(criteria.getNome() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "nome" );
-			pattern.setPattern(criteria.getNome());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
-		if(criteria.getCognome() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "cognome" );
-			pattern.setPattern(criteria.getCognome());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
-		if(criteria.getCodiceFiscale() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "codiceFiscale" );
-			pattern.setPattern(criteria.getCodiceFiscale());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
+		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
 		return utenteDAO.findByPattern(searchPatternObjects, page, order);
 	}
 
-	public int count() {
-		return utenteDAO.countAll();
-	}
-
-	public int count(UtenteDto criteria) {
+	private List<SearchPatternUtil> popolaCriteria(UtenteDto criteria) {
 		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		SearchPatternUtil pattern = null;
 		if(criteria.getNome() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
+			pattern = new SearchPatternUtil();
 			pattern.setNomeCampo( "nome" );
 			pattern.setPattern(criteria.getNome());
 			pattern.setPreponi(true);
@@ -95,7 +68,7 @@ public class GestioneUtenteFacade {
 			searchPatternObjects.add(pattern);
 		}
 		if(criteria.getCognome() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
+			pattern = new SearchPatternUtil();
 			pattern.setNomeCampo( "cognome" );
 			pattern.setPattern(criteria.getCognome());
 			pattern.setPreponi(true);
@@ -103,13 +76,28 @@ public class GestioneUtenteFacade {
 			searchPatternObjects.add(pattern);
 		}
 		if(criteria.getCodiceFiscale() != null){
-			SearchPatternUtil pattern = new SearchPatternUtil();
+			pattern = new SearchPatternUtil();
 			pattern.setNomeCampo( "codiceFiscale" );
 			pattern.setPattern(criteria.getCodiceFiscale());
 			pattern.setPreponi(true);
 			pattern.setPostponi(true);
 			searchPatternObjects.add(pattern);
 		}
+		pattern = new SearchPatternUtil();
+		pattern.setNomeCampo( "flagAttivo" );
+		pattern.setPattern(criteria.getFlagAttivo());
+		pattern.setPreponi(false);
+		pattern.setPostponi(false);
+		searchPatternObjects.add(pattern);
+		return searchPatternObjects;
+	}
+
+//	public int count() {
+//		return utenteDAO.countAll();
+//	}
+
+	public int count(UtenteDto criteria) {
+		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
 		return utenteDAO.countByPattern(searchPatternObjects);
 	}
 
@@ -189,6 +177,14 @@ public class GestioneUtenteFacade {
 
 	public Utente aggiornaUtente(Utente utente) {
 		return utenteDAO.merge(utente);	
+	}
+
+	public void eliminazioneLogica(Integer id) {
+		if(id != null){
+			Utente utente = utenteDAO.findById(id);
+			utente.setFlagAttivo("N");
+			utenteDAO.merge(utente);
+		}		
 	}
 
 	
