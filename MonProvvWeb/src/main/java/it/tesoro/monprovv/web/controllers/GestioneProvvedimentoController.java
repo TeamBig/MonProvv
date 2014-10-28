@@ -31,7 +31,6 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -166,6 +165,9 @@ public class GestioneProvvedimentoController {
 			}
 			if(action.equals("Annulla")){
 				retVal= "redirect:/private/ricercaProv";
+			}
+			if(action.equals("noteallegati")){
+				retVal= "redirect:/private/noteAllegatiProv/"+id;
 			}
 		}
 		return retVal;

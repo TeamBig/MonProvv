@@ -585,6 +585,14 @@ $(document).ready(function() {
 		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
+	$("button#noteAllegatiProvvedimento").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'noteallegati')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
 	$("a#eliminaAllegato").click(function(){
 		var idAllegato = $(this).parent().siblings(":first").text(); 
 		var trTableToDelete = $(this).parent().parent();
