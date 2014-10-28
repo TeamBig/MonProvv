@@ -332,6 +332,30 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 			throw new DatabaseException(re);
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<T> findByHqlQueryNumeroRecord(String queryString, Map<String, Object> params, int numeroRecord) {
+		log.debug("finding (query: " + queryString + ") " + nomeOggetto + " instances");
+		try {
+			
+			Query query = currentSession().createQuery(queryString);
+			
+			if (params != null) {
+			
+				Iterator<String> iter = params.keySet().iterator();
+				while (iter.hasNext()) {
+					String name = iter.next();
+					query.setParameter(name, params.get(name));
+				}
+			}
+			
+			return query.setFirstResult(0).setMaxResults(numeroRecord).list();
+			
+		} catch (Exception re) {
+			log.error("findByHqlQuery failed", re);
+			throw new DatabaseException(re);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<T> findByHqlQuery(String queryString, Map<String, Object> params, int page) {
@@ -509,6 +533,66 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 			for(Map.Entry<String,Object> entry : parametri.entrySet())
 			{
 				query.setParameter(entry.getKey(), entry.getValue());	
+			}
+			
+			return query.list();
+
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<T> findByProperty(List<SearchPatternUtil> parametri) {
+		try {
+			Query query;
+			String queryString = "from " + nomeOggetto + " as model";
+
+			int cont = 0;
+
+			for(SearchPatternUtil entry : parametri)
+			{
+				
+				cont++;
+				if(cont == 1)
+				{
+					queryString += " where ";
+				}
+				else
+				{
+					queryString += " and ";
+				}
+				
+				queryString += " model." + entry.getNomeCampo() + " " + entry.getOperazione();
+				
+				if( entry.getPattern() != null ){
+					queryString += " :"+entry.getNomeCampo();
+				}
+				
+			}
+			
+			query = currentSession().createQuery(queryString);
+			
+			StringBuffer structuredPattern = null;
+			for(SearchPatternUtil entry : parametri)
+			{
+				if( entry.getPattern() != null ){
+					
+					structuredPattern=new StringBuffer();
+					
+					structuredPattern.append("'");
+					if (entry.isPreponi()){
+						structuredPattern.append("%");
+					}
+					structuredPattern.append(entry.getPattern());
+					if (entry.isPostponi()){
+						structuredPattern.append("%");
+					}
+					structuredPattern.append("'");
+					
+					query.setParameter(entry.getNomeCampo(), structuredPattern.toString());	
+				}
 			}
 			
 			return query.list();

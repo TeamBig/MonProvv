@@ -104,20 +104,23 @@
 								<label class="control-label" for="ente">${enteHeader}</label>
 								<div class="controls">
 									<span>
-										<springform:input path="organoDenominazione" id="organoDenominazione" cssClass="input-xlarge"/>
+										<springform:input path="organoDenominazione" id="organoDenominazioneEst" cssClass="input-xlarge"/>
 									</span>
 								</div>
 							</div>
 						</div>
 						
 						<springform:hidden path="organo" id="hiddenIdOrgano"/>
+						<springform:hidden path="utenteAstage" id="hiddenUtenteAstage"/>
+
+						
 					</div>
 				</div>
 				
 				<div class="control-group">
 					<div class="pull-right">
-						<button type="submit" class="btn btn-primary" id="indietro" name="buttonSave" value="save">Salva &nbsp;<i class="icon-save"></i></button>
-						<button type="submit" class="btn" id="modifica" name="buttonCancel" value="cancel">Annulla &nbsp;<i class="icon-undo"></i></button>
+						<button type="submit" class="btn btn-primary" id="salva" name="buttonSave" value="save">Salva &nbsp;<i class="icon-save"></i></button>
+						<button type="submit" class="btn" id="annulla" name="buttonCancel" value="cancel">Annulla &nbsp;<i class="icon-undo"></i></button>
 					</div>
 				</div>
 			</div>

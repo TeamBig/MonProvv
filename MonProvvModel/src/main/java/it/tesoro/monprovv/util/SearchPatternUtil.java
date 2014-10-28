@@ -10,6 +10,7 @@ public class SearchPatternUtil implements Serializable{
 	private String pattern;
 	private boolean preponi;
 	private boolean postponi;
+	private String operazione;
 	
 	public SearchPatternUtil() {
 	}
@@ -18,6 +19,30 @@ public class SearchPatternUtil implements Serializable{
 		this.pattern = pattern;
 		this.preponi = preponi;
 		this.postponi = postponi;
+	}
+	
+	public SearchPatternUtil(String nomeCampo, String pattern, boolean preponi, boolean postponi, String operazione) {
+		this.nomeCampo = nomeCampo;
+		this.pattern = pattern;
+		this.preponi = preponi;
+		this.postponi = postponi;
+		this.operazione = operazione;
+	}
+	
+	public SearchPatternUtil(String nomeCampo, String pattern, String operazione) {
+		this.nomeCampo = nomeCampo;
+		this.pattern = pattern;
+		this.preponi = false;
+		this.postponi = false;
+		this.operazione = operazione;
+	}
+	
+	public SearchPatternUtil(String nomeCampo, String operazione) {
+		this.nomeCampo = nomeCampo;
+		this.pattern = null;
+		this.preponi = false;
+		this.postponi = false;
+		this.operazione = operazione;
 	}
 	
 	public String getNomeCampo() {
@@ -44,4 +69,11 @@ public class SearchPatternUtil implements Serializable{
 	public void setPostponi(boolean postponi) {
 		this.postponi = postponi;
 	}
+	public String getOperazione() {
+		return operazione;
+	}
+	public void setOperazione(String operazione) {
+		this.operazione = operazione;
+	}
+	
 }

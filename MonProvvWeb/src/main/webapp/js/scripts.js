@@ -285,6 +285,8 @@ $(document).ready(function() {
 //    $("#denominazioneEstesaNuovoOrganoDiv").hide();
 //    $("#listaOrganiInterniNuovoOrganoDiv").hide();
 
+    /****** GESTIONE AMMINISTRAZIONE ******/
+
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
@@ -379,27 +381,27 @@ $(document).ready(function() {
     		$("#inserimentoUtenteInternoDiv").show();
     		$("#inserimentoUtenteInternoDivOrg").show();
     		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#cognome").attr('disabled', true);
-    		$("#nome").attr('disabled', true);
-    		$("#codiceFiscale").attr('disabled', true);
-    		$("#email").attr('disabled', true);
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
     		$("#inserimentoUtenteInternoDiv").hide();
     		$("#inserimentoUtenteInternoDivOrg").hide();
     		$("#inserimentoUtenteEsternoDiv").show();
-    		$("#cognome").removeAttr('disabled');
-    		$("#nome").removeAttr('disabled');
-    		$("#codiceFiscale").removeAttr('disabled');
-    		$("#email").removeAttr('disabled');
+    		$("#cognome").attr('readonly', false);
+    		$("#nome").attr('readonly', false);
+    		$("#codiceFiscale").attr('readonly', false);
+    		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
     		$("#inserimentoUtenteEsternoDiv").hide();
     		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#cognome").attr('disabled', true);
-    		$("#nome").attr('disabled', true);
-    		$("#codiceFiscale").attr('disabled', true);
-    		$("#email").attr('disabled', true);
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
     	}
     });
     
@@ -412,39 +414,39 @@ $(document).ready(function() {
     		$("#inserimentoUtenteInternoDiv").show();
     		$("#inserimentoUtenteInternoDivOrg").show();
     		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#cognome").attr('disabled', true);
-    		$("#nome").attr('disabled', true);
-    		$("#codiceFiscale").attr('disabled', true);
-    		$("#email").attr('disabled', true);
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
     		$("#inserimentoUtenteInternoDiv").hide();
     		$("#inserimentoUtenteInternoDivOrg").hide();
     		$("#inserimentoUtenteEsternoDiv").show();
-    		$("#cognome").removeAttr('disabled');
-    		$("#nome").removeAttr('disabled');
-    		$("#codiceFiscale").removeAttr('disabled');
-    		$("#email").removeAttr('disabled');
+    		$("#cognome").attr('readonly', false);
+    		$("#nome").attr('readonly', false);
+    		$("#codiceFiscale").attr('readonly', false);
+    		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
     		$("#inserimentoUtenteEsternoDiv").hide();
     		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#cognome").attr('disabled', true);
-    		$("#nome").attr('disabled', true);
-    		$("#codiceFiscale").attr('disabled', true);
-    		$("#email").attr('disabled', true);
+    		$("#cognome").attr('readonly', true);
+    		$("#nome").attr('readonly', true);
+    		$("#codiceFiscale").attr('readonly', true);
+    		$("#email").attr('readonly', true);
     	}
     }
     
     
-    $('#organoDenominazione').attr('autocomplete','off');
-    $('#organoDenominazione').typeahead({
+    $('#organoDenominazioneEst').attr('autocomplete','off');
+    $('#organoDenominazioneEst').typeahead({
     	minLength: 2,
         source: function(query, process) {
             objects = [];
             map = {};
             $.get(
-            		'nuovo/autocomporganoesterno',
+            		$(location).attr('pathname')+'/autocomporganoesterno',
             		{ query: query },
             		function (data) {
             			$.each(data, function(i, object) {
@@ -460,12 +462,59 @@ $(document).ready(function() {
         }
     });   
     
-    $('#organoDenominazione').on('change', function () {
+    $('#organoDenominazioneEst').on('change', function () {
     	var organoDenominazione = $.trim( $(this).val() );
     	if( organoDenominazione=='' ){
     		$('#hiddenIdOrgano').val('');
     	}
     });
+    
+    	$('#nominativoUtente').attr('autocomplete','off');
+    $('#nominativoUtente').typeahead({
+    	minLength: 2,
+        source: function(query, process) {
+            objects = [];
+            map = {};
+            $.get(
+            		'nuovo/autocomputenteinterno',
+            		{ query: query },
+            		function (data) {
+            			$.each(data, function(i, object) {
+                            map[object.cognome+' '+object.nome] = object;
+                            objects.push(object.cognome+' '+object.nome);
+                        });      
+                        process(objects);
+            		}); 
+        },
+        matcher: function(item){
+        	return true;
+        },
+        updater: function(item) {
+        	$('#cognome').val(map[item].cognome);
+        	$('#nome').val(map[item].nome);
+        	$('#codiceFiscale').val(map[item].codiceFiscale);
+        	$('#email').val(map[item].email);
+        	$('#organoDenominazioneInterni').val(map[item].organo);
+        	$('#organo').val(map[item].idOrgano);
+        	$('#hiddenUtenteAstage').val(map[item].id);
+            return item;
+        }
+    });   
+    
+    $('#nominativoUtente').on('change', function () {
+    	var nominativoUtente = $.trim( $(this).val() );
+    	if( nominativoUtente=='' ){
+    		$('#cognome').val('');
+        	$('#nome').val('');
+        	$('#codiceFiscale').val('');
+        	$('#email').val('');
+        	$('#organoDenominazioneInterni').val('');
+        	$('#organo').val('');
+        	$('#hiddenUtenteAstage').val('');
+    	}
+    });
+    
+    /****** FINE GESTIONE AMMINISTRAZIONE ******/
     
     /****** GESTIONE PROVVEDIMENTO ******/
 	$('#allegatoProvvedimento').change(function() {

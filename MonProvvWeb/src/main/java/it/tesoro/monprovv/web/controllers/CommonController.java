@@ -3,6 +3,7 @@ package it.tesoro.monprovv.web.controllers;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
+import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Menu;
@@ -45,6 +46,9 @@ public class CommonController {
 	
 	@Autowired
 	private GestioneEntiFacade gestioneEntiFacade;
+	
+	@Autowired
+	private GestioneUtenteFacade gestioneUtenteFacade;
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
