@@ -28,10 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
+@SessionAttributes("ricercaEnte")
 public class GestioneEntiController {
 	
 	protected static Logger logger = Logger.getLogger(GestioneEntiController.class);
@@ -95,6 +97,7 @@ public class GestioneEntiController {
 		
 		if("clean".equals( buttonClean )){
 			ricercaEnte = new Organo();
+			ricercaEnte.setFlagAttivo("S");
 			model.addAttribute("ricercaEnte",ricercaEnte);
 		}
 		

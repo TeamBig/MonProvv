@@ -29,9 +29,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@SessionAttributes("ricercaUtente")
 public class GestioneUtentiController {
 
 protected static Logger logger = Logger.getLogger(GestioneUtentiController.class);
@@ -61,10 +63,11 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	
 	@ModelAttribute("ricercaUtente")
 	public UtenteDto ricercaUtente(HttpServletRequest request, @ModelAttribute("ricercaUtente") UtenteDto ricercaUtente) {
-		if(ricercaUtente!=null)
-			return ricercaUtente;
-		else
-			return new UtenteDto();
+		if(ricercaUtente==null){
+			ricercaUtente = new UtenteDto();
+			ricercaUtente.setFlagAttivo("S");
+		}
+		return ricercaUtente;
 	}
 	
 	@RequestMapping(value= {"/private/admin/utenti"}, method = RequestMethod.GET)
@@ -93,6 +96,7 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		
 		if("clean".equals( buttonClean )){
 			ricercaUtente = new UtenteDto();
+			ricercaUtente.setFlagAttivo("S");
 			model.addAttribute("ricercaUtente", ricercaUtente);
 		}
 		
