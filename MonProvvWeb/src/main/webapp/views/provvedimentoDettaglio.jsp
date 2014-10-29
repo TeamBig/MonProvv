@@ -196,7 +196,7 @@
 											class="table table-hover table-bordered"
 											summary="Elenco Assegnatari" style="width: 100%">
 	
-								<display:column title="${idHeader}" property="id" headerClass="medium" headerScope="col" class="medium" />
+								<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
 								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
@@ -244,7 +244,6 @@
 					<div class="form-horizontal">
 						<div class="control-group">
 							<div class="form-actions pull-right">
-								<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
 								<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
 								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>

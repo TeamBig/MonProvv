@@ -31,7 +31,7 @@ public class ProvvedimentiUtil implements Serializable{
 		if(StringUtils.isNotEmpty(assegnazione)){
 			StringBuffer ret = new StringBuffer();
 			ret.append("<tr>");
-			ret.append("<td>"+assegnazione.getId()+"</td>");
+			ret.append("<td class=\"hidden\">"+assegnazione.getId()+"</td>");
 			ret.append("<td>"+assegnazione.getOrgano().getDenominazione()+"</td>");
 			ret.append("<td></td>");
 			ret.append("<td></td>");

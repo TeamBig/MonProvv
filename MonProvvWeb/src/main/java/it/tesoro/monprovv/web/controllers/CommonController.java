@@ -13,6 +13,7 @@ import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
+import it.tesoro.monprovv.model.UtenteAstage;
 import it.tesoro.monprovv.web.propertyeditors.ClobPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.DataPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.GovernoPropertyEditor;
@@ -22,6 +23,7 @@ import it.tesoro.monprovv.web.propertyeditors.TipoAttoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoProvvDaAdottarePropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoProvvedimentoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.UnitaOrgAstagePropertyEditor;
+import it.tesoro.monprovv.web.propertyeditors.UtenteAstagePropertyEditor;
 
 import java.sql.Clob;
 import java.util.Date;
@@ -61,6 +63,7 @@ public class CommonController {
 		binder.registerCustomEditor(Clob.class, new ClobPropertyEditor());
 		binder.registerCustomEditor(Organo.class, new OrganoPropertyEditor(gestioneEntiFacade));
 		binder.registerCustomEditor(TipoAtto.class, new TipoAttoPropertyEditor(tipologicaFacade));
+		binder.registerCustomEditor(UtenteAstage.class, new UtenteAstagePropertyEditor(gestioneUtenteFacade));
 	}
 	
 	
