@@ -593,10 +593,10 @@ $(document).ready(function() {
 		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
-	$("a#eliminaAllegato").click(function(){
+	
+	$(document).on('click', '#eliminaAllegato', function() { 
 		var idAllegato = $(this).parent().siblings(":first").text(); 
 		var trTableToDelete = $(this).parent().parent();
-	    alert(idAllegato);
 	    $.ajax({
 	    	type: 'GET',
 	    	url: 'deleteAllegato/'+idAllegato,
@@ -611,6 +611,24 @@ $(document).ready(function() {
 	    	}
 	    });
 	});
+	
+//	$("a#eliminaAllegato").click(function(){
+//		var idAllegato = $(this).parent().siblings(":first").text(); 
+//		var trTableToDelete = $(this).parent().parent();
+//	    $.ajax({
+//	    	type: 'GET',
+//	    	url: 'deleteAllegato/'+idAllegato,
+//			dataType : 'text',
+//			processData : false,
+//			contentType : false,
+//			success : function(response) {
+//				trTableToDelete.remove();
+//	    	},
+//	    	error: function(){
+//	    		alert("error");
+//	    	}
+//	    });
+//	});
 	
 	
 	$("button#insertAssegnatario").click(function(){
