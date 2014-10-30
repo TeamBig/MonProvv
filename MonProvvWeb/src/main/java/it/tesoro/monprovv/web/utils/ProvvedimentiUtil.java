@@ -20,7 +20,7 @@ public class ProvvedimentiUtil implements Serializable{
 			ret.append("<td>"+allegato.getId()+"</td>");
 			ret.append("<td><a href=\"private/ricercaProv/downloadAllegato/"+allegato.getId()+"\" class=\"download\">"+allegato.getDescrizione()+"</a></td>");
 			ret.append("<td>"+StringUtils.convertBytesToKb(allegato.getDimensione(),true)+"</td>");
-			ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAllegato\" ><i class=\"icon-trash icon-large\" title=\"Elimina allegato\"></i></a></td>");
+			ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAllegato\" ><i class=\"icon-trash icon-large gray\" title=\"Elimina allegato\"></i></a></td>");
 			ret.append("</tr>");
 			return ret.toString();
 		}
@@ -31,7 +31,7 @@ public class ProvvedimentiUtil implements Serializable{
 		if(StringUtils.isNotEmpty(assegnazione)){
 			StringBuffer ret = new StringBuffer();
 			ret.append("<tr>");
-			ret.append("<td>"+assegnazione.getId()+"</td>");
+			ret.append("<td class=\"hidden\">"+assegnazione.getId()+"</td>");
 			ret.append("<td>"+assegnazione.getOrgano().getDenominazione()+"</td>");
 			ret.append("<td></td>");
 			ret.append("<td></td>");

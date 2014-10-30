@@ -217,8 +217,32 @@
 							<display:column title="${statoDiAttuazioneHeader}" property="stato.descrizione" headerScope="col" />
 							<display:column title="${capofilaHeader}" property="organoCapofila.denominazione" headerScope="col" />
 							<display:column title="${proponenteHeader}" property="organoConcertante.denominazione" headerScope="col" />
-							<display:column title="${assegnazioneHeader}" property="organoConcertante.denominazione" headerScope="col" />
-							<display:column title="${allegatiHeader}" property="organoConcertante.denominazione" headerScope="col" />
+							<display:column title="${assegnazioneHeader}" headerScope="col" headerClass="medium">
+								<c:forEach var="assegnazione" items="${provvedimento.assegnazioneList}">
+									<div>
+									${assegnazione.organo.denominazione}
+									<c:choose>
+									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
+									      	<i class="icon-check " title="Assegnazione presa in carico"></i>
+									      </c:when>
+										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
+									      	<i class="icon-remove-sign " title="Assegnazione rifiutata"></i>
+									      </c:when>
+									</c:choose>
+									<c:if test="${not empty assegnazione.allegatoList}">
+										<i class="icon-paper-clip " title="Allegati inseriti"></i>
+									</c:if>
+									<c:if test="${not empty assegnazione.nota}">
+										<i class="icon-file-alt" title="Nota inserita"></i>
+									</c:if>
+									</div>
+								</c:forEach>
+							</display:column>
+							<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
+									<c:if test="${not empty allegatiList}">
+										<i class="icon-file-alt" title="Nota inserita"></i>
+									</c:if>
+							</display:column>
 
 						</display:table>
 						

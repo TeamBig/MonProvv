@@ -12,7 +12,7 @@
 <spring:message var="tipoHeader" code="gestione.utente.tipo" />
 <spring:message var="enteHeader" code="gestione.utente.ente" />
 
-<div class="container" id="inserimentoUtente">
+<div class="container" id="dettaglioUtente">
 
 	<c:url value="/private/admin/utenti/dettaglio" var="formPath" />
 
@@ -22,6 +22,7 @@
 			
 				<springform:hidden path="id"/>
 				<springform:hidden path="versione"/>
+				<springform:hidden path="flagAttivo"/>
 				<springform:hidden path="utenteAstage" id="hiddenUtenteAstage"/>
 				
 				<h3 class="text-left underline">
@@ -98,8 +99,8 @@
 				
 				<div class="control-group">
 					<div class="pull-right">
-						<button type="submit" class="btn" id="modifica" name="buttonModify" value="modify">Modifica &nbsp;<i class="icon-edit"></i></button>
-						<button type="submit" class="btn" id="indietro" name="buttonBack" value="back">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
+						<button type="submit" class="btn" id="buttonModify" name="buttonModify" value="modify">Modifica &nbsp;<i class="icon-edit"></i></button>
+						<button type="submit" class="btn" id="buttonBack" name="buttonBack" value="back">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
 					</div>
 				</div>
 			</div>
