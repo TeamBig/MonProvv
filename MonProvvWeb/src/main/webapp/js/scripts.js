@@ -186,9 +186,9 @@ $(document).ready(function() {
     
     var $div = $('<div>');
     var content = 'ciao';
-    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
-    	content = $(this).html();
-    });
+//    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
+//    	content = $(this).html();
+//    });
 
     $("#popoverRifiuto").click( function(e) {  
     	$(this).popover({
@@ -530,7 +530,7 @@ $(document).ready(function() {
 	    	formData.append($(this).attr("name"), $(this).val());
 	    });
 	    formData.append('idProvvedimento', $('#idProvvedimento').val());
-
+	    alert(formData);
         $.ajax({
         	type: 'POST',
         	url: 'inserisciAllegato',
@@ -567,6 +567,11 @@ $(document).ready(function() {
 	
 	$("button#aggiornaProvvedimento").click(function(){
 		$( "#provvedimentoModifica" ).submit();
+	});
+
+	$("button#apriNuovoProvvedimento").click(function(){
+		var currentUrl = $(location).attr('pathname'); 
+		window.location = currentUrl+"/nuovo/step/1";
 	});
 	
 	$("button#annullaModificaProvvedimento").click(function(){

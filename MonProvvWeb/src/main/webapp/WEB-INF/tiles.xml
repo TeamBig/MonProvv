@@ -112,5 +112,10 @@
 		<put-attribute name="content" value="/views/newUtente.jsp" />
 		<put-attribute name="titolo" value="home.title.enti" />
 	</definition>
+	
+	<definition name="provvedimentoInserisci" extends="template">
+		<put-attribute name="content" value="/views/provvedimentoInserisci.jsp" />
+		<put-attribute name="titolo" value="provvedimentoInserisci.title" />
+	</definition>
 
 </tiles-definitions>

@@ -2,6 +2,7 @@ package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.annotations.PagingAndSorting;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
+import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
@@ -274,6 +275,49 @@ public class GestioneProvvedimentoController {
 		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
 		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione);
 	}
+	
+	/* GESTIONE INSERIMENTO PROVVEDIMENTO */
+	
+	@RequestMapping(value = { "/private/ricercaProv/nuovo/step/{idStep}" } , method = RequestMethod.GET)
+	public String apriNuovoProvvedimento(Model model,@PathVariable("idStep") String idStep, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento){
+		model.addAttribute("step", idStep);
+		model.addAttribute("provvedimentoInserisci", provvedimento);
+		if(idStep.equals("1")){
+			model.addAttribute("titolo", "Inserimento Provvedimento");
+		}
+		if(idStep.equals("2")){
+			model.addAttribute("titolo", "Nomina capofila provvedimento");
+		}
+		if(idStep.equals("3")){
+			model.addAttribute("titolo", "Assegnatari");
+		}
+		if(idStep.equals("4")){
+			model.addAttribute("titolo", "Inserimento Provvedimento");
+		}
+		
+		return "provvedimentoInserisci";
+	}
+	
+	@RequestMapping(value = { "/private/ricercaProv/nuovo/step/{idStep}" } , method = RequestMethod.POST)
+	public String apriNuovoProvvedinto(Model model,@PathVariable("idStep") String idStep, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento){
+		model.addAttribute("step", idStep);
+		if(idStep.equals("1")){
+			model.addAttribute("titolo", "Inserimento Provvedimento");
+		}
+		if(idStep.equals("2")){
+			model.addAttribute("titolo", "Nomina capofila provvedimento");
+		}
+		if(idStep.equals("3")){
+			model.addAttribute("titolo", "Assegnatari");
+		}
+		if(idStep.equals("4")){
+			model.addAttribute("titolo", "Inserimento Provvedimento");
+		}
+		
+		return "provvedimentoInserisci";
+	}
+	
+	/* FINE GESTIONE INSERIMENTO PROVVEDIMENTO */
 
 	private Integer countAllProvvedimenti() {
 		return gestioneProvvedimentoFacade.countAllProvvedimenti();
@@ -306,6 +350,11 @@ public class GestioneProvvedimentoController {
 	
 	@ModelAttribute("listaOrgani")
 	private List<Organo> initOrgani() {
+		return gestioneProvvedimentoFacade.initOrgani();
+	}
+	
+	@ModelAttribute("listaProponente")
+	private List<Organo> initProponenteInserimento() {
 		return gestioneProvvedimentoFacade.initOrgani();
 	}
 }
