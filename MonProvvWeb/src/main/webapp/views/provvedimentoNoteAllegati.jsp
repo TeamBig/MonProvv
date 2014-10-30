@@ -86,6 +86,7 @@
 	</div>
 	
 	<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="#" method="POST" enctype="multipart/form-data">
+		<input type="hidden" name="idProvvedimento" id="idProvvedimentoAllegato" />
 		<div class="row">
 			<div class="span12">	
 			
