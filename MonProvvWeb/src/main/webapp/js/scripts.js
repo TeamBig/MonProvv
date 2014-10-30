@@ -287,6 +287,24 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
+    $("a#delete4risultatiRicerca").click(function(){
+    	var retval;
+    	bootbox.confirm("Sei sicuro di voler procedere con la cancellazione della riga?", function(result) {
+    		if(result){
+    			var url = $("a#delete4risultatiRicerca").attr('href');    
+    			$(location).attr('href',url);
+    		}
+    	});
+    	return false;
+    });
+    
+//    $('#delete4risultatiRicercaEnte').on('click', function(){
+//    	bootbox.confirm("Are you sure?", function(result) {
+//    		Example.show("Confirm result: "+result);
+//    	});
+//    	return false;
+//    });
+    
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
