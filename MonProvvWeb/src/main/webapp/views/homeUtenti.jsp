@@ -127,7 +127,7 @@
 							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
 							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
 							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
-								<a href="${deletePath}/${utente.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray"></i></a>
+								<a href="${deletePath}/${utente.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Utente"></i></a>
 							</display:column>
 							
 						</display:table>

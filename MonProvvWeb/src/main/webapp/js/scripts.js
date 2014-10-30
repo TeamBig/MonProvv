@@ -287,6 +287,17 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
+    $("a#delete4risultatiRicerca").click(function(){
+    	var retval;
+    	bootbox.confirm("Sei sicuro di voler procedere con la cancellazione della riga?", function(result) {
+    		if(result){
+    			var url = $("a#delete4risultatiRicerca").attr('href');    
+    			$(location).attr('href',url);
+    		}
+    	});
+    	return false;
+    });
+    
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
@@ -521,34 +532,136 @@ $(document).ready(function() {
 		$('#textAllegato').val($(this).val());
 	});
 	
+	
+	
+	function getDoc(frame) {
+		var doc = null;
+		// IE8 cascading access check
+		try {
+			if (frame.contentWindow) {
+				doc = frame.contentWindow.document;
+			}
+		} catch(err) {
+		}
+		if (doc) { // successful getting content
+			return doc;
+		}
+		try { // simply checking may throw in ie8 under ssl or mismatched protocol
+			doc = frame.contentDocument ? frame.contentDocument : frame.document;
+		} catch(err) {
+			//last attempt
+			doc = frame.document;
+		}
+		return doc;
+	}
+	
+	
+	
+	
+	function fileUpload(form, action_url) {
+
+		// Create the iframe...
+		var iframe = document.createElement("iframe");
+		iframe.setAttribute("id", "upload_iframe");
+		iframe.setAttribute("name", "upload_iframe");
+		iframe.setAttribute("style", "border: none; display: none;");
+
+		// Add to document...
+		form.append(iframe);
+		window.frames['upload_iframe'].name = "upload_iframe";
+
+		iframeId = document.getElementById("upload_iframe");
+
+		// Add event...
+		var eventHandler = function () {
+
+			if (iframeId.detachEvent) 
+				iframeId.detachEvent("onload", eventHandler);
+			else 
+				iframeId.removeEventListener("load", eventHandler, false);
+
+			// Message from server...
+			if (iframeId.contentDocument) {
+				content = iframeId.contentDocument.body.innerText;
+			} else if (iframeId.contentWindow) {
+				content = iframeId.contentWindow.document.body.innerText;
+			} else if (iframeId.document) {
+				content = iframeId.document.body.innerText;
+			}
+
+			//getting the response from server 
+			content = content.replace("","").replace("","");
+
+			addRowAllegati(content);
+
+		}
+
+		if (iframeId.addEventListener) 
+			iframeId.addEventListener("load", eventHandler, true);
+
+		if (iframeId.attachEvent) 
+			iframeId.attachEvent("onload", eventHandler);
+
+		// Set properties of form...
+		form.attr("target", "upload_iframe");
+		form.attr("action", action_url);
+		form.attr("method", "post");
+		form.attr("enctype", "multipart/form-data");
+		form.attr("encoding", "multipart/form-data");
+		
+		form.submit();// Submit the form...
+
+	}
+
+	function addRowAllegati(riga){
+		eliminaNessunRisultatoAllegato();
+		resetFormAllegati();
+		$('#allegato > tbody:last').append(riga);
+	}
+	
 	$("button#allegatoInserisci").click(function(){
+		
+		var formObj = $('#allegatoForm');
+		var formURL = 'inserisciAllegato';
+		
+		if(window.FormData !== undefined) {
 			var formData = new FormData();
-		jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
-			formData.append('file', file);
-		});
-	    $("#allegatoForm input[type=text]").each(function(i) {
-	    	formData.append($(this).attr("name"), $(this).val());
-	    });
-	    formData.append('idProvvedimento', $('#idProvvedimento').val());
-	    alert(formData);
-        $.ajax({
-        	type: 'POST',
-        	url: 'inserisciAllegato',
-            data: formData,
-			dataType : 'text',
-			processData : false,
-			contentType : false,
-			success : function(response) {
-				eliminaNessunRisultatoAllegato();
-				resetFormAllegati();
-				$('#allegato > tbody:last').append(response);
-				//var data = jQuery.parseJSON(response);
-        	},
-        	error: function(){
-        		alert("Inserimento non riuscito");
-        	}
-        });
+			jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
+				formData.append('file', file);
+			});
+		    $("#allegatoForm input[type=text]").each(function(i) {
+		    	formData.append($(this).attr("name"), $(this).val());
+		    });
+		    formData.append('idProvvedimento', $('#idProvvedimento').val());
+
+	        $.ajax({
+	        	type: 'POST',
+	        	url: formURL,
+	            data: formData,
+				dataType : 'text',
+				processData : false,
+				contentType : false,
+				success : function(response) {
+					addRowAllegati(response);
+	        	},
+	        	error: function(){
+	        		alert("Inserimento non riuscito");
+	        	}
+	        });
+		} else {
+			$('#idProvvedimentoAllegato').val( $('#idProvvedimento').val() );
+			
+//			crossDomainAjax(formURL, function (data) {
+//				alert(data);
+//				addRowAllegati(data);
+//			});
+			
+			fileUpload(formObj, formURL);
+		}
+		
+
 	});
+
 
 	function eliminaNessunRisultatoAllegato(){
 		if($("#allegato tr.empty")) {
@@ -598,10 +711,9 @@ $(document).ready(function() {
 		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
-	$("a#eliminaAllegato").click(function(){
+	$(document).on('click', '#eliminaAllegato', function() { 
 		var idAllegato = $(this).parent().siblings(":first").text(); 
 		var trTableToDelete = $(this).parent().parent();
-	    alert(idAllegato);
 	    $.ajax({
 	    	type: 'GET',
 	    	url: 'deleteAllegato/'+idAllegato,
@@ -616,6 +728,24 @@ $(document).ready(function() {
 	    	}
 	    });
 	});
+	
+//	$("a#eliminaAllegato").click(function(){
+//		var idAllegato = $(this).parent().siblings(":first").text(); 
+//		var trTableToDelete = $(this).parent().parent();
+//	    $.ajax({
+//	    	type: 'GET',
+//	    	url: 'deleteAllegato/'+idAllegato,
+//			dataType : 'text',
+//			processData : false,
+//			contentType : false,
+//			success : function(response) {
+//				trTableToDelete.remove();
+//	    	},
+//	    	error: function(){
+//	    		alert("error");
+//	    	}
+//	    });
+//	});
 	
 	
 	$("button#insertAssegnatario").click(function(){

@@ -95,22 +95,27 @@
 	
 	<definition name="utenteHomeUtente" extends="template">
 		<put-attribute name="content" value="/views/homeUtenti.jsp" />
-		<put-attribute name="titolo" value="home.title.enti" />
+		<put-attribute name="titolo" value="home.title.utenti" />
 	</definition>
 	
 	<definition name="utenteDettUtente" extends="template">
 		<put-attribute name="content" value="/views/dettUtente.jsp" />
-		<put-attribute name="titolo" value="home.title.enti" />
+		<put-attribute name="titolo" value="home.title.utenti" />
 	</definition>
 	
 	<definition name="utenteEditUtente" extends="template">
 		<put-attribute name="content" value="/views/editUtente.jsp" />
-		<put-attribute name="titolo" value="home.title.enti" />
+		<put-attribute name="titolo" value="home.title.utenti" />
 	</definition>
 	
 	<definition name="utenteNewUtente" extends="template">
 		<put-attribute name="content" value="/views/newUtente.jsp" />
-		<put-attribute name="titolo" value="home.title.enti" />
+		<put-attribute name="titolo" value="home.title.utenti" />
+	</definition>
+
+	<definition name="noteAllegatiProv" extends="template">
+		<put-attribute name="content" value="/views/provvedimentoNoteAllegati.jsp" />
+		<put-attribute name="titolo" value="provvedimentoNoteAllegati.title" />
 	</definition>
 	
 	<definition name="provvedimentoInserisci" extends="template">

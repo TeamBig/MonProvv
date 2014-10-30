@@ -234,7 +234,7 @@ public class GestioneProvvedimentoController {
 	}
 	
 
-	@RequestMapping(value={"/private/ricercaProv/modifica/inserisciAllegato"}, method = RequestMethod.POST)
+	@RequestMapping(value={"/private/ricercaProv/modifica/inserisciAllegato", "/private/ricercaProv/noteAllegatiProv/inserisciAllegato"}, method = RequestMethod.POST)
 	@ResponseBody
 	public String inserisciAllegato(MultipartHttpServletRequest request) {
 		try {
@@ -246,7 +246,7 @@ public class GestioneProvvedimentoController {
 			Allegato allegato = new Allegato();
 			if (file.getBytes().length > 0) {
 				allegato.setNomefile(file.getOriginalFilename());
-				allegato.setDescrizione(desc);
+				allegato.setDescrizione(StringUtils.isEmpty(desc)?file.getOriginalFilename():desc);
 				allegato.setContenuto(new SerialBlob(file.getBytes()));
 				allegato.setProvvedimento(provv);
 				allegato.setDimensione((int)file.getSize());
@@ -259,7 +259,7 @@ public class GestioneProvvedimentoController {
 		return null;
 	}
 	
-	@RequestMapping(value={"/private/ricercaProv/modifica/deleteAllegato/{idAllegato}"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/private/ricercaProv/modifica/deleteAllegato/{idAllegato}", "/private/ricercaProv/noteAllegatiProv/deleteAllegato/{idAllegato}"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String deleteAllegato(@PathVariable("idAllegato") Integer idAllegato) {
 		gestioneProvvedimentoFacade.eliminaAllegato(idAllegato);

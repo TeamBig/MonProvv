@@ -12,7 +12,7 @@
 <spring:message var="tipoHeader" code="gestione.utente.tipo" />
 <spring:message var="enteHeader" code="gestione.utente.ente" />
 
-<div class="container" id="inserimentoUtente">
+<div class="container" id="editUtente">
 
 	<c:url value="/private/admin/utenti/modifica" var="formPath" />
 
