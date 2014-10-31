@@ -118,4 +118,10 @@
 		<put-attribute name="titolo" value="provvedimentoNoteAllegati.title" />
 	</definition>
 
+	<definition name="notifiche" extends="template">
+		<put-attribute name="content" value="/views/notifiche.jsp" />
+		<put-attribute name="titolo" value="notifiche.title" />
+	</definition>
+
+
 </tiles-definitions>

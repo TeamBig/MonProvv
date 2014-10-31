@@ -5,6 +5,7 @@ import it.tesoro.monprovv.dto.CodiceDescrizioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.IdDescrizioneDto;
 import it.tesoro.monprovv.dto.UtenteDto;
+import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.util.StringUtils;
@@ -49,6 +50,9 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	
 	@Autowired
 	protected UtenteValidator utenteValidator;
+	
+	@Autowired
+	private GestioneNotificaFacade gestioneNotificaFacade;
 
 	private final String tableUtenteUID = "utente";
 	

@@ -116,7 +116,6 @@ public class GestioneSicurezzaController {
 	@RequestMapping(value="/public/refresh", method = RequestMethod.GET)
 	public String refreshSingleton(Model model)  {
 		permissioneEvaluator.refreshAlberoPermessi();
-		gestioneSicurezzaFacade.refresh();
 		cacheService.invalidateCache();
 		
 		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Refresh effettuato con successo", false);

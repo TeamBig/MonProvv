@@ -1,5 +1,6 @@
 package it.tesoro.monprovv.facade;
 
+import it.tesoro.monprovv.cache.CacheService;
 import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.CondizioneDAO;
 import it.tesoro.monprovv.dao.FunzioneDAO;
@@ -67,11 +68,10 @@ public class GestioneSicurezzaFacade {
 	@Autowired 
 	private ProvvedimentoDAO provvedimentoDAO;
 	
+	@Autowired 
+	private CacheService cacheService;
+	
 	private ObjectMapper mapper;
-	
-	private List<Menu> firstLevelMenu;
-	
-	private List<Funzione> funzioni;
 	
 	public static class Headers {
 		private String SSO_CF;
@@ -176,25 +176,26 @@ public class GestioneSicurezzaFacade {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Menu> getFirstLevelMenu() {
-		if (firstLevelMenu == null)
-			refresh();
 		
+		List<Menu> firstLevelMenu = (List<Menu>)cacheService.getFromCache(CacheService.KEY_FIRST_LEVEL_MENU);
+		if (firstLevelMenu == null) {
+			firstLevelMenu =  menuDAO.findFirstLevelOrdered();
+			cacheService.addToCache(CacheService.KEY_FIRST_LEVEL_MENU, firstLevelMenu);
+		}
+	
 		return firstLevelMenu;
 	}
 	
-	
-	
-	public void refresh() {
-		
-		firstLevelMenu = menuDAO.findFirstLevelOrdered();
-		funzioni = funzioneDAO.findAll();
-	}
-
-
+	@SuppressWarnings("unchecked")
 	public List<Funzione> getFunzioni() {
-		if (funzioni == null)
-			refresh();
+		List<Funzione> funzioni = (List<Funzione>)cacheService.getFromCache(CacheService.KEY_FUNZIONI);
+		if (funzioni == null) {
+			funzioni = funzioneDAO.findAll();
+			cacheService.addToCache(CacheService.KEY_FUNZIONI, funzioni);
+		}
+		
 		return funzioni;
 	}
 	
