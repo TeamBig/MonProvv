@@ -23,7 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -109,10 +108,12 @@ public class GestioneEntiController {
 		return retval;
 	}
 	
-	@RequestMapping(value= {"/private/admin/enti/delete/{id}"}, method = RequestMethod.GET)
-	public String deleteGet(@PathVariable("id") int id, RedirectAttributes redirectAttributes)  {
+//	@RequestMapping(value= {"/private/admin/enti/delete/{id}"}, method = RequestMethod.GET)
+//	public String deleteGet(@PathVariable("id") int id, RedirectAttributes redirectAttributes)  {
+	@RequestMapping(value= {"/private/admin/enti/delete"}, method = RequestMethod.GET)
+	public String deleteGet(RedirectAttributes redirectAttributes, @RequestParam(required = false) String id)  {
 		String retval = "redirect:/private/admin/enti";	
-		gestioneEntiFacade.eliminazioneLogica(id);
+		gestioneEntiFacade.eliminazioneLogica(Integer.valueOf(id));
 		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Ente effettuato con successo", false);	
 		return retval;
 	}
@@ -180,8 +181,10 @@ public class GestioneEntiController {
 	}
 	
 	
-	@RequestMapping(value= {"/private/admin/enti/dettaglio/{id}"}, method = RequestMethod.GET)
-	public String dettaglioGet(Model model, @PathVariable("id") String id)  {
+//	@RequestMapping(value= {"/private/admin/enti/dettaglio/{id}"}, method = RequestMethod.GET)
+//	public String dettaglioGet(Model model, @PathVariable("id") String id)  {
+	@RequestMapping(value= {"/private/admin/enti/dettaglio"}, method = RequestMethod.GET)
+	public String dettaglioGet(Model model, @RequestParam(required = false) String id)  {
 		String retVal = "entiHomeEnti";
 		if( StringUtils.isNotEmpty(id) ){
 			Organo organo = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));
@@ -202,14 +205,16 @@ public class GestioneEntiController {
 		if("back".equals(buttonBack)){
 			retVal = "redirect:/private/admin/enti";
 		}else if("modify".equals(buttonModify)){
-			retVal = "redirect:/private/admin/enti/modifica/"+organo.getId();
+			retVal = "redirect:/private/admin/enti/modifica?id="+organo.getId();
 		}
 		
 		return retVal;
 	}
 	
-	@RequestMapping(value= {"/private/admin/enti/modifica/{id}"}, method = RequestMethod.GET)
-	public String modificaGet(Model model, @PathVariable("id") String id)  {
+//	@RequestMapping(value= {"/private/admin/enti/modifica/{id}"}, method = RequestMethod.GET)
+//	public String modificaGet(Model model, @PathVariable("id") String id)  {
+	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.GET)
+	public String modificaGet(Model model, @RequestParam(required = false) String id)  {
 		String retVal = "entiHomeEnti";
 		if( StringUtils.isNotEmpty(id) ){
 			Organo organo = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));

@@ -100,7 +100,7 @@
 							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
 							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" />
 							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
-								<a href="${deletePath}/${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Ente"></i></a>
+								<a href="${deletePath}?id=${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Ente"></i></a>
 							</display:column>
 						
 						</display:table>
