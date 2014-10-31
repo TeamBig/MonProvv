@@ -277,8 +277,7 @@ $(document).ready(function() {
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('pathname'); 
-    	window.location.href = currentUrl+"/dettaglio/"+customerId;
-    	
+    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
     });
     
 //    $("#denominazioneNuovoOrganoDiv").hide();
