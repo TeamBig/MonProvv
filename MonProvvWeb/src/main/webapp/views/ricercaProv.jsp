@@ -181,7 +181,7 @@
 		<div class="span12">
 			<h3 class="text-left underline">
 				<span>Elenco provvedimenti</span>
-				<button type="submit" class="btn btn-primary pull-right" id="nuovo">
+				<button type="submit" class="btn btn-primary pull-right" id="apriNuovoProvvedimento">
 					Nuovo provvedimento &nbsp;<i class="icon-plus"></i>
 				</button>
 				<button class="btn pull-right" id="toggleRicerca"
@@ -238,9 +238,9 @@
 									</div>
 								</c:forEach>
 							</display:column>
-							<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
-									<c:if test="${not empty allegatiList}">
-										<i class="icon-file-alt" title="Nota inserita"></i>
+							<display:column title="${allegatiHeader}" headerScope="col" headerClass="vcenter center" class="vcenter center">
+									<c:if test="${not empty provvedimento.allegatiList}">
+										<i class="icon-paper-clip icon-large gray" title="Allegati al provvedimento presenti"></i>
 									</c:if>
 							</display:column>
 

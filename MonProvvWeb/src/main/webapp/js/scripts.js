@@ -186,9 +186,9 @@ $(document).ready(function() {
     
     var $div = $('<div>');
     var content = 'ciao';
-    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
-    	content = $(this).html();
-    });
+//    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
+//    	content = $(this).html();
+//    });
 
     $("#popoverRifiuto").click( function(e) {  
     	$(this).popover({
@@ -297,13 +297,6 @@ $(document).ready(function() {
     	});
     	return false;
     });
-    
-//    $('#delete4risultatiRicercaEnte').on('click', function(){
-//    	bootbox.confirm("Are you sure?", function(result) {
-//    		Example.show("Confirm result: "+result);
-//    	});
-//    	return false;
-//    });
     
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
@@ -541,7 +534,6 @@ $(document).ready(function() {
 	
 	
 	
-	
 	function getDoc(frame) {
 		var doc = null;
 		// IE8 cascading access check
@@ -670,6 +662,7 @@ $(document).ready(function() {
 
 	});
 
+
 	function eliminaNessunRisultatoAllegato(){
 		if($("#allegato tr.empty")) {
 			$("#allegato tr.empty").fadeOut( 500 );
@@ -687,6 +680,11 @@ $(document).ready(function() {
 	
 	$("button#aggiornaProvvedimento").click(function(){
 		$( "#provvedimentoModifica" ).submit();
+	});
+
+	$("button#apriNuovoProvvedimento").click(function(){
+		var currentUrl = $(location).attr('pathname'); 
+		window.location = currentUrl+"/nuovo/step/1";
 	});
 	
 	$("button#annullaModificaProvvedimento").click(function(){
@@ -712,7 +710,6 @@ $(document).ready(function() {
         .appendTo('#provvedimentoDettaglio');
 		$( "#provvedimentoDettaglio" ).submit();
 	});
-	
 	
 	$(document).on('click', '#eliminaAllegato', function() { 
 		var idAllegato = $(this).parent().siblings(":first").text(); 

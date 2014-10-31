@@ -117,5 +117,10 @@
 		<put-attribute name="content" value="/views/provvedimentoNoteAllegati.jsp" />
 		<put-attribute name="titolo" value="provvedimentoNoteAllegati.title" />
 	</definition>
+	
+	<definition name="provvedimentoInserisci" extends="template">
+		<put-attribute name="content" value="/views/provvedimentoInserisci.jsp" />
+		<put-attribute name="titolo" value="provvedimentoInserisci.title" />
+	</definition>
 
 </tiles-definitions>
