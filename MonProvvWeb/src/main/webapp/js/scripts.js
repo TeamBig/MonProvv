@@ -47,26 +47,6 @@ $(document).ready(function() {
          risultatiRicerca.show();
     });
     
-    $("#nuovo").click(function() {
-    	window.location.href = "inserimento_step1.html";
-    });
-   
-    $("#avantiStep2").click(function() {
-    	window.location.href = "inserimento_step2.html";
-    });
-    
-    $("#avantiStep3").click(function() {
-    	window.location.href = "inserimento_step3.html";
-    });
-    
-    $("#indietroStep1").click(function() {
-    	window.location.href = "inserimento_step1.html";
-    });
-    
-    $("#indietroStep2").click(function() {
-    	window.location.href = "inserimento_step2.html";
-    });
-    
     
     $("#modifica").click(function() {
     	window.location.href = "modifica.html";
@@ -663,7 +643,7 @@ $(document).ready(function() {
 
 	$("button#apriNuovoProvvedimento").click(function(){
 		var currentUrl = $(location).attr('pathname'); 
-		window.location = currentUrl+"/nuovoprovvedimento";
+		window.location = currentUrl+"/nuovo";
 	});
 	
 	$("button#annullaModificaProvvedimento").click(function(){
@@ -770,6 +750,14 @@ $(document).ready(function() {
 	    		alert("Inserimento non riuscito");
 	    	}
 	    });
+	});
+	
+	
+	$('#custom-headers').multiSelect({
+		  selectableHeader: "<div class='custom-header'>Provvedimenti</div>",
+		  selectionHeader: "<div class='custom-header'>Provvedimenti selezionati</div>"
+//		  selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+//		  selectionFooter: "<div class='custom-header'>Selection footer</div>"
 	});
     /****** FINE GESTIONE PROVVEDIMENTO ******/
 

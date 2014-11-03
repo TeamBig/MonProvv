@@ -3,6 +3,7 @@ package it.tesoro.monprovv.dto;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
@@ -13,9 +14,11 @@ import java.util.Date;
 import java.util.List;
 
 public class InserisciProvvedimentoDto {
-	
-	public InserisciProvvedimentoDto(){
+
+	public InserisciProvvedimentoDto() {
 		listaAssegnazione = new ArrayList<Assegnazione>();
+		listaProvvedimenti = new ArrayList<Provvedimento>();
+		listaProvvedimentiSelected = new ArrayList<Provvedimento>();
 	}
 
 	private Stato statoDiAttuazione;
@@ -36,6 +39,8 @@ public class InserisciProvvedimentoDto {
 	private String currentStep;
 	private String stepSuccessivo;
 	private List<Assegnazione> listaAssegnazione;
+	private List<Provvedimento> listaProvvedimenti;
+	private List<Provvedimento> listaProvvedimentiSelected;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -180,7 +185,22 @@ public class InserisciProvvedimentoDto {
 	public void setListaAssegnazione(List<Assegnazione> listaAssegnazione) {
 		this.listaAssegnazione = listaAssegnazione;
 	}
-	
-	
+
+	public List<Provvedimento> getListaProvvedimenti() {
+		return listaProvvedimenti;
+	}
+
+	public void setListaProvvedimenti(List<Provvedimento> listaProvvedimenti) {
+		this.listaProvvedimenti = listaProvvedimenti;
+	}
+
+	public List<Provvedimento> getListaProvvedimentiSelected() {
+		return listaProvvedimentiSelected;
+	}
+
+	public void setListaProvvedimentiSelected(
+			List<Provvedimento> listaProvvedimentiSelected) {
+		this.listaProvvedimentiSelected = listaProvvedimentiSelected;
+	}
 
 }

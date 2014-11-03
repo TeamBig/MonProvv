@@ -2,7 +2,7 @@ package it.tesoro.monprovv.web.utils;
 
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.StringUtils;
 
 import java.io.Serializable;
 
@@ -27,19 +27,27 @@ public class ProvvedimentiUtil implements Serializable{
 		return null;
 	}
 	
-	public static String addRowTableAssegnatariAjax(Assegnazione assegnazione){
+	public static String addRowTableAssegnatariAjax(Assegnazione assegnazione,boolean isNuovoProvv){
 		if(StringUtils.isNotEmpty(assegnazione)){
 			StringBuffer ret = new StringBuffer();
-			ret.append("<tr>");
-			ret.append("<td class=\"hidden\">"+assegnazione.getId()+"</td>");
-			ret.append("<td>"+assegnazione.getOrgano().getDenominazione()+"</td>");
-			ret.append("<td></td>");
-			ret.append("<td></td>");
-			ret.append("<td></td>");
-			ret.append("<td class=\"vcenter center\"><a href=\"#modalCronologia\" role=\"button\" data-toggle=\"modal\"><i class=\"icon-time icon-large\"></i></a></td>");
-			ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnazione\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
-			ret.append("<td class=\"vcenter center\"><a href=\"#modalSollecito\" role=\"button\" data-toggle=\"modal\"><i class=\"icon-envelope-alt icon-large\" title=\"Invio sollecito\"></i></a></td>");
-			ret.append("</tr>");
+			if(isNuovoProvv){
+				ret.append("<tr>");
+				ret.append("<td class=\"hidden\">"+assegnazione.getId()+"</td>");
+				ret.append("<td>"+assegnazione.getOrgano().getDenominazione()+"</td>");
+				ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnazione\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
+				ret.append("</tr>");	
+			} else {
+				ret.append("<tr>");
+				ret.append("<td class=\"hidden\">"+assegnazione.getId()+"</td>");
+				ret.append("<td>"+assegnazione.getOrgano().getDenominazione()+"</td>");
+				ret.append("<td class=\"vcenter center\"><i class=\"icon-check icon-large\"></i></td>");
+				ret.append("<td></td>");
+				ret.append("<td></td>");
+				ret.append("<td class=\"vcenter center\"><a href=\"#modalCronologia\" role=\"button\" data-toggle=\"modal\"><i class=\"icon-time icon-large\"></i></a></td>");
+				ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnazione\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
+				ret.append("<td class=\"vcenter center\"><a href=\"#modalSollecito\" role=\"button\" data-toggle=\"modal\"><i class=\"icon-envelope-alt icon-large\" title=\"Invio sollecito\"></i></a></td>");
+				ret.append("</tr>");
+			}
 			return ret.toString();
 		}
 		return null;

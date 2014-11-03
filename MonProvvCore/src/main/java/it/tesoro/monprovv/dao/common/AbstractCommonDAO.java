@@ -4,7 +4,7 @@ package it.tesoro.monprovv.dao.common;
 import it.tesoro.monprovv.exception.DatabaseException;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 import it.tesoro.monprovv.sicurezza.CustomUser;
-import it.tesoro.monprovv.util.SearchPatternUtil;
+import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;

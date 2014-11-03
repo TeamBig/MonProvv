@@ -14,8 +14,8 @@ import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
-import it.tesoro.monprovv.util.Constants;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.Constants;
+import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
 import it.tesoro.monprovv.web.validators.ProvvedimentoValidator;
@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
@@ -277,12 +278,12 @@ public class GestioneProvvedimentoController {
 		Integer idOrg = Integer.parseInt(idOrgano);
 		
 		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
-		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione);
+		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,false);
 	}
 	
 	/* GESTIONE INSERIMENTO PROVVEDIMENTO */
 	
-	@RequestMapping(value = { "/private/provvedimenti/nuovo" } , method = RequestMethod.GET)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.GET)
 	public String apriNuovoProvvedimento(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String action,
 			BindingResult errors){
@@ -290,9 +291,9 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoInserisci";
 	}
 	
-	@RequestMapping(value = { "/private/provvedimenti/nuovo" } , method = RequestMethod.POST)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.POST)
 	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
-			@RequestParam(required = false) String action,
+			@RequestParam(required = false) String action,@RequestParam(required = false) List<Object> listaProvvedimentiSelected,@RequestParam(required = false) List<Object> _listaProvvedimentiSelected,
 			BindingResult errors){
 		provValidator.validate(provvedimento, errors);
 		if( !errors.hasErrors() ){
@@ -323,6 +324,10 @@ public class GestioneProvvedimentoController {
 			provvedimento.setCurrentStep(getPrevStep(idStep));
 			provvedimento.setStepSuccessivo(idStep);
 		}
+		if(action.equals(Constants.SALVA)){
+			
+			return;
+		}
 		if(provvedimento.getCurrentStep().equals("1")){
 			model.addAttribute("titolo", "Inserimento Provvedimento");
 		}
@@ -334,9 +339,11 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("listaAssegnazione", provvedimento.getListaAssegnazione());
 			model.addAttribute("assegnatarioNew", new Assegnazione());
 		}
-		if(provvedimento.getCurrentStep().equals("4")){
+		if(provvedimento.getCurrentStep().equals("4") && !action.equals(Constants.SALVA)){
 			model.addAttribute("titolo", "Assegna provvedimenti");
 			model.addAttribute("stepSuccessivo", "salvataggio");
+			provvedimento.setListaProvvedimenti(gestioneProvvedimentoFacade.initAllProvvedimenti(1));
+			model.addAttribute("listaProvvedimenti", provvedimento.getListaProvvedimenti());
 		}
 		model.addAttribute("currentStep", provvedimento.getCurrentStep());
 		model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
@@ -357,13 +364,13 @@ public class GestioneProvvedimentoController {
 		return idStep.toString();
 	}
 
-	@RequestMapping(value={"/private/provvedimenti/nuovo/addAssegnatario"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/nuovo/addAssegnatario"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String inserisciAssegnatario(@RequestParam("organo") String idOrgano ) {
 		Integer idOrg = Integer.parseInt(idOrgano);
 		
 		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idOrg);
-		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione);
+		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,true);
 	}
 	
 	/* FINE GESTIONE INSERIMENTO PROVVEDIMENTO */

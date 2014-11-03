@@ -1,4 +1,4 @@
-package it.tesoro.monprovv.util;
+package it.tesoro.monprovv.utils;
 
 
 public interface Constants {
@@ -6,6 +6,8 @@ public interface Constants {
 	//STATO
 	public static String ASSEGNATO = "ASS" ;
 	public static String RIFIUTATO = "RIF" ;
+	public static Integer ASSEGNATO_ID = 9 ;
+	public static Integer RIFIUTATO_ID = 10 ;
 	
 	//ACTION SUBMIT
 	public static String SALVA = "Salva" ;

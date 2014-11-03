@@ -10,7 +10,7 @@ import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.model.UtenteAstage;
-import it.tesoro.monprovv.util.SearchPatternUtil;
+import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
