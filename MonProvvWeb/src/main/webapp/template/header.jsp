@@ -17,8 +17,14 @@
 	<security:authentication property="principal.ruoloCorrente.descrizione" var="ruolo" />
 	<security:authentication property="principal.utente.organo.denominazione" var="organo" />
 
-	<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="#">2 messaggi non letti</a> - 
-		<a href="<c:url value="/j_spring_security_logout" />" title="logout - ${nome} ${cognome}"><i class="icon-signout"></i></a>
+	<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elenco">
+		<i class="icon-bell-alt" style="position:relative; text-decoration:none;" > 
+		<span class="icon-stack" style="color: #cb4437; text-decoration:none; position:absolute; top:-11px; right:-10px; display: none;" id="notifBadge">
+			<i class="icon-circle icon-stack-base" style="font-size: 1em;"></i>
+          	<i class="icon-light" style="font-size: 0.7em;" id="countNotifiche"></i>
+		</span> 
+		</i> </a>
+		 - <a href="<c:url value="/j_spring_security_logout" />" title="logout - ${nome} ${cognome}">ESCI <i class="icon-signout"></i></a>
 	 </span>
 </security:authorize>
 <security:authorize access="!isAuthenticated()">

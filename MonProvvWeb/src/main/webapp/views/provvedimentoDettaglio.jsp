@@ -2,6 +2,8 @@
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
+
 
 <spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
 
@@ -123,15 +125,25 @@
 						<div class="control-group">
 							<label class="control-label" for="statoDiAttuazioneDettaglio">${statoDiAttuazioneHeader}</label>
 							<div class="controls">
-								<select id="statoDiAttuazioneDettaglio" class="input-xlarge">
-									<option>Inserito</option>
-									<option>Sospeso</option>
-									<option selected>Fine lavorazione</option>
-									<option>Chiusura lavori</option>
-									<option>Adottato</option>
-									<option>Non attuabile</option>
-									<option>Superato</option>
-								</select>
+								<security:authorize
+									access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
+							
+								<c:if test="${canModificaStato }">
+									<select id="statoDiAttuazioneDettaglio" class="input-xlarge">
+										<option>Inserito</option>
+										<option>Sospeso</option>
+										<option selected>Fine lavorazione</option>
+										<option>Chiusura lavori</option>
+										<option>Adottato</option>
+										<option>Non attuabile</option>
+										<option>Superato</option>
+									</select>
+								</c:if>
+								
+								<c:if test="${not canModificaStato }">
+									<span>${provvedimentoDettaglio.stato.descrizione}</span>
+								</c:if>
+								
 							</div>
 						</div>
 						<div class="control-group">
@@ -200,7 +212,7 @@
 								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
@@ -244,10 +256,25 @@
 					<div class="form-horizontal">
 						<div class="control-group">
 							<div class="form-actions pull-right">
-								<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
-								<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
-								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
-								<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
+									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>								
+								</security:authorize>
+
+								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'accettazione')">
+									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
+									<button type="button" class="btn" name="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
+								</security:authorize>
+
+							
+								<c:if test="${canModificaStato }">
+									<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
+									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								</c:if>
+								
+								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
+									<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+								</security:authorize>
 							</div>
 						</div>
 					</div>

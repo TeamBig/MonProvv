@@ -47,6 +47,10 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 	@Valid
 	@NotNull
 	private Integer idUtenteMittorgano;
+	
+	@Column(name = "TIPO_NOTIFICA", length = 1)
+	@NotNull
+	private String tipoNotifica;
 
 	@Column(name = "OGGETTO", length = 240)
 	@NotNull
@@ -127,6 +131,14 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 		this.flagLettura = flagLettura;
 	}
 
+	public String getTipoNotifica() {
+		return tipoNotifica;
+	}
+
+	public void setTipoNotifica(String tipoNotifica) {
+		this.tipoNotifica = tipoNotifica;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -151,7 +163,5 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 			return false;
 		return true;
 	}
-
-	
 
 }

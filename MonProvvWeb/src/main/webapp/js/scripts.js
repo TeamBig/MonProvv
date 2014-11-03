@@ -204,13 +204,7 @@ $(document).ready(function() {
     
     
     
-    // NOTIFICHE
-    $("#popoverNotifiche").popover({
-    	placement : 'bottom', // top, bottom, left or right
-    	title : 'Notifiche&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 
-    	html: 'true', 
-    	content : '<div id="popOverBox"><span>L\'utente Filippo Neri ha richiesto l\'assegnazione del provvedimento LP 1 per l\'organo Dip.to Tesoro</span><br><a href="richiestaassegnazione.html">Clicca qui</a> per gestire la richiesta<hr/><span>L\'utente Carlo Bianchi ha rifiutato l\'assegnazione del provvedimento LP 1 per l\'organo Ragioneria Generale dello Stato</span><br><a href="motivazionerifiuto.html">Clicca qui</a> per vedere la motivazione</div>'
-    });
+
 
     
     
@@ -779,5 +773,53 @@ $(document).ready(function() {
 	});
     /****** FINE GESTIONE PROVVEDIMENTO ******/
 
+    // NOTIFICHE
+	gestioneNotifiche();
 });
 
+
+
+
+// GESTIONE NOTIFICHE
+function gestioneNotifiche() {
+	
+	// popover
+	var popoverNotifiche = $("#popoverNotifiche"); 
+	popoverNotifiche.click(function(e) {
+	    e.stopPropagation();
+	    e.preventDefault();
+	    
+	    
+	    if (popoverNotifiche.hasClass('in')) {
+	    	popoverNotifiche.popover('hide');
+	    } else {
+		    var $div = $("<div>");
+		    var content = "";
+		    var url = popoverNotifiche.attr("data-url");
+
+		    $div.load(url + " #elencoNotifiche", function() {
+		    	content = $(this).html();
+		    });
+
+		    popoverNotifiche.popover({
+		    	placement : 'bottom', 
+		    	html: 'true',
+		    	trigger: 'manual',
+		    	content : content // '<div id="popOverBox"><span>Provvedimento non di competenza<span></div>'
+	    	}); 
+		    
+		    popoverNotifiche.popover('show');
+	    }
+	    
+	    
+	});
+
+	// badge
+	var href = popoverNotifiche.attr("href");
+	$.get(href, function(data) {
+		if (data > 0) {
+			$("#countNotifiche").text(data);
+			$("#notifBadge").show();
+		}
+	});
+}
