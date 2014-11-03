@@ -669,7 +669,7 @@ $(document).ready(function() {
 
 	$("button#apriNuovoProvvedimento").click(function(){
 		var currentUrl = $(location).attr('pathname'); 
-		window.location = currentUrl+"/nuovo/step/1";
+		window.location = currentUrl+"/nuovoprovvedimento";
 	});
 	
 	$("button#annullaModificaProvvedimento").click(function(){

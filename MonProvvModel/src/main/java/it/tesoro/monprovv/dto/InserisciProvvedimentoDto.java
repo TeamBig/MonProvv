@@ -17,8 +17,7 @@ public class InserisciProvvedimentoDto {
 	private String art;
 	private String comma;
 	private String titoloOggetto;
-	private Date dtTermineScadenzaDa;
-	private Date dtTermineScadenzaA;
+	private Date dtTermineScadenza;
 	private String fonteNormativa;
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
 	private Organo organoCapofila;
@@ -27,6 +26,8 @@ public class InserisciProvvedimentoDto {
 	private Date dataAtto;
 	private String numeroAtto;
 	private TipoAtto tipoAtto;
+	private String currentStep;
+	private String stepSuccessivo;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -74,22 +75,6 @@ public class InserisciProvvedimentoDto {
 
 	public void setTitoloOggetto(String titoloOggetto) {
 		this.titoloOggetto = titoloOggetto;
-	}
-
-	public Date getDtTermineScadenzaDa() {
-		return dtTermineScadenzaDa;
-	}
-
-	public void setDtTermineScadenzaDa(Date dtTermineScadenzaDa) {
-		this.dtTermineScadenzaDa = dtTermineScadenzaDa;
-	}
-
-	public Date getDtTermineScadenzaA() {
-		return dtTermineScadenzaA;
-	}
-
-	public void setDtTermineScadenzaA(Date dtTermineScadenzaA) {
-		this.dtTermineScadenzaA = dtTermineScadenzaA;
 	}
 
 	public String getFonteNormativa() {
@@ -154,6 +139,30 @@ public class InserisciProvvedimentoDto {
 
 	public void setTipoAtto(TipoAtto tipoAtto) {
 		this.tipoAtto = tipoAtto;
+	}
+
+	public String getCurrentStep() {
+		return currentStep;
+	}
+
+	public void setCurrentStep(String currentStep) {
+		this.currentStep = currentStep;
+	}
+
+	public String getStepSuccessivo() {
+		return stepSuccessivo;
+	}
+
+	public void setStepSuccessivo(String stepSuccessivo) {
+		this.stepSuccessivo = stepSuccessivo;
+	}
+
+	public Date getDtTermineScadenza() {
+		return dtTermineScadenza;
+	}
+
+	public void setDtTermineScadenza(Date dtTermineScadenza) {
+		this.dtTermineScadenza = dtTermineScadenza;
 	}
 
 }

@@ -27,7 +27,7 @@
 <spring:message var="parereHeader" code="label.parere" />
 
 
-<c:url value="/private/ricercaProv/nuovo/step/" var="formPath" />
+<c:url value="/private/ricercaProv/nuovoprovvedimento" var="formPath" />
 
 	<div class="container inserimento">
 		<div class="row">
@@ -36,7 +36,9 @@
 			</div>
 		</div>
 		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST">
-		<c:if test="${step eq 1}">
+		<springform:hidden path="currentStep" name="currentStep"/>
+		<springform:hidden path="stepSuccessivo" name="stepSuccessivo"/>
+		<c:if test="${currentStep eq 1}">
 		<!-- STEP 1  -->
 			<div class="row">
 				<div class="span10 offset2">
@@ -108,15 +110,10 @@
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="dataDa">Termine di
+						<label class="control-label" for="dp1v">Termine di
 							scadenza</label>
 						<div class="controls form-inline">
-							<label for="dp1v">Da&nbsp;</label> <input type="text" id="dp1v"
-								class="input-small" maxlength="10" placeholder="GG/MM/AAAAA">&nbsp;
-							<i class="icon-calendar icon-large" id="dp1"></i> <label
-								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> 
-								<springform:input path="dtTermineScadenzaA" id="dp2v" cssClass="input-small" placeholder="GG/MM/AAAAA"/>&nbsp;<i
-								class="icon-calendar icon-large" id="dp2"></i>
+							<springform:input type="text" id="dp1v" path="dtTermineScadenza" class="input-xlarge" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
 						</div>
 					</div>
 					<div class="control-group">
@@ -199,31 +196,24 @@
 			<!-- allegati end -->
 			<!-- FINE STEP 1  -->
 			</c:if>
-			<c:if test="${step eq 2}">
+			<c:if test="${currentStep eq 2}">
 			<!-- STEP 2  -->
 			<div class="row">
 				<div class="span10 offset2">
 						<div class="control-group">
-							<label class="control-label" for="enteCapofila">Capofila (DD)</label>
-							<div class="controls">
-								<select id="enteCapofila" class="input-xlarge">
-									<option>Sceglierne uno...</option>  
-									<option>Agenzia Entrate e Territorio                                                                                                 </option>
-									<option>Agenzia Dogane e Monopoli                                                                                                    </option>
-									<option>Agenzia Entrate                                                                                                              </option>
-									<option>Dipartimento finanze (DLTFF)                                                                                                 </option>
-									<option>Dip.to Tesoro                                                                                                                </option>
-									<option>Guardia di finanza                                                                                                           </option>
-									<option>Ragioneria Generale dello Stato                                                                                              </option>
-								</select>
-							</div>
+						<label class="control-label" for="organoCapofila">${capofilaHeader}</label>
+						<div class="controls">
+							<springform:select path="organoCapofila" id="organoCapofila" cssClass="input-xlarge" >
+								<springform:options items="${listaOrganoCapofila}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
+						</div>
 						</div>
 				</div>
 			</div>			
 			<!-- FINE STEP 2  -->
 			</c:if>
 			<!-- STEP 3  -->
-			<c:if test="${step eq 3}">
+			<c:if test="${currentStep eq 3}">
 			<div class="row">
 				<div class="span12">
 					<table class="table table-hover table-bordered">
@@ -276,13 +266,77 @@
 			</div>
 			<!-- FINE STEP 3 -->
 			</c:if>
+			<!-- STEP 4  -->
+			<c:if test="${currentStep eq 4}">
+			<div class="row">
+				<div class="span12">
+					<table class="table table-hover table-bordered">
+						<thead>
+							<tr>
+								<th style="width: 80%">
+									Organo
+								</th>
+								<th class="center">
+									Elimina
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr id="assegnatarioDipTesoro">
+								<td style="width: 80%">
+									Dip.to Tesoro
+								</td>			
+								
+								<td class="vcenter center">
+									<a href="#" id="deleteEnte"><i class="icon-trash icon-large"></i></a>
+								</td>
+							</tr>
+							<tr id="noRecord">
+								<td colspan="2" class="vcenter">
+									Nessun record trovato.
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="form-horizontal">
+					<div class="control-group">
+						<label class="control-label" for="enteAssegnatario">Nuova assegnazione</label>
+						<div class="controls">
+							<select id="enteAssegnatario" class="span3">
+								<option>Sceglierne uno...</option>
+								<option>Agenzia Entrate e Territorio                                                                                                 </option>
+								<option>Agenzia Dogane e Monopoli                                                                                                    </option>
+								<option>Agenzia Entrate                                                                                                              </option>
+								<option>Dipartimento finanze (DLTFF)                                                                                                 </option>
+								<option>Dip.to Tesoro                                                                                                                </option>
+								<option>Guardia di finanza                                                                                                           </option>
+								<option>Ragioneria Generale dello Stato                                                                                              </option>
+							</select>
+							<button type="button" id="insertEnte" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- FINE STEP 4 -->
+			</c:if>
 			<div class="row">
 				<div class="span12">
 					<div class="form-horizontal">
 						<div class="control-group">
 							<div class="form-actions pull-right">
-								<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
-								<button type="submit" class="btn btn-primary" id="avantiStep2">Avanti &nbsp;<i class="icon-arrow-right"></i></button>
+								<c:if test="${currentStep eq 1}">
+									<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								</c:if>
+								<c:if test="${currentStep eq 2 || currentStep eq 3 || currentStep eq 4}">
+									<button type="submit" class="btn" name="action" value="Indietro" id="indietro">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
+								</c:if>
+								<c:if test="${currentStep eq 1 || currentStep eq 2 || currentStep eq 3}">
+									<button type="submit" class="btn btn-primary" name="action" value="Avanti" id="avantiStep2">Avanti &nbsp;<i class="icon-arrow-right"></i></button>
+								</c:if>
+								<c:if test="${currentStep eq 4}">
+									<button type="submit" class="btn btn-primary" name="action" value="Salva" id="salva">Inserisci provvedimento &nbsp;<i class="icon-save"></i></button>
+								</c:if>
 							</div>
 						</div>
 					</div>
