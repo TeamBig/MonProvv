@@ -40,6 +40,8 @@
 <spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
 <spring:message var="sollecitoHeader" code="listaAssegnatari.header.sollecito" />
 
+<security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
+
 
 	<div class="container inserimento">
 		<div class="row">
@@ -123,27 +125,16 @@
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="statoDiAttuazioneDettaglio">${statoDiAttuazioneHeader}</label>
+							<label class="control-label" for="statoDiAttuazione">${statoDiAttuazioneHeader}</label>
 							<div class="controls">
-								<security:authorize
-									access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
-							
 								<c:if test="${canModificaStato }">
-									<select id="statoDiAttuazioneDettaglio" class="input-xlarge">
-										<option>Inserito</option>
-										<option>Sospeso</option>
-										<option selected>Fine lavorazione</option>
-										<option>Chiusura lavori</option>
-										<option>Adottato</option>
-										<option>Non attuabile</option>
-										<option>Superato</option>
-									</select>
+									<springform:select path="stato" id="statoDiAttuazioneDettaglio" cssClass="input-xlarge" >
+										<springform:options items="${listaStatoDiAttuazione}" itemValue="id" itemLabel="descrizione" />
+									</springform:select>
 								</c:if>
-								
 								<c:if test="${not canModificaStato }">
 									<span>${provvedimentoDettaglio.stato.descrizione}</span>
 								</c:if>
-								
 							</div>
 						</div>
 						<div class="control-group">
@@ -184,8 +175,8 @@
 										summary="Elenco Allegati" style="width: 100%">
 
 							<display:column title="${idHeader}" property="id" headerScope="col" />
-							<display:column title="${descrizioneHeader}" href="/private/ricercaProv/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
-								<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+							<display:column title="${descrizioneHeader}" href="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
+								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 							</display:column>
 							<display:column title="${dimensioneHeader}" headerScope="col">
@@ -222,7 +213,7 @@
 								</display:column>
 								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
-										<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+										<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
 										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensioneAsText})</div>
 									</c:forEach>
 								</display:column>
@@ -269,12 +260,11 @@
 							
 								<c:if test="${canModificaStato }">
 									<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
-									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
-								
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
 									<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
 								</security:authorize>
+								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 							</div>
 						</div>
 					</div>

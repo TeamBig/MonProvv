@@ -64,7 +64,7 @@ public class GestioneProvvedimentoController {
 	@Autowired
 	protected ProvvedimentoValidator provValidator;
 
-	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.GET)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedfimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
 		model.addAttribute("ricercaProvvedimenti", dto);
@@ -97,7 +97,7 @@ public class GestioneProvvedimentoController {
 //		return new RicercaProvvedimentoDto();
 //	}
 	
-	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.POST)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST)
 	public String processRegistration(Model model, 
 			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
 			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps
@@ -121,8 +121,8 @@ public class GestioneProvvedimentoController {
 		return "ricercaProv";
 	}
 	//***** DETTAGLIO PROVVEDIMENTO ******//
-	@RequestMapping(value = { "/private/ricercaProv/dettaglio/{idProvvedimento}" } , method = RequestMethod.GET)
-	public String dettaglio(Model model,@PathVariable("idProvvedimento") int id) {
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/dettaglio" } , method = RequestMethod.GET)
+	public String dettaglio(Model model,@RequestParam(required = false) Integer id) {
 		String retVal = "ricercaProv";
 		if(StringUtils.isNotEmpty(id)){
 			Provvedimento provvedimentoDettaglio = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
@@ -158,28 +158,28 @@ public class GestioneProvvedimentoController {
 //		return retVal;
 //	}
 	
-	@RequestMapping(value = { "/private/ricercaProv/dettaglio/{idProvvedimento}" } , method = RequestMethod.POST)
-	public String dettaglioSubmit(Model model,@PathVariable("idProvvedimento") int id, @RequestParam String action) {
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/dettaglio" } , method = RequestMethod.POST)
+	public String dettaglioSubmit(Model model,@RequestParam(required = false) Integer id, @RequestParam String action) {
 		String retVal = "ricercaProv";
 		if(StringUtils.isNotEmpty(id)){
 			if(action.equals("Modifica")){
-				retVal = "redirect:/private/ricercaProv/modifica/"+id;	
+				retVal = "redirect:/private/provvedimenti/ricerca/modifica/"+id;	
 			}
 			if(action.equals("Salva")){
 				
 			}
 			if(action.equals("Annulla")){
-				retVal= "redirect:/private/ricercaProv";
+				retVal= "redirect:/private/provvedimenti/ricerca";
 			}
 			if(action.equals("noteallegati")){
-				retVal= "redirect:/private/ricercaProv/noteAllegatiProv/"+id;
+				retVal= "redirect:/private/provvedimenti/ricerca/noteAllegatiProv/"+id;
 			}
 		}
 		return retVal;
 	}
 	
 	//***** MODIFICA PROVVEDIMENTO ******//
-	@RequestMapping(value = { "/private/ricercaProv/modifica/{idProvvedimento}" } , method = RequestMethod.GET)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica/{idProvvedimento}" } , method = RequestMethod.GET)
 	public String modificaProvvedimento(Model model,@PathVariable("idProvvedimento") int id) {
 		String retVal = "ricercaProv";
 		if(StringUtils.isNotEmpty(id)){
@@ -204,7 +204,7 @@ public class GestioneProvvedimentoController {
 	
 	
 	//SALVA MODIFICA PROVVEDIMENTO
-	@RequestMapping(value = { "/private/ricercaProv/modifica" } , method = RequestMethod.POST)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica" } , method = RequestMethod.POST)
 	public String salvaModificaProvvedimento(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento,
 			BindingResult errors, RedirectAttributes redirectAttributes
 			) {
@@ -213,10 +213,10 @@ public class GestioneProvvedimentoController {
 		model.addAttribute("provvedimentoDettaglio", provvAggiornato);
 		caricaTabelleInferiore(model,provvAggiornato);
 		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Provvedimento effettuato con successo", false);
-		return "redirect:/private/ricercaProv/dettaglio/"+provvedimento.getId();
+		return "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
 	}
 	
-	@RequestMapping(value={"/private/ricercaProv/downloadAllegato/{allegatoId}"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/downloadAllegato/{allegatoId}"}, method = RequestMethod.GET)
 	public String downloadAllegato(Model model, @PathVariable("allegatoId") Integer allegatoId,HttpServletResponse response) {
 		Allegato doc = gestioneProvvedimentoFacade.getAllegatoById(allegatoId);
 		try {
@@ -238,7 +238,7 @@ public class GestioneProvvedimentoController {
 	}
 	
 
-	@RequestMapping(value={"/private/ricercaProv/modifica/inserisciAllegato", "/private/ricercaProv/noteAllegatiProv/inserisciAllegato"}, method = RequestMethod.POST)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/modifica/inserisciAllegato", "/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato"}, method = RequestMethod.POST)
 	@ResponseBody
 	public String inserisciAllegato(MultipartHttpServletRequest request) {
 		try {
@@ -263,14 +263,14 @@ public class GestioneProvvedimentoController {
 		return null;
 	}
 	
-	@RequestMapping(value={"/private/ricercaProv/modifica/deleteAllegato/{idAllegato}", "/private/ricercaProv/noteAllegatiProv/deleteAllegato/{idAllegato}"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/modifica/deleteAllegato/{idAllegato}", "/private/provvedimenti/ricerca/noteAllegatiProv/deleteAllegato/{idAllegato}"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String deleteAllegato(@PathVariable("idAllegato") Integer idAllegato) {
 		gestioneProvvedimentoFacade.eliminaAllegato(idAllegato);
 		return null;
 	}
 	
-	@RequestMapping(value={"/private/ricercaProv/dettaglio/inserisciAssegnatario"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/inserisciAssegnatario"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String inserisciAssegnatario(@RequestParam("provvedimento.id") String idProvvedimento,@RequestParam("organo") String idOrgano ) {
 		Integer idProvv = Integer.parseInt(idProvvedimento);
@@ -282,7 +282,7 @@ public class GestioneProvvedimentoController {
 	
 	/* GESTIONE INSERIMENTO PROVVEDIMENTO */
 	
-	@RequestMapping(value = { "/private/ricercaProv/nuovoprovvedimento" } , method = RequestMethod.GET)
+	@RequestMapping(value = { "/private/provvedimenti/nuovo" } , method = RequestMethod.GET)
 	public String apriNuovoProvvedimento(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String action,
 			BindingResult errors){
@@ -290,7 +290,7 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoInserisci";
 	}
 	
-	@RequestMapping(value = { "/private/ricercaProv/nuovoprovvedimento" } , method = RequestMethod.POST)
+	@RequestMapping(value = { "/private/provvedimenti/nuovo" } , method = RequestMethod.POST)
 	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String action,
 			BindingResult errors){
@@ -331,6 +331,8 @@ public class GestioneProvvedimentoController {
 		}
 		if(provvedimento.getCurrentStep().equals("3")){
 			model.addAttribute("titolo", "Assegnatari");
+			model.addAttribute("listaAssegnazione", provvedimento.getListaAssegnazione());
+			model.addAttribute("assegnatarioNew", new Assegnazione());
 		}
 		if(provvedimento.getCurrentStep().equals("4")){
 			model.addAttribute("titolo", "Assegna provvedimenti");
@@ -355,6 +357,14 @@ public class GestioneProvvedimentoController {
 		return idStep.toString();
 	}
 
+	@RequestMapping(value={"/private/provvedimenti/nuovo/addAssegnatario"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String inserisciAssegnatario(@RequestParam("organo") String idOrgano ) {
+		Integer idOrg = Integer.parseInt(idOrgano);
+		
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idOrg);
+		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione);
+	}
 	
 	/* FINE GESTIONE INSERIMENTO PROVVEDIMENTO */
 	

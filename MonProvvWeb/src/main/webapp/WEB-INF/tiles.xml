@@ -74,7 +74,7 @@
 	</definition>
 	
 	<definition name="ricercaProv" extends="template">
-		<put-attribute name="content" value="/views/ricercaProv.jsp" />
+		<put-attribute name="content" value="/views/provvedimenti.jsp" />
 		<put-attribute name="titolo" value="ricercaProv.title" />
 	</definition>
 	

@@ -1,5 +1,6 @@
 package it.tesoro.monprovv.dto;
 
+import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Stato;
@@ -7,9 +8,15 @@ import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class InserisciProvvedimentoDto {
+	
+	public InserisciProvvedimentoDto(){
+		listaAssegnazione = new ArrayList<Assegnazione>();
+	}
 
 	private Stato statoDiAttuazione;
 	private Governo tipoGoverno;
@@ -28,6 +35,7 @@ public class InserisciProvvedimentoDto {
 	private TipoAtto tipoAtto;
 	private String currentStep;
 	private String stepSuccessivo;
+	private List<Assegnazione> listaAssegnazione;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -164,5 +172,15 @@ public class InserisciProvvedimentoDto {
 	public void setDtTermineScadenza(Date dtTermineScadenza) {
 		this.dtTermineScadenza = dtTermineScadenza;
 	}
+
+	public List<Assegnazione> getListaAssegnazione() {
+		return listaAssegnazione;
+	}
+
+	public void setListaAssegnazione(List<Assegnazione> listaAssegnazione) {
+		this.listaAssegnazione = listaAssegnazione;
+	}
+	
+	
 
 }

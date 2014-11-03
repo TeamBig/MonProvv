@@ -31,9 +31,9 @@ public class NoteAllegatiProvvedimentoController {
 	@Autowired
 	private AlertUtils alertUtils;
 	
-	@RequestMapping(value = { "/private/ricercaProv/noteAllegatiProv/{idProvvedimento}" } , method = RequestMethod.GET)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/noteAllegatiProv/{idProvvedimento}" } , method = RequestMethod.GET)
 	public String modificaProvvedimento(Model model,@PathVariable("idProvvedimento") int id) {
-		String retVal = "redirect:/private/ricercaProv/dettaglio/"+id;
+		String retVal = "redirect:/private/provvedimenti/ricerca/dettaglio/"+id;
 		if(StringUtils.isNotEmpty(id)){
 			Provvedimento provvedimento = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
 			
@@ -60,12 +60,12 @@ public class NoteAllegatiProvvedimentoController {
 		model.addAttribute("assegnatarioNew", assegnazioneNew);
 	}
 	
-	@RequestMapping(value = { "/private/ricercaProv/noteAllegatiProv" } , method = RequestMethod.POST)
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/noteAllegatiProv" } , method = RequestMethod.POST)
 	public String noteAllegatiProvPOST(Model model, 
 			@ModelAttribute("provvedimento") Provvedimento provvedimento,
 			@RequestParam String action) {
 		
-		String retVal = "redirect:/private/ricercaProv/dettaglio/"+provvedimento.getId();
+		String retVal = "redirect:/private/provvedimenti/ricerca/dettaglio/"+provvedimento.getId();
 		if("save".equals( action )){
 			 Provvedimento p = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());
 			 p.setNoteInterne( provvedimento.getNoteInterne() );
