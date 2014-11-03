@@ -186,9 +186,9 @@ $(document).ready(function() {
     
     var $div = $('<div>');
     var content = 'ciao';
-    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
-    	content = $(this).html();
-    });
+//    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
+//    	content = $(this).html();
+//    });
 
     $("#popoverRifiuto").click( function(e) {  
     	$(this).popover({
@@ -271,8 +271,7 @@ $(document).ready(function() {
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('pathname'); 
-    	window.location.href = currentUrl+"/dettaglio/"+customerId;
-    	
+    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
     });
     
 //    $("#denominazioneNuovoOrganoDiv").hide();
@@ -281,6 +280,17 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
+    $("a#delete4risultatiRicerca").click(function(){
+    	var retval;
+    	bootbox.confirm("Sei sicuro di voler procedere con la cancellazione della riga?", function(result) {
+    		if(result){
+    			var url = $("a#delete4risultatiRicerca").attr('href');    
+    			$(location).attr('href',url);
+    		}
+    	});
+    	return false;
+    });
+    
     $('#tipoNuovoOrgano').on('change', function () {
     	var val = $(this).val();
     	var option1 = "E"; //Esterna
@@ -515,33 +525,7 @@ $(document).ready(function() {
 		$('#textAllegato').val($(this).val());
 	});
 	
-	
-	
-	
-	function getDoc(frame) {
-		var doc = null;
-		// IE8 cascading access check
-		try {
-			if (frame.contentWindow) {
-				doc = frame.contentWindow.document;
-			}
-		} catch(err) {
-		}
-		if (doc) { // successful getting content
-			return doc;
-		}
-		try { // simply checking may throw in ie8 under ssl or mismatched protocol
-			doc = frame.contentDocument ? frame.contentDocument : frame.document;
-		} catch(err) {
-			//last attempt
-			doc = frame.document;
-		}
-		return doc;
-	}
-	
-	
-	
-	
+
 	function fileUpload(form, action_url) {
 
 		// Create the iframe...
@@ -593,6 +577,9 @@ $(document).ready(function() {
 		form.attr("enctype", "multipart/form-data");
 		form.attr("encoding", "multipart/form-data");
 		
+		//For IE8 you need both. Obnoxious
+	    form.encoding = form.enctype = "multipart/form-data";
+	    
 		form.submit();// Submit the form...
 
 	}
@@ -601,6 +588,19 @@ $(document).ready(function() {
 		eliminaNessunRisultatoAllegato();
 		resetFormAllegati();
 		$('#allegato > tbody:last').append(riga);
+
+		var regex = new RegExp("\\<tr\\>\\<td\\>(.{0,}?)\\</td\\>", "g");
+		var match;
+		match = regex.exec(riga);
+		if( match != null ){
+			if( $('#idAllegatiUpdList').val() == '' ){
+				$('#idAllegatiUpdList').val(match[1]);
+			}else{
+				var appo = $('#idAllegatiUpdList').val();
+				$('#idAllegatiUpdList').val(appo + ',' + match[1])
+			}
+		}
+		
 	}
 	
 	$("button#allegatoInserisci").click(function(){
@@ -635,16 +635,12 @@ $(document).ready(function() {
 		} else {
 			$('#idProvvedimentoAllegato').val( $('#idProvvedimento').val() );
 			
-//			crossDomainAjax(formURL, function (data) {
-//				alert(data);
-//				addRowAllegati(data);
-//			});
-			
 			fileUpload(formObj, formURL);
 		}
 		
 
 	});
+
 
 	function eliminaNessunRisultatoAllegato(){
 		if($("#allegato tr.empty")) {
@@ -663,6 +659,11 @@ $(document).ready(function() {
 	
 	$("button#aggiornaProvvedimento").click(function(){
 		$( "#provvedimentoModifica" ).submit();
+	});
+
+	$("button#apriNuovoProvvedimento").click(function(){
+		var currentUrl = $(location).attr('pathname'); 
+		window.location = currentUrl+"/nuovoprovvedimento";
 	});
 	
 	$("button#annullaModificaProvvedimento").click(function(){
@@ -689,8 +690,32 @@ $(document).ready(function() {
 		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
-	
 	$(document).on('click', '#eliminaAllegato', function() { 
+		var idAllegato = $(this).parent().siblings(":first").text(); 
+		var trTableToDelete = $(this).parent().parent();
+		var idAllegatiDelList = $('#idAllegatiDelList').val();
+		idAllegatiDelList = idAllegatiDelList + idAllegato + ',';
+		$('#idAllegatiDelList').val(idAllegatiDelList);
+		trTableToDelete.remove();
+	});
+	
+	$("button#saveNoteAllegati").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'save')
+        .appendTo('#provvedimento');
+		$( "#provvedimento" ).submit();
+	});
+	
+	$("button#annullaNoteAllegati").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'cancel')
+        .appendTo('#provvedimento');
+		$( "#provvedimento" ).submit();
+	});
+	
+	$(document).on('click', '#eliminaAllegatoOld', function() { 
 		var idAllegato = $(this).parent().siblings(":first").text(); 
 		var trTableToDelete = $(this).parent().parent();
 	    $.ajax({

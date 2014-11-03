@@ -19,7 +19,6 @@ import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
-import it.tesoro.monprovv.util.Constants;
 import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.util.ArrayList;
@@ -161,6 +160,11 @@ public class GestioneProvvedimentoFacade {
 		allegatoDAO.save(allegato);
 		return allegato;
 	}
+	
+	public Allegato aggiornaAllegato(Allegato allegato) {
+		allegatoDAO.merge(allegato);
+		return allegato;
+	}
 
 	public List<TipoProvvedimento> initTipologia() {
 		List<String> order = new ArrayList<String>();
@@ -232,6 +236,11 @@ public class GestioneProvvedimentoFacade {
 		order.add("denominazione");
 		List<Organo> listaOrgani = organoDAO.findAll(order);
 		return listaOrgani;
+	}
+
+	public Assegnazione inserisciAssegnazione(Integer idOrgano) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

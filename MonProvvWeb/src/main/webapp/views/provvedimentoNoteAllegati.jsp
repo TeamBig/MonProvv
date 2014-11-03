@@ -16,15 +16,18 @@
 
 <div class="container" id="notaAllegatiProv">
 	
-	<c:url value="/private/ricercaProv/noteAllegatiProv" var="formPath" />
+	<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv" var="formPath" />
 	
-	<springform:form action="${formPath}" method="POST" commandName="provvedimento" cssClass="form-horizontal">
+	<springform:form action="${formPath}" method="POST" id="provvedimento" commandName="provvedimento" cssClass="form-horizontal">
 		
 		<div class="row">
 			<div class="span12">
 				
 				<springform:hidden path="id" id="idProvvedimento" />
 				<springform:hidden path="versione" id="versioneProvvedimento" />
+				
+				<springform:hidden path="idAllegatiUpdList" id="idAllegatiUpdList" />
+				<springform:hidden path="idAllegatiDelList" id="idAllegatiDelList" />
 				
 				<h3 class="text-left underline">
 					<span>Nota</span>
@@ -72,7 +75,7 @@
 
 				<display:column title="${idHeader}" property="id" headerScope="col" />
 				<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
-					<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+					<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
 					<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 				</display:column>
 				<display:column title="${dimensioneHeader}" headerScope="col">
@@ -121,7 +124,7 @@
 		<div class="span12">
 			<div class="control-group">
 				<div class="pull-right">
-					<button type="submit" class="btn btn-primary" id="saveNoteAllegati" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
+					<button type="button" class="btn btn-primary" id="saveNoteAllegati" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
 					<button type="button" class="btn" id="annullaNoteAllegati" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 				</div>
 			</div>
