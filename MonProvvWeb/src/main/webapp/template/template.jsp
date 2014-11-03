@@ -51,6 +51,7 @@
 	<script type="text/javascript" src="${base}js/locales/bootstrap-datepicker.it.js"></script>
 	<script type="text/javascript" src="${base}js/scripts.js"></script>
 	<script type="text/javascript" src="${base}js/bootbox.min.js"></script>
+	<script type="text/javascript" src="${base}js/jquery.form.js"></script>
 	
 	
 </head>
