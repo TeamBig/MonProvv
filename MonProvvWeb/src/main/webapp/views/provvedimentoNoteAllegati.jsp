@@ -16,7 +16,7 @@
 
 <div class="container" id="notaAllegatiProv">
 	
-	<c:url value="/private/ricercaProv/noteAllegatiProv" var="formPath" />
+	<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv" var="formPath" />
 	
 	<springform:form action="${formPath}" method="POST" id="provvedimento" commandName="provvedimento" cssClass="form-horizontal">
 		
@@ -75,7 +75,7 @@
 
 				<display:column title="${idHeader}" property="id" headerScope="col" />
 				<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
-					<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+					<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
 					<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 				</display:column>
 				<display:column title="${dimensioneHeader}" headerScope="col">

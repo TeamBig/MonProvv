@@ -27,7 +27,7 @@
 <spring:message var="parereHeader" code="label.parere" />
 
 
-<c:url value="/private/ricercaProv/nuovoprovvedimento" var="formPath" />
+<c:url value="/private/provvedimenti/ricerca/nuovoprovvedimento" var="formPath" />
 
 	<div class="container inserimento">
 		<div class="row">
@@ -216,6 +216,33 @@
 			<c:if test="${currentStep eq 3}">
 			<div class="row">
 				<div class="span12">
+						<display:table 	name="${listaAssegnazione}" 
+											requestURI="" sort="external" partialList="false"
+											 id="assegnazione" 
+											class="table table-hover table-bordered"
+											summary="Elenco Assegnatari" style="width: 100%">
+	
+								<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
+								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
+								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
+								</display:column>
+						</display:table>
+				</div>
+				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+					<div class="control-group">
+						<label class="control-label" for="organo">Nuovo assegnatario</label>
+						<div class="controls">
+							<springform:select path="organo" id="organo" cssClass="input-xlarge" >
+								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
+							<button type="button" id="insertAssegnatarioFromInserimento" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+						</div>
+					</div>
+				</springform:form>
+			</div>
+<!-- 			<div class="row">
+				<div class="span12">
 					<table class="table table-hover table-bordered">
 						<thead>
 							<tr>
@@ -263,7 +290,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- FINE STEP 3 -->
 			</c:if>
 			<!-- STEP 4  -->
