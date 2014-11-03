@@ -238,4 +238,9 @@ public class GestioneProvvedimentoFacade {
 		return listaOrgani;
 	}
 
+	public Assegnazione inserisciAssegnazione(Integer idOrgano) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

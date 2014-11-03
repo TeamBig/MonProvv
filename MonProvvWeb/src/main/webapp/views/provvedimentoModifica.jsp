@@ -38,7 +38,7 @@
 <spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
 <spring:message var="sollecitoHeader" code="listaAssegnatari.header.sollecito" />
 
-<c:url value="/private/ricercaProv/modifica" var="formPath" />
+<c:url value="/private/provvedimenti/ricerca/modifica" var="formPath" />
 
 	<div class="container inserimento">
 		<div class="row">
@@ -181,7 +181,7 @@
 
 							<display:column title="${idHeader}" property="id" headerScope="col" />
 							<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
-								<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
+								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 							</display:column>
 							<display:column title="${dimensioneHeader}" headerScope="col">
@@ -228,16 +228,17 @@
 			</div>
 			<div class="row">
 				<div class="span12">
-								<display:table 	name="${listaAssegnazione}" 
+						<display:table 	name="${listaAssegnazione}" 
 											requestURI="" sort="external" partialList="false"
 											 id="assegnazione" 
 											class="table table-hover table-bordered"
 											summary="Elenco Assegnatari" style="width: 100%">
 	
-								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" headerClass="medium" />
+								<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
+								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
@@ -247,11 +248,11 @@
 								</display:column>
 								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
-										<spring:url value="/private/ricercaProv/downloadAllegato/${allegato.id}" var="urlDownload" />
-										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensione} Kb)</div>
+										<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensioneAsText})</div>
 									</c:forEach>
 								</display:column>
-								<display:column title="${noteHeader}" property="nota.testoAsText" headerScope="col" />
+								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
 								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
 								</display:column>
@@ -263,22 +264,18 @@
 								</display:column>
 						</display:table>
 				</div>
-				<div class="control-group">
-					<label class="control-label" for="enteAssegnatario">Nuovo assegnatario</label>
-					<div class="controls">
-						<select id="enteAssegnatario" class="span3">
-									<option>Sceglierne uno...</option>  
-									<option>Agenzia Entrate e Territorio                                                                                                 </option>
-									<option>Agenzia Dogane e Monopoli                                                                                                    </option>
-									<option>Agenzia Entrate                                                                                                              </option>
-									<option>Dipartimento finanze (DLTFF)                                                                                                 </option>
-									<option>Dip.to Tesoro                                                                                                                </option>
-									<option>Guardia di finanza                                                                                                           </option>
-									<option>Ragioneria Generale dello Stato                                                                                              </option>
-						</select>
-						<button type="button" id="insertEnte" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+					<springform:hidden path="provvedimento.id" id="idProvvedimento"/>
+					<div class="control-group">
+						<label class="control-label" for="organo">Nuovo assegnatario</label>
+						<div class="controls">
+							<springform:select path="organo" id="organo" cssClass="input-xlarge" >
+								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
+							<button type="button" id="insertAssegnatario" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
+						</div>
 					</div>
-				</div>
+				</springform:form>
 			</div>
 			<div class="row">
 				<div class="span12">
