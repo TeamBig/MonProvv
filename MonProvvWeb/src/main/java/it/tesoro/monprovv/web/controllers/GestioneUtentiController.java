@@ -24,7 +24,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -115,7 +114,10 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		model.addAttribute("tipos", tipos );
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/nuovo/autocomporganoesterno", "/private/admin/utenti/modifica/{1}/autocomporganoesterno"}, method = RequestMethod.GET)
+	@RequestMapping(value= {
+			"/private/admin/utenti/nuovo/autocomporganoesterno", 
+			"/private/admin/utenti/modifica/{1}/autocomporganoesterno",
+			"/private/admin/utenti/modifica/autocomporganoesterno"}, method = RequestMethod.GET)
 	@ResponseBody
 	public List<IdDescrizioneDto> autocompletamentoUo(@RequestParam("query") String query){
 		List<IdDescrizioneDto> result = gestioneUtenteFacade.recuperaOrganiEsterni(query);
@@ -129,10 +131,12 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return result;
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/delete/{id}"}, method = RequestMethod.GET)
-	public String deleteGet(@PathVariable("id") int id, RedirectAttributes redirectAttributes)  {
+//	@RequestMapping(value= {"/private/admin/utenti/delete/{id}"}, method = RequestMethod.GET)
+//	public String deleteGet(@PathVariable("id") int id, RedirectAttributes redirectAttributes)  {
+	@RequestMapping(value= {"/private/admin/utenti/delete"}, method = RequestMethod.GET)
+	public String deleteGet(@RequestParam(required = false) String id, RedirectAttributes redirectAttributes)  {
 		String retval = "redirect:/private/admin/utenti";	
-		gestioneUtenteFacade.eliminazioneLogica(id);
+		gestioneUtenteFacade.eliminazioneLogica(Integer.valueOf(id));
 		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Utente effettuato con successo", false);	
 		return retval;
 	}
@@ -182,8 +186,10 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return retval;
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/dettaglio/{id}"}, method = RequestMethod.GET)
-	public String dettaglioGet(Model model, @PathVariable("id") String id)  {
+//	@RequestMapping(value= {"/private/admin/utenti/dettaglio/{id}"}, method = RequestMethod.GET)
+//	public String dettaglioGet(Model model, @PathVariable("id") String id)  {
+	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.GET)
+	public String dettaglioGet(Model model, @RequestParam(required = false) String id)  {
 		String retVal = "utenteHomeUtente";
 		if( StringUtils.isNotEmpty(id) ){
 			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
@@ -203,14 +209,16 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		if("back".equals(buttonBack)){
 			retVal = "redirect:/private/admin/utenti";
 		}else if("modify".equals(buttonModify)){
-			retVal = "redirect:/private/admin/utenti/modifica/"+utente.getId();
+			retVal = "redirect:/private/admin/utenti/modifica?id="+utente.getId();
 		}
 		
 		return retVal;
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/modifica/{id}"}, method = RequestMethod.GET)
-	public String modificaGet(Model model, @PathVariable("id") String id)  {
+//	@RequestMapping(value= {"/private/admin/utenti/modifica/{id}"}, method = RequestMethod.GET)
+//	public String modificaGet(Model model, @PathVariable("id") String id)  {
+	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.GET)
+	public String modificaGet(Model model, @RequestParam(required = false) String id)  {
 		String retVal = "utenteHomeUtente";
 		if( StringUtils.isNotEmpty(id) ){
 			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));

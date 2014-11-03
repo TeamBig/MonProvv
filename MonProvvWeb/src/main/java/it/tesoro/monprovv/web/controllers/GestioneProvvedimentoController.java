@@ -245,14 +245,14 @@ public class GestioneProvvedimentoController {
 			Iterator<String> itr = request.getFileNames();
 			MultipartFile file = request.getFile(itr.next());
 			String desc = ((String[]) request.getParameterMap().get("descrizioneAllegato"))[0];
-			String idProvvedimento = ((String[]) request.getParameterMap().get("idProvvedimento"))[0];
-			Provvedimento provv = gestioneProvvedimentoFacade.ricercaProvvedimentoById(Integer.parseInt(idProvvedimento));
+			//String idProvvedimento = ((String[]) request.getParameterMap().get("idProvvedimento"))[0];
+			//Provvedimento provv = gestioneProvvedimentoFacade.ricercaProvvedimentoById(Integer.parseInt(idProvvedimento));
 			Allegato allegato = new Allegato();
 			if (file.getBytes().length > 0) {
 				allegato.setNomefile(file.getOriginalFilename());
 				allegato.setDescrizione(StringUtils.isEmpty(desc)?file.getOriginalFilename():desc);
 				allegato.setContenuto(new SerialBlob(file.getBytes()));
-				allegato.setProvvedimento(provv);
+				//allegato.setProvvedimento(provv);
 				allegato.setDimensione((int)file.getSize());
 			}
 			Allegato retAllegato = gestioneProvvedimentoFacade.inserisciAllegato(allegato);

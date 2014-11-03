@@ -19,7 +19,6 @@ import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
-import it.tesoro.monprovv.util.Constants;
 import it.tesoro.monprovv.util.SearchPatternUtil;
 
 import java.util.ArrayList;
@@ -159,6 +158,11 @@ public class GestioneProvvedimentoFacade {
 	
 	public Allegato inserisciAllegato(Allegato allegato) {
 		allegatoDAO.save(allegato);
+		return allegato;
+	}
+	
+	public Allegato aggiornaAllegato(Allegato allegato) {
+		allegatoDAO.merge(allegato);
 		return allegato;
 	}
 

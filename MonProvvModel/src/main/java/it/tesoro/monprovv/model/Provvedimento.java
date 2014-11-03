@@ -155,6 +155,11 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
 
+	@Transient
+	private List<Integer> idAllegatiDelList;
+	
+	@Transient
+	private List<Integer> idAllegatiUpdList;
 	
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
@@ -342,6 +347,22 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setTipoAtto(TipoAtto tipoAtto) {
 		this.tipoAtto = tipoAtto;
+	}
+
+	public List<Integer> getIdAllegatiDelList() {
+		return idAllegatiDelList;
+	}
+
+	public void setIdAllegatiDelList(List<Integer> idAllegatiDelList) {
+		this.idAllegatiDelList = idAllegatiDelList;
+	}
+
+	public List<Integer> getIdAllegatiUpdList() {
+		return idAllegatiUpdList;
+	}
+
+	public void setIdAllegatiUpdList(List<Integer> idAllegatiUpdList) {
+		this.idAllegatiUpdList = idAllegatiUpdList;
 	}
 
 	@Override
