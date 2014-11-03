@@ -14,10 +14,11 @@ import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.util.Constants;
 import it.tesoro.monprovv.util.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
-import it.tesoro.monprovv.web.validators.EnteValidator;
+import it.tesoro.monprovv.web.validators.ProvvedimentoValidator;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,16 +37,19 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+@SessionAttributes("provvedimentoInserisci")
 @Controller
 public class GestioneProvvedimentoController {
 
@@ -58,7 +62,7 @@ public class GestioneProvvedimentoController {
 	private AlertUtils alertUtils;
 	
 	@Autowired
-	protected EnteValidator enteValidator;
+	protected ProvvedimentoValidator provValidator;
 
 	@RequestMapping(value = { "/private/ricercaProv" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedfimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
@@ -278,46 +282,86 @@ public class GestioneProvvedimentoController {
 	
 	/* GESTIONE INSERIMENTO PROVVEDIMENTO */
 	
-	@RequestMapping(value = { "/private/ricercaProv/nuovo/step/{idStep}" } , method = RequestMethod.GET)
-	public String apriNuovoProvvedimento(Model model,@PathVariable("idStep") String idStep, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento){
-		model.addAttribute("step", idStep);
-		model.addAttribute("provvedimentoInserisci", provvedimento);
-		if(idStep.equals("1")){
-			model.addAttribute("titolo", "Inserimento Provvedimento");
-		}
-		if(idStep.equals("2")){
-			model.addAttribute("titolo", "Nomina capofila provvedimento");
-		}
-		if(idStep.equals("3")){
-			model.addAttribute("titolo", "Assegnatari");
-		}
-		if(idStep.equals("4")){
-			model.addAttribute("titolo", "Inserimento Provvedimento");
-		}
-		
+	@RequestMapping(value = { "/private/ricercaProv/nuovoprovvedimento" } , method = RequestMethod.GET)
+	public String apriNuovoProvvedimento(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
+			@RequestParam(required = false) String action,
+			BindingResult errors){
+		gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);	
 		return "provvedimentoInserisci";
 	}
 	
-	@RequestMapping(value = { "/private/ricercaProv/nuovo/step/{idStep}" } , method = RequestMethod.POST)
-	public String apriNuovoProvvedinto(Model model,@PathVariable("idStep") String idStep, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento){
-		model.addAttribute("step", idStep);
-		if(idStep.equals("1")){
-			model.addAttribute("titolo", "Inserimento Provvedimento");
+	@RequestMapping(value = { "/private/ricercaProv/nuovoprovvedimento" } , method = RequestMethod.POST)
+	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
+			@RequestParam(required = false) String action,
+			BindingResult errors){
+		provValidator.validate(provvedimento, errors);
+		if( !errors.hasErrors() ){
+			gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);	
+		} else {
+			for (FieldError f : errors.getFieldErrors()) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+			}
+			model.addAttribute("currentStep", provvedimento.getCurrentStep());
+			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
 		}
-		if(idStep.equals("2")){
-			model.addAttribute("titolo", "Nomina capofila provvedimento");
-		}
-		if(idStep.equals("3")){
-			model.addAttribute("titolo", "Assegnatari");
-		}
-		if(idStep.equals("4")){
-			model.addAttribute("titolo", "Inserimento Provvedimento");
-		}
-		
 		return "provvedimentoInserisci";
 	}
+	
+	private void gestioneInserimento(Model model, String idStep,String stepSuccessivo,InserisciProvvedimentoDto provvedimento, String action){
+		if(StringUtils.isEmpty(action)){
+			action = "";
+		}
+		if(StringUtils.isEmpty(provvedimento.getCurrentStep())){
+			provvedimento.setCurrentStep("1");
+			provvedimento.setStepSuccessivo("2");
+		}
+		if(action.equals(Constants.AVANTI)){
+			provvedimento.setCurrentStep(getNextStep(idStep,false));
+			provvedimento.setStepSuccessivo(getNextStep(idStep,true));
+		}
+		if(action.equals(Constants.INDIETRO)){
+			provvedimento.setCurrentStep(getPrevStep(idStep));
+			provvedimento.setStepSuccessivo(idStep);
+		}
+		if(provvedimento.getCurrentStep().equals("1")){
+			model.addAttribute("titolo", "Inserimento Provvedimento");
+		}
+		if(provvedimento.getCurrentStep().equals("2")){
+			model.addAttribute("titolo", "Nomina capofila provvedimento");
+		}
+		if(provvedimento.getCurrentStep().equals("3")){
+			model.addAttribute("titolo", "Assegnatari");
+		}
+		if(provvedimento.getCurrentStep().equals("4")){
+			model.addAttribute("titolo", "Assegna provvedimenti");
+			model.addAttribute("stepSuccessivo", "salvataggio");
+		}
+		model.addAttribute("currentStep", provvedimento.getCurrentStep());
+		model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
+	}
+	
+	private String getNextStep(String step,boolean plus){
+		Integer idStep = null;
+		if(plus){
+			idStep = Integer.valueOf(step)+2;
+		} else {
+			idStep = Integer.valueOf(step)+1;	
+		}
+		
+		return idStep.toString();
+	}
+	private String getPrevStep(String step){
+		Integer idStep = Integer.valueOf(step)-1;
+		return idStep.toString();
+	}
+
 	
 	/* FINE GESTIONE INSERIMENTO PROVVEDIMENTO */
+	
+	@ModelAttribute("provvedimentoInserisci")
+	private InserisciProvvedimentoDto initDtoInserisciProv(){
+		return new InserisciProvvedimentoDto();
+	}
 
 	private Integer countAllProvvedimenti() {
 		return gestioneProvvedimentoFacade.countAllProvvedimenti();
@@ -355,6 +399,11 @@ public class GestioneProvvedimentoController {
 	
 	@ModelAttribute("listaProponente")
 	private List<Organo> initProponenteInserimento() {
+		return gestioneProvvedimentoFacade.initOrgani();
+	}
+
+	@ModelAttribute("listaOrganoCapofila")
+	private List<Organo> initOrganoCapofila() {
 		return gestioneProvvedimentoFacade.initOrgani();
 	}
 }
