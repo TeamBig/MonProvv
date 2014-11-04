@@ -521,11 +521,20 @@ $(document).ready(function() {
     /****** FINE GESTIONE AMMINISTRAZIONE ******/
     
     /****** GESTIONE PROVVEDIMENTO ******/
-	$('#allegatoProvvedimento').change(function() {
-		$('#textAllegato').val($(this).val());
-	});
+//	$('#allegatoProvvedimento').change(function() {
+//		$('#textAllegato').val($(this).val());
+//	});
 	
 
+	
+	$(document).on('change', '.btn-file :file', function() {
+	    var input = $(this);
+	    var numFiles = input.get(0).files ? input.get(0).files.length : 1;
+	    var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+	    $('#textAllegato').val(label);
+	});
+
+	
 //	var bar = $('.bar');
 //	var percent = $('.percent');
 
@@ -546,124 +555,68 @@ $(document).ready(function() {
 //	        percent.html(percentVal);
 	    },
 		complete: function(xhr) {
-			addRowAllegati(xhr.responseText);
+//			var text = xhr.responseText.replace('<PRE>','').replace('</PRE>','');
+//			var html = $.parseHTML( text );
+//			addRowAllegati(html);
+			
+			addRowAllegati(xhr.responseJSON);
+			addAllegatiUpdList(xhr);
 		}
 	}); 
 
 	
-//	function fileUpload(form, action_url) {
-//
-//		// Create the iframe...
-//		var iframe = document.createElement("iframe");
-//		iframe.setAttribute("id", "upload_iframe");
-//		iframe.setAttribute("name", "upload_iframe");
-//		iframe.setAttribute("style", "border: none; display: none;");
-//
-//		// Add to document...
-//		form.append(iframe);
-//		window.frames['upload_iframe'].name = "upload_iframe";
-//
-//		iframeId = document.getElementById("upload_iframe");
-//
-//		// Add event...
-//		var eventHandler = function () {
-//
-//			if (iframeId.detachEvent) 
-//				iframeId.detachEvent("onload", eventHandler);
-//			else 
-//				iframeId.removeEventListener("load", eventHandler, false);
-//
-//			// Message from server...
-//			if (iframeId.contentDocument) {
-//				content = iframeId.contentDocument.body.innerText;
-//			} else if (iframeId.contentWindow) {
-//				content = iframeId.contentWindow.document.body.innerText;
-//			} else if (iframeId.document) {
-//				content = iframeId.document.body.innerText;
-//			}
-//
-//			//getting the response from server 
-//			content = content.replace("","").replace("","");
-//
-//			addRowAllegati(content);
-//
-//		}
-//
-//		if (iframeId.addEventListener) 
-//			iframeId.addEventListener("load", eventHandler, true);
-//
-//		if (iframeId.attachEvent) 
-//			iframeId.attachEvent("onload", eventHandler);
-//
-//		// Set properties of form...
-//		form.attr("target", "upload_iframe");
-//		form.attr("action", action_url);
-//		form.attr("method", "post");
-//		form.attr("enctype", "multipart/form-data");
-//		form.attr("encoding", "multipart/form-data");
-//		
-//		//For IE8 you need both. Obnoxious
-//	    form.encoding = form.enctype = "multipart/form-data";
-//	    
-//		form.submit();// Submit the form...
-//
-//	}
-
-	function addRowAllegati(riga){
+	function addRowAllegati(item)
+    {
+	    
+//		$('#allegato > tbody:last').append(
+//		$('<tr>').html(
+//	        $('td').text(item.id),
+//	        $('td').text(item.descrizione),
+//	        $('td').text(item.dimensione),
+//	        $('td').text(item.id)
+//	    ).appendTo('#allegato');
+    }
+	
+	function addAllegatiUpdList(xhr){
 		eliminaNessunRisultatoAllegato();
 		resetFormAllegati();
-		$('#allegato > tbody:last').append(riga);
-
-		var regex = new RegExp("\\<tr\\>\\<td\\>(.{0,}?)\\</td\\>", "g");
-		var match;
-		match = regex.exec(riga);
-		if( match != null ){
-			if( $('#idAllegatiUpdList').val() == '' ){
-				$('#idAllegatiUpdList').val(match[1]);
-			}else{
-				var appo = $('#idAllegatiUpdList').val();
-				$('#idAllegatiUpdList').val(appo + ',' + match[1])
-			}
+		
+//		$('#allegato > tbody:last').append('<tr><td>'+xhr.responseJSON.id+'</td></tr>');
+		
+		
+		var idAllegatiUpdList = $('#idAllegatiUpdList').val();
+		
+		if( idAllegatiUpdList == '' ){
+			$('#idAllegatiUpdList').val(xhr.responseJSON.id);
+		}else{
+			var appo = $('#idAllegatiUpdList').val();
+			$('#idAllegatiUpdList').val(idAllegatiUpdList + ',' +xhr.responseJSON.id)
 		}
 		
-	}
-
-//	$("button#allegatoInserisci").click(function(){
-//	
-//		var formObj = $('#allegatoForm');
-//		var formURL = 'inserisciAllegato';
-//		
-//		if(window.FormData !== undefined) {
-//			var formData = new FormData();
-//			jQuery.each($('#allegatoProvvedimento')[0].files, function(i, file) {
-//				formData.append('file', file);
-//			});
-//		    $("#allegatoForm input[type=text]").each(function(i) {
-//		    	formData.append($(this).attr("name"), $(this).val());
-//		    });
-//		    formData.append('idProvvedimento', $('#idProvvedimento').val());
-//
-//	        $.ajax({
-//	        	type: 'POST',
-//	        	url: formURL,
-//	            data: formData,
-//				dataType : 'text',
-//				processData : false,
-//				contentType : false,
-//				success : function(response) {
-//					addRowAllegati(response);
-//	        	},
-//	        	error: function(){
-//	        		alert("Inserimento non riuscito");
-//	        	}
-//	        });
-//		} else {
-//			$('#idProvvedimentoAllegato').val( $('#idProvvedimento').val() );
-//			fileUpload(formObj, formURL);
+//		var match;
+//		if(riga[0].data){
+//			$('#allegato > tbody:last').append(riga[0].data);
+//			var regex = new RegExp("\\<tr\\>\\<td\\>(.{0,}?)\\</td\\>", "g");
+//			var match;
+//			match = regex.exec(riga[0].data);
+//		}else{
+//			alert('chrome');
+//			$('#allegato > tbody:last').append(riga[0]);
+//			var regex = new RegExp("\\<tr\\>\\<td\\>(.{0,}?)\\</td\\>", "g");
+//			var match;
+//			match = regex.exec(riga[0]);
 //		}
-//	
-//	});
-
+//
+//		if( match != null ){
+//			if( $('#idAllegatiUpdList').val() == '' ){
+//				$('#idAllegatiUpdList').val(match[1]);
+//			}else{
+//				var appo = $('#idAllegatiUpdList').val();
+//				$('#idAllegatiUpdList').val(appo + ',' + match[1])
+//			}
+//		}
+		
+	}
 
 	function eliminaNessunRisultatoAllegato(){
 		if($("#allegato tr.empty")) {

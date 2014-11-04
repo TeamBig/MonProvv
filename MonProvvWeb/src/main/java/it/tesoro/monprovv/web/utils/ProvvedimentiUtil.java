@@ -18,7 +18,7 @@ public class ProvvedimentiUtil implements Serializable{
 			StringBuffer ret = new StringBuffer();
 			ret.append("<tr>");
 			ret.append("<td>"+allegato.getId()+"</td>");
-			ret.append("<td><a href=\"private/provvedimenti/ricerca/downloadAllegato/"+allegato.getId()+"\" class=\"download\">"+allegato.getDescrizione()+"</a></td>");
+			ret.append("<td><a href=\"downloadAllegato/"+allegato.getId()+"\" class=\"download\">"+allegato.getDescrizione()+"</a></td>");
 			ret.append("<td>"+StringUtils.convertBytesToKb(allegato.getDimensione(),true)+"</td>");
 			ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAllegato\" ><i class=\"icon-trash icon-large gray\" title=\"Elimina allegato\"></i></a></td>");
 			ret.append("</tr>");
