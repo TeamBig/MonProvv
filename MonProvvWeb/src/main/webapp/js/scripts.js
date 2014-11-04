@@ -527,7 +527,8 @@ $(document).ready(function() {
 		var percent = $('.percent');
 		
 		 $('#allegatoForm').ajaxForm({
-		        beforeSubmit: function() {
+			 dataType: 'json',   
+			 beforeSubmit: function() {
 		        	$("#allegatoProvvedimento").attr('disabled','disabled');
 		        	$("#descrizioneAllegato").attr('disabled','disabled');
 		        	$("button#allegatoInserisci").attr('disabled','disabled');
