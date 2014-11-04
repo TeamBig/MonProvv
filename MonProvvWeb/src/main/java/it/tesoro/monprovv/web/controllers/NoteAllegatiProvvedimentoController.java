@@ -4,7 +4,7 @@ import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Provvedimento;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 
 import java.util.ArrayList;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,11 +30,11 @@ public class NoteAllegatiProvvedimentoController {
 	@Autowired
 	private AlertUtils alertUtils;
 	
-	@RequestMapping(value = { "/private/provvedimenti/ricerca/noteAllegatiProv/{idProvvedimento}" } , method = RequestMethod.GET)
-	public String modificaProvvedimento(Model model,@PathVariable("idProvvedimento") int id) {
-		String retVal = "redirect:/private/provvedimenti/ricerca/dettaglio/"+id;
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/noteAllegatiProv" } , method = RequestMethod.GET)
+	public String modificaProvvedimento(Model model, @RequestParam(required = false) String id) {
+		String retVal = "redirect:/private/ricercaProv/dettaglio?id="+id;
 		if(StringUtils.isNotEmpty(id)){
-			Provvedimento provvedimento = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+			Provvedimento provvedimento = gestioneProvvedimentoFacade.ricercaProvvedimentoById(Integer.valueOf(id));
 			
 			List<Integer> idAllegatiList = new ArrayList<Integer>();
 			for( Allegato tmp : provvedimento.getAllegatiList() ){
@@ -65,7 +64,7 @@ public class NoteAllegatiProvvedimentoController {
 			@ModelAttribute("provvedimento") Provvedimento provvedimento,
 			@RequestParam String action) {
 		
-		String retVal = "redirect:/private/provvedimenti/ricerca/dettaglio/"+provvedimento.getId();
+		String retVal = "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
 		if("save".equals( action )){
 			 Provvedimento p = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());
 			 p.setNoteInterne( provvedimento.getNoteInterne() );

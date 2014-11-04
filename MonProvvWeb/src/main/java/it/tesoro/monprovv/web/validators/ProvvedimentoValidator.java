@@ -1,7 +1,7 @@
 package it.tesoro.monprovv.web.validators;
 
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.StringUtils;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

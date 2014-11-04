@@ -19,7 +19,8 @@ import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
-import it.tesoro.monprovv.util.SearchPatternUtil;
+import it.tesoro.monprovv.utils.Constants;
+import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,10 +221,10 @@ public class GestioneProvvedimentoFacade {
 	}
 
 	public Assegnazione inserisciAssegnazione(Integer idProvv, Integer idOrgano) {
-		Assegnazione assegnazione = new Assegnazione();
 		Provvedimento provv = provvedimentoDAO.findById(idProvv);
 		Organo organo = organoDAO.findById(idOrgano);
-		Stato stato = statoDAO.findById(1);
+		Stato stato = statoDAO.findById(Constants.ASSEGNATO_ID);
+		Assegnazione assegnazione = new Assegnazione();
 		assegnazione.setOrgano(organo);
 		assegnazione.setProvvedimento(provv);
 		assegnazione.setStato(stato);
@@ -239,8 +240,13 @@ public class GestioneProvvedimentoFacade {
 	}
 
 	public Assegnazione inserisciAssegnazione(Integer idOrgano) {
-		// TODO Auto-generated method stub
-		return null;
+		Organo organo = organoDAO.findById(idOrgano);
+		Stato stato = statoDAO.findById(Constants.ASSEGNATO_ID);
+		Assegnazione assegnazione = new Assegnazione();
+		assegnazione.setOrgano(organo);
+		assegnazione.setStato(stato);
+		assegnazioneDAO.save(assegnazione);
+		return assegnazione;
 	}
 
 }

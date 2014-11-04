@@ -88,19 +88,36 @@
 		</div>
 	</div>
 	
-	<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="#" method="POST" enctype="multipart/form-data">
+	<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato" var="formAllegatiPath" />
+
+	<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="${formAllegatiPath}" method="POST" enctype="multipart/form-data">
 		<input type="hidden" name="idProvvedimento" id="idProvvedimentoAllegato" />
 		<div class="row">
-			<div class="span12">	
-			
+			<div class="span12">
+
 				<div class="control-group">		
 					<label class="control-label" for="allegato">File da allegare</label>
 					<div class="controls">
-						<input type="file" name="allegatoProvvedimento" style="display:none;" id="allegatoProvvedimento" />
+						<input type="text" class="form-control input-xlarge" readonly="readonly" name="textAllegato" id="textAllegato">
+						<span class="input-group-btn"> 
+							<span class="btn btn-file"> Browse...<input type="file" name="allegatoProvvedimento" id="allegatoProvvedimento">
+							</span>
+						</span> 
+					</div>
+				</div>
+
+				<%--
+				
+				<div class="control-group">		
+					<label class="control-label" for="allegato">File da allegare</label>
+					<div class="controls">
+						<input type="file" name="allegatoProvvedimento" id="allegatoProvvedimento" />
 						<input type="text" name="textAllegato" id="textAllegato" class="input-xlarge" />
 						<button type="button" onclick="$('#allegatoProvvedimento').click();" class="btn">Sfoglia</button>
 					</div>
 				</div>
+				
+				--%>
 				
 				<div class="control-group">
 					<label class="control-label" for="descrizione">Descrizione</label>
@@ -111,13 +128,20 @@
 				
 				<div class="control-group">
 					<div class="controls">
-						<button type="button" id="allegatoInserisci" class="btn">Aggiungi <i class="icon-plus"></i></button>
+						<button type="submit" id="allegatoInserisci" class="btn">Aggiungi <i class="icon-plus"></i></button>
 					</div>
 				</div>
 				
 			</div>
 		</div>
+		
+		<%--
+		<input type="file" id="allegatoProvvedimento" name="allegatoProvvedimento" class="input-xxlarge" /><br/> 
+		<input type="text" id="descrizioneAllegato" name="descrizioneAllegato" class="input-xxlarge" /><br/>
+		<input type="submit" value="Upload File to Server">
+		--%>
 	</springform:form>
+
 	<!-- allegati end -->
 	
 	<div class="row">

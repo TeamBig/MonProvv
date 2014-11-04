@@ -2,7 +2,7 @@ package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
 import it.tesoro.monprovv.model.TipoAtto;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
 

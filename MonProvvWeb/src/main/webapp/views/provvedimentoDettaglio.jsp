@@ -180,7 +180,10 @@
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 							</display:column>
 							<display:column title="${dimensioneHeader}" headerScope="col">
-								<c:out value="${allegato.dimensioneAsText}"></c:out>
+								<%-- <c:out value="${allegato.dimensioneAsText}"></c:out> --%>
+								<c:if test="${not empty allegato.dimensione }">
+									<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>
+								</c:if>
 							</display:column>
 					</display:table>
 				</div>
@@ -203,7 +206,7 @@
 								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
