@@ -1,6 +1,7 @@
 package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.annotations.PagingAndSorting;
+import it.tesoro.monprovv.dto.AllegatoDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
@@ -186,7 +187,7 @@ public class GestioneProvvedimentoController {
 				retVal= "redirect:/private/provvedimenti/ricerca";
 			}
 			if(action.equals("noteallegati")){
-				retVal= "redirect:/private/provvedimenti/ricerca/noteAllegatiProv/"+id;
+				retVal= "redirect:/private/provvedimenti/ricerca/noteAllegatiProv?id="+id;
 			}
 		}
 		return retVal;
@@ -254,7 +255,8 @@ public class GestioneProvvedimentoController {
 
 	@RequestMapping(value={"/private/provvedimenti/ricerca/modifica/inserisciAllegato", "/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato"}, method = RequestMethod.POST)
 	@ResponseBody
-	public String inserisciAllegato(MultipartHttpServletRequest request) {
+	public AllegatoDto inserisciAllegato(MultipartHttpServletRequest request) {
+		AllegatoDto retval = null;
 		try {
 			Iterator<String> itr = request.getFileNames();
 			MultipartFile file = request.getFile(itr.next());
@@ -270,11 +272,12 @@ public class GestioneProvvedimentoController {
 				allegato.setDimensione((int)file.getSize());
 			}
 			Allegato retAllegato = gestioneProvvedimentoFacade.inserisciAllegato(allegato);
-			return ProvvedimentiUtil.addRowTableAllegatiAjax(retAllegato);
+			ProvvedimentiUtil.addRowTableAllegatiAjax(retAllegato);
+			retval = new AllegatoDto(retAllegato.getId(), retAllegato.getNomefile(), StringUtils.convertBytesToKb(retAllegato.getDimensione(),true), retAllegato.getDescrizione());
 		} catch (Exception e) {
 			logger.error("Errore call Ajax inserimento del file allegato");
 		}
-		return null;
+		return retval;
 	}
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/modifica/deleteAllegato/{idAllegato}", "/private/provvedimenti/ricerca/noteAllegatiProv/deleteAllegato/{idAllegato}"}, method = RequestMethod.GET)
