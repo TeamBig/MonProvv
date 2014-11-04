@@ -41,6 +41,7 @@
 <spring:message var="sollecitoHeader" code="listaAssegnatari.header.sollecito" />
 
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
+<security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 
 
 	<div class="container inserimento">
@@ -127,12 +128,12 @@
 						<div class="control-group">
 							<label class="control-label" for="statoDiAttuazione">${statoDiAttuazioneHeader}</label>
 							<div class="controls">
-								<c:if test="${canModificaStato }">
+								<c:if test="${canModificaStato or canModificaChiusuraLavori }">
 									<springform:select path="stato" id="statoDiAttuazioneDettaglio" cssClass="input-xlarge" >
 										<springform:options items="${listaStatoDiAttuazione}" itemValue="id" itemLabel="descrizione" />
 									</springform:select>
 								</c:if>
-								<c:if test="${not canModificaStato }">
+								<c:if test="${(not canModificaStato) and (not canModificaChiusuraLavori)}">
 									<span>${provvedimentoDettaglio.stato.descrizione}</span>
 								</c:if>
 							</div>
@@ -250,6 +251,9 @@
 					<div class="form-horizontal">
 						<div class="control-group">
 							<div class="form-actions pull-right">
+								<c:if test="${ canModificaChiusuraLavori }">
+									<button type="submit" class="btn btn-primary" id="salvaeinvianotifica" value="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
+								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
 									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
 									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>								
@@ -262,7 +266,7 @@
 
 							
 								<c:if test="${canModificaStato }">
-									<button type="submit" class="btn btn-primary" id="salva">Salva &nbsp;<i class="icon-save"></i></button>
+									<button type="submit" class="btn btn-primary" id="salvaDettaglio" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
 									<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>

@@ -18,7 +18,25 @@ public class InserisciProvvedimentoDto {
 	public InserisciProvvedimentoDto() {
 		listaAssegnazione = new ArrayList<Assegnazione>();
 		listaProvvedimenti = new ArrayList<Provvedimento>();
-		listaProvvedimentiSelected = new ArrayList<Provvedimento>();
+	}
+
+	public Provvedimento getProvvedimento() {
+		Provvedimento provv = new Provvedimento();
+		provv.setGoverno(this.getTipoGoverno());
+		provv.setArticolo(this.getArt());
+		provv.setComma(this.getComma());
+		provv.setCollNormattiva(this.getCollNormattiva());
+		provv.setDataAtto(this.getDataAtto());
+		provv.setNumeroAtto(Integer.valueOf(this.getNumeroAtto()));
+		provv.setStato(this.getStatoDiAttuazione());
+		provv.setTipoProvvDaAdottare(this.getTipoProvvDaAdottare());
+		provv.setParere(this.getParere());
+		provv.setOrganoCapofila(this.getOrganoCapofila());
+		provv.setOrganoInseritore(this.getOrganoInseritore());
+		provv.setTipoAtto(this.getTipoAtto());
+		provv.setTipoProvvedimento(this.getTipologia());
+		// provv.setOggetto(this.getTitoloOggetto());
+		return provv;
 	}
 
 	private Stato statoDiAttuazione;
@@ -29,9 +47,11 @@ public class InserisciProvvedimentoDto {
 	private String titoloOggetto;
 	private Date dtTermineScadenza;
 	private String fonteNormativa;
+	private String collNormattiva;
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
 	private Organo organoCapofila;
 	private Organo proponente;
+	private Organo organoInseritore;
 	private String parere;
 	private Date dataAtto;
 	private String numeroAtto;
@@ -40,7 +60,7 @@ public class InserisciProvvedimentoDto {
 	private String stepSuccessivo;
 	private List<Assegnazione> listaAssegnazione;
 	private List<Provvedimento> listaProvvedimenti;
-	private List<Provvedimento> listaProvvedimentiSelected;
+	private String[] provvedimentiSelected;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -194,13 +214,28 @@ public class InserisciProvvedimentoDto {
 		this.listaProvvedimenti = listaProvvedimenti;
 	}
 
-	public List<Provvedimento> getListaProvvedimentiSelected() {
-		return listaProvvedimentiSelected;
+	public String[] getProvvedimentiSelected() {
+		return provvedimentiSelected;
 	}
 
-	public void setListaProvvedimentiSelected(
-			List<Provvedimento> listaProvvedimentiSelected) {
-		this.listaProvvedimentiSelected = listaProvvedimentiSelected;
+	public void setProvvedimentiSelected(String[] provvedimentiSelected) {
+		this.provvedimentiSelected = provvedimentiSelected;
+	}
+
+	public String getCollNormattiva() {
+		return "www.normattiva.it";
+	}
+
+	public void setCollNormattiva(String collNormattiva) {
+		this.collNormattiva = collNormattiva;
+	}
+
+	public Organo getOrganoInseritore() {
+		return organoInseritore;
+	}
+
+	public void setOrganoInseritore(Organo organoInseritore) {
+		this.organoInseritore = organoInseritore;
 	}
 
 }

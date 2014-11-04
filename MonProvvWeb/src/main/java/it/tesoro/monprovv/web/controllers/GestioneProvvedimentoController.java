@@ -26,8 +26,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -160,14 +160,27 @@ public class GestioneProvvedimentoController {
 //	}
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/dettaglio" } , method = RequestMethod.POST)
-	public String dettaglioSubmit(Model model,@RequestParam(required = false) Integer id, @RequestParam String action) {
+	public String dettaglioSubmit(Model model,@RequestParam(required = false) Integer id, @RequestParam String action,Provvedimento provvedimentoDettaglio) {
 		String retVal = "ricercaProv";
 		if(StringUtils.isNotEmpty(id)){
 			if(action.equals("Modifica")){
 				retVal = "redirect:/private/provvedimenti/ricerca/modifica/"+id;	
 			}
-			if(action.equals("Salva")){
-				
+			if(action.equals("CambioStato")){
+				Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+				provvRec.setStato(provvedimentoDettaglio.getStato());
+				model.addAttribute("provvedimentoDettaglio", provvRec);
+				caricaTabelleInferiore(model, provvRec);
+				retVal= "provvedimentoDettaglio";
+			}
+			if(action.equals("SalvaDettaglio")){
+				Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+				provvRec.setStato(provvedimentoDettaglio.getStato());
+				gestioneProvvedimentoFacade.aggiornaProvvedimento(provvRec);
+				model.addAttribute("provvedimentoDettaglio", provvRec);
+				caricaTabelleInferiore(model, provvRec);
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio effettuato con successo.", false);
+				retVal= "provvedimentoDettaglio";
 			}
 			if(action.equals("Annulla")){
 				retVal= "redirect:/private/provvedimenti/ricerca";
@@ -293,7 +306,7 @@ public class GestioneProvvedimentoController {
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.POST)
 	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
-			@RequestParam(required = false) String action,@RequestParam(required = false) List<Object> listaProvvedimentiSelected,@RequestParam(required = false) List<Object> _listaProvvedimentiSelected,
+			@RequestParam(required = false) String[] provvedimentiSelected,@RequestParam(required = false) String _provvedimentiSelected,@RequestParam(required = false) String action,
 			BindingResult errors){
 		provValidator.validate(provvedimento, errors);
 		if( !errors.hasErrors() ){
@@ -325,7 +338,7 @@ public class GestioneProvvedimentoController {
 			provvedimento.setStepSuccessivo(idStep);
 		}
 		if(action.equals(Constants.SALVA)){
-			
+			Provvedimento provvSalvato = gestioneProvvedimentoFacade.inserisciProvvedimento(provvedimento);
 			return;
 		}
 		if(provvedimento.getCurrentStep().equals("1")){
