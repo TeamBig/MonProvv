@@ -189,6 +189,14 @@ $(document).ready(function() {
     
     
     // INSERIMENTO
+    $("#dataAtto").datepicker({
+    	format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        language: "it"
+    }).on('changeDate', function(ev){
+	        $("#dataAttoV").val(ev.format('dd/mm/yyyy'));
+        });
+    
     $("#dp1").datepicker({
     	format: "dd/mm/yyyy",
         todayBtn: "linked",
@@ -659,6 +667,22 @@ $(document).ready(function() {
 		$('<input />').attr('type', 'hidden')
         .attr('name', 'action')
         .attr('value', 'Modifica')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("button#salvaDettaglio").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'SalvaDettaglio')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("#statoDiAttuazioneDettaglio").change(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'CambioStato')
         .appendTo('#provvedimentoDettaglio');
 		$( "#provvedimentoDettaglio" ).submit();
 	});

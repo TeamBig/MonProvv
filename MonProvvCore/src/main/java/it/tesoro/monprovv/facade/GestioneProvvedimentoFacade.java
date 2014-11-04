@@ -4,16 +4,19 @@ import it.tesoro.monprovv.dao.AllegatoDAO;
 import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.GovernoDAO;
 import it.tesoro.monprovv.dao.OrganoDAO;
+import it.tesoro.monprovv.dao.ProvvedimentiParentDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
+import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
@@ -23,6 +26,7 @@ import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +63,17 @@ public class GestioneProvvedimentoFacade {
 	@Autowired 
 	private AssegnazioneDAO assegnazioneDAO;
 	
+	@Autowired
+	private ProvvedimentiParentDAO provvedimentiParentDAO;
+	
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
-		List<Stato> listaStati = statoDAO.findAll(order);
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		SearchPatternUtil pattern = new SearchPatternUtil("tipo","P",true,true);
+		searchPatternObjects.add(pattern);
+		List<Stato> listaStati = statoDAO.findByPattern(searchPatternObjects, 1, order);
 		return listaStati;
 	}
 	
@@ -223,13 +233,18 @@ public class GestioneProvvedimentoFacade {
 	public Assegnazione inserisciAssegnazione(Integer idProvv, Integer idOrgano) {
 		Provvedimento provv = provvedimentoDAO.findById(idProvv);
 		Organo organo = organoDAO.findById(idOrgano);
-		Stato stato = statoDAO.findById(Constants.ASSEGNATO_ID);
+		Stato stato = findStatoById(Constants.ASSEGNATO_ID);
 		Assegnazione assegnazione = new Assegnazione();
 		assegnazione.setOrgano(organo);
 		assegnazione.setProvvedimento(provv);
 		assegnazione.setStato(stato);
 		assegnazioneDAO.save(assegnazione);
 		return assegnazione;
+	}
+	
+	public Stato findStatoById(Integer id){
+		Stato stato = statoDAO.findById(id);
+		return stato;
 	}
 
 	public List<Organo> initOrgani() {
@@ -247,6 +262,26 @@ public class GestioneProvvedimentoFacade {
 		assegnazione.setStato(stato);
 		assegnazioneDAO.save(assegnazione);
 		return assegnazione;
+	}
+
+	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
+		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
+		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
+		provvRecuperato.setStato(statoInserito);
+		
+		provvedimentoDAO.save(provvRecuperato);
+		if(provvedimentoIns.getProvvedimentiSelected()!=null && Arrays.asList(provvedimentoIns.getProvvedimentiSelected()).size()>0){
+			List<String> list = Arrays.asList(provvedimentoIns.getProvvedimentiSelected());
+			for(Provvedimento provCollegato : provvedimentoIns.getListaProvvedimenti()){
+				if(list.contains(provCollegato.getId().toString())){
+					ProvvedimentiParent provParent = new ProvvedimentiParent();
+					provParent.setProvvedimento(provvRecuperato);
+					provParent.setProvvedimentoCollegato(provCollegato);
+					provvedimentiParentDAO.save(provParent);
+				}
+			}
+		}
+		return provvRecuperato;
 	}
 
 }

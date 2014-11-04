@@ -72,7 +72,7 @@
 					<div class="control-group">
 						<label class="control-label" for="dataAtto" >${dataAttoHeader}</label>
 						<div class="controls">
-							<springform:input type="text" id="dataAttov" path="dataAtto" class="input-xlarge" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
+							<springform:input type="text" id="dataAttoV" path="dataAtto" class="input-xlarge" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
 						</div>
 					</div>
 					<div class="control-group">
@@ -91,6 +91,12 @@
 						<label class="control-label" for="comma">Comma</label>
 						<div class="controls">
 							<springform:input path="comma" cssClass="input-small"/>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label" for="collNormattiva">${collNormattivaHeader}</label>
+						<div class="controls">
+							<springform:input path="collNormattiva" cssClass="input-xlarge" disabled="true"/>
 						</div>
 					</div>
 					<div class="control-group">
@@ -240,57 +246,7 @@
 						</div>
 					</div>
 				</springform:form> --%>
-			</div>
-<!-- 			<div class="row">
-				<div class="span12">
-					<table class="table table-hover table-bordered">
-						<thead>
-							<tr>
-								<th style="width: 80%">
-									Organo
-								</th>
-								<th class="center">
-									Elimina
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr id="assegnatarioDipTesoro">
-								<td style="width: 80%">
-									Dip.to Tesoro
-								</td>			
-								
-								<td class="vcenter center">
-									<a href="#" id="deleteEnte"><i class="icon-trash icon-large"></i></a>
-								</td>
-							</tr>
-							<tr id="noRecord">
-								<td colspan="2" class="vcenter">
-									Nessun record trovato.
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div class="form-horizontal">
-					<div class="control-group">
-						<label class="control-label" for="enteAssegnatario">Nuova assegnazione</label>
-						<div class="controls">
-							<select id="enteAssegnatario" class="span3">
-								<option>Sceglierne uno...</option>
-								<option>Agenzia Entrate e Territorio                                                                                                 </option>
-								<option>Agenzia Dogane e Monopoli                                                                                                    </option>
-								<option>Agenzia Entrate                                                                                                              </option>
-								<option>Dipartimento finanze (DLTFF)                                                                                                 </option>
-								<option>Dip.to Tesoro                                                                                                                </option>
-								<option>Guardia di finanza                                                                                                           </option>
-								<option>Ragioneria Generale dello Stato                                                                                              </option>
-							</select>
-							<button type="button" id="insertEnte" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
-						</div>
-					</div>
-				</div>
-			</div> -->
+			</div>	
 			<!-- FINE STEP 3 -->
 			</c:if>
 			<!-- STEP 4  -->
@@ -298,7 +254,7 @@
 			<div class="row">
 				<div class="span12">
 					<div class="span4 offset4">
-						<springform:select path="listaProvvedimentiSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
+						<springform:select path="provvedimentiSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
 							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="comma" />
 						</springform:select>
 					</div>
