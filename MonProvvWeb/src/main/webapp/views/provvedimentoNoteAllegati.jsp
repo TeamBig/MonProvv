@@ -75,11 +75,13 @@
 
 				<display:column title="${idHeader}" property="id" headerScope="col" />
 				<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
-					<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
+					<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 					<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 				</display:column>
 				<display:column title="${dimensioneHeader}" headerScope="col">
-					<c:out value="${allegato.dimensioneAsText}"></c:out>
+					<c:if test="${not empty allegato.dimensione }">
+						<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>
+					</c:if>
 				</display:column>
 				<display:column title="${eliminaHeader}" headerScope="col" class="vcenter center">
 					<a href="javascript:void(0)" id="eliminaAllegato" ><i class="icon-trash icon-large gray" title="Elimina allegato"></i></a>
@@ -91,6 +93,18 @@
 	<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato" var="formAllegatiPath" />
 
 	<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="${formAllegatiPath}" method="POST" enctype="multipart/form-data">
+		
+	    
+	    
+  		
+  			<div class="progress progress-striped active">
+				<div class="bar" style="width: 0%;">
+					<div class="percent">0%</div >
+				</div>
+			</div>
+
+		
+		
 		<input type="hidden" name="idProvvedimento" id="idProvvedimentoAllegato" />
 		<div class="row">
 			<div class="span12">
@@ -105,19 +119,6 @@
 						</span> 
 					</div>
 				</div>
-
-				<%--
-				
-				<div class="control-group">		
-					<label class="control-label" for="allegato">File da allegare</label>
-					<div class="controls">
-						<input type="file" name="allegatoProvvedimento" id="allegatoProvvedimento" />
-						<input type="text" name="textAllegato" id="textAllegato" class="input-xlarge" />
-						<button type="button" onclick="$('#allegatoProvvedimento').click();" class="btn">Sfoglia</button>
-					</div>
-				</div>
-				
-				--%>
 				
 				<div class="control-group">
 					<label class="control-label" for="descrizione">Descrizione</label>
@@ -128,7 +129,7 @@
 				
 				<div class="control-group">
 					<div class="controls">
-						<button type="submit" id="allegatoInserisci" class="btn">Aggiungi <i class="icon-plus"></i></button>
+						<button type="button" id="allegatoInserisci" class="btn">Aggiungi <i class="icon-plus"></i></button>
 					</div>
 				</div>
 				

@@ -27,7 +27,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
@@ -35,6 +34,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -218,29 +218,34 @@ public class GestioneProvvedimentoController {
 		return "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
 	}
 	
-	@RequestMapping(value={"/private/provvedimenti/ricerca/downloadAllegato/{allegatoId}"}, method = RequestMethod.GET)
-	public String downloadAllegato(Model model, @PathVariable("allegatoId") Integer allegatoId,HttpServletResponse response) {
-		Allegato doc = gestioneProvvedimentoFacade.getAllegatoById(allegatoId);
-		try {
-			response.setHeader("Content-Disposition", "inline;filename=\""
-					+ doc.getNomefile() + "\"");
-			OutputStream out = response.getOutputStream();
-			response.setContentType("application/octet-stream");
-			response.setContentLength((int) doc.getContenuto().length());
-			IOUtils.copy(doc.getContenuto().getBinaryStream(), out);
-			out.flush();
-			out.close();
+//	@RequestMapping(value={"/private/provvedimenti/ricerca/downloadAllegato/{allegatoId}"}, method = RequestMethod.GET)
+//	public String downloadAllegato(Model model, @PathVariable("allegatoId") Integer allegatoId,HttpServletResponse response) {
+	@RequestMapping(value={"/private/provvedimenti/ricerca/downloadAllegato"}, method = RequestMethod.GET)
+	public String downloadAllegato(Model model, @RequestParam(required = false) String id, HttpServletResponse response) {
+		if(StringUtils.isNotEmpty(id)){
+			Allegato doc = gestioneProvvedimentoFacade.getAllegatoById(Integer.parseInt(id));
+			try {
+				response.setHeader("Content-Disposition", "inline;filename=\""
+						+ doc.getNomefile() + "\"");
+				OutputStream out = response.getOutputStream();
+				response.setContentType("application/octet-stream");
+				response.setContentLength((int) doc.getContenuto().length());
+				IOUtils.copy(doc.getContenuto().getBinaryStream(), out);
+				out.flush();
+				out.close();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
 	
 
-	@RequestMapping(value={"/private/provvedimenti/ricerca/modifica/inserisciAllegato", "/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato"}, method = RequestMethod.POST)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/modifica/inserisciAllegato", "/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato"}, method = RequestMethod.POST
+			, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public AllegatoDto inserisciAllegato(MultipartHttpServletRequest request) {
 		AllegatoDto retval = null;
