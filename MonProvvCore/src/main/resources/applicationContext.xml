@@ -127,16 +127,17 @@
  	
 	<!-- 
 	++++++++++++++++++++++++++++++++++++++++++++++
-	DAO E FACADE
+	DAO E FACADE E SERVICE
 	++++++++++++++++++++++++++++++++++++++++++++++	
 	 -->
 	
 	<context:component-scan base-package="it.tesoro.monprovv.dao" />
 	<context:component-scan base-package="it.tesoro.monprovv.facade" />
+	<context:component-scan base-package="it.tesoro.monprovv.service" />
 	
 	<!-- 
 	++++++++++++++++++++++++++++++++++++++++++++++
-	FINE DAO E FACADE
+	FINE DAO E FACADE E SERVICE
 	++++++++++++++++++++++++++++++++++++++++++++++	
 	 -->
 	 

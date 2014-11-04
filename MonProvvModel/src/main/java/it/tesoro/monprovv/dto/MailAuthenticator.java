@@ -1,4 +1,4 @@
-package it.tesoro.monprovv.mail;
+package it.tesoro.monprovv.dto;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

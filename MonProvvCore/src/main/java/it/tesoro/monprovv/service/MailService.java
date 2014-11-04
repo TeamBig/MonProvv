@@ -1,7 +1,8 @@
-package it.tesoro.monprovv.mail;
+package it.tesoro.monprovv.service;
 
 
 import it.tesoro.monprovv.dto.Mail;
+import it.tesoro.monprovv.dto.MailAuthenticator;
 
 import java.util.Properties;
 
