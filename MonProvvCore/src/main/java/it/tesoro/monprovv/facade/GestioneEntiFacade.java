@@ -6,7 +6,7 @@ import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.UnitaOrgAstageDAO;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
-import it.tesoro.monprovv.util.SearchPatternUtil;
+import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

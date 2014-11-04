@@ -4,7 +4,7 @@ import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Provvedimento;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 
 import java.util.ArrayList;

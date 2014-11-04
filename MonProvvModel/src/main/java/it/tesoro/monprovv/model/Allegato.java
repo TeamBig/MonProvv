@@ -1,12 +1,9 @@
 package it.tesoro.monprovv.model;
 
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
-import it.tesoro.monprovv.util.StringUtils;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Blob;
-import java.sql.SQLException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -63,15 +59,15 @@ public class Allegato extends AbstractCommonEntity implements Serializable {
 	@Column(name = "DESCRIZIONE", length = 240)
 	private String descrizione;
 	
-	@Transient
-	public String getDimensioneAsText() throws IOException, SQLException {
-	
-		if (dimensione != null) {
-			return StringUtils.convertBytesToKb(dimensione, true);
-		}
-		
-		return null;
-	}
+//	@Transient
+//	public String getDimensioneAsText() throws IOException, SQLException {
+//	
+//		if (dimensione != null) {
+//			return StringUtils.convertBytesToKb(dimensione, true);
+//		}
+//		
+//		return null;
+//	}
 
 	public Integer getId() {
 		return id;

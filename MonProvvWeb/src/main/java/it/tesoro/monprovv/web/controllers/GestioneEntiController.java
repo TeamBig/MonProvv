@@ -6,7 +6,7 @@ import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
-import it.tesoro.monprovv.util.StringUtils;
+import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.validators.EnteValidator;
 
