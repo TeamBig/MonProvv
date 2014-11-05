@@ -6,6 +6,7 @@ public interface Constants {
 	//STATO
 	public static String ASSEGNATO = "ASS" ;
 	public static String RIFIUTATO = "RIF" ;
+	public static Integer INSERITO_ID = 2 ;
 	public static Integer ASSEGNATO_ID = 9 ;
 	public static Integer RIFIUTATO_ID = 10 ;
 	

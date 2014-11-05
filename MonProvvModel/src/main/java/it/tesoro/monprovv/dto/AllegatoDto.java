@@ -41,6 +41,11 @@ public class AllegatoDto {
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
+
+//	public String getJSON() {
+//		String retval = "{'id':"+this.id+",'nomefile':'"+this.nomefile+"','dimensione':'"+this.dimensione+"','descrizione':'"+this.descrizione+"'}";
+//		return retval;
+//	}
 	
 	
 }

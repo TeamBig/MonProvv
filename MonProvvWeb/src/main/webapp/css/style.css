@@ -312,3 +312,9 @@ a.disable {
     display: block;
 }
 
+.custom-header {
+	text-align:center;
+	background: #004383;
+	color: #fff;
+}
+

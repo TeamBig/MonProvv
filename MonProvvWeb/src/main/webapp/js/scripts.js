@@ -189,6 +189,14 @@ $(document).ready(function() {
     
     
     // INSERIMENTO
+    $("#dataAtto").datepicker({
+    	format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        language: "it"
+    }).on('changeDate', function(ev){
+	        $("#dataAttoV").val(ev.format('dd/mm/yyyy'));
+        });
+    
     $("#dp1").datepicker({
     	format: "dd/mm/yyyy",
         todayBtn: "linked",
@@ -501,10 +509,6 @@ $(document).ready(function() {
     /****** FINE GESTIONE AMMINISTRAZIONE ******/
     
     /****** GESTIONE PROVVEDIMENTO ******/
-//	$('#allegatoProvvedimento').change(function() {
-//		$('#textAllegato').val($(this).val());
-//	});
-	
 
 	
 	$(document).on('change', '.btn-file :file', function() {
@@ -513,89 +517,119 @@ $(document).ready(function() {
 	    var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
 	    $('#textAllegato').val(label);
 	});
-
 	
-//	var bar = $('.bar');
-//	var percent = $('.percent');
-
-	$('#allegatoForm').ajaxForm({
-	    beforeSend: function() {
-//	        var percentVal = '0%';
-//	        bar.width(percentVal)
-//	        percent.html(percentVal);
-	    },
-	    uploadProgress: function(event, position, total, percentComplete) {
-//	        var percentVal = percentComplete + '%';
-//	        bar.width(percentVal)
-//	        percent.html(percentVal);
-	    },
-	    success: function() {
-//	        var percentVal = '100%';
-//	        bar.width(percentVal)
-//	        percent.html(percentVal);
-	    },
-		complete: function(xhr) {
-//			var text = xhr.responseText.replace('<PRE>','').replace('</PRE>','');
-//			var html = $.parseHTML( text );
-//			addRowAllegati(html);
-			
-			addRowAllegati(xhr.responseJSON);
-			addAllegatiUpdList(xhr);
-		}
-	}); 
-
+	$('.progress').hide();
 	
-	function addRowAllegati(item)
-    {
-	    
-//		$('#allegato > tbody:last').append(
-//		$('<tr>').html(
-//	        $('td').text(item.id),
-//	        $('td').text(item.descrizione),
-//	        $('td').text(item.dimensione),
-//	        $('td').text(item.id)
-//	    ).appendTo('#allegato');
+	$("button#allegatoInserisci").click(function(){
+		
+		var progress = $('.progress');
+		var bar = $('.bar');
+		var percent = $('.percent');
+		
+		 $('#allegatoForm').ajaxForm({
+			 dataType: 'json',   
+			 beforeSubmit: function() {
+		        	$("#allegatoProvvedimento").attr('disabled','disabled');
+		        	$("#descrizioneAllegato").attr('disabled','disabled');
+		        	$("button#allegatoInserisci").attr('disabled','disabled');
+		        	
+		        	progress.show();
+		        	var percentVal = '0%';
+			        bar.width(percentVal)
+			        percent.html(percentVal);
+		        },
+			    uploadProgress: function(event, position, total, percentComplete) {
+			        var percentVal = percentComplete + '%';
+			       
+			        bar.removeAttr('style');
+			        bar.attr('style', 'width: ' + percentVal + ';');
+			        
+			        if( percentComplete == '100' )
+			        	percentVal = 'Elaborazione in corso...';
+			        percent.html(percentVal);
+			    },
+			    success: function(data) {
+
+			        progress.hide();
+			        bar.removeAttr('style');
+			        bar.attr('style', 'width: 0%;');
+		        },
+		        complete: function(data) {
+					
+		        	addRowAllegati(data.responseJSON);
+					addAllegatiUpdList(data.responseJSON.id);
+					
+					$("button#allegatoInserisci").removeAttr('disabled');
+		        	$("#allegatoProvvedimento").removeAttr('disabled');
+		        	$("#descrizioneAllegato").removeAttr('disabled');
+			        
+					resetFormAllegati();
+					
+		        }
+		    }).submit(); 
+		
+//		$('#allegatoForm').ajaxForm({
+//		    beforeSend: function() {
+//		    	alert('beforeSend');
+////		        var percentVal = '0%';
+////		        bar.width(percentVal)
+////		        percent.html(percentVal);
+//		    },
+//		    uploadProgress: function(event, position, total, percentComplete) {
+//		    	
+////		    	alert('uploadProgress: ' + percentComplete + '%');
+//		    	
+////		        var percentVal = percentComplete + '%';
+////		        bar.width(percentVal)
+////		        percent.html(percentVal);
+//		    },
+//		    success: function(data) {
+//	          
+//		    	alert('success'+data);
+//		    	
+////		        var percentVal = '100%';
+////		        bar.width(percentVal)
+////		        percent.html(percentVal);
+//		    },
+//			complete: function(xhr) {
+//				
+//				alert('complete');
+//				
+////				var text = xhr.responseText.replace('<PRE>','').replace('</PRE>','');
+////				var html = $.parseHTML( text );
+////				addRowAllegati(html);
+//				
+//				addRowAllegati(xhr.responseJSON);
+//				addAllegatiUpdList(xhr);
+//			}
+//		}).submit(); 
+		
+	});
+	
+	
+	function addRowAllegati(item){
+		eliminaNessunRisultatoAllegato();
+		$('#allegato > tbody:last').append(
+				$('<tr>')
+					.append($('<td>').text(item.id))
+					.append($('<td>').html(
+							$('<a></a>').attr("class","download").attr("href","downloadAllegato?id="+item.id).append(item.descrizione)
+					))
+					.append($('<td>').text(item.dimensione))
+					.append($('<td>').attr("class","center vcenter").html(
+							$('<a></a>').attr("href","javascript:void(0)").attr("id","eliminaAllegato").html('<i class="icon-trash icon-large gray" title="Elimina allegato"></i>')
+					))
+		);
     }
 	
-	function addAllegatiUpdList(xhr){
-		eliminaNessunRisultatoAllegato();
-		resetFormAllegati();
-		
-//		$('#allegato > tbody:last').append('<tr><td>'+xhr.responseJSON.id+'</td></tr>');
-		
-		
+	function addAllegatiUpdList(id){
 		var idAllegatiUpdList = $('#idAllegatiUpdList').val();
-		
 		if( idAllegatiUpdList == '' ){
-			$('#idAllegatiUpdList').val(xhr.responseJSON.id);
+			$('#idAllegatiUpdList').val(id);
 		}else{
 			var appo = $('#idAllegatiUpdList').val();
-			$('#idAllegatiUpdList').val(idAllegatiUpdList + ',' +xhr.responseJSON.id)
+			$('#idAllegatiUpdList').val(idAllegatiUpdList + ',' + id)
 		}
-		
-//		var match;
-//		if(riga[0].data){
-//			$('#allegato > tbody:last').append(riga[0].data);
-//			var regex = new RegExp("\\<tr\\>\\<td\\>(.{0,}?)\\</td\\>", "g");
-//			var match;
-//			match = regex.exec(riga[0].data);
-//		}else{
-//			alert('chrome');
-//			$('#allegato > tbody:last').append(riga[0]);
-//			var regex = new RegExp("\\<tr\\>\\<td\\>(.{0,}?)\\</td\\>", "g");
-//			var match;
-//			match = regex.exec(riga[0]);
-//		}
-//
-//		if( match != null ){
-//			if( $('#idAllegatiUpdList').val() == '' ){
-//				$('#idAllegatiUpdList').val(match[1]);
-//			}else{
-//				var appo = $('#idAllegatiUpdList').val();
-//				$('#idAllegatiUpdList').val(appo + ',' + match[1])
-//			}
-//		}
-		
 	}
 
 	function eliminaNessunRisultatoAllegato(){
@@ -634,6 +668,22 @@ $(document).ready(function() {
 		$('<input />').attr('type', 'hidden')
         .attr('name', 'action')
         .attr('value', 'Modifica')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("button#salvaDettaglio").click(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'SalvaDettaglio')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
+	});
+	
+	$("#statoDiAttuazioneDettaglio").change(function(){
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'action')
+        .attr('value', 'CambioStato')
         .appendTo('#provvedimentoDettaglio');
 		$( "#provvedimentoDettaglio" ).submit();
 	});
