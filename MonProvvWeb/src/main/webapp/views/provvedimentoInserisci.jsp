@@ -46,7 +46,7 @@
 						<springform:label path="tipoGoverno" cssClass="control-label" for="governo"><spring:message code="label.tipoGoverno"/></springform:label>
 						<div class="controls">
 							<springform:select path="tipoGoverno" id="governo" cssClass="input-xlarge" >
-								<springform:option value="">Tutti</springform:option>
+								<springform:option value="">Sceglierne uno...</springform:option>
 								<springform:options items="${listaGoverno}" itemValue="id" itemLabel="denominazione" />
 							</springform:select>
 						</div>
@@ -55,7 +55,7 @@
 						<springform:label path="tipologia" cssClass="control-label" for="tipologia"><spring:message code="label.tipologia"/></springform:label>
 						<div class="controls">
 							<springform:select path="tipologia" id="tipologia" cssClass="input-xlarge" >
-								<springform:option value="">Tutti</springform:option>
+								<springform:option value="">Sceglierne uno...</springform:option>
 								<springform:options items="${listaTipologia}" itemValue="id" itemLabel="descrizione" />
 							</springform:select>
 						</div>
@@ -103,7 +103,7 @@
 						<springform:label path="tipoProvvDaAdottare" cssClass="control-label" for="tipoProvvDaAdottare"><spring:message code="label.provvDaAdottare"/></springform:label>
 						<div class="controls">
 							<springform:select path="tipoProvvDaAdottare" id="tipoProvvDaAdottare" cssClass="input-xlarge" >
-								<springform:option value="">Tutti</springform:option>
+								<springform:option value="">Sceglierne uno...</springform:option>
 								<springform:options items="${listaTipoProvvDaAdottare}" itemValue="id" itemLabel="descrizione" />
 							</springform:select>
 						</div>

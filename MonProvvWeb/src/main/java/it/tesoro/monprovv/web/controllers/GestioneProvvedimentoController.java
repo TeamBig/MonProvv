@@ -347,6 +347,7 @@ public class GestioneProvvedimentoController {
 		}
 		if(action.equals(Constants.SALVA)){
 			Provvedimento provvSalvato = gestioneProvvedimentoFacade.inserisciProvvedimento(provvedimento);
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Provvedimento effettuato con successo", false);
 			return;
 		}
 		if(provvedimento.getCurrentStep().equals("1")){
