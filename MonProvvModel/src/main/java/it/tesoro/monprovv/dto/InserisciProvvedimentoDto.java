@@ -27,6 +27,7 @@ public class InserisciProvvedimentoDto {
 		provv.setComma(this.getComma());
 		provv.setCollNormattiva(this.getCollNormattiva());
 		provv.setDataAtto(this.getDataAtto());
+		provv.setTermineScadenza(this.getDtTermineScadenza());
 		provv.setNumeroAtto(Integer.valueOf(this.getNumeroAtto()));
 		provv.setStato(this.getStatoDiAttuazione());
 		provv.setTipoProvvDaAdottare(this.getTipoProvvDaAdottare());
