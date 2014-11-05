@@ -1,7 +1,8 @@
 package it.tesoro.monprovv.dto;
 
+
 public class AllegatoDto {
-	private Integer id;
+	private String id;
 	private String nomefile;
 	private String dimensione;
 	private String descrizione;
@@ -11,16 +12,16 @@ public class AllegatoDto {
 	}
 	
 	public AllegatoDto(Integer id, String nomefile, String dimensione, String descrizione){
-		this.id = id;
+		this.id = Integer.toString(id);
 		this.nomefile = nomefile;
 		this.dimensione = dimensione;
 		this.descrizione = descrizione;
 	}
 	
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getNomefile() {
@@ -43,8 +44,19 @@ public class AllegatoDto {
 	}
 
 //	public String getJSON() {
-//		String retval = "{'id':"+this.id+",'nomefile':'"+this.nomefile+"','dimensione':'"+this.dimensione+"','descrizione':'"+this.descrizione+"'}";
-//		return retval;
+//		
+//		String encoded = null;
+//		try {
+//			ObjectMapper mapper = new ObjectMapper();
+//			encoded = mapper.writeValueAsString(this);
+//		} catch (JsonProcessingException e) {
+//			encoded = null;
+//		}
+//		
+//		return encoded;
+//		
+////		String retval = "{\"id\":"+this.id+",\"nomefile\":\""+this.nomefile+"\",\"dimensione\":\""+this.dimensione+"\",\"descrizione\":\""+this.descrizione+"\"}";
+////		return retval;
 //	}
 	
 	

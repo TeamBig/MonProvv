@@ -93,18 +93,13 @@
 	<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato" var="formAllegatiPath" />
 
 	<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="${formAllegatiPath}" method="POST" enctype="multipart/form-data">
-		
-	    
-	    
-  		
-  			<div class="progress progress-striped active">
-				<div class="bar" style="width: 0%;">
-					<div class="percent">0%</div >
-				</div>
-			</div>
 
-		
-		
+ 		<div class="progress progress-striped active">
+			<div class="bar" style="width: 0%;">
+				<div class="percent">0%</div >
+			</div>
+		</div>
+
 		<input type="hidden" name="idProvvedimento" id="idProvvedimentoAllegato" />
 		<div class="row">
 			<div class="span12">
@@ -136,11 +131,6 @@
 			</div>
 		</div>
 		
-		<%--
-		<input type="file" id="allegatoProvvedimento" name="allegatoProvvedimento" class="input-xxlarge" /><br/> 
-		<input type="text" id="descrizioneAllegato" name="descrizioneAllegato" class="input-xxlarge" /><br/>
-		<input type="submit" value="Upload File to Server">
-		--%>
 	</springform:form>
 
 	<!-- allegati end -->

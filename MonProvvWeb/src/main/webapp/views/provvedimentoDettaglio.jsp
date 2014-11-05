@@ -177,7 +177,7 @@
 
 							<display:column title="${idHeader}" property="id" headerScope="col" />
 							<display:column title="${descrizioneHeader}" href="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
-								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
+								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 							</display:column>
 							<display:column title="${dimensioneHeader}" headerScope="col">
