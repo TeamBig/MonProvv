@@ -270,6 +270,7 @@ public class GestioneProvvedimentoFacade {
 		provvRecuperato.setStato(statoInserito);
 		
 		provvedimentoDAO.save(provvRecuperato);
+		//SALVATAGGIO PROVVEDIMENTI SELEZIONATI
 		if(provvedimentoIns.getProvvedimentiSelected()!=null && Arrays.asList(provvedimentoIns.getProvvedimentiSelected()).size()>0){
 			List<String> list = Arrays.asList(provvedimentoIns.getProvvedimentiSelected());
 			for(Provvedimento provCollegato : provvedimentoIns.getListaProvvedimenti()){
@@ -281,7 +282,27 @@ public class GestioneProvvedimentoFacade {
 				}
 			}
 		}
+		//SALVATAGGIO ASSEGNAZIONI ORGANI FK -> Provvedimento
+		for(Integer idAssegnazione :provvedimentoIns.getIdAssegnatariUpdList()){
+			Assegnazione ass = assegnazioneDAO.findById(idAssegnazione);
+			if(ass!=null){
+				ass.setProvvedimento(provvRecuperato);
+				assegnazioneDAO.save(ass);
+			}
+		}
 		return provvRecuperato;
+	}
+
+	public List<Assegnazione> getListaAssegnazioneInserimento(
+			List<Integer> idAllegatiUpdList) {
+		List<Assegnazione> listAssegnazioneRet = new ArrayList<Assegnazione>();
+		for(Integer idAss : idAllegatiUpdList){
+			Assegnazione ass  = assegnazioneDAO.findById(idAss);
+			if(ass!=null){
+				listAssegnazioneRet.add(ass);
+			}
+		}
+		return listAssegnazioneRet;
 	}
 
 }

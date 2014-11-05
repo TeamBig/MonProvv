@@ -2,6 +2,7 @@ package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.annotations.PagingAndSorting;
 import it.tesoro.monprovv.dto.AllegatoDto;
+import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
@@ -47,6 +48,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -318,7 +320,8 @@ public class GestioneProvvedimentoController {
 			BindingResult errors){
 		provValidator.validate(provvedimento, errors);
 		if( !errors.hasErrors() ){
-			gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);	
+			gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);
+			gestioneTabellaAssegnazione(model,provvedimento);
 		} else {
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
@@ -326,7 +329,18 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("currentStep", provvedimento.getCurrentStep());
 			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
 		}
+		if(action.equals(Constants.SALVA)){
+			pulisciInserimento(model);
+		}
 		return "provvedimentoInserisci";
+	}
+	
+	private void gestioneTabellaAssegnazione(Model model,InserisciProvvedimentoDto provvedimento){
+		List<Assegnazione> listaAssegnazione = new ArrayList<Assegnazione>();
+		if(provvedimento.getIdAssegnatariUpdList().size()>0){
+			listaAssegnazione = gestioneProvvedimentoFacade.getListaAssegnazioneInserimento(provvedimento.getIdAssegnatariUpdList());
+		}
+		model.addAttribute("listaAssegnazione", listaAssegnazione);
 	}
 	
 	private void gestioneInserimento(Model model, String idStep,String stepSuccessivo,InserisciProvvedimentoDto provvedimento, String action){
@@ -386,13 +400,18 @@ public class GestioneProvvedimentoController {
 		return idStep.toString();
 	}
 
-	@RequestMapping(value={"/private/provvedimenti/ricerca/nuovo/addAssegnatario"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/private/provvedimenti/ricerca/addAssegnatario"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String inserisciAssegnatario(@RequestParam("organo") String idOrgano ) {
-		Integer idOrg = Integer.parseInt(idOrgano);
+	public AssegnazioneDto inserisciAssegnatario(@RequestParam(required = false) String assegnatario) {
+		Integer idOrg = Integer.parseInt(assegnatario);
 		
 		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idOrg);
-		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,true);
+//		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,true);
+		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione());
+	}
+	
+	private void pulisciInserimento(Model model)  {
+		model.addAttribute("provvedimentoInserisci", new InserisciProvvedimentoDto());
 	}
 	
 	/* FINE GESTIONE INSERIMENTO PROVVEDIMENTO */

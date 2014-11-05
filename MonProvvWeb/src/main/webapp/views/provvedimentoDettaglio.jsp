@@ -225,15 +225,15 @@
 								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
 								</display:column>
-								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+<%-- 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
-								</display:column>
+								</display:column> --%>
 								<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
 								</display:column>
 						</display:table>
 				</div>
-				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+<%-- 				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
 					<springform:hidden path="provvedimento.id" id="idProvvedimento"/>
 					<div class="control-group">
 						<label class="control-label" for="organo">Nuovo assegnatario</label>
@@ -244,7 +244,7 @@
 							<button type="button" id="insertAssegnatario" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
 						</div>
 					</div>
-				</springform:form>
+				</springform:form> --%>
 			</div>
 			<div class="row">
 				<div class="span12">

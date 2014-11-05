@@ -223,20 +223,6 @@ $(document).ready(function() {
         });
     });
     
-    $('#statoDiAttuazioneDettaglio').on('change', function () {
-    	var val = $(this).val();
-    	var valoreAction = "Chiusura lavori";
-    	if(val==valoreAction){
-    		$("#salva").text("Salva e invia notifica");
-    		$("#salva").attr('data-toggle', 'modal');
-    		$("#salva").attr('data-target', '#modalSalvaInviaNotifica');
-    		$("#salva").attr('type', 'button');
-    		
-    	} else {
-    		$("#salva").html("Salva &nbsp;<i class=\"icon-save\"></i>");
-    		$("#salva").attr('type', 'submit');
-    	}
-    });
     
     $("#proponenteDiv").hide();
     $('#statoDiAttuazione').on('change', function () {
@@ -637,11 +623,7 @@ $(document).ready(function() {
 			$("#allegato tr.empty").fadeOut( 500 );
 		}
 	}
-	function eliminaNessunRisultatoAssegnatario(){
-		if($("#assegnazione tr.empty")) {
-			$("#assegnazione tr.empty").fadeOut( 500 );
-		}
-	}
+
 	
 	function resetFormAllegati(){
 		$('#allegatoForm').find("input[type=text],input[type=file]").val("");
@@ -681,11 +663,13 @@ $(document).ready(function() {
 	});
 	
 	$("#statoDiAttuazioneDettaglio").change(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'CambioStato')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
+		if($(this).val()=='5'){
+			$('<input />').attr('type', 'hidden')
+	        .attr('name', 'action')
+	        .attr('value', 'CambioStato')
+	        .appendTo('#provvedimentoDettaglio');
+			$( "#provvedimentoDettaglio" ).submit();
+		}
 	});
 	
 	$("button#noteAllegatiProvvedimento").click(function(){
@@ -791,7 +775,11 @@ $(document).ready(function() {
 	gestioneNotifiche();
 });
 
-
+function eliminaNessunRisultatoAssegnatario(){
+	if($("#assegnazione tr.empty")) {
+		$("#assegnazione tr.empty").fadeOut( 500 );
+	}
+}
 
 
 // GESTIONE NOTIFICHE
@@ -836,4 +824,69 @@ function gestioneNotifiche() {
 			$("#notifBadge").show();
 		}
 	});
+}
+
+//INSERIMENTO PROVVEDIMENTO
+jQuery(document).ready(function() {
+    jQuery('#insertAssegnatarioFromInserimento').click( submit_search );
+    jQuery('#assegnazioneForm').find('input').keydown(keypressed);
+});
+
+function addUpdList(idCampo,id){
+	var idAllegatiUpdList = $(idCampo).val();
+	if( idAllegatiUpdList == '' ){
+		$(idCampo).val(id);
+	}else{
+		var appo = $(idCampo).val();
+		$(idCampo).val(idAllegatiUpdList + ',' + id)
+	}
+}
+function addRowAssegnazione(item,inserimento){
+	$('#assegnazione > tbody:last').append(
+			$('<tr>')
+				.append($('<td>').attr("class","hidden").text(item.id))
+				.append($('<td>').text(item.nomeAssegnatario))
+				.append($('<td>').attr("class","center vcenter").html(
+						$('<a></a>').attr("href","javascript:void(0)").attr("id","eliminaAssegnatario").html('<i class="icon-trash icon-large gray" title="Elimina assegnatario"></i>')
+				))
+	);
+}
+
+function submit_search( event ) {
+    var values = new Array;
+    event.preventDefault;
+    values[0] = jQuery('#assegnatario').attr('value');
+    if (true) {
+        do_submit();
+    }
+    return false;
+}
+ 
+function keypressed( event ) {
+    var charcode = (event.which) ? event.which : window.event.keyCode ;
+    if ( charcode == 13 ) {
+        return submit_search( event );
+    }
+    return true;
+}
+function do_submit() {
+	var formData = $('#assegnatario').serialize();
+	
+    $.ajax({
+    	type: 'GET',
+    	url: 'addAssegnatario',
+        data: formData,
+		dataType : 'json',
+		processData : false,
+		contentType : false,
+		success : function(response) {
+			eliminaNessunRisultatoAssegnatario();
+			//$('#assegnazione > tbody:last').append(response);
+			addRowAssegnazione(response,true);
+        	addUpdList('#idAssegnatariUpdList',response.id);
+    	},
+    	error: function(){
+    		alert("Inserimento non riuscito");
+    	}
+    });
 }
