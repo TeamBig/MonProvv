@@ -527,7 +527,8 @@ $(document).ready(function() {
 		var percent = $('.percent');
 		
 		 $('#allegatoForm').ajaxForm({
-			 dataType: 'json',   
+			 dataType: 'text',   
+			 contentType: "multipart/form-data",
 			 beforeSubmit: function() {
 		        	$("#allegatoProvvedimento").attr('disabled','disabled');
 		        	$("#descrizioneAllegato").attr('disabled','disabled');
@@ -556,8 +557,10 @@ $(document).ready(function() {
 		        },
 		        complete: function(data) {
 					
-		        	addRowAllegati(data.responseJSON);
-					addAllegatiUpdList(data.responseJSON.id);
+		        	responseText = $.parseJSON(data.responseText);
+		        	
+		        	addRowAllegati(responseText);
+					addAllegatiUpdList(responseText.id);
 					
 					$("button#allegatoInserisci").removeAttr('disabled');
 		        	$("#allegatoProvvedimento").removeAttr('disabled');
@@ -567,42 +570,6 @@ $(document).ready(function() {
 					
 		        }
 		    }).submit(); 
-		
-//		$('#allegatoForm').ajaxForm({
-//		    beforeSend: function() {
-//		    	alert('beforeSend');
-////		        var percentVal = '0%';
-////		        bar.width(percentVal)
-////		        percent.html(percentVal);
-//		    },
-//		    uploadProgress: function(event, position, total, percentComplete) {
-//		    	
-////		    	alert('uploadProgress: ' + percentComplete + '%');
-//		    	
-////		        var percentVal = percentComplete + '%';
-////		        bar.width(percentVal)
-////		        percent.html(percentVal);
-//		    },
-//		    success: function(data) {
-//	          
-//		    	alert('success'+data);
-//		    	
-////		        var percentVal = '100%';
-////		        bar.width(percentVal)
-////		        percent.html(percentVal);
-//		    },
-//			complete: function(xhr) {
-//				
-//				alert('complete');
-//				
-////				var text = xhr.responseText.replace('<PRE>','').replace('</PRE>','');
-////				var html = $.parseHTML( text );
-////				addRowAllegati(html);
-//				
-//				addRowAllegati(xhr.responseJSON);
-//				addAllegatiUpdList(xhr);
-//			}
-//		}).submit(); 
 		
 	});
 	

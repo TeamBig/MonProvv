@@ -27,6 +27,7 @@ import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,6 +205,18 @@ public class GestioneProvvedimentoFacade {
 
 	public Allegato getAllegatoById(Integer allegatoId) {
 		Allegato allegato  = allegatoDAO.findById(allegatoId);
+		return allegato;
+	}
+	
+	public Allegato getAllegatoByIdnoProv(Integer allegatoId) {
+		Allegato allegato = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("id", allegatoId);
+		String hql = "from Allegato u where u.id = :id and u.provvedimento is null";
+		List<Allegato> allegati = allegatoDAO.findByHqlQueryNumeroRecord(hql, params, 1);
+		for(Allegato tmp: allegati){
+			allegato = tmp;
+		}
 		return allegato;
 	}
 
