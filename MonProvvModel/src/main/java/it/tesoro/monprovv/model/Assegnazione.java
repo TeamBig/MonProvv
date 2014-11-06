@@ -41,8 +41,6 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 
 	@ManyToOne(targetEntity=Provvedimento.class)
     @JoinColumn(name="ID_PROVVEDIMENTO", referencedColumnName="ID_PROVVEDIMENTO")
-	@Valid
-	@NotNull
 	private Provvedimento provvedimento;
 	
 	@ManyToOne(targetEntity=Organo.class)

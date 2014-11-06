@@ -27,6 +27,7 @@ import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,6 +207,18 @@ public class GestioneProvvedimentoFacade {
 		Allegato allegato  = allegatoDAO.findById(allegatoId);
 		return allegato;
 	}
+	
+	public Allegato getAllegatoByIdnoProv(Integer allegatoId) {
+		Allegato allegato = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("id", allegatoId);
+		String hql = "from Allegato u where u.id = :id and u.provvedimento is null";
+		List<Allegato> allegati = allegatoDAO.findByHqlQueryNumeroRecord(hql, params, 1);
+		for(Allegato tmp: allegati){
+			allegato = tmp;
+		}
+		return allegato;
+	}
 
 	public Integer countAllProvvedimenti() {
 		return provvedimentoDAO.countAll();
@@ -270,6 +283,7 @@ public class GestioneProvvedimentoFacade {
 		provvRecuperato.setStato(statoInserito);
 		
 		provvedimentoDAO.save(provvRecuperato);
+		//SALVATAGGIO PROVVEDIMENTI SELEZIONATI
 		if(provvedimentoIns.getProvvedimentiSelected()!=null && Arrays.asList(provvedimentoIns.getProvvedimentiSelected()).size()>0){
 			List<String> list = Arrays.asList(provvedimentoIns.getProvvedimentiSelected());
 			for(Provvedimento provCollegato : provvedimentoIns.getListaProvvedimenti()){
@@ -281,7 +295,27 @@ public class GestioneProvvedimentoFacade {
 				}
 			}
 		}
+		//SALVATAGGIO ASSEGNAZIONI ORGANI FK -> Provvedimento
+		for(Integer idAssegnazione :provvedimentoIns.getIdAssegnatariUpdList()){
+			Assegnazione ass = assegnazioneDAO.findById(idAssegnazione);
+			if(ass!=null){
+				ass.setProvvedimento(provvRecuperato);
+				assegnazioneDAO.save(ass);
+			}
+		}
 		return provvRecuperato;
+	}
+
+	public List<Assegnazione> getListaAssegnazioneInserimento(
+			List<Integer> idAllegatiUpdList) {
+		List<Assegnazione> listAssegnazioneRet = new ArrayList<Assegnazione>();
+		for(Integer idAss : idAllegatiUpdList){
+			Assegnazione ass  = assegnazioneDAO.findById(idAss);
+			if(ass!=null){
+				listAssegnazioneRet.add(ass);
+			}
+		}
+		return listAssegnazioneRet;
 	}
 
 }

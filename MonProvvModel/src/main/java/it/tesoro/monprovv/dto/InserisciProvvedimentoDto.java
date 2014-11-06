@@ -18,6 +18,8 @@ public class InserisciProvvedimentoDto {
 	public InserisciProvvedimentoDto() {
 		listaAssegnazione = new ArrayList<Assegnazione>();
 		listaProvvedimenti = new ArrayList<Provvedimento>();
+		idAssegnatariUpdList = new ArrayList<Integer>();
+		idAllegatiUpdList = new ArrayList<Integer>();
 	}
 
 	public Provvedimento getProvvedimento() {
@@ -53,6 +55,7 @@ public class InserisciProvvedimentoDto {
 	private Organo organoCapofila;
 	private Organo proponente;
 	private Organo organoInseritore;
+	private Organo assegnatario;
 	private String parere;
 	private Date dataAtto;
 	private String numeroAtto;
@@ -60,6 +63,8 @@ public class InserisciProvvedimentoDto {
 	private String currentStep;
 	private String stepSuccessivo;
 	private List<Assegnazione> listaAssegnazione;
+	private List<Integer> idAssegnatariUpdList;
+	private List<Integer> idAllegatiUpdList;
 	private List<Provvedimento> listaProvvedimenti;
 	private String[] provvedimentiSelected;
 
@@ -237,6 +242,30 @@ public class InserisciProvvedimentoDto {
 
 	public void setOrganoInseritore(Organo organoInseritore) {
 		this.organoInseritore = organoInseritore;
+	}
+
+	public Organo getAssegnatario() {
+		return assegnatario;
+	}
+
+	public void setAssegnatario(Organo assegnatario) {
+		this.assegnatario = assegnatario;
+	}
+
+	public List<Integer> getIdAllegatiUpdList() {
+		return idAllegatiUpdList;
+	}
+
+	public void setIdAllegatiUpdList(List<Integer> idAllegatiUpdList) {
+		this.idAllegatiUpdList = idAllegatiUpdList;
+	}
+
+	public List<Integer> getIdAssegnatariUpdList() {
+		return idAssegnatariUpdList;
+	}
+
+	public void setIdAssegnatariUpdList(List<Integer> idAssegnatariUpdList) {
+		this.idAssegnatariUpdList = idAssegnatariUpdList;
 	}
 
 }

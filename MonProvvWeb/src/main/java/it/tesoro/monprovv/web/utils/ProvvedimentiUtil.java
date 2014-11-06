@@ -1,7 +1,9 @@
 package it.tesoro.monprovv.web.utils;
 
+import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
+import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.utils.StringUtils;
 
 import java.io.Serializable;
@@ -51,6 +53,26 @@ public class ProvvedimentiUtil implements Serializable{
 			return ret.toString();
 		}
 		return null;
+	}
+	
+	public static void gestioneSalvaAllegati(Provvedimento provvedimento, Provvedimento provvAggiornato, GestioneProvvedimentoFacade gestioneProvvedimentoFacade) {
+		Allegato ele;
+		 //Elimino gli allegati rimossi in maschera
+		 for(Integer tmp: provvedimento.getIdAllegatiDelList()){
+			 if(tmp!=null){
+				 gestioneProvvedimentoFacade.eliminaAllegato(tmp); 
+			 }
+		 }
+		 //Setto il provvedimento per i nuovi allegati
+		 for(Integer tmp: provvedimento.getIdAllegatiUpdList()){
+			 if(tmp!=null){
+				 ele = gestioneProvvedimentoFacade.getAllegatoByIdnoProv(tmp);
+				 if(ele!=null && ele.getProvvedimento()==null){
+					 ele.setProvvedimento(provvAggiornato);
+					 gestioneProvvedimentoFacade.aggiornaAllegato(ele);
+				 }
+			 }
+		 }
 	}
 
 }

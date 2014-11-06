@@ -6,6 +6,7 @@ import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
+import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,25 +70,9 @@ public class NoteAllegatiProvvedimentoController {
 			 Provvedimento p = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());
 			 p.setNoteInterne( provvedimento.getNoteInterne() );
 			 gestioneProvvedimentoFacade.aggiornaProvvedimento(p);
-			 Allegato ele;
+			
+			 ProvvedimentiUtil.gestioneSalvaAllegati(provvedimento, p, gestioneProvvedimentoFacade);
 			 
-			 //Elimino gli allegati rimossi in maschera
-			 for(Integer tmp: provvedimento.getIdAllegatiDelList()){
-				 if(tmp!=null){
-					 gestioneProvvedimentoFacade.eliminaAllegato(tmp); 
-				 }
-			 }
-			 
-			 //Setto il provvedimento per i nuovi allegati
-			 for(Integer tmp: provvedimento.getIdAllegatiUpdList()){
-				 if(tmp!=null){
-					 ele = gestioneProvvedimentoFacade.getAllegatoById(tmp);
-					 if(ele!=null && ele.getProvvedimento()==null){
-						 ele.setProvvedimento(p);
-						 gestioneProvvedimentoFacade.aggiornaAllegato(ele);
-					 }
-				 }
-			 }
 		}else if("cancel".equals( action )){
 			 Allegato ele;
 			 //Setto il provvedimento per i nuovi allegati

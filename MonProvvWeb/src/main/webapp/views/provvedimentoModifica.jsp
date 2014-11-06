@@ -38,7 +38,7 @@
 <spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
 <spring:message var="sollecitoHeader" code="listaAssegnatari.header.sollecito" />
 
-<c:url value="/private/provvedimenti/ricerca/modifica" var="formPath" />
+
 
 	<div class="container inserimento">
 		<div class="row">
@@ -46,9 +46,17 @@
 				<h3 class="text-left underline"><span>Modifica Provvedimento</span></h3>
 			</div>
 		</div>
+		
+		<c:url value="/private/provvedimenti/ricerca/modifica" var="formPath" />
+		
 		<springform:form action="${formPath}" modelAttribute="provvedimentoModifica" commandName="provvedimentoModifica" cssClass="form-horizontal" method="POST">
-		<springform:hidden path="id" id="idProvvedimento" />
-		<springform:hidden path="versione" id="versioneProvvedimento" />
+		
+			<springform:hidden path="id" id="idProvvedimento" />
+			<springform:hidden path="versione" id="versioneProvvedimento" />
+			
+			<springform:hidden path="idAllegatiUpdList" id="idAllegatiUpdList" />
+			<springform:hidden path="idAllegatiDelList" id="idAllegatiDelList" />
+					
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
@@ -181,11 +189,13 @@
 
 							<display:column title="${idHeader}" property="id" headerScope="col" />
 							<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
-								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
+								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
 							</display:column>
 							<display:column title="${dimensioneHeader}" headerScope="col">
-								<c:out value="${allegato.dimensioneAsText}"></c:out>
+								<c:if test="${not empty allegato.dimensione }">
+									<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>
+								</c:if>
 							</display:column>
 							<display:column title="${eliminaHeader}" headerScope="col" class="vcenter center">
 								<a href="javascript:void(0)" id="eliminaAllegato" ><i class="icon-trash icon-large" title="Elimina allegato"></i></a>
@@ -193,34 +203,51 @@
 					</display:table>
 				</div>
 			</div>
-			<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="#" method="POST" enctype="multipart/form-data">
+			
+			<c:url value="/private/provvedimenti/ricerca/modifica/inserisciAllegato" var="formAllegatiPath" />
+
+			<springform:form cssClass="form-horizontal" id="allegatoForm" name="allegatoForm" action="${formAllegatiPath}" method="POST" enctype="multipart/form-data">
+		
+		 		<div class="progress progress-striped active">
+					<div class="bar" style="width: 0%;">
+						<div class="percent">0%</div >
+					</div>
+				</div>
+				
+				<input type="hidden" name="idProvvedimento" id="idProvvedimentoAllegato" />
 				<div class="row">
-					<div class="span12">	
-						<div class="control-group">
+					<div class="span12">
+		
+						<div class="control-group">		
 							<label class="control-label" for="allegato">File da allegare</label>
 							<div class="controls">
-								<input type="file" name="allegatoProvvedimento" style="display:none;" id="allegatoProvvedimento" />
-								<input type="text" name="textAllegato" id="textAllegato" class="input-xlarge" />
-								<button type="button" onclick="$('#allegatoProvvedimento').click();" class="btn">Sfoglia</button>
+								<input type="text" class="form-control input-xlarge" readonly="readonly" name="textAllegato" id="textAllegato">
+								<span class="input-group-btn"> 
+									<span class="btn btn-file"> Browse...<input type="file" name="allegatoProvvedimento" id="allegatoProvvedimento">
+									</span>
+								</span> 
 							</div>
 						</div>
+						
 						<div class="control-group">
 							<label class="control-label" for="descrizione">Descrizione</label>
 							<div class="controls">
 								<input type="text" id="descrizioneAllegato" name="descrizioneAllegato" class="input-xxlarge" />
 							</div>
 						</div>
+						
 						<div class="control-group">
 							<div class="controls">
-								<button type="button" id="allegatoInserisci" class="btn">
-									Aggiungi <i class="icon-plus"></i>
-								</button>
+								<button type="button" id="allegatoInserisci" class="btn">Aggiungi <i class="icon-plus"></i></button>
 							</div>
 						</div>
+						
 					</div>
 				</div>
+				
 			</springform:form>
 			<!-- allegati end -->
+			
 			<div class="row">
 				<div class="span12">
 					<h3 class="text-left underline"><span>Assegnatari</span></h3>
