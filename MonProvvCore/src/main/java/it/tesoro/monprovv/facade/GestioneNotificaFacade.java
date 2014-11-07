@@ -45,4 +45,12 @@ public class GestioneNotificaFacade {
 		
 		return null;
 	}
+	
+	public Notifica recuperaNotifica(Integer id) {
+		return notificaDAO.findById(id);
+	}
+	
+	public void aggiornaNotifica(Notifica notifica) {
+		notificaDAO.saveOrUpdate(notifica);
+	}
 }

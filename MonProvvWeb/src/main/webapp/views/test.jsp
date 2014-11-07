@@ -4,6 +4,6 @@
 UNIT TEST
 
 <security:authorize
-				access="hasPermission(#provv, 'modifica')">
+				access="hasPermission(#provv, 'richiesta')">
 	OK				
 </security:authorize>

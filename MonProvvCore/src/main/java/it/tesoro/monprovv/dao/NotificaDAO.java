@@ -1,49 +1,38 @@
 package it.tesoro.monprovv.dao;
 
-import java.util.List;
-
 import it.tesoro.monprovv.dao.common.AbstractCommonDAO;
 import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Utente;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 
 @Component("notificaDAO")
 public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 
+	private final static String HQL_NOTIFICHE_PER_UTENTE = "from Notifica as n where n.utenteDestinatario.id = :idUtenteDestinatario or n.organoDestinatario.id = :idOrganoDestinatario ";
 	
 	public long countNonLetteByUtente(Utente utente) {
 		
-		Criteria criteria = newCriteria()
-				.createAlias("organoDestinatario", "organoDestinatario")
-				.createAlias("utenteDestinatario", "utenteDestinatario")
-				.add(Restrictions.eq("utenteDestinatario.id", utente.getId()))
-				.add(Restrictions.eq("organoDestinatario.id", utente.getOrgano().getId()))
-				.add(Restrictions.eq("flagLettura", "N"))
-				.setProjection(Projections.rowCount());
-						
-		return (Long)criteria.uniqueResult();
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idUtenteDestinatario", utente.getId());
+		params.put("idOrganoDestinatario", utente.getOrgano().getId());
+		return countByHqlQuery(HQL_NOTIFICHE_PER_UTENTE, params);
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	public List<Notifica> findNotificheByUtente(Utente utente) {
-		Criteria criteria = newCriteria()
-				.createAlias("organoDestinatario", "organoDestinatario")
-				.createAlias("utenteDestinatario", "utenteDestinatario")
-				.add(Restrictions.eq("utenteDestinatario.id", utente.getId()))
-				.add(Restrictions.eq("organoDestinatario.id", utente.getOrgano().getId()))
-				.addOrder(Order.desc("dataInserimento"))
-				.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
-				
-						
-		return criteria.list();
 		
+		String hql = "select n " + HQL_NOTIFICHE_PER_UTENTE;
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("idUtenteDestinatario", utente.getId());
+		params.put("idOrganoDestinatario", utente.getOrgano().getId());
+		
+		return findByHqlQuery(hql, params);
 	}
 }
  

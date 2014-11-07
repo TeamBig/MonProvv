@@ -21,9 +21,9 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "NOTIFICA")
 public class Notifica extends AbstractCommonEntity implements Serializable {
 
-	/**
-	 * 
-	 */
+	public static final String OPERATIVA = "O";
+	public static final String INFORMATIVA = "I";
+
 	private static final long serialVersionUID = 7136472204232788138L;
 
 	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_NOTIFICA"))
@@ -46,7 +46,7 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
     @JoinColumn(name="ID_UTENTE_MITTORGANO", referencedColumnName="ID_UTENTE")
 	@Valid
 	@NotNull
-	private Integer idUtenteMittorgano;
+	private Utente utenteMittente;
 	
 	@Column(name = "TIPO_NOTIFICA", length = 1)
 	@NotNull
@@ -89,14 +89,6 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 
 	public void setUtenteDestinatario(Utente utenteDestinatario) {
 		this.utenteDestinatario = utenteDestinatario;
-	}
-
-	public Integer getIdUtenteMittorgano() {
-		return idUtenteMittorgano;
-	}
-
-	public void setIdUtenteMittorgano(Integer idUtenteMittorgano) {
-		this.idUtenteMittorgano = idUtenteMittorgano;
 	}
 
 	public String getOggetto() {
@@ -162,6 +154,14 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	public Utente getUtenteMittente() {
+		return utenteMittente;
+	}
+
+	public void setUtenteMittente(Utente utenteMittente) {
+		this.utenteMittente = utenteMittente;
 	}
 
 }

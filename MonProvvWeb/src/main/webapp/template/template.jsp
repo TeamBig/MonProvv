@@ -99,9 +99,7 @@
 	
 	<tiles:insertAttribute name="alert" />
 	
-
 	<tiles:insertAttribute name="content" />
-	
 	
 	<tiles:insertAttribute name="footer" />
 	

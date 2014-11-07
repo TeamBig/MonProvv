@@ -47,7 +47,7 @@ public class UtenteAstage extends AbstractCommonEntity implements java.io.Serial
 	private String email;
 	
 	@ManyToOne(targetEntity=UnitaOrgAstage.class)
-    @JoinColumn(name="ASSEGNAZIONE_ID_UO", referencedColumnName="ORGANIZATION_ID")
+        @JoinColumn(name="ASSEGNAZIONE_ID_UO", referencedColumnName="ORGANIZATION_ID")
 	private UnitaOrgAstage uo;
 
 //	@Column(name = "ASSEGNAZIONE_ID_DIP")
