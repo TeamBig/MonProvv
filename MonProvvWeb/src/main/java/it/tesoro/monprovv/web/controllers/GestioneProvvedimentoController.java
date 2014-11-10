@@ -167,44 +167,96 @@ public class GestioneProvvedimentoController {
 //		return retVal;
 //	}
 	
-	@RequestMapping(value = { "/private/provvedimenti/ricerca/dettaglio" } , method = RequestMethod.POST)
-	public String dettaglioSubmit(Model model,@RequestParam(required = false) Integer id, @RequestParam String action,Provvedimento provvedimentoDettaglio) {
-		String retVal = "ricercaProv";
-		if(StringUtils.isNotEmpty(id)){
-			if(action.equals("Modifica")){
-				retVal = "redirect:/private/provvedimenti/ricerca/modifica?id="+id;	
-			}
-			if(action.equals("CambioStato")){
-				Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
-				provvRec.setStato(provvedimentoDettaglio.getStato());
-				model.addAttribute("provvedimentoDettaglio", provvRec);
-				caricaTabelleInferiore(model, provvRec);
-				retVal= "provvedimentoDettaglio";
-			}
-			if(action.equals("SalvaDettaglio")){
-				Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
-				provvRec.setStato(provvedimentoDettaglio.getStato());
-				gestioneProvvedimentoFacade.aggiornaProvvedimento(provvRec);
-				model.addAttribute("provvedimentoDettaglio", provvRec);
-				caricaTabelleInferiore(model, provvRec);
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio effettuato con successo.", false);
-				retVal= "provvedimentoDettaglio";
-			}
-			if(action.equals("Annulla")){
-				retVal= "redirect:/private/provvedimenti/ricerca";
-			}
-			if(action.equals("noteallegati")){
-				retVal= "redirect:/private/provvedimenti/ricerca/noteAllegatiProv?id="+id;
-			}
-		}
-		return retVal;
+//	@RequestMapping(value = { "/private/provvedimenti/ricerca/dettaglio" } , method = RequestMethod.POST)
+//	public String dettaglioSubmit(Model model,@RequestParam(required = false) Integer id, Provvedimento provvedimentoDettaglio) {
+//		String retVal = "ricercaProv";
+//		if(StringUtils.isNotEmpty(id)){
+//			if(action.equals("Modifica")){
+//				retVal = "redirect:/private/provvedimenti/ricerca/modifica?id="+id;	
+//			}
+//			if(action.equals("CambioStato")){
+//				Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+//				provvRec.setStato(provvedimentoDettaglio.getStato());
+//				model.addAttribute("provvedimentoDettaglio", provvRec);
+//				caricaTabelleInferiore(model, provvRec);
+//				retVal= "provvedimentoDettaglio";
+//			}
+//			if(action.equals("SalvaDettaglio")){
+//				Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+//				provvRec.setStato(provvedimentoDettaglio.getStato());
+//				gestioneProvvedimentoFacade.aggiornaProvvedimento(provvRec);
+//				model.addAttribute("provvedimentoDettaglio", provvRec);
+//				caricaTabelleInferiore(model, provvRec);
+//				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio effettuato con successo.", false);
+//				retVal= "provvedimentoDettaglio";
+//			}
+//			if(action.equals("Annulla")){
+//				retVal= "redirect:/private/provvedimenti/ricerca";
+//			}
+//			if(action.equals("noteallegati")){
+//				retVal= "redirect:/private/provvedimenti/ricerca/noteAllegatiProv?id="+id;
+//			}
+//		}
+//		return retVal;
+//	}
+	
+	// **************** modifica -> dettaglio provvedimento ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="modifica" )
+	public String gestioneModificaDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+		
+		return "redirect:/private/provvedimenti/ricerca/modifica?id="+id;
 	}
 	
+	// **************** note allegati dettaglio provvedimento ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="noteAllegati" )
+	public String gestioneNoteAllegatiDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+		
+		return "redirect:/private/provvedimenti/ricerca/noteAllegatiProv?id="+id;
+	}
+	
+	// **************** annulla dettaglio provvedimento ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="annulla" )
+	public String gestioneAnnullaDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+		
+		return "redirect:/private/provvedimenti/ricerca";
+	}
+	
+	// **************** cambio stato dettaglio provvedimento ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="cambioStato" )
+	public String gestioneCambioStatoDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+	
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		return "provvedimentoDettaglio";
+	}
+	
+	// **************** salva dettaglio provvedimento ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="salvaDettaglio" )
+	public String gestioneSalvataggioDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+	
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		gestioneProvvedimentoFacade.aggiornaProvvedimento(provvRec);
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio effettuato con successo.", false);
+		
+		return "provvedimentoDettaglio";
+	}
 	
 	// **************** richiesta Assegnazione ******//
 	
 	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params = "richiediAssegnazione")
-	public String gestioneRichiestaAssegnazione(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+	public String gestioneRichiestaAssegnazione(@RequestParam(required = false) Integer id	, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
 	
 		Integer idOrgano = ((CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUtente().getOrgano().getId();
 		
@@ -355,6 +407,12 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoInserisci";
 	}
 	
+	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.POST, params="indietroPagina")
+	public String gestioneIndietroDaNuovoProvvedimento(Model model){
+
+		return "redirect:/private/provvedimenti/ricerca";
+	}
+	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.POST)
 	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String[] provvedimentiSelected,@RequestParam(required = false) String _provvedimentiSelected,@RequestParam(required = false) String action,
@@ -373,7 +431,7 @@ public class GestioneProvvedimentoController {
 		if(action.equals(Constants.SALVA)){
 			pulisciInserimento(model);
 			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Provvedimento effettuato con successo", false);
-			return "redirect:private/provvedimenti/ricerca";
+			return "redirect:/private/provvedimenti/ricerca";
 		}
 		return "provvedimentoInserisci";
 	}

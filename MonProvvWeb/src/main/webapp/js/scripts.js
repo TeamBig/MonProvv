@@ -1,9 +1,44 @@
 $(document).ready(function() {
-	$.ajaxSetup({ cache: false });
 	
     $('.multiselect').multiselect({
             nonSelectedText: 'Tutti',
             numberDisplayed: 20
+	});
+    
+	$('.custom-headers').multiSelect({
+		  selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
+		  selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+		  afterInit: function(ms){
+		    var that = this,
+		        $selectableSearch = that.$selectableUl.prev(),
+		        $selectionSearch = that.$selectionUl.prev(),
+		        selectableSearchString = '#'+that.$container.attr('id')+' .ms-elem-selectable:not(.ms-selected)',
+		        selectionSearchString = '#'+that.$container.attr('id')+' .ms-elem-selection.ms-selected';
+
+		    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+		    .on('keydown', function(e){
+		      if (e.which === 40){
+		        that.$selectableUl.focus();
+		        return false;
+		      }
+		    });
+
+		    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+		    .on('keydown', function(e){
+		      if (e.which == 40){
+		        that.$selectionUl.focus();
+		        return false;
+		      }
+		    });
+		  },
+		  afterSelect: function(){
+		    this.qs1.cache();
+		    this.qs2.cache();
+		  },
+		  afterDeselect: function(){
+		    this.qs1.cache();
+		    this.qs2.cache();
+		  }
 	});
     
     var campiRicerca = $("#campiRicerca");
@@ -480,38 +515,36 @@ $(document).ready(function() {
 		window.location = currentUrl+"/nuovo";
 	});
 	
-	$("button#annullaModificaProvvedimento").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'Annulla')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
-	});
+//	$("button#annullaModificaProvvedimento").click(function(){
+//		$('<input />').attr('type', 'hidden')
+//        .attr('name', 'action')
+//        .attr('value', 'Annulla')
+//        .appendTo('#provvedimentoDettaglio');
+//		$( "#provvedimentoDettaglio" ).submit();
+//	});
+//	
+//	$("button#modificaProvvedimento").click(function(){
+//		$('<input />').attr('type', 'hidden')
+//        .attr('name', 'action')
+//        .attr('value', 'Modifica')
+//        .appendTo('#provvedimentoDettaglio');
+//		$( "#provvedimentoDettaglio" ).submit();
+//	});
 	
-	$("button#modificaProvvedimento").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'Modifica')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
-	});
-	
-	$("button#salvaDettaglio").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'SalvaDettaglio')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
-	});
+//	$("button#salvaDettaglio").click(function(){
+//		$('<input />').attr('type', 'hidden')
+//        .attr('name', 'action')
+//        .attr('value', 'SalvaDettaglio')
+//        .appendTo('#provvedimentoDettaglio');
+//		$( "#provvedimentoDettaglio" ).submit();
+//	});
 	
 	$("#statoDiAttuazioneDettaglio").change(function(){
-		if($(this).val()=='5'){
-			$('<input />').attr('type', 'hidden')
-	        .attr('name', 'action')
-	        .attr('value', 'CambioStato')
-	        .appendTo('#provvedimentoDettaglio');
-			$( "#provvedimentoDettaglio" ).submit();
-		}
+		$('<input />').attr('type', 'hidden')
+        .attr('name', 'cambioStato')
+//        .attr('value', 'CambioStato')
+        .appendTo('#provvedimentoDettaglio');
+		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
 	$("button#noteAllegatiProvvedimento").click(function(){
@@ -862,3 +895,4 @@ function do_submitAllegatoIns() {
 	        }
 	    });
 }
+

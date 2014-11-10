@@ -168,12 +168,12 @@
 								<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
 							</div>
 						</div>
-					<div class="span4 offset4">
-						<springform:select path="provvedimentiParent" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
-							<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.comma" />
-						</springform:select>
-					</div>
 				</div>
+			</div>
+			<div class="span2 offset2">
+				<springform:select path="provvedimentiParent" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
+					<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.comma" />
+				</springform:select>
 			</div>
 				</springform:form>
 			<!-- Allegati insert -->
@@ -291,9 +291,6 @@
 								</display:column>
 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
-								</display:column>
-								<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
 								</display:column>
 						</display:table>
 				</div>

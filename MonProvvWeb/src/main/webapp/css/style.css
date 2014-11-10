@@ -315,6 +315,9 @@ a.disable {
 	text-align:center;
 	background: #004383;
 	color: #fff;
+	vertical-align: center;
+	font-weight: bold;
+	height: 30px;
 }
 
 /******* 

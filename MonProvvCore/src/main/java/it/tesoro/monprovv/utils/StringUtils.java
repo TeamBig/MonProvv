@@ -68,7 +68,9 @@ public class StringUtils {
 	@SuppressWarnings("null")
 	public static Clob convertStringToClob(String str) throws SQLException{
 		Clob clob = null;
-		clob.setString(1, str);
+		if(str!=null){
+			clob.setString(1, str);
+		}
 		return clob;
 	}
 	

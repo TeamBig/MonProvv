@@ -273,9 +273,9 @@
 			<c:if test="${currentStep eq 4}">
 			<div class="row">
 				<div class="span12">
-					<div class="span4 offset4">
-						<springform:select path="provvedimentiSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
-							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="comma" />
+					<div class="span2 offset2">
+						<springform:select path="provvedimentiSelected" id="provvedimentiSelected" cssClass="input-xlarge" multiple="multiple">
+							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="oggetto" />
 						</springform:select>
 					</div>
 				</div>
@@ -288,7 +288,7 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<c:if test="${currentStep eq 1}">
-									<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+									<button type="submit" class="btn" id="annulla" name="indietroPagina">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
 								<c:if test="${currentStep eq 2 || currentStep eq 3 || currentStep eq 4}">
 									<button type="submit" class="btn" name="action" value="Indietro" id="indietro">Indietro &nbsp;<i class="icon-arrow-left"></i></button>

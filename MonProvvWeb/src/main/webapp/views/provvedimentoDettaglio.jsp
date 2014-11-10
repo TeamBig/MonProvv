@@ -42,6 +42,7 @@
 
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
+<security:authorize	access="hasPermission(#provvedimentoDettaglio, 'accettazione')" var="canAccettazione" />
 
 <springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
 	<div class="container inserimento">
@@ -230,9 +231,13 @@
 <%-- 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
 								</display:column> --%>
-								<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
-									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
-								</display:column>
+								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'sollecitoVisible')">
+									<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+										<c:if test="${(assegnazione.stato.codice ne 'RIF')}">
+											<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
+										</c:if>
+									</display:column>
+								</security:authorize>
 						</display:table>
 				</div>
 <%-- 				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
@@ -254,19 +259,19 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<c:if test="${ canModificaChiusuraLavori }">
-									<button type="submit" class="btn btn-primary" id="salvaeinvianotifica" value="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="submit" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
-									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
-									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
-									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
+									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" name="fineLavorazioneProvvedimento">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
+									<button type="button" class="btn" id="indietro" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
 								</security:authorize>
 
-								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'accettazione')">
+								<c:if test="${ canAccettazione }">
 									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
 									<button type="button" class="btn" name="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
-									<button type="button" class="btn" name="rifiutaAssegnazione">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
-								</security:authorize>
+									<button type="button" class="btn" name="annulla">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
+								</c:if>
 
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
 									<button type="submit" class="btn btn-primary" id="richiediAssegnazione">Richiedi assegnazione&nbsp;<i class="icon-check"></i></button>
@@ -274,13 +279,12 @@
 									<input type="hidden" id="richiediAssegnazioneId" value="${provvedimentoDettaglio.id}" /> 
 								</security:authorize>
 							
-								<c:if test="${canModificaStato }">
-									<button type="submit" class="btn btn-primary" id="salvaDettaglio" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
-									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								<c:if test="${!canAccettazione and canModificaStato }">
+									<button type="submit" class="btn btn-primary" id="salvaDettaglio" name="salvaDettaglio">Salva &nbsp;<i class="icon-save"></i></button>
+									<button type="submit" class="btn" id="annullaModificaProvvedimento" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
-									<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
-									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+									<button type="submit" class="btn" id="modificaProvvedimento" name="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
 								</security:authorize>
 								
 							</div>
