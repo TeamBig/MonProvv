@@ -49,100 +49,6 @@ $(document).ready(function() {
     });
     
     
-    $("#modifica").click(function() {
-    	window.location.href = "modifica.html";
-    });
-    
-//    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
-//    	window.location.href = "dettaglio.html";
-//    });
-//    
-//    $('#risultatiRicerca .table > tbody > tr:eq(1)').click(function() {
-//    	window.location.href = "dettaglio_assegnatario.html";
-//    });
-//    
-//    $('#risultatiRicerca .table > tbody > tr:eq(2)').click(function() {
-//    	window.location.href = "dettaglio_non_assegnatario.html";
-//    });
-//    
-    
-    $("#salvaModifica").click(function() {
-    	window.location.href = "dettaglio.html";
-    });
-    
-    $("#vaiaricerca").click(function() {
-    	window.location.href = "index.html";
-    });
-    
-    $("#inserisciNote").click(function() {
-    	window.location.href = "inserimentoNoteAllegati.html";
-    });
-    
-    $("#salvaNote").click(function() {
-    	window.location.href = "dettaglio_assegnatario.html";
-    });
-    
-    $("#annullaNote").click(function() {
-    	window.location.href = "dettaglio_assegnatario.html";
-    });
-    
-    $("#avantiStep3").click(function() {
-    	window.location.href = "inserimento_step3.html";
-    });
-    
-    $("#indietroStep1").click(function() {
-    	window.location.href = "inserimento_step1.html";
-    });
-    
-    $("#indietroStep2").click(function() {
-    	window.location.href = "inserimento_step2.html";
-    });
-    
-    
-    $("#modifica").click(function() {
-    	window.location.href = "modifica.html";
-    });
-    
-//    $('#risultatiRicerca .table > tbody > tr:eq(0)').click(function() {
-//    	window.location.href = "dettaglio.html";
-//    });
-//    
-//    $('#risultatiRicerca .table > tbody > tr:eq(1)').click(function() {
-//    	window.location.href = "dettaglio_assegnatario.html";
-//    });
-//    
-//    $('#risultatiRicerca .table > tbody > tr:eq(2)').click(function() {
-//    	window.location.href = "dettaglio_non_assegnatario.html";
-//    });
-    
-    
-    $("#salvaModifica").click(function() {
-    	window.location.href = "dettaglio.html";
-    });
-    
-    $("#vaiaricerca").click(function() {
-    	window.location.href = "index.html";
-    });
-    
-    $("#inserisciNote").click(function() {
-    	window.location.href = "inserimentoNoteAllegati.html";
-    });
-    
-    $("#salvaNote").click(function() {
-    	window.location.href = "dettaglio_assegnatario.html";
-    });
-    
-    $("#annullaNote").click(function() {
-    	window.location.href = "dettaglio_assegnatario.html";
-    });
-    
-    $("#rifiutoAssegnazione").click(function() {
-    	window.location.href = "index.html";
-    });
-    
-    $("#richiediAssegnazione").click(function() {
-    	window.location.href = "index.html";
-    });
     
     //Inserimento Enti Assegnatari
     
@@ -710,6 +616,9 @@ $(document).ready(function() {
     // NOTIFICHE
 	gestioneNotifiche();
 	
+	// MODALE RICHIESTA ASSEGNAZIONE
+	gestionePopupRichiestaAssegnazione();
+	
 	//INSERIMENTO
 	gestioneInserimento();
 	
@@ -751,16 +660,20 @@ function gestioneNotifiche() {
 
 		    $div.load(url + " #elencoNotifiche", function() {
 		    	content = $(this).html();
+		    	
+		    	 popoverNotifiche.popover({
+				    	placement : 'bottom', 
+				    	html: 'true',
+				    	trigger: 'manual',
+				    	content : content // '<div id="popOverBox"><span>Provvedimento non di competenza<span></div>'
+			    }).parent().on('click', '.aprinotifica', function(e) {
+			    	e.preventDefault();
+					e.stopPropagation();
+					var url = $(this).find("a").attr("href");
+					window.location.href = url;		
+			    }); 
+				 popoverNotifiche.popover('show');
 		    });
-
-		    popoverNotifiche.popover({
-		    	placement : 'bottom', 
-		    	html: 'true',
-		    	trigger: 'manual',
-		    	content : content // '<div id="popOverBox"><span>Provvedimento non di competenza<span></div>'
-	    	}); 
-		    
-		    popoverNotifiche.popover('show');
 	    }
 	    
 	    
@@ -774,6 +687,28 @@ function gestioneNotifiche() {
 			$("#notifBadge").show();
 		}
 	});
+}
+
+//MODALE RICHIESTA ASSEGNAZIONE
+function gestionePopupRichiestaAssegnazione() {
+	
+	$('#richiediAssegnazione').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		$("#modalRichiestaAssegnazione").modal().on('shown', function() {
+			
+			$("#richiediAssegnazioneModal").click(function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				
+				$(this).closest("form").submit();
+				
+			});
+			
+		}); 
+	});
+	
 }
 
 

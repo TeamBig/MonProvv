@@ -23,14 +23,23 @@
 				
 				<c:forEach items="${notifiche}" var="notifica">
 				
-					<span>${notifica.testo}</span><br><a href="${notifica.linkOperazione}">Clicca qui</a> per gestire la richiesta
+					<div class="aprinotifica">
+						<spring:url value="/private/notifiche/dettaglio?id=${notifica.id}" var="linkNotifica"  />
+						<a href="${linkNotifica}" class="no" />
+						<span class="${notifica.flagLettura == 'S' ? 'letta' : 'nonletta' }" >${notifica.oggetto}</span>
+						<br>
+						<span>${notifica.testo}</span>
+					</div>
+					<c:if test="${notifica.tipoNotifica == 'O'}">
+						<spring:url value="/private/notifiche/gestione?id=${notifica.id}" var="gestioneNotifica"  />
+						<a href="${gestioneNotifica}">Clicca qui</a> per gestire la richiesta
+					</c:if>
+					
 					<hr/>
 				</c:forEach>			
-			
-			
+								
 			</div>
 		</div>
 	</div>
-	
 
 </div>

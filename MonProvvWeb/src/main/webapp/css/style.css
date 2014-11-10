@@ -317,3 +317,39 @@ a.disable {
 	color: #fff;
 }
 
+/******* 
+NOTIFICHE 
+********/
+
+.letta {
+}
+
+.nonletta {
+	font-weight: bold;
+}
+
+.utente .icon-bell-alt {
+	position:relative; 
+	text-decoration:none;
+}
+
+.utente .icon-stack {
+	color: #cb4437; 
+	text-decoration: none; 
+	position: absolute; 
+	top: -11px; 
+	right: -10px; 
+	display: none;
+}
+
+.utente .icon-stack > .icon-circle {
+	font-size: 1em;
+}
+
+.utente .icon-stack > .icon-light {
+	font-size: 0.7em;
+}
+
+.aprinotifica {
+	cursor: pointer;
+}

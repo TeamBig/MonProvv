@@ -43,14 +43,14 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 
-
+<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
 	<div class="container inserimento">
 		<div class="row">
 			<div class="span12">
 				<h3 class="text-left underline"><span>Dettaglio Provvedimento</span></h3>
 			</div>
 		</div>
-		<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
+		
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
@@ -158,7 +158,7 @@
 						</div>
 				</div>
 			</div>
-			</springform:form>
+
 			<!-- Allegati insert -->
 			<div class="row">
 				<div class="span12">
@@ -258,22 +258,31 @@
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
 									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
-									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>								
+									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
+									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
 								</security:authorize>
 
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'accettazione')">
 									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
 									<button type="button" class="btn" name="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
+									<button type="button" class="btn" name="rifiutaAssegnazione">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
 								</security:authorize>
 
+								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
+									<button type="submit" class="btn btn-primary" id="richiediAssegnazione">Richiedi assegnazione&nbsp;<i class="icon-check"></i></button>
+									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
+									<input type="hidden" id="richiediAssegnazioneId" value="${provvedimentoDettaglio.id}" /> 
+								</security:authorize>
 							
 								<c:if test="${canModificaStato }">
 									<button type="submit" class="btn btn-primary" id="salvaDettaglio" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
+									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
 									<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</security:authorize>
-								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								
 							</div>
 						</div>
 					</div>
@@ -358,3 +367,30 @@
 			<button class="btn" data-dismiss="modal" aria-hidden="true" id="richiediAssegnazione">Invia &nbsp;<i class="icon-location-arrow"></i></button>
 		</div>
 	</div>
+	
+	
+	<!--  modal richiesta assegnazione  -->
+	<div id="modalRichiestaAssegnazione" class="modal hide fade" tabindex="-1" role="dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&#215;</button>
+			<h3>Richiesta assegnazione</h3>
+		</div>
+		<div class="modal-body">
+			<div class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="art">Motivazione</label>
+					<div class="controls">
+						<springform:textarea path="motivazioneRichiesta" class="input-xlarge" rows="10" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" id="richiediAssegnazioneModal" name="richiediAssegnazione">Invia richiesta&nbsp;<i class="icon-location-arrow"></i></button>
+		</div>
+	</div>
+	
+	
+	
+	
+</springform:form>

@@ -131,4 +131,9 @@
 	<definition name="cronologiaModifiche" template="/views/cronologiaModifiche.jsp">
 	</definition>
 
+	<definition name="dettaglioNotifica" extends="template">
+		<put-attribute name="content" value="/views/dettaglioNotifica.jsp" />
+		<put-attribute name="titolo" value="dettaglioNotifica.title" />
+	</definition>
+
 </tiles-definitions>
