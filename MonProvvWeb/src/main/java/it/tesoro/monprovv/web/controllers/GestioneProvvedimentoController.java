@@ -16,6 +16,7 @@ import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
@@ -36,6 +37,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -197,6 +199,22 @@ public class GestioneProvvedimentoController {
 		}
 		return retVal;
 	}
+	
+	
+	// **************** richiesta Assegnazione ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params = "richiediAssegnazione")
+	public String gestioneRichiestaAssegnazione(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+	
+		Integer idOrgano = ((CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUtente().getOrgano().getId();
+		
+		gestioneProvvedimentoFacade.inserisciRichiestaAssegnazione(id, idOrgano, provvedimentoDettaglio.getMotivazioneRichiesta());		
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Richiesta inviata con successo.", false);
+		
+		return "provvedimentoDettaglio";
+	}
+	
 	
 	//***** MODIFICA PROVVEDIMENTO ******//
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica" } , method = RequestMethod.GET)

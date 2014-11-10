@@ -25,6 +25,7 @@ import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
 
+import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -252,6 +253,23 @@ public class GestioneProvvedimentoFacade {
 		assegnazione.setProvvedimento(provv);
 		assegnazione.setStato(stato);
 		assegnazioneDAO.save(assegnazione);
+		return assegnazione;
+	}
+	
+	public Assegnazione inserisciRichiestaAssegnazione(Integer idProvv, Integer idOrgano, Clob motivazioneRichiesta) {
+		Provvedimento provv = provvedimentoDAO.findById(idProvv);
+		Organo organo = organoDAO.findById(idOrgano);
+		Stato stato = statoDAO.findByCodice(Constants.RICHIESTO);
+		Assegnazione assegnazione = new Assegnazione();
+		assegnazione.setOrgano(organo);
+		assegnazione.setProvvedimento(provv);
+		assegnazione.setStato(stato);
+		assegnazione.setMotivazioneRichiesta(motivazioneRichiesta);
+		assegnazioneDAO.save(assegnazione);
+		
+		// invio notifiche
+		// TODO
+		
 		return assegnazione;
 	}
 	

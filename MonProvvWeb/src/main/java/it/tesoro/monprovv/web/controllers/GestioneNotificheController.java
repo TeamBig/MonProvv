@@ -1,8 +1,12 @@
 package it.tesoro.monprovv.web.controllers;
 
+import java.net.URISyntaxException;
+
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
+import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -39,5 +44,46 @@ protected static Logger logger = Logger.getLogger(GestioneNotificheController.cl
 		model.addAttribute("notifiche", gestioneNotificaFacade.recuperaNotifichePersonali());
 		
 		return "notifiche";
+	}
+	
+	
+	@RequestMapping(value = "/private/notifiche/dettaglio", method = RequestMethod.GET)
+	public String dettaglioNotifica(@RequestParam(value = "id", required = true) Integer idNotifica, Model model) {
+		
+		Notifica notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		
+		if (notifica.getTipoNotifica().equals(Notifica.INFORMATIVA)) {
+			// contrassegno come già letta
+			notifica.setFlagLettura("S");
+			
+			gestioneNotificaFacade.aggiornaNotifica(notifica);
+		}
+		
+		model.addAttribute("notifica", notifica);
+		
+		return "dettaglioNotifica";
+	}
+	
+	@RequestMapping(value = "/private/notifiche/gestione", method = RequestMethod.GET)
+	public String gestioneNotificaOperativa(@RequestParam(value = "id", required = true) Integer idNotifica, 
+			Model model) {
+		
+		Notifica notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		
+		
+		// concateno id notifica a link operazione e faccio redirect
+		URIBuilder uriBuilder = null;
+		try {
+			uriBuilder = new URIBuilder(notifica.getLinkOperazione());
+			uriBuilder.addParameter("idNotifica", idNotifica.toString());
+			return "redirect: " + uriBuilder.build().toString();
+			
+		} catch (URISyntaxException e) {
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Errore nella generazione della URI", false);
+			return "dettaglioNotifica";
+		}
+		
+		
+
 	}
 }
