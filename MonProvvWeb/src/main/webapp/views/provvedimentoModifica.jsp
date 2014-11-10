@@ -168,6 +168,11 @@
 								<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
 							</div>
 						</div>
+					<div class="span4 offset4">
+						<springform:select path="provvedimentiParent" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
+							<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.comma" />
+						</springform:select>
+					</div>
 				</div>
 			</div>
 				</springform:form>
@@ -280,8 +285,9 @@
 									</c:forEach>
 								</display:column>
 								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
-								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
-									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
+								<display:column title="${cronologiaModificheHeader}" headerScope="col" class="vcenter center">
+									<spring:url value="dettaglio/modalCronologia?id=${assegnazione.id}" var="urlModale" />
+									<a href="${urlModale}" role="button" data-toggle="modal" data-target="#modalCronologia"><i class="icon-time icon-large"></i></a>
 								</display:column>
 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
@@ -329,48 +335,7 @@
 			<h3 id="myModalLabel">Cronologia modifiche</h3>
 		</div>
 		<div class="modal-body">
-			<table class="table table-hover table-bordered">
-				<thead>
-					<tr>
-						<th>Data</th>
-						<th>Operazione</th>
-						<th>Organo</th>
-						<th>Utente</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>09-08-2014 09:37</td>
-						<td>Inserimento nota</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Marco Iezzi</td>
-					</tr>
-					<tr>
-						<td>10-08-2014 14:30</td>
-						<td>Modifica nota</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Francesco Carlucci</td>
-					</tr>
-					<tr>
-						<td>10-08-2014 15:56</td>
-						<td>Inserimento allegato</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Daniele Fiorio</td>
-					</tr>
-					<tr>
-						<td>13-08-2014 10:23</td>
-						<td>Inserimento allegato</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Daniele Fiorio</td>
-					</tr>
-					<tr>
-						<td>20-08-2014 17:10</td>
-						<td>Cancellazione allegato</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Alessandro Bartolucci</td>
-					</tr>
-				</tbody>
-			</table>
+			<i class="fa fa-spinner fa-spin"></i>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Chiudi</button>

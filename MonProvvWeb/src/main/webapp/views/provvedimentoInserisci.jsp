@@ -22,11 +22,14 @@
 <spring:message var="dataAttoHeader" code="listaProvvedimenti.header.dataAtto" />
 <spring:message var="numeroAttoHeader" code="listaProvvedimenti.header.numeroAtto" />
 <spring:message var="collNormattivaHeader" code="listaProvvedimenti.header.collNormattiva" />
-
+<spring:message var="organoHeader" code="listaAssegnatari.header.organo" />
+<spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
 <spring:message var="parereHeader" code="label.parere" />
+<spring:message var="descrizioneHeader" code="listaAllegati.header.descrizione" />
+<spring:message var="dimensioneHeader" code="listaAllegati.header.dimensione" />
 
-
+<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato" var="formAllegatiPath" />
 <c:url value="/private/provvedimenti/ricerca/nuovo" var="formPath" />
 
 	<div class="container inserimento">
@@ -35,7 +38,7 @@
 				<h3 class="text-left underline"><span><c:out value="${titolo}" /></span></h3>
 			</div>
 		</div>
-		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST">
+		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" name="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST" enctype="multipart/form-data">
 		<springform:hidden path="currentStep" name="currentStep"/>
 		<springform:hidden path="stepSuccessivo" name="stepSuccessivo"/>
 		<c:if test="${currentStep eq 1}">
@@ -152,49 +155,63 @@
 					<h3 class="text-left underline">
 						<span>Allegati</span>
 					</h3>
+			
+					<display:table
+						name="${listaAllegati}" 
+						requestURI="" sort="external" partialList="false"
+						id="allegato" 
+						class="table table-hover table-bordered"
+						summary="Elenco Allegati" 
+						style="width: 100%">
+		
+						<display:column title="${idHeader}" property="id" headerScope="col" />
+						<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
+							<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
+							<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
+						</display:column>
+						<display:column title="${dimensioneHeader}" headerScope="col">
+							<c:if test="${not empty allegato.dimensione }">
+								<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>
+							</c:if>
+						</display:column>
+						<display:column title="${eliminaHeader}" headerScope="col" class="vcenter center">
+							<a href="javascript:void(0)" id="eliminaAllegato" ><i class="icon-trash icon-large gray" title="Elimina allegato"></i></a>
+						</display:column>
+					</display:table>
+				</div>
+			</div>
+  			<div class="progress progress-striped active">
+				<div class="bar" style="width: 0%;">
+					<div class="percent">0%</div >
 				</div>
 			</div>
 			<div class="row">
 				<div class="span12">	
-					<table class="table table-hover table-bordered" style="width: 100%">
-						<thead>
-							<tr>
-								<th>Id</th>
-								<th>Descrizione</th>
-								<th>Dimensione</th>
-								<th class="center">Elimina</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td colspan="4">
-									Nessun allegato aggiunto.
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-			<div class="row">
-				<div class="span12">	
-					<div class="control-group">
-						<label class="control-label" for="allegato">File da allegare</label>
-						<div class="controls">
-							<input type="text" id="allegato" class="input-xlarge" />
-							<button type="button" id="insertEnte" class="btn">Sfoglia</button>
+					<div id="allegatoForm">
+						<springform:hidden path="idAllegatiUpdList" id="idAllegatiUpdList" />
+						<%-- <springform:hidden path="idAllegatiDelList" id="idAllegatiDelList" /> --%>
+						<div class="control-group">		
+							<label class="control-label" for="allegato">File da allegare</label>
+							<div class="controls">
+								<input type="text" class="form-control input-xlarge" readonly="readonly" name="textAllegato" id="textAllegato">
+								<span class="input-group-btn"> 
+									<span class="btn btn-file"> Browse...<input type="file" name="allegatoProvvedimento" id="allegatoProvvedimento">
+									</span>
+								</span> 
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="descrizione">Descrizione</label>
-						<div class="controls">
-							<input type="text" id="allegato" class="input-xxlarge" />
+						
+						<div class="control-group">
+							<label class="control-label" for="descrizione">Descrizione</label>
+							<div class="controls">
+								<input type="text" id="descrizioneAllegato" name="descrizioneAllegato" class="input-xxlarge" />
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<button type="button" id="insertEnte" class="btn">
-								Aggiungi <i class="icon-plus"></i>
-							</button>
+						
+						<div class="control-group">
+							<div class="controls">
+								<button type="button" id="allegatoInserisciIns" class="btn">Aggiungi <i class="icon-plus"></i></button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -220,6 +237,7 @@
 			</c:if>
 			<!-- STEP 3  -->
 			<c:if test="${currentStep eq 3}">
+			<springform:hidden path="idAssegnatariUpdList" id="idAssegnatariUpdList" />
 			<div class="row">
 				<div class="span12">
 						<display:table 	name="${listaAssegnazione}" 
@@ -229,26 +247,28 @@
 											summary="Elenco Assegnatari" style="width: 100%">
 	
 								<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
-								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
-								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" />
+								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="medium center" class="medium vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
 								</display:column>
 						</display:table>
 				</div>
-<%-- 				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+				<div id="assegnazioneForm">
+<%--  				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET"> --%>
 					<div class="control-group">
 						<label class="control-label" for="organo">Nuovo assegnatario</label>
 						<div class="controls">
-							<springform:select path="organo" id="organo" cssClass="input-xlarge" >
+							<springform:select path="assegnatario" id="assegnatario" cssClass="input-xlarge" >
 								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
 							</springform:select>
 							<button type="button" id="insertAssegnatarioFromInserimento" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
 						</div>
 					</div>
-				</springform:form> --%>
+				</div>
+<%-- 				</springform:form> --%>
 			</div>	
-			<!-- FINE STEP 3 -->
 			</c:if>
+			<!-- FINE STEP 3 -->
 			<!-- STEP 4  -->
 			<c:if test="${currentStep eq 4}">
 			<div class="row">

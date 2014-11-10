@@ -3,6 +3,7 @@ package it.tesoro.monprovv.model;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
 import java.io.Serializable;
+import java.sql.Clob;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -41,8 +42,6 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 
 	@ManyToOne(targetEntity=Provvedimento.class)
     @JoinColumn(name="ID_PROVVEDIMENTO", referencedColumnName="ID_PROVVEDIMENTO")
-	@Valid
-	@NotNull
 	private Provvedimento provvedimento;
 	
 	@ManyToOne(targetEntity=Organo.class)
@@ -63,6 +62,9 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	
 	@OneToOne(targetEntity=Nota.class, fetch=FetchType.EAGER, mappedBy="assegnazione")
 	private Nota nota;
+	
+	@Column(name = "MOTIVAZIONE_RICHIESTA")
+	private Clob motivazioneRichiesta;
 
 	public Integer getId() {
 		return id;
@@ -111,6 +113,14 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	public void setNota(Nota nota) {
 		this.nota = nota;
 	}
+	
+	public Clob getMotivazioneRichiesta() {
+		return motivazioneRichiesta;
+	}
+
+	public void setMotivazioneRichiesta(Clob motivazioneRichiesta) {
+		this.motivazioneRichiesta = motivazioneRichiesta;
+	}
 
 	@Override
 	public int hashCode() {
@@ -136,7 +146,7 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
+
+
 
 }

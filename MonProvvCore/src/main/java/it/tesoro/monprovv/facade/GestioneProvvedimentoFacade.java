@@ -7,6 +7,7 @@ import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentiParentDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
+import it.tesoro.monprovv.dao.StoricoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
@@ -19,18 +20,22 @@ import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.Storico;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
 
+import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -66,6 +71,9 @@ public class GestioneProvvedimentoFacade {
 	
 	@Autowired
 	private ProvvedimentiParentDAO provvedimentiParentDAO;
+	
+	@Autowired
+	private StoricoDAO storicoDAO;
 	
 	
 	public List<Stato> initStato(){
@@ -255,6 +263,23 @@ public class GestioneProvvedimentoFacade {
 		return assegnazione;
 	}
 	
+	public Assegnazione inserisciRichiestaAssegnazione(Integer idProvv, Integer idOrgano, Clob motivazioneRichiesta) {
+		Provvedimento provv = provvedimentoDAO.findById(idProvv);
+		Organo organo = organoDAO.findById(idOrgano);
+		Stato stato = statoDAO.findByCodice(Constants.RICHIESTO);
+		Assegnazione assegnazione = new Assegnazione();
+		assegnazione.setOrgano(organo);
+		assegnazione.setProvvedimento(provv);
+		assegnazione.setStato(stato);
+		assegnazione.setMotivazioneRichiesta(motivazioneRichiesta);
+		assegnazioneDAO.save(assegnazione);
+		
+		// invio notifiche
+		// TODO
+		
+		return assegnazione;
+	}
+	
 	public Stato findStatoById(Integer id){
 		Stato stato = statoDAO.findById(id);
 		return stato;
@@ -278,11 +303,13 @@ public class GestioneProvvedimentoFacade {
 	}
 
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
-		
+		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
 		provvedimentoDAO.save(provvRecuperato);
+		//SALVATAGGIO PROVVEDIMENTI SELEZIONATI
 		if(provvedimentoIns.getProvvedimentiSelected()!=null && Arrays.asList(provvedimentoIns.getProvvedimentiSelected()).size()>0){
 			List<String> list = Arrays.asList(provvedimentoIns.getProvvedimentiSelected());
 			for(Provvedimento provCollegato : provvedimentoIns.getListaProvvedimenti()){
@@ -294,7 +321,55 @@ public class GestioneProvvedimentoFacade {
 				}
 			}
 		}
+		//SALVATAGGIO ASSEGNAZIONI ORGANI FK -> Provvedimento
+		for(Integer idAssegnazione :provvedimentoIns.getIdAssegnatariUpdList()){
+			Assegnazione ass = assegnazioneDAO.findById(idAssegnazione);
+			if(ass!=null){
+				ass.setProvvedimento(provvRecuperato);
+				assegnazioneDAO.save(ass);
+			}
+		}
+		//SALVATAGGIO ALLEGATI FK -> Provvedimento
+		for(Integer idAllegato :provvedimentoIns.getIdAllegatiUpdList()){
+			Allegato all = allegatoDAO.findById(idAllegato);
+			if(all!=null){
+				all.setProvvedimento(provvRecuperato);
+				allegatoDAO.save(all);
+			}
+		}
 		return provvRecuperato;
+	}
+
+	public List<Assegnazione> getListaAssegnazioneInserimento(
+			List<Integer> idAllegatiUpdList) {
+		List<Assegnazione> listAssegnazioneRet = new ArrayList<Assegnazione>();
+		for(Integer idAss : idAllegatiUpdList){
+			Assegnazione ass  = assegnazioneDAO.findById(idAss);
+			if(ass!=null){
+				listAssegnazioneRet.add(ass);
+			}
+		}
+		return listAssegnazioneRet;
+	}
+
+	public List<Allegato> getListaAllegatiInserimento(List<Integer> idAllegatiUpdList) {
+		List<Allegato> listAllegatoRet = new ArrayList<Allegato>();
+		for(Integer idAll : idAllegatiUpdList){
+			Allegato all  = allegatoDAO.findById(idAll);
+			if(all!=null){
+				listAllegatoRet.add(all);
+			}
+		}
+		return listAllegatoRet;
+	}
+
+	public List<Storico> getCronologiaAssegnatario(Integer idAss) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		if(!StringUtils.isEmpty(idAss)){
+			params.put("idEntita", idAss);
+		}
+		List<Storico> listaStorico = storicoDAO.findByProperty(params);
+		return listaStorico;
 	}
 
 }

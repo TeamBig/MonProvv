@@ -43,14 +43,14 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 
-
+<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
 	<div class="container inserimento">
 		<div class="row">
 			<div class="span12">
 				<h3 class="text-left underline"><span>Dettaglio Provvedimento</span></h3>
 			</div>
 		</div>
-		<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
+		
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
@@ -158,7 +158,7 @@
 						</div>
 				</div>
 			</div>
-			</springform:form>
+
 			<!-- Allegati insert -->
 			<div class="row">
 				<div class="span12">
@@ -222,18 +222,20 @@
 									</c:forEach>
 								</display:column>
 								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
-								<display:column title="${cronologiaModificheHeader}"  headerScope="col" headerClass="center" class="vcenter center">
-									<a href="#modalCronologia" role="button" data-toggle="modal"><i class="icon-time icon-large"></i></a>
+								
+								<display:column title="${cronologiaModificheHeader}" headerScope="col" class="vcenter center">
+									<spring:url value="dettaglio/modalCronologia?id=${assegnazione.id}" var="urlModale" />
+									<a href="${urlModale}" role="button" data-toggle="modal" data-target="#modalCronologia"><i class="icon-time icon-large"></i></a>
 								</display:column>
-								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
+<%-- 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
-								</display:column>
+								</display:column> --%>
 								<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 									<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
 								</display:column>
 						</display:table>
 				</div>
-				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
+<%-- 				<springform:form cssClass="form-horizontal" commandName="assegnatarioNew" id="assegnazioneForm" name="assegnazioneForm" action="#" method="GET">
 					<springform:hidden path="provvedimento.id" id="idProvvedimento"/>
 					<div class="control-group">
 						<label class="control-label" for="organo">Nuovo assegnatario</label>
@@ -244,7 +246,7 @@
 							<button type="button" id="insertAssegnatario" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
 						</div>
 					</div>
-				</springform:form>
+				</springform:form> --%>
 			</div>
 			<div class="row">
 				<div class="span12">
@@ -256,22 +258,31 @@
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
 									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
-									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>								
+									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" value="finelavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
+									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
 								</security:authorize>
 
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'accettazione')">
 									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
 									<button type="button" class="btn" name="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
+									<button type="button" class="btn" name="rifiutaAssegnazione">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
 								</security:authorize>
 
+								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
+									<button type="submit" class="btn btn-primary" id="richiediAssegnazione">Richiedi assegnazione&nbsp;<i class="icon-check"></i></button>
+									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
+									<input type="hidden" id="richiediAssegnazioneId" value="${provvedimentoDettaglio.id}" /> 
+								</security:authorize>
 							
 								<c:if test="${canModificaStato }">
 									<button type="submit" class="btn btn-primary" id="salvaDettaglio" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
+									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
 									<button type="submit" class="btn" id="modificaProvvedimento" value="Modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+									<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</security:authorize>
-								<button type="button" class="btn" id="annullaModificaProvvedimento" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								
 							</div>
 						</div>
 					</div>
@@ -290,48 +301,7 @@
 			<h3 id="myModalLabel">Cronologia modifiche</h3>
 		</div>
 		<div class="modal-body">
-			<table class="table table-hover table-bordered">
-				<thead>
-					<tr>
-						<th>Data</th>
-						<th>Operazione</th>
-						<th>Organo</th>
-						<th>Utente</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>09-08-2014 09:37</td>
-						<td>Inserimento nota</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Marco Iezzi</td>
-					</tr>
-					<tr>
-						<td>10-08-2014 14:30</td>
-						<td>Modifica nota</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Francesco Carlucci</td>
-					</tr>
-					<tr>
-						<td>10-08-2014 15:56</td>
-						<td>Inserimento allegato</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Daniele Fiorio</td>
-					</tr>
-					<tr>
-						<td>13-08-2014 10:23</td>
-						<td>Inserimento allegato</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Daniele Fiorio</td>
-					</tr>
-					<tr>
-						<td>20-08-2014 17:10</td>
-						<td>Cancellazione allegato</td>
-						<td>Agenzia Dogane e monopoli</td>
-						<td>Alessandro Bartolucci</td>
-					</tr>
-				</tbody>
-			</table>
+			<i class="fa fa-spinner fa-spin"></i>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Chiudi</button>
@@ -397,3 +367,30 @@
 			<button class="btn" data-dismiss="modal" aria-hidden="true" id="richiediAssegnazione">Invia &nbsp;<i class="icon-location-arrow"></i></button>
 		</div>
 	</div>
+	
+	
+	<!--  modal richiesta assegnazione  -->
+	<div id="modalRichiestaAssegnazione" class="modal hide fade" tabindex="-1" role="dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&#215;</button>
+			<h3>Richiesta assegnazione</h3>
+		</div>
+		<div class="modal-body">
+			<div class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="art">Motivazione</label>
+					<div class="controls">
+						<springform:textarea path="motivazioneRichiesta" class="input-xlarge" rows="10" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" id="richiediAssegnazioneModal" name="richiediAssegnazione">Invia richiesta&nbsp;<i class="icon-location-arrow"></i></button>
+		</div>
+	</div>
+	
+	
+	
+	
+</springform:form>
