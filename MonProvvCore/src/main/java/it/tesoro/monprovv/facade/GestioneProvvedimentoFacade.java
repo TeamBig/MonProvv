@@ -79,10 +79,6 @@ public class GestioneProvvedimentoFacade {
 	@Autowired 
 	private NotificaDAO notificaDAO;
 	
-	@Autowired 
-	private NotificaDAO notificaDAO;
-	
-	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
