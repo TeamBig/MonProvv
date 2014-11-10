@@ -212,7 +212,7 @@ public class GestioneProvvedimentoController {
 		
 		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Richiesta inviata con successo.", false);
 		
-		return "provvedimentoDettaglio";
+		return dettaglio(model, id);
 	}
 	
 	

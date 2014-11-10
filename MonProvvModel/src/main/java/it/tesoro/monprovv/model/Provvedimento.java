@@ -162,7 +162,7 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	private List<Integer> idAllegatiUpdList;
 	
 	@Transient
-	private Clob motivazioneRichiesta;
+	private String motivazioneRichiesta;
 	
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
@@ -368,11 +368,11 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.idAllegatiUpdList = idAllegatiUpdList;
 	}
 
-	public Clob getMotivazioneRichiesta() {
+	public String getMotivazioneRichiesta() {
 		return motivazioneRichiesta;
 	}
 
-	public void setMotivazioneRichiesta(Clob motivazioneRichiesta) {
+	public void setMotivazioneRichiesta(String motivazioneRichiesta) {
 		this.motivazioneRichiesta = motivazioneRichiesta;
 	}
 

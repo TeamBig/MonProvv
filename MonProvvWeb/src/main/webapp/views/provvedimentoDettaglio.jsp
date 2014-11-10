@@ -43,7 +43,7 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 
-<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="#" method="POST">
+<springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="" method="POST">
 	<div class="container inserimento">
 		<div class="row">
 			<div class="span12">
@@ -269,7 +269,7 @@
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
 									<button type="submit" class="btn btn-primary" id="richiediAssegnazione">Richiedi assegnazione&nbsp;<i class="icon-check"></i></button>
 									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
-									<input type="hidden" id="richiediAssegnazioneId" value="${provvedimentoDettaglio.id}" /> 
+									 
 								</security:authorize>
 							
 								<c:if test="${canModificaStato }">
@@ -425,7 +425,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" id="richiediAssegnazioneModal" name="richiediAssegnazione">Invia richiesta&nbsp;<i class="icon-location-arrow"></i></button>
+			<button class="btn" data-dismiss="modal" id="richiediAssegnazioneModal" >Invia richiesta&nbsp;<i class="icon-location-arrow"></i></button>
+			<input type="hidden" name="richiediAssegnazione" value="richiediAssegnazione" />
 		</div>
 	</div>
 	
