@@ -7,6 +7,7 @@ import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentiParentDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
+import it.tesoro.monprovv.dao.StoricoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
@@ -19,9 +20,11 @@ import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
+import it.tesoro.monprovv.model.Storico;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
 
@@ -31,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -66,6 +70,9 @@ public class GestioneProvvedimentoFacade {
 	
 	@Autowired
 	private ProvvedimentiParentDAO provvedimentiParentDAO;
+	
+	@Autowired
+	private StoricoDAO storicoDAO;
 	
 	
 	public List<Stato> initStato(){
@@ -278,10 +285,11 @@ public class GestioneProvvedimentoFacade {
 	}
 
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
-		
+		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
 		provvedimentoDAO.save(provvRecuperato);
 		//SALVATAGGIO PROVVEDIMENTI SELEZIONATI
 		if(provvedimentoIns.getProvvedimentiSelected()!=null && Arrays.asList(provvedimentoIns.getProvvedimentiSelected()).size()>0){
@@ -303,6 +311,14 @@ public class GestioneProvvedimentoFacade {
 				assegnazioneDAO.save(ass);
 			}
 		}
+		//SALVATAGGIO ALLEGATI FK -> Provvedimento
+		for(Integer idAllegato :provvedimentoIns.getIdAllegatiUpdList()){
+			Allegato all = allegatoDAO.findById(idAllegato);
+			if(all!=null){
+				all.setProvvedimento(provvRecuperato);
+				allegatoDAO.save(all);
+			}
+		}
 		return provvRecuperato;
 	}
 
@@ -316,6 +332,26 @@ public class GestioneProvvedimentoFacade {
 			}
 		}
 		return listAssegnazioneRet;
+	}
+
+	public List<Allegato> getListaAllegatiInserimento(List<Integer> idAllegatiUpdList) {
+		List<Allegato> listAllegatoRet = new ArrayList<Allegato>();
+		for(Integer idAll : idAllegatiUpdList){
+			Allegato all  = allegatoDAO.findById(idAll);
+			if(all!=null){
+				listAllegatoRet.add(all);
+			}
+		}
+		return listAllegatoRet;
+	}
+
+	public List<Storico> getCronologiaAssegnatario(Integer idAss) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		if(!StringUtils.isEmpty(idAss)){
+			params.put("idEntita", idAss);
+		}
+		List<Storico> listaStorico = storicoDAO.findByProperty(params);
+		return listaStorico;
 	}
 
 }

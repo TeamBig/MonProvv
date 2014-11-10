@@ -93,7 +93,6 @@
 			</div>
 		</div>
 	</div>
-
 	
 	<tiles:insertAttribute name="breadcrumb" />
 	
