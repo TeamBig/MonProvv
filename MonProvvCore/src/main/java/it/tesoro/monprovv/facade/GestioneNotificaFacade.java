@@ -34,13 +34,13 @@ public class GestioneNotificaFacade {
 		return 0;
 	}
 	
-	public List<Notifica> recuperaNotifichePersonali() {
+	public List<Notifica> recuperaNotifichePersonaliNonLette() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.getPrincipal() instanceof CustomUser) {
 			
 			Utente utente = ((CustomUser)auth.getPrincipal()).getUtente();
 			
-			return notificaDAO.findNotificheByUtente(utente);
+			return notificaDAO.findNotificheByUtente(utente, true);
 		}
 		
 		return null;

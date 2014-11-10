@@ -3,6 +3,7 @@ package it.tesoro.monprovv.facade;
 import it.tesoro.monprovv.dao.AllegatoDAO;
 import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.GovernoDAO;
+import it.tesoro.monprovv.dao.NotificaDAO;
 import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentiParentDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
@@ -16,6 +17,7 @@ import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
@@ -28,7 +30,6 @@ import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
 
-import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,6 +76,8 @@ public class GestioneProvvedimentoFacade {
 	@Autowired
 	private StoricoDAO storicoDAO;
 	
+	@Autowired 
+	private NotificaDAO notificaDAO;
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
@@ -263,7 +266,7 @@ public class GestioneProvvedimentoFacade {
 		return assegnazione;
 	}
 	
-	public Assegnazione inserisciRichiestaAssegnazione(Integer idProvv, Integer idOrgano, Clob motivazioneRichiesta) {
+	public Assegnazione inserisciRichiestaAssegnazione(Integer idProvv, Integer idOrgano, String motivazioneRichiesta) {
 		Provvedimento provv = provvedimentoDAO.findById(idProvv);
 		Organo organo = organoDAO.findById(idOrgano);
 		Stato stato = statoDAO.findByCodice(Constants.RICHIESTO);
@@ -271,11 +274,23 @@ public class GestioneProvvedimentoFacade {
 		assegnazione.setOrgano(organo);
 		assegnazione.setProvvedimento(provv);
 		assegnazione.setStato(stato);
-		assegnazione.setMotivazioneRichiesta(motivazioneRichiesta);
-		assegnazioneDAO.save(assegnazione);
+		if (!StringUtils.isEmpty(motivazioneRichiesta)) {
+			assegnazione.setMotivazioneRichiesta(assegnazioneDAO.createClob(motivazioneRichiesta));
+		}
+		Integer idAss = (Integer)assegnazioneDAO.save(assegnazione);
 		
 		// invio notifiche
-		// TODO
+		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String testo = "L'utente... "; // TODO
+		Notifica notifica = new Notifica();
+		notifica.setFlagLettura(Notifica.NON_LETTA);
+		notifica.setTipoNotifica(Notifica.OPERATIVA);
+		notifica.setOggetto("Richiesta assegnazione provvedimento");
+		notifica.setTesto(testo);
+		notifica.setOrganoDestinatario(provv.getOrganoCapofila());
+		notifica.setUtenteMittente(user.getUtente());
+		notifica.setLinkOperazione("/private/provvedimenti/confermaassegnazione?id=" + idAss);
+		notificaDAO.save(notifica);
 		
 		return assegnazione;
 	}

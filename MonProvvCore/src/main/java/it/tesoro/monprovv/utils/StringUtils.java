@@ -65,14 +65,15 @@ public class StringUtils {
 		return null;
 	}
 	
-	@SuppressWarnings("null")
-	public static Clob convertStringToClob(String str) throws SQLException{
-		Clob clob = null;
-		if(str!=null){
-			clob.setString(1, str);
-		}
-		return clob;
-	}
+//	@SuppressWarnings("null")
+//	public static Clob convertStringToClob(String str) {
+//		Clob clob = null;
+//		try {
+//			clob.setString(1, str);
+//		} catch (Exception e) {
+//		}
+//		return clob;
+//	}
 	
 	public static String convertBytesToKb(long bytes, boolean si) {
 	    int unit = si ? 1000 : 1024;
