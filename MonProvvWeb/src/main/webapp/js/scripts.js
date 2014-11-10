@@ -461,7 +461,25 @@ $(document).ready(function() {
     	}
     });
     
-    	$('#nominativoUtente').attr('autocomplete','off');
+    
+    $('#tokenfield').tagsinput({
+    	typeahead: {
+    		freeInput: true,
+    		allowDuplicates: false,
+    		trimValue: true,
+    		source: function(param) {
+    			return $.getJSON(
+    					'utenti/nuovo/autocomplateutentemail',
+    					{ query: param },
+    					function (data) {
+    						
+    					});
+    		}
+    	},
+    	showAutocompleteOnFocus: true
+    });
+    
+    $('#nominativoUtente').attr('autocomplete','off');
     $('#nominativoUtente').typeahead({
     	minLength: 2,
         source: function(query, process) {

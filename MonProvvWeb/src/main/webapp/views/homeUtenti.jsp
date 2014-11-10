@@ -86,6 +86,11 @@
 <div class="container" id="risultatiRicerca">
 	<div class="row">
 		<div class="span12">
+			
+			
+			<input type="text" class="input-xlarge" value="" data-role="tagsinput" id="tokenfield" />
+			
+			
 			<c:url value="/private/admin/utenti" var="formPath" />
 			<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
 				<h3 class="text-left underline">

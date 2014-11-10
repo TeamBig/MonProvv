@@ -55,6 +55,19 @@ public class GestioneUtenteFacade {
 		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
 		return utenteDAO.findByPattern(searchPatternObjects, page, order);
 	}
+	
+	public List<Utente> recuperaUtenteiAttivi(String param) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("param", "%"+param.toUpperCase()+"%");
+		String hql = "from Utente u where upper("
+				+ "concat(u.cognome , ' ' , u.nome , ' ' , u.cognome , ' ' , u.codiceFiscale, ' ' , u.email)"
+				+ ") like :param and u.flagAttivo = 'S' "
+				+ "order by cognome, nome asc";
+		List<Utente> utenti = utenteDAO.findByHqlQueryNumeroRecord(hql, params, 10);
+		
+		return utenti;
+		
+	}
 
 	private List<SearchPatternUtil> popolaCriteria(UtenteDto criteria) {
 		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();

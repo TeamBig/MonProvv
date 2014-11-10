@@ -135,6 +135,19 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return result;
 	}
 	
+	@RequestMapping(value= {"/private/admin/utenti/nuovo/autocomplateutentemail"}, method = RequestMethod.GET)
+	@ResponseBody
+	public List<String> autocomplateutentemail(@RequestParam("query") String query){
+		List<Utente> dtos = gestioneUtenteFacade.recuperaUtenteiAttivi(query);
+		List<String> retval = new ArrayList<String>();
+		for(Utente tmp: dtos){
+			retval.add(tmp.getEmail());
+		}
+		return retval;
+	}
+	
+	
+	
 //	@RequestMapping(value= {"/private/admin/utenti/delete/{id}"}, method = RequestMethod.GET)
 //	public String deleteGet(@PathVariable("id") int id, RedirectAttributes redirectAttributes)  {
 	@RequestMapping(value= {"/private/admin/utenti/delete"}, method = RequestMethod.GET)
