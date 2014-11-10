@@ -38,11 +38,11 @@ protected static Logger logger = Logger.getLogger(GestioneNotificheController.cl
 		return gestioneNotificaFacade.conteggioNotifichePersonaliNonLette();
 	}
 	
-	@RequestMapping(value = "/private/notifiche/elenco", method = RequestMethod.GET)
+	@RequestMapping(value = "/private/notifiche/elencononlette", method = RequestMethod.GET)
 	public String elencoNotifiche(Model model) {
 		
-		model.addAttribute("notifiche", gestioneNotificaFacade.recuperaNotifichePersonali());
-		
+		model.addAttribute("notifiche", gestioneNotificaFacade.recuperaNotifichePersonaliNonLette());
+		model.addAttribute("soloNonLette", "S");
 		return "notifiche";
 	}
 	

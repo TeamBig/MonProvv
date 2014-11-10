@@ -699,6 +699,14 @@ function eliminaNessunRisultatoAssegnatario(id){
 // GESTIONE NOTIFICHE
 function gestioneNotifiche() {
 	
+	
+	$("#mostraTutteLeNotifiche").click(function(e) {
+		e.stopPropagation();
+	    e.preventDefault();
+	    
+	    window.location.href = $(this).attr("href");
+	});
+	
 	// popover
 	var popoverNotifiche = $("#popoverNotifiche"); 
 	popoverNotifiche.click(function(e) {

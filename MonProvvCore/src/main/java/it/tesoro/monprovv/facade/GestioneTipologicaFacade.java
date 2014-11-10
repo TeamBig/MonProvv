@@ -1,5 +1,7 @@
 package it.tesoro.monprovv.facade;
 
+import java.sql.Clob;
+
 import it.tesoro.monprovv.dao.GovernoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
@@ -56,5 +58,9 @@ public class GestioneTipologicaFacade {
 
 	public TipoAtto recuperaTipoAttoById(Integer id) {
 		return tipoAttoDAO.findById(id);
+	}
+	
+	public Clob creaClob(String data) {
+		return statoDAO.createClob(data);
 	}
 }

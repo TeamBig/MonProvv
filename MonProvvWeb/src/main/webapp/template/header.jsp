@@ -17,7 +17,7 @@
 	<security:authentication property="principal.ruoloCorrente.descrizione" var="ruolo" />
 	<security:authentication property="principal.utente.organo.denominazione" var="organo" />
 
-	<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elenco">
+	<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elencononlette">
 		<i class="icon-bell-alt"> 
 		<span class="icon-stack" id="notifBadge">
 			<i class="icon-circle icon-stack-base" ></i>

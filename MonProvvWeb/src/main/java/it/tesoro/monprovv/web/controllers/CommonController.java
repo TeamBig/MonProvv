@@ -60,7 +60,7 @@ public class CommonController {
 		binder.registerCustomEditor(TipoProvvDaAdottare.class, new TipoProvvDaAdottarePropertyEditor(tipologicaFacade));
 		binder.registerCustomEditor(Date.class, new DataPropertyEditor());
 		binder.registerCustomEditor(UnitaOrgAstage.class, new UnitaOrgAstagePropertyEditor(gestioneEntiFacade));
-		binder.registerCustomEditor(Clob.class, new ClobPropertyEditor());
+		binder.registerCustomEditor(Clob.class, new ClobPropertyEditor(tipologicaFacade));
 		binder.registerCustomEditor(Organo.class, new OrganoPropertyEditor(gestioneEntiFacade));
 		binder.registerCustomEditor(TipoAtto.class, new TipoAttoPropertyEditor(tipologicaFacade));
 		binder.registerCustomEditor(UtenteAstage.class, new UtenteAstagePropertyEditor(gestioneUtenteFacade));
