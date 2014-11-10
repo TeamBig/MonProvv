@@ -24,9 +24,12 @@ public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 	}
 	
 	
-	public List<Notifica> findNotificheByUtente(Utente utente) {
+	public List<Notifica> findNotificheByUtente(Utente utente, boolean soloNonLette) {
 		
 		String hql = "select n " + HQL_NOTIFICHE_PER_UTENTE;
+		if (soloNonLette) {
+			hql += " and n.flagLettura = 'N'";
+		}
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("idUtenteDestinatario", utente.getId());
@@ -34,5 +37,6 @@ public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 		
 		return findByHqlQuery(hql, params);
 	}
+	
 }
  

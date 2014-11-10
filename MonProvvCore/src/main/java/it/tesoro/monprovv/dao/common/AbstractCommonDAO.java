@@ -9,6 +9,7 @@ import it.tesoro.monprovv.utils.SearchPatternUtil;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.sql.Clob;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -681,6 +683,10 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 			log.error("find all failed", re);
 			throw new DatabaseException(re);
 		}
+	}
+	
+	public Clob createClob(String data) {
+		return Hibernate.getLobCreator(sessionFactory.getCurrentSession()).createClob(data);
 	}
 }
 	

@@ -1,5 +1,6 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
+import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
 import it.tesoro.monprovv.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
@@ -9,9 +10,11 @@ import java.sql.SQLException;
 
 public class ClobPropertyEditor extends PropertyEditorSupport {
 
+	private GestioneTipologicaFacade tipologicaFacade;
 	
-	public ClobPropertyEditor() {
+	public ClobPropertyEditor(GestioneTipologicaFacade tipologicaFacade) {
 		super();
+		this.tipologicaFacade = tipologicaFacade;
 	}
 
 	@Override
@@ -32,11 +35,7 @@ public class ClobPropertyEditor extends PropertyEditorSupport {
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		if(!StringUtils.isEmpty(text)){
-			try {
-				setValue(StringUtils.convertStringToClob(text));
-			} catch (SQLException e) {
-				setValue(null);
-			}
+			setValue(tipologicaFacade.creaClob(text));
 		}
 	}
 

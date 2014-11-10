@@ -23,6 +23,9 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 
 	public static final String OPERATIVA = "O";
 	public static final String INFORMATIVA = "I";
+	
+	public static final String LETTA = "S";
+	public static final String NON_LETTA = "N";
 
 	private static final long serialVersionUID = 7136472204232788138L;
 
@@ -47,6 +50,10 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 	@Valid
 	@NotNull
 	private Utente utenteMittente;
+
+	@ManyToOne(targetEntity=Utente.class)
+    @JoinColumn(name="ID_UTENTE_OPERATORE", referencedColumnName="ID_UTENTE")
+	private Utente utenteOperatore;	
 	
 	@Column(name = "TIPO_NOTIFICA", length = 1)
 	@NotNull
