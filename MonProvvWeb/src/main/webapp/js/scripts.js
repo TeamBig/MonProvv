@@ -350,22 +350,59 @@ $(document).ready(function() {
     });
     
     
-    $('#tokenfield').tagsinput({
-    	typeahead: {
-    		freeInput: true,
-    		allowDuplicates: false,
-    		trimValue: true,
-    		source: function(param) {
-    			return $.getJSON(
-    					'utenti/nuovo/autocomplateutentemail',
-    					{ query: param },
-    					function (data) {
-    						
-    					});
-    		}
-    	},
-    	showAutocompleteOnFocus: true
+    // SALVA E INVIA NOTIFICHE PROVVEDIMENTO
+    
+    $('#salvaeinvianotifica').click( function () {
+    	var target = $(location).attr('pathname');
+    	target = target + '/salvaeinvianotifica?id=' + $('#idProvvedimento').val();
+    	// load the url and show modal on success
+        $("#modalSalvaInviaNotifica .modal-body").load(target, function() { 
+             $("#modalSalvaInviaNotifica").modal("show"); 
+        });
     });
+    
+    $('#inviaNotifica').click( function () {
+    	var oForm1 = $('#formEmailSalvaENotifica');
+    	oForm1.submit();
+    });
+    
+    
+    $(document).on('click', '#tokenfieldemail', function() {
+	    var element = $(this);
+	    element.myTagsinput(element);
+    
+    });    
+    
+    $.fn.myTagsinput = function (element) {
+    	element.tagsinput({
+        	itemValue: 'email',
+        	itemText: function(item) {
+        		return item.cognome + " " + item.nome;
+        	},
+        	freeInput: true,
+        	allowDuplicates: false,
+//        	maxTags: 3,
+        	trimValue: true,
+        	showAutocompleteOnFocus: true,
+//        	tagClass: function(item) {
+//        	    return (item.length > 10 ? 'big' : 'small');
+//        	},
+        	typeahead: {
+        		source: function(param) {
+        			return $.getJSON(
+        					'autocomplateutentemail',
+        					{ query: param }
+//        					,function(data){
+//        						$.each(data, function(i, object) {
+//        							alert(object.codice);
+//        							alert(object.descrizione);
+//                                });
+//        					}
+        			);
+        		}
+        	}
+        });
+    }
     
     $('#nominativoUtente').attr('autocomplete','off');
     $('#nominativoUtente').typeahead({

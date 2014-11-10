@@ -30,7 +30,9 @@
 	<link href="${base}css/bootstrap-multiselect.css" rel="stylesheet" >
 	<link href="${base}css/bootstrap-datepicker.css" rel="stylesheet" >
 	<link href="${base}css/multi-select.css" rel="stylesheet">
+	<link href="${base}css/bootstrap-tagsinput.css" rel="stylesheet">
 	<link href="${base}css/style.css" rel="stylesheet">
+	
 
 	<!--[if IE 7]>
 	  <link href="${base}/css/font-awesome-ie7.min.css" rel="stylesheet" >

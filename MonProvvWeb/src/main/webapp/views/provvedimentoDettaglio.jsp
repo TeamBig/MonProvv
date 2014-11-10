@@ -50,7 +50,8 @@
 				<h3 class="text-left underline"><span>Dettaglio Provvedimento</span></h3>
 			</div>
 		</div>
-		
+			<springform:hidden path="id" id="idProvvedimento" />
+			<springform:hidden path="versione" id="versioneProvvedimento" />
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
 						<div class="control-group">
@@ -254,7 +255,7 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<c:if test="${ canModificaChiusuraLavori }">
-									<button type="submit" class="btn btn-primary" id="salvaeinvianotifica" value="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="button" class="btn btn-primary" id="salvaeinvianotifica" value="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
 									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteallegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
@@ -316,32 +317,13 @@
 			<h3 id="myModalLabel">Invia notifica</h3>
 		</div>
 		<div class="modal-body">
-			<div class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" for="email">Email</label>
-					<div class="controls">
-						<input type="text" class="input-xlarge" id="email"></input>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="oggetto">Oggetto</label>
-					<div class="controls">
-						<input type="text" class="input-xlarge" id="oggetto"></input>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label" for="art">Testo</label>
-					<div class="controls">
-						<textarea class="input-xlarge" rows="10"></textarea>
-					</div>
-				</div>
-			</div>
-
+			<i class="fa fa-spinner fa-spin"></i>
 		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotifica">Invia notifica <i class="icon-send"></i></button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotifica">Invia notifica<i class="icon-send"></i></button>
 		</div>
 	</div>
+	
 <!-- fine finestra modale -->
 
 <!--  modal invio sollecito  -->
