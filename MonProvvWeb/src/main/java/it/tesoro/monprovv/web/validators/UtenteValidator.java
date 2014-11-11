@@ -45,7 +45,7 @@ public class UtenteValidator implements Validator {
 				
 				if(StringUtils.isEmpty(utente.getEmail()))
 					errors.rejectValue("email","generic.error.required" ,"Attenzione: \u00E8 necessario inserire l'indirizzo E-Mail per l'utente");
-				else if(StringUtils.mailSyntaxCheck(utente.getEmail()))
+				else if(!StringUtils.mailSyntaxCheck(utente.getEmail()))
 					errors.rejectValue("email","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un indirizzo E-Mail valido per l'utente");
 				
 				

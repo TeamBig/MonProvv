@@ -4,12 +4,18 @@ import it.tesoro.monprovv.annotations.PagingAndSorting;
 import it.tesoro.monprovv.dto.AllegatoDto;
 import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
+import it.tesoro.monprovv.dto.IndirizzoEmailDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
+import it.tesoro.monprovv.dto.Mail;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.dto.SalvaENotificaDto;
+import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
+import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
+import it.tesoro.monprovv.model.EmailExtra;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
@@ -19,6 +25,8 @@ import it.tesoro.monprovv.model.Storico;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.service.MailService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.StringUtils;
@@ -78,8 +86,14 @@ public class GestioneProvvedimentoController {
 	@Autowired
 	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
 	
+	@Autowired 
+	private GestioneUtenteFacade gestioneUtenteFacade;
+	
+	@Autowired
+	private MailService mailService;
+	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
-	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedfimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
+	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
 		model.addAttribute("ricercaProvvedimenti", dto);
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
@@ -258,6 +272,92 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoDettaglio";
 	}
 	
+	// *************************** SALVA E INVIA NOTIFICA *************************** //
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="salvaenotifica" )
+	public String gestioneSalvaENotifica(
+										RedirectAttributes redirectAttributes, 
+										@RequestParam(required = false) Integer id, 
+										Model model, 
+										@ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio,
+										@RequestParam(required = false) List<String> tokenfieldemail,
+										@RequestParam(required = false) String oggetto,
+										@RequestParam(required = false) String testo
+			) {
+		
+		
+		
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		gestioneProvvedimentoFacade.aggiornaProvvedimento(provvRec);
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		//Invio email
+		if( StringUtils.isNotEmpty( oggetto ) || StringUtils.isNotEmpty( testo ) ){
+			UtenteDto criteria = null;
+			EmailExtra emailExtra = null;
+			Mail mail = null;
+			for(String indirizzo: tokenfieldemail){
+				//Verifico che l'indizizzo email sia stato inserito correttamente
+				if(StringUtils.mailSyntaxCheck(indirizzo)){
+					mail = new Mail();
+					mail.setDestinatario(indirizzo);
+					mail.setSubject(oggetto);
+					mail.setContent(testo);
+					mail.setHtmlFormat(false);
+					
+					mailService.eseguiInvioMail(mail);
+					criteria = new UtenteDto();
+					criteria.setEmail(indirizzo);
+					
+					
+					if(gestioneUtenteFacade.countEmailExtra(indirizzo)==0
+						&&	gestioneUtenteFacade.count(criteria)==0
+							){
+						emailExtra = new EmailExtra();
+						emailExtra.setEmailExtra(indirizzo);
+						gestioneUtenteFacade.inserisciEmailExtra(emailExtra);
+					}
+				}
+			}
+		}
+
+		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio e Notifica effettuati con successo.", false);
+		
+		return "redirect:/private/provvedimenti/ricerca";//"provvedimentoDettaglio";
+	}
+	
+	@RequestMapping(value={"/private/provvedimenti/ricerca/dettaglio/salvaeinvianotifica"}, method = RequestMethod.GET)
+	public String salvaeinvianotifica(Model model,@RequestParam(required = false) String id) {		
+		SalvaENotificaDto salvaenotifica = new SalvaENotificaDto();
+		salvaenotifica.setIdProvvedimento(id);
+		model.addAttribute("salvaenotifica", salvaenotifica);
+		
+		return "inviaNotifica";
+	}
+	
+	@RequestMapping(value= {"/private/provvedimenti/ricerca/autocomplateutentemail"}, method = RequestMethod.GET)
+	@ResponseBody
+	public List<IndirizzoEmailDto> autocomplateutentemail(@RequestParam("query") String query){
+		List<Utente> utenti = gestioneUtenteFacade.recuperaUtenti4Notifica(query);
+		List<IndirizzoEmailDto> retval = new ArrayList<IndirizzoEmailDto>();
+		
+		retval.add(new IndirizzoEmailDto(query, "", query));
+		
+		for(Utente tmp: utenti){
+			retval.add(new IndirizzoEmailDto(tmp.getNome(), tmp.getCognome(), tmp.getEmail()));
+		}
+		
+		List<EmailExtra> emailExtras = gestioneUtenteFacade.recuperaEmailExtra4Notifica(query);
+		for(EmailExtra tmp: emailExtras){
+			retval.add(new IndirizzoEmailDto("", "", tmp.getEmailExtra()));
+		}
+		
+		return retval;
+	}
+	
+	// *************************** FINE SALVA E INVIA NOTIFICA *************************** //
+	
 	// **************** richiesta Assegnazione ******//
 	
 	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params = "richiediAssegnazione")
@@ -321,6 +421,14 @@ public class GestioneProvvedimentoController {
 	
 	
 	//SALVA MODIFICA PROVVEDIMENTO
+	
+	// **************** annulla button -> indietro dettaglio provvedimento ******//
+	@RequestMapping(value = "/private/provvedimenti/ricerca/modifica", method = RequestMethod.POST, params="annullaIndietroDettaglio" )
+	public String gestioneAnnullaModificaProvv(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento) {
+		
+		return "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
+	}
+	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica" } , method = RequestMethod.POST)
 	public String salvaModificaProvvedimento(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento,
 			BindingResult errors, RedirectAttributes redirectAttributes

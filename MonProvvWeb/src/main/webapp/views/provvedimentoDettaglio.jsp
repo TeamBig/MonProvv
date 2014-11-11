@@ -260,18 +260,18 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<c:if test="${ canModificaChiusuraLavori }">
-									<button type="submit" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="button" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
-									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" name="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
 									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" name="fineLavorazioneProvvedimento">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
-									<button type="button" class="btn" id="indietro" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
+									<!-- <button type="button" class="btn" id="indietro" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button> -->								
 								</security:authorize>
 
 								<c:if test="${ canAccettazione }">
 									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
 									<button type="button" class="btn" name="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
-									<button type="button" class="btn" name="annulla">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
+									<!-- <button type="button" class="btn" name="annulla">Indietro&nbsp;<i class="icon-arrow-left"></i></button> -->
 								</c:if>
 
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
@@ -282,12 +282,12 @@
 							
 								<c:if test="${!canAccettazione and canModificaStato }">
 									<button type="submit" class="btn btn-primary" id="salvaDettaglio" name="salvaDettaglio">Salva &nbsp;<i class="icon-save"></i></button>
-									<button type="submit" class="btn" id="annullaModificaProvvedimento" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+									<!-- <button type="submit" class="btn" id="annullaModificaProvvedimento" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button> -->
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
 									<button type="submit" class="btn" id="modificaProvvedimento" name="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
 								</security:authorize>
-								
+								<button type="submit" class="btn" id="annullaModificaProvvedimento" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 							</div>
 						</div>
 					</div>
@@ -322,9 +322,9 @@
 		</div>
 		<div class="modal-body">
 			<i class="fa fa-spinner fa-spin"></i>
-				</div>
+		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotifica">Invia notifica <i class="icon-send"></i></button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotificaModal">Invia notifica <i class="icon-send"></i></button>
 		</div>
 	</div>
 <!-- fine finestra modale -->

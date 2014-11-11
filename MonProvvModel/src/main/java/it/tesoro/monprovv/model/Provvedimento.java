@@ -177,6 +177,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		return null;
 	}
 
+	@Transient
+	private String[] provvedimentiParentSelected;
+
 	public Integer getId() {
 		return id;
 	}
@@ -187,7 +190,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public String getFonteNormativa() {
 		if (StringUtils.isEmpty(fonteNormativa)) {
-			fonteNormativa = tipoAtto.getDescrizione() + " n. " + numeroAtto + " del " + DateFormatUtils.format(dataAtto, "dd-MM-yyyy") + " art. " + articolo + " comma " + comma;
+			fonteNormativa = tipoAtto.getDescrizione() + " n. " + numeroAtto
+					+ " del " + DateFormatUtils.format(dataAtto, "dd-MM-yyyy")
+					+ " art. " + articolo + " comma " + comma;
 		}
 		return fonteNormativa;
 	}
@@ -379,6 +384,15 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setMotivazioneRichiesta(String motivazioneRichiesta) {
 		this.motivazioneRichiesta = motivazioneRichiesta;
+	}
+
+	public String[] getProvvedimentiParentSelected() {
+		return provvedimentiParentSelected;
+	}
+
+	public void setProvvedimentiParentSelected(
+			String[] provvedimentiParentSelected) {
+		this.provvedimentiParentSelected = provvedimentiParentSelected;
 	}
 
 	@Override

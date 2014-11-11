@@ -8,9 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -45,8 +48,11 @@ public class Storico extends AbstractCommonEntity implements java.io.Serializabl
 	@NotNull
 	private Integer idEntita;
 	
-	@Column(name = "ID_UTENTE_OPERAZIONE")
-	private Integer idUtenteOperazione;
+	@ManyToOne(targetEntity = Utente.class)
+	@JoinColumn(name = "ID_UTENTE_OPERAZIONE", referencedColumnName = "ID_UTENTE")
+	@Valid
+	@NotNull
+	private Utente idUtenteOperazione;
 
 	@Column(name = "DATA_OPERAZIONE")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -85,11 +91,11 @@ public class Storico extends AbstractCommonEntity implements java.io.Serializabl
 		this.idEntita = idEntita;
 	}
 
-	public Integer getIdUtenteOperazione() {
+	public Utente getIdUtenteOperazione() {
 		return idUtenteOperazione;
 	}
 
-	public void setIdUtenteOperazione(Integer idUtenteOperazione) {
+	public void setIdUtenteOperazione(Utente idUtenteOperazione) {
 		this.idUtenteOperazione = idUtenteOperazione;
 	}
 

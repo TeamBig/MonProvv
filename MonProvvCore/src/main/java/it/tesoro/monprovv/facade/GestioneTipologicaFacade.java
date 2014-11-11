@@ -1,17 +1,19 @@
 package it.tesoro.monprovv.facade;
 
-import java.sql.Clob;
-
 import it.tesoro.monprovv.dao.GovernoDAO;
+import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.StatoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+
+import java.sql.Clob;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,9 @@ public class GestioneTipologicaFacade {
 	
 	@Autowired
 	private TipoAttoDAO tipoAttoDAO;
+	
+	@Autowired
+	private ProvvedimentoDAO provvedimentoDAO;
 
 	
 //	public Stato recuperaStatoByCod(String cod) {
@@ -62,5 +67,9 @@ public class GestioneTipologicaFacade {
 	
 	public Clob creaClob(String data) {
 		return statoDAO.createClob(data);
+	}
+	
+	public Provvedimento recuperaProvvedimentoById(Integer id) {
+		return provvedimentoDAO.findById(id);
 	}
 }

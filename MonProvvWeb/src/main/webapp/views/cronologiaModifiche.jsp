@@ -21,8 +21,10 @@
 								summary="Elenco Allegati" style="width: 100%">
 
 					<display:column title="Data" property="dataOperazione" headerScope="col" />
-					<display:column title="Operazione" property="idEntita" headerScope="col" />
-					<display:column title="Organo" property="tipoEntita" headerScope="col" />
+					<display:column title="Operazione" headerScope="col" >
+						<c:out value="${storico.tipoOperazione} ${storico.tipoEntita}"></c:out>
+					</display:column>
+					<display:column title="Organo" property="idUtenteOperazione.organo.denominazione" headerScope="col" />
 					<display:column title="Utente" property="utenteInserimento" headerScope="col" />
 			</display:table>
 

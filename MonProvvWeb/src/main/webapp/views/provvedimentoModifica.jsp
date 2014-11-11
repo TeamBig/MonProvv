@@ -170,11 +170,11 @@
 						</div>
 				</div>
 			</div>
-<%-- 			<div class="span2 offset2">
-				<springform:select path="provvedimentiParent" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
-					<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.comma" />
+			<div class="span2 offset2">
+				<springform:select path="provvedimentiParentSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
+					<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.oggetto" />
 				</springform:select>
-			</div> --%>
+			</div>
 				</springform:form>
 			<!-- Allegati insert -->
 			<div class="row">
@@ -313,7 +313,7 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<button type="submit" class="btn btn-primary" id="aggiornaProvvedimento" value="Salva">Salva &nbsp;<i class="icon-save"></i></button>
-								<button type="button" class="btn" id="annulla" name="action" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+								<button type="button" class="btn" id="annullaIndietroDettaglio" name="action" value="Annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 							</div>
 						</div>
 					</div>

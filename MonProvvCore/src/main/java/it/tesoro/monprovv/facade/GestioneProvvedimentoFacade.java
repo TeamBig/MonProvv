@@ -245,9 +245,9 @@ public class GestioneProvvedimentoFacade {
 	public Provvedimento aggiornaProvvedimento(Provvedimento provvedimento) {
 		Provvedimento provvRecuperato = provvedimentoDAO.findById(provvedimento.getId());
 		provvRecuperato = provvRecuperato.getProvvedimentoToUpdate(provvedimento);
-		if(provvedimento.getProvvedimentiParent()!=null && Arrays.asList(provvedimento.getProvvedimentiParent()).size()>0){
-//			List<String> list = Arrays.asList(provvedimento.getProvvedimentiSelected());
-//			for(Provvedimento provCollegato : provvedimentoIns.getListaProvvedimenti()){
+		if(provvedimento.getProvvedimentiParentSelected()!=null && Arrays.asList(provvedimento.getProvvedimentiParentSelected()).size()>0){
+//			List<String> list = Arrays.asList(provvedimento.getProvvedimentiParentSelected());
+//			for(Provvedimento provCollegato : provvedimento.getListaProvvedimenti()){
 //				if(list.contains(provCollegato.getId().toString())){
 //					ProvvedimentiParent provParent = new ProvvedimentiParent();
 //					provParent.setProvvedimento(provvRecuperato);
@@ -397,6 +397,11 @@ public class GestioneProvvedimentoFacade {
 		}
 		List<Storico> listaStorico = storicoDAO.findByProperty(params);
 		return listaStorico;
+	}
+	
+	public Storico inserisciStoricoAssegnatario(Storico stor) {
+		storicoDAO.save(stor);
+		return stor;
 	}
 
 	

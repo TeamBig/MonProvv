@@ -396,44 +396,55 @@ $(document).ready(function() {
         });
     });
     
-    $('#inviaNotifica').click( function () {
-    	var oForm1 = $('#formEmailSalvaENotifica');
-    	oForm1.submit();
+    $('#inviaNotificaModal').click( function () {
+    	var oForm = $(this).closest("form");
+    	oForm.append("<input type='hidden' name='tokenfieldemail' value='"+$("#tokenfieldemail").val()+"' />"); 
+    	oForm.append("<input type='hidden' name='salvaenotifica' />");
+    	oForm.submit();
     });
     
     
     $(document).on('click', '#tokenfieldemail', function() {
 	    var element = $(this);
-	    element.myTagsinput(element);
+	    element.tokenfieldemail(element);
     
     });    
     
-    $.fn.myTagsinput = function (element) {
+    $.fn.tokenfieldemail = function (element) {
     	element.tagsinput({
         	itemValue: 'email',
         	itemText: function(item) {
-        		return item.cognome + " " + item.nome;
+        		var text = "";
+        		if( item.cognome != "" ){
+        			text = item.cognome + " ";
+        		}
+        		
+        		if( item.nome != "" ){
+        			text = text + item.nome + " ";
+        		}
+        		
+        		if( item.email != "" ){
+        			if( text != "" ){
+        				text = text + "(" + item.email + ")";
+        			}else{
+        				text = item.email;
+        			}
+        		}
+        		return text;
         	},
         	freeInput: true,
         	allowDuplicates: false,
-//        	maxTags: 3,
         	trimValue: true,
         	showAutocompleteOnFocus: true,
-//        	tagClass: function(item) {
-//        	    return (item.length > 10 ? 'big' : 'small');
-//        	},
         	typeahead: {
         		source: function(param) {
-        			return $.getJSON(
-        					'autocomplateutentemail',
-        					{ query: param }
-//        					,function(data){
-//        						$.each(data, function(i, object) {
-//        							alert(object.codice);
-//        							alert(object.descrizione);
-//                                });
-//        					}
-        			);
+        			if( param.length < 2)
+        				return null;
+        			else
+	        			return $.getJSON(
+	        					'autocomplateutentemail',
+	        					{ query: param }
+	        			);
         		}
         	}
         });
@@ -570,45 +581,20 @@ $(document).ready(function() {
 		window.location = currentUrl+"/nuovo";
 	});
 	
-//	$("button#annullaModificaProvvedimento").click(function(){
-//		$('<input />').attr('type', 'hidden')
-//        .attr('name', 'action')
-//        .attr('value', 'Annulla')
-//        .appendTo('#provvedimentoDettaglio');
-//		$( "#provvedimentoDettaglio" ).submit();
-//	});
-//	
-//	$("button#modificaProvvedimento").click(function(){
-//		$('<input />').attr('type', 'hidden')
-//        .attr('name', 'action')
-//        .attr('value', 'Modifica')
-//        .appendTo('#provvedimentoDettaglio');
-//		$( "#provvedimentoDettaglio" ).submit();
-//	});
-	
-//	$("button#salvaDettaglio").click(function(){
-//		$('<input />').attr('type', 'hidden')
-//        .attr('name', 'action')
-//        .attr('value', 'SalvaDettaglio')
-//        .appendTo('#provvedimentoDettaglio');
-//		$( "#provvedimentoDettaglio" ).submit();
-//	});
-	
 	$("#statoDiAttuazioneDettaglio").change(function(){
 		$('<input />').attr('type', 'hidden')
         .attr('name', 'cambioStato')
-//        .attr('value', 'CambioStato')
         .appendTo('#provvedimentoDettaglio');
 		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
-	$("button#noteAllegatiProvvedimento").click(function(){
+	$("button#annullaIndietroDettaglio").click(function(){
 		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'noteallegati')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
+        .attr('name', 'annullaIndietroDettaglio')
+        .appendTo('#provvedimentoModifica');
+		$( "#provvedimentoModifica" ).submit();
 	});
+
 	
 	$(document).on('click', '#eliminaAllegato', function() { 
 		var idAllegato = $(this).parent().siblings(":first").text(); 
@@ -709,6 +695,18 @@ $(document).ready(function() {
 	
 	//INSERIMENTO
 	gestioneInserimento();
+	
+	//GESTIONE NORMATTIVA
+	gestioneNormattiva();
+	$("#dataAttoV").blur(function(){
+		  var date = $(this).val(); // replace this by $(this).val() to get your date from the input
+		  var newDataAtto = new Date( "13-01-2011".replace( /(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1") );
+		  alert(dataAtto);
+		  //var validate = Date.parse(date);
+		  if (validate.isNaN()) {
+		    // do something if the date is not valid
+		  }
+		});
 	
 	//GESTIONE MODALE CRONOLOGIA
 	$("a[data-target=#modalCronologia]").click(function(ev) {
@@ -957,5 +955,9 @@ function do_submitAllegatoIns() {
 				
 	        }
 	    });
+}
+
+function gestioneNormattiva(){
+
 }
 
