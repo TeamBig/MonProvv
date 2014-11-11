@@ -372,7 +372,7 @@
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" id="richiediAssegnazioneModal" >Invia richiesta&nbsp;<i class="icon-location-arrow"></i></button>
-			<input type="hidden" name="richiediAssegnazione" value="richiediAssegnazione" />
+			<!-- <input type="hidden" name="richiediAssegnazione" value="richiediAssegnazione" /> -->
 		</div>
 	</div>
 	

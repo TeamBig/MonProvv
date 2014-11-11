@@ -307,14 +307,23 @@ public class GestioneProvvedimentoController {
 	public String salvaModificaProvvedimento(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento,
 			BindingResult errors, RedirectAttributes redirectAttributes
 			) {
-		Provvedimento provvAggiornato = gestioneProvvedimentoFacade.aggiornaProvvedimento(provvedimento);
+		
+		provValidator.validate(provvedimento, errors);
+		if( !errors.hasErrors() ){
+			Provvedimento provvAggiornato = gestioneProvvedimentoFacade.aggiornaProvvedimento(provvedimento);
 
-		ProvvedimentiUtil.gestioneSalvaAllegati(provvedimento, provvAggiornato, gestioneProvvedimentoFacade);
-		 
-		model.addAttribute("provvedimentoDettaglio", provvAggiornato);
-		caricaTabelleInferiore(model,provvAggiornato);
-		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Provvedimento effettuato con successo", false);
-		return "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
+			ProvvedimentiUtil.gestioneSalvaAllegati(provvedimento, provvAggiornato, gestioneProvvedimentoFacade);
+			 
+			model.addAttribute("provvedimentoDettaglio", provvAggiornato);
+			caricaTabelleInferiore(model,provvAggiornato);
+			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Provvedimento effettuato con successo", false);
+			return "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
+		} else {
+			for (FieldError f : errors.getFieldErrors()) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+			}
+		}
+		return "provvedimentoModifica";
 	}
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/downloadAllegato"}, method = RequestMethod.GET)

@@ -75,13 +75,13 @@
 								</springform:select>
 							</div>
 						</div>
-						<div class="control-group">
+<%-- 						<div class="control-group">
 							<label class="control-label" for="fonteNormativa">${fonteNormativaHeader}</label>
 							<div class="controls">
-								<%-- <span>${provvedimentoDettaglio.fonteNormativa}</span> --%>
+								<span>${provvedimentoDettaglio.fonteNormativa}</span>
 								<springform:input path="fonteNormativa" id="fonteNormativa" cssClass="input-xlarge"/>
 							</div>
-						</div>
+						</div> --%>
 						<div class="control-group">
 							<label class="control-label" for="tipoAtto">${tipoAttoHeader}</label>
 							<div class="controls">
