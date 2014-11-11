@@ -170,11 +170,11 @@
 						</div>
 				</div>
 			</div>
-			<div class="span2 offset2">
+<%-- 			<div class="span2 offset2">
 				<springform:select path="provvedimentiParent" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
 					<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.comma" />
 				</springform:select>
-			</div>
+			</div> --%>
 				</springform:form>
 			<!-- Allegati insert -->
 			<div class="row">
