@@ -292,7 +292,8 @@ public class GestioneProvvedimentoFacade {
 		
 		// invio notifiche
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String testo = "L'utente... "; // TODO
+		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha richiesto l'assegnazione del provvedimento " 
+				+ provv.getGoverno().getDenominazione() + " " + provv.getId() + ", fonte normativa " + provv.getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione(); 
 		Notifica notifica = new Notifica();
 		notifica.setFlagLettura(Notifica.NON_LETTA);
 		notifica.setTipoNotifica(Notifica.OPERATIVA);
@@ -398,4 +399,8 @@ public class GestioneProvvedimentoFacade {
 		return listaStorico;
 	}
 
+	
+	public Assegnazione recuperaAssegnazioneById(Integer id) {
+		return assegnazioneDAO.findById(id);
+	}
 }

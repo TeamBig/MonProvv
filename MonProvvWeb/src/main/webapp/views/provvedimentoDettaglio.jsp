@@ -329,30 +329,6 @@
 	</div>
 <!-- fine finestra modale -->
 
-<!--  modal invio sollecito  -->
-	<div id="modalSollecito" class="modal hide fade" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
-			<h3 id="myModalLabel">Invio sollecito</h3>
-		</div>
-		<div class="modal-body">
-			<div class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" for="art">Testo</label>
-					<div class="controls">
-						<textarea class="input-xlarge" rows="10"></textarea>
-					</div>
-				</div>
-			</div>
-
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true" id="richiediAssegnazione">Invia &nbsp;<i class="icon-location-arrow"></i></button>
-		</div>
-	</div>
-	
 	
 	<!--  modal richiesta assegnazione  -->
 	<div id="modalRichiestaAssegnazione" class="modal hide fade" tabindex="-1" role="dialog">
@@ -372,9 +348,9 @@
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" id="richiediAssegnazioneModal" >Invia richiesta&nbsp;<i class="icon-location-arrow"></i></button>
-			<!-- <input type="hidden" name="richiediAssegnazione" value="richiediAssegnazione" /> -->
 		</div>
 	</div>
+	<!-- fine  modal richiesta assegnazione  -->
 	
 	
 	

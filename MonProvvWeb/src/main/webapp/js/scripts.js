@@ -798,7 +798,7 @@ function gestionePopupRichiestaAssegnazione() {
 				e.stopPropagation();
 				e.preventDefault();
 				
-				$(this).closest("form").submit();
+				$(this).closest("form").append("<input type='hidden' name='richiediAssegnazione' />").submit();
 				
 			});
 			
