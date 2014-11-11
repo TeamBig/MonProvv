@@ -75,13 +75,13 @@
 								</springform:select>
 							</div>
 						</div>
-						<div class="control-group">
+<%-- 						<div class="control-group">
 							<label class="control-label" for="fonteNormativa">${fonteNormativaHeader}</label>
 							<div class="controls">
-								<%-- <span>${provvedimentoDettaglio.fonteNormativa}</span> --%>
+								<span>${provvedimentoDettaglio.fonteNormativa}</span>
 								<springform:input path="fonteNormativa" id="fonteNormativa" cssClass="input-xlarge"/>
 							</div>
-						</div>
+						</div> --%>
 						<div class="control-group">
 							<label class="control-label" for="tipoAtto">${tipoAttoHeader}</label>
 							<div class="controls">
@@ -170,11 +170,11 @@
 						</div>
 				</div>
 			</div>
-			<div class="span2 offset2">
+<%-- 			<div class="span2 offset2">
 				<springform:select path="provvedimentiParent" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
 					<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.comma" />
 				</springform:select>
-			</div>
+			</div> --%>
 				</springform:form>
 			<!-- Allegati insert -->
 			<div class="row">
