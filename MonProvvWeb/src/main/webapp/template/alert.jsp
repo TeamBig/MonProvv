@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <c:if test="${not empty alertType }">
 	<div class="container">
-		<div class="row">
+		<div class="row top10">
 			<div class="span12">
 				<div id="alert" class="alert ${alertType}">
 					<c:if test="${alertStyle == 'single'  }">

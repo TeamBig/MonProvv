@@ -6,10 +6,12 @@ import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
@@ -38,6 +40,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
@@ -63,9 +66,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class GestioneProvvedimentoController {
 
 	protected static Logger logger = Logger.getLogger(GestioneProvvedimentoController.class);
-
+	
 	@Autowired
-	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
+	private GestioneNotificaFacade gestioneNotificaFacade;
 	
 	@Autowired
 	private AlertUtils alertUtils;
@@ -73,6 +76,9 @@ public class GestioneProvvedimentoController {
 	@Autowired
 	protected ProvvedimentoValidator provValidator;
 
+	@Autowired
+	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
+	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedfimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
@@ -267,6 +273,19 @@ public class GestioneProvvedimentoController {
 		return dettaglio(model, id);
 	}
 	
+	
+	@RequestMapping(value = "/private/provvedimenti/confermaassegnazione", method = RequestMethod.GET)
+	//@PreAuthorize("hasPermission(#idAss, 'confermaAssegnazione')")	
+	public String confermaAssegnazione(@RequestParam(required = true, value = "id") Integer idAss, @RequestParam(required = true, value = "idNotifica") Integer idNotifica, Model model) {
+		
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.recuperaAssegnazioneById(idAss);
+		Notifica notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		
+		model.addAttribute("assegnazione", assegnazione);
+		model.addAttribute("notifica", notifica);
+		
+		return "confermaAssegnazione";
+	}
 	
 	//***** MODIFICA PROVVEDIMENTO ******//
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica" } , method = RequestMethod.GET)
