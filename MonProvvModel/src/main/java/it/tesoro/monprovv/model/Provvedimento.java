@@ -26,11 +26,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.util.StringUtils;
 
 @Entity
 @Table(name = "PROVVEDIMENTO")
@@ -184,6 +186,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	}
 
 	public String getFonteNormativa() {
+		if (StringUtils.isEmpty(fonteNormativa)) {
+			fonteNormativa = tipoAtto.getDescrizione() + " n. " + numeroAtto + " del " + DateFormatUtils.format(dataAtto, "dd-MM-yyyy") + " art. " + articolo + " comma " + comma;
+		}
 		return fonteNormativa;
 	}
 

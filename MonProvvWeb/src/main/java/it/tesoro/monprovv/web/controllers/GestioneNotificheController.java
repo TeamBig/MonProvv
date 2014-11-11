@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class GestioneNotificheController {
 
-protected static Logger logger = Logger.getLogger(GestioneNotificheController.class);
+	protected static Logger logger = Logger.getLogger(GestioneNotificheController.class);
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -76,7 +76,7 @@ protected static Logger logger = Logger.getLogger(GestioneNotificheController.cl
 		try {
 			uriBuilder = new URIBuilder(notifica.getLinkOperazione());
 			uriBuilder.addParameter("idNotifica", idNotifica.toString());
-			return "redirect: " + uriBuilder.build().toString();
+			return "redirect:" + uriBuilder.build().toString();
 			
 		} catch (URISyntaxException e) {
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Errore nella generazione della URI", false);
