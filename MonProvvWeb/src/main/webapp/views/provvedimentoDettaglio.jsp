@@ -260,7 +260,7 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<c:if test="${ canModificaChiusuraLavori }">
-									<button type="submit" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="button" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
 									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" value="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
@@ -322,9 +322,9 @@
 		</div>
 		<div class="modal-body">
 			<i class="fa fa-spinner fa-spin"></i>
-				</div>
+		</div>
 		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotifica">Invia notifica <i class="icon-send"></i></button>
+			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotificaModal">Invia notifica <i class="icon-send"></i></button>
 		</div>
 	</div>
 <!-- fine finestra modale -->

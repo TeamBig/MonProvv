@@ -1,12 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="springform"
-	uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <c:url value="/private/provvedimenti/ricerca/salvaenotifica" var="formPath" />
 
-<springform:form action="${formPath}" method="POST" modelAttribute="salvaenotifica" cssClass="bo clfix" id="formEmailSalvaENotifica">
+<springform:form action="${formPath}" method="GET" modelAttribute="salvaenotifica" cssClass="bo clfix" id="formEmailSalvaENotifica">
 
 	<springform:hidden path="idProvvedimento" id="idProvvedimento" />
 
@@ -15,7 +14,7 @@
 			<label class="control-label" for="email">Email</label>
 			<div class="controls">
 
-				<springform:input path="destinatari" type="text" class="input-xlarge" value="" data-role="tagsinput" id="tokenfieldemail" />
+				<springform:input path="destinatari" data-role="tagsinput" id="tokenfieldemail" />
 
 			</div>
 		</div>

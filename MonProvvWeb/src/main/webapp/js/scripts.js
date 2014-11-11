@@ -396,44 +396,55 @@ $(document).ready(function() {
         });
     });
     
-    $('#inviaNotifica').click( function () {
-    	var oForm1 = $('#formEmailSalvaENotifica');
-    	oForm1.submit();
+    $('#inviaNotificaModal').click( function () {
+    	var oForm = $(this).closest("form");
+    	oForm.append("<input type='hidden' name='tokenfieldemail' value='"+$("#tokenfieldemail").val()+"' />"); 
+    	oForm.append("<input type='hidden' name='salvaenotifica' />");
+    	oForm.submit();
     });
     
     
     $(document).on('click', '#tokenfieldemail', function() {
 	    var element = $(this);
-	    element.myTagsinput(element);
+	    element.tokenfieldemail(element);
     
     });    
     
-    $.fn.myTagsinput = function (element) {
+    $.fn.tokenfieldemail = function (element) {
     	element.tagsinput({
         	itemValue: 'email',
         	itemText: function(item) {
-        		return item.cognome + " " + item.nome;
+        		var text = "";
+        		if( item.cognome != "" ){
+        			text = item.cognome + " ";
+        		}
+        		
+        		if( item.nome != "" ){
+        			text = text + item.nome + " ";
+        		}
+        		
+        		if( item.email != "" ){
+        			if( text != "" ){
+        				text = text + "(" + item.email + ")";
+        			}else{
+        				text = item.email;
+        			}
+        		}
+        		return text;
         	},
         	freeInput: true,
         	allowDuplicates: false,
-//        	maxTags: 3,
         	trimValue: true,
         	showAutocompleteOnFocus: true,
-//        	tagClass: function(item) {
-//        	    return (item.length > 10 ? 'big' : 'small');
-//        	},
         	typeahead: {
         		source: function(param) {
-        			return $.getJSON(
-        					'autocomplateutentemail',
-        					{ query: param }
-//        					,function(data){
-//        						$.each(data, function(i, object) {
-//        							alert(object.codice);
-//        							alert(object.descrizione);
-//                                });
-//        					}
-        			);
+        			if( param.length < 2)
+        				return null;
+        			else
+	        			return $.getJSON(
+	        					'autocomplateutentemail',
+	        					{ query: param }
+	        			);
         		}
         	}
         });
