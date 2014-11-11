@@ -581,45 +581,20 @@ $(document).ready(function() {
 		window.location = currentUrl+"/nuovo";
 	});
 	
-//	$("button#annullaModificaProvvedimento").click(function(){
-//		$('<input />').attr('type', 'hidden')
-//        .attr('name', 'action')
-//        .attr('value', 'Annulla')
-//        .appendTo('#provvedimentoDettaglio');
-//		$( "#provvedimentoDettaglio" ).submit();
-//	});
-//	
-//	$("button#modificaProvvedimento").click(function(){
-//		$('<input />').attr('type', 'hidden')
-//        .attr('name', 'action')
-//        .attr('value', 'Modifica')
-//        .appendTo('#provvedimentoDettaglio');
-//		$( "#provvedimentoDettaglio" ).submit();
-//	});
-	
-//	$("button#salvaDettaglio").click(function(){
-//		$('<input />').attr('type', 'hidden')
-//        .attr('name', 'action')
-//        .attr('value', 'SalvaDettaglio')
-//        .appendTo('#provvedimentoDettaglio');
-//		$( "#provvedimentoDettaglio" ).submit();
-//	});
-	
 	$("#statoDiAttuazioneDettaglio").change(function(){
 		$('<input />').attr('type', 'hidden')
         .attr('name', 'cambioStato')
-//        .attr('value', 'CambioStato')
         .appendTo('#provvedimentoDettaglio');
 		$( "#provvedimentoDettaglio" ).submit();
 	});
 	
-	$("button#noteAllegatiProvvedimento").click(function(){
+	$("button#annullaIndietroDettaglio").click(function(){
 		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'noteallegati')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
+        .attr('name', 'annullaIndietroDettaglio')
+        .appendTo('#provvedimentoModifica');
+		$( "#provvedimentoModifica" ).submit();
 	});
+
 	
 	$(document).on('click', '#eliminaAllegato', function() { 
 		var idAllegato = $(this).parent().siblings(":first").text(); 
@@ -720,6 +695,18 @@ $(document).ready(function() {
 	
 	//INSERIMENTO
 	gestioneInserimento();
+	
+	//GESTIONE NORMATTIVA
+	gestioneNormattiva();
+	$("#dataAttoV").blur(function(){
+		  var date = $(this).val(); // replace this by $(this).val() to get your date from the input
+		  var newDataAtto = new Date( "13-01-2011".replace( /(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1") );
+		  alert(dataAtto);
+		  //var validate = Date.parse(date);
+		  if (validate.isNaN()) {
+		    // do something if the date is not valid
+		  }
+		});
 	
 	//GESTIONE MODALE CRONOLOGIA
 	$("a[data-target=#modalCronologia]").click(function(ev) {
@@ -968,5 +955,9 @@ function do_submitAllegatoIns() {
 				
 	        }
 	    });
+}
+
+function gestioneNormattiva(){
+
 }
 

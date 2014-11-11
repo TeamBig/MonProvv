@@ -93,7 +93,7 @@ public class GestioneProvvedimentoController {
 	private MailService mailService;
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
-	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedfimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
+	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
 		model.addAttribute("ricercaProvvedimenti", dto);
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
@@ -421,6 +421,14 @@ public class GestioneProvvedimentoController {
 	
 	
 	//SALVA MODIFICA PROVVEDIMENTO
+	
+	// **************** annulla button -> indietro dettaglio provvedimento ******//
+	@RequestMapping(value = "/private/provvedimenti/ricerca/modifica", method = RequestMethod.POST, params="annullaIndietroDettaglio" )
+	public String gestioneAnnullaModificaProvv(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento) {
+		
+		return "redirect:/private/provvedimenti/ricerca/dettaglio?id="+provvedimento.getId();
+	}
+	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica" } , method = RequestMethod.POST)
 	public String salvaModificaProvvedimento(Model model,@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento,
 			BindingResult errors, RedirectAttributes redirectAttributes

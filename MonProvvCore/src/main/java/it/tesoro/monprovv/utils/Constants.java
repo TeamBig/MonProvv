@@ -16,4 +16,9 @@ public interface Constants {
 	public static String MODIFICA = "Modifica" ;
 	public static String AVANTI = "Avanti" ;
 	public static String INDIETRO = "Indietro" ;
+	
+	//TIPO OPERAZIONI STORICO
+	public static String AGGIORNAMENTO = "Aggiornamento" ;
+	public static String INSERIMENTO = "Inserimento" ;
+	public static String CANCELLAZIONE = "Cancellazione" ;
 }
