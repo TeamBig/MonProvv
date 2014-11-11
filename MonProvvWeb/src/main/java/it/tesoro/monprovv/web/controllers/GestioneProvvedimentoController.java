@@ -40,7 +40,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
@@ -341,6 +340,17 @@ public class GestioneProvvedimentoController {
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
+			Provvedimento provvedimentoModifica = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());			
+			model.addAttribute("listaProvvedimenti", provvedimentoModifica.getProvvedimentiParent());
+			
+			List<Integer> idAllegatiList = new ArrayList<Integer>();
+			for( Allegato tmp : provvedimentoModifica.getAllegatiList() ){
+				idAllegatiList.add(tmp.getId());
+			}
+			provvedimentoModifica.setIdAllegatiUpdList( idAllegatiList );
+			
+			model.addAttribute("provvedimentoModifica", provvedimento);
+			caricaTabelleInferiore(model, provvedimentoModifica);
 		}
 		return "provvedimentoModifica";
 	}
