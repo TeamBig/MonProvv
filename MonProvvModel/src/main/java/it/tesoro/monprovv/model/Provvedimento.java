@@ -40,8 +40,8 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	 * 
 	 */
 	private static final long serialVersionUID = 3895683101409100101L;
-	
-	public Provvedimento getProvvedimentoToUpdate(Provvedimento prov){
+
+	public Provvedimento getProvvedimentoToUpdate(Provvedimento prov) {
 		this.setArticolo(prov.getArticolo());
 		this.setComma(prov.getComma());
 		this.setGoverno(prov.getGoverno());
@@ -81,99 +81,100 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@Column(name = "PARERE", length = 4000)
 	private String parere;
 
-	@ManyToOne(targetEntity=TipoProvvedimento.class)
-    @JoinColumn(name="ID_TIPO_PROVVEDIMENTO", referencedColumnName="ID_TIPO_PROVVEDIMENTO")
+	@ManyToOne(targetEntity = TipoProvvedimento.class)
+	@JoinColumn(name = "ID_TIPO_PROVVEDIMENTO", referencedColumnName = "ID_TIPO_PROVVEDIMENTO")
 	@Valid
 	@NotNull
 	private TipoProvvedimento tipoProvvedimento;
 
-	@ManyToOne(targetEntity=TipoProvvDaAdottare.class, fetch = FetchType.EAGER)
-    @JoinColumn(name="ID_TIPO_PROVV_DA_ADOTTARE", referencedColumnName="ID_TIPO_PROVV_DA_ADOTTARE")
+	@ManyToOne(targetEntity = TipoProvvDaAdottare.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_TIPO_PROVV_DA_ADOTTARE", referencedColumnName = "ID_TIPO_PROVV_DA_ADOTTARE")
 	@Valid
 	@NotNull
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
-	
-	@ManyToOne(targetEntity=Governo.class)
-    @JoinColumn(name="ID_GOVERNO", referencedColumnName="ID_GOVERNO")
+
+	@ManyToOne(targetEntity = Governo.class)
+	@JoinColumn(name = "ID_GOVERNO", referencedColumnName = "ID_GOVERNO")
 	@Valid
 	@NotNull
 	private Governo governo;
-	
+
 	@Column(name = "TERMINE_SCADENZA")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")
 	private Date termineScadenza;
 
-	@ManyToOne(targetEntity=Stato.class)
-    @JoinColumn(name="ID_STATO", referencedColumnName="ID_STATO")
+	@ManyToOne(targetEntity = Stato.class)
+	@JoinColumn(name = "ID_STATO", referencedColumnName = "ID_STATO")
 	@Valid
 	private Stato stato;
 
-	@ManyToOne(targetEntity=Organo.class)
-    @JoinColumn(name="ID_ORGANO_INSERITORE", referencedColumnName="ID_ORGANO")
+	@ManyToOne(targetEntity = Organo.class)
+	@JoinColumn(name = "ID_ORGANO_INSERITORE", referencedColumnName = "ID_ORGANO")
 	@Valid
 	private Organo organoInseritore;
-	
-	@ManyToOne(targetEntity=Organo.class)
-    @JoinColumn(name="ID_ORGANO_CAPOFILA", referencedColumnName="ID_ORGANO")
+
+	@ManyToOne(targetEntity = Organo.class)
+	@JoinColumn(name = "ID_ORGANO_CAPOFILA", referencedColumnName = "ID_ORGANO")
 	@Valid
 	private Organo organoCapofila;
-	
-	@ManyToOne(targetEntity=Organo.class)
-    @JoinColumn(name="ID_ORGANO_CONCERTANTE", referencedColumnName="ID_ORGANO")
+
+	@ManyToOne(targetEntity = Organo.class)
+	@JoinColumn(name = "ID_ORGANO_CONCERTANTE", referencedColumnName = "ID_ORGANO")
 	@Valid
 	private Organo organoConcertante;
-	
+
 	@Column(name = "DATA_ATTO")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")
 	private Date dataAtto;
-	
+
 	@Column(name = "NUMERO_ATTO")
 	private Integer numeroAtto;
-	
+
 	@Column(name = "COLL_NORMATTIVA")
 	private String collNormattiva;
-	
+
 	@Column(name = "NOTE_INTERNE", length = 4000)
 	private String noteInterne;
-	
-	@ManyToOne(targetEntity=TipoAtto.class)
-    @JoinColumn(name="ID_TIPO_ATTO", referencedColumnName="ID_TIPO_ATTO")
+
+	@ManyToOne(targetEntity = TipoAtto.class)
+	@JoinColumn(name = "ID_TIPO_ATTO", referencedColumnName = "ID_TIPO_ATTO")
 	@Valid
 	private TipoAtto tipoAtto;
-	
-	@OneToMany(targetEntity=ProvvedimentiParent.class, fetch=FetchType.LAZY, mappedBy="provvedimento")
+
+	@OneToMany(targetEntity = ProvvedimentiParent.class, fetch = FetchType.EAGER, mappedBy = "provvedimento")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<ProvvedimentiParent> provvedimentiParent;
-	
-	@OneToMany(targetEntity=Allegato.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
+
+	@OneToMany(targetEntity = Allegato.class, fetch = FetchType.EAGER, mappedBy = "provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OrderBy("id ASC")
 	private List<Allegato> allegatiList;
-	
-	@OneToMany(targetEntity=Assegnazione.class, fetch=FetchType.EAGER, mappedBy="provvedimento")
+
+	@OneToMany(targetEntity = Assegnazione.class, fetch = FetchType.EAGER, mappedBy = "provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
 
 	@Transient
 	private List<Integer> idAllegatiDelList;
-	
+
 	@Transient
 	private List<Integer> idAllegatiUpdList;
-	
+
 	@Transient
 	private String motivazioneRichiesta;
-	
+
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
-	
+
 		if (oggetto != null) {
 			return IOUtils.toString(oggetto.getCharacterStream());
 		}
-		
+
 		return null;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -266,7 +267,8 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		return provvedimentiParent;
 	}
 
-	public void setProvvedimentiParent(List<ProvvedimentiParent> provvedimentiParent) {
+	public void setProvvedimentiParent(
+			List<ProvvedimentiParent> provvedimentiParent) {
 		this.provvedimentiParent = provvedimentiParent;
 	}
 
@@ -293,7 +295,6 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	public void setGoverno(Governo governo) {
 		this.governo = governo;
 	}
-	
 
 	public List<Allegato> getAllegatiList() {
 		return allegatiList;
@@ -302,7 +303,6 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	public void setAllegatiList(List<Allegato> allegatiList) {
 		this.allegatiList = allegatiList;
 	}
-
 
 	public List<Assegnazione> getAssegnazioneList() {
 		return assegnazioneList;
@@ -401,6 +401,4 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		return true;
 	}
 
-	
-	
 }

@@ -30,6 +30,8 @@
 	<link href="${base}css/bootstrap-multiselect.css" rel="stylesheet" >
 	<link href="${base}css/bootstrap-datepicker.css" rel="stylesheet" >
 	<link href="${base}css/multi-select.css" rel="stylesheet">
+	<link href="${base}css/bootstrap-tagsinput.css" rel="stylesheet">
+	<link href="${base}css/bootstrap-tagsinput.css" rel="stylesheet">
 	<link href="${base}css/style.css" rel="stylesheet">
 
 	<!--[if IE 7]>
@@ -50,11 +52,12 @@
 	<script type="text/javascript" src="${base}js/bootstrap-multiselect.js"></script>
 	<script type="text/javascript" src="${base}js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="${base}js/locales/bootstrap-datepicker.it.js"></script>
-	<script type="text/javascript" src="${base}js/scripts.js"></script>
 	<script type="text/javascript" src="${base}js/bootbox.min.js"></script>
 	<script type="text/javascript" src="${base}js/jquery.form.js"></script>
 	<script type="text/javascript" src="${base}js/jquery.multi-select.js"></script>
-	
+	<script type="text/javascript" src="${base}js/bootstrap-tagsinput.js"></script>
+	<script type="text/javascript" src="${base}js/jquery.quicksearch.js"></script>
+	<script type="text/javascript" src="${base}js/scripts.js"></script>
 	
 </head>
 
@@ -93,7 +96,6 @@
 			</div>
 		</div>
 	</div>
-
 	
 	<tiles:insertAttribute name="breadcrumb" />
 	

@@ -29,7 +29,7 @@
 <spring:message var="descrizioneHeader" code="listaAllegati.header.descrizione" />
 <spring:message var="dimensioneHeader" code="listaAllegati.header.dimensione" />
 
-
+<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv/inserisciAllegato" var="formAllegatiPath" />
 <c:url value="/private/provvedimenti/ricerca/nuovo" var="formPath" />
 
 	<div class="container inserimento">
@@ -38,7 +38,7 @@
 				<h3 class="text-left underline"><span><c:out value="${titolo}" /></span></h3>
 			</div>
 		</div>
-		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST">
+		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" name="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST" enctype="multipart/form-data">
 		<springform:hidden path="currentStep" name="currentStep"/>
 		<springform:hidden path="stepSuccessivo" name="stepSuccessivo"/>
 		<c:if test="${currentStep eq 1}">
@@ -187,7 +187,7 @@
 			</div>
 			<div class="row">
 				<div class="span12">	
-					<div id="allegatiForm">
+					<div id="allegatoForm">
 						<springform:hidden path="idAllegatiUpdList" id="idAllegatiUpdList" />
 						<%-- <springform:hidden path="idAllegatiDelList" id="idAllegatiDelList" /> --%>
 						<div class="control-group">		
@@ -210,7 +210,7 @@
 						
 						<div class="control-group">
 							<div class="controls">
-								<button type="button" id="allegatoInserisci" class="btn">Aggiungi <i class="icon-plus"></i></button>
+								<button type="button" id="allegatoInserisciIns" class="btn">Aggiungi <i class="icon-plus"></i></button>
 							</div>
 						</div>
 					</div>
@@ -273,9 +273,9 @@
 			<c:if test="${currentStep eq 4}">
 			<div class="row">
 				<div class="span12">
-					<div class="span4 offset4">
-						<springform:select path="provvedimentiSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
-							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="comma" />
+					<div class="span2 offset2">
+						<springform:select path="provvedimentiSelected" id="provvedimentiSelected" cssClass="input-xlarge" multiple="multiple">
+							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="oggetto" />
 						</springform:select>
 					</div>
 				</div>
@@ -288,7 +288,7 @@
 						<div class="control-group">
 							<div class="form-actions pull-right">
 								<c:if test="${currentStep eq 1}">
-									<button type="button" class="btn" id="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+									<button type="submit" class="btn" id="annulla" name="indietroPagina">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
 								<c:if test="${currentStep eq 2 || currentStep eq 3 || currentStep eq 4}">
 									<button type="submit" class="btn" name="action" value="Indietro" id="indietro">Indietro &nbsp;<i class="icon-arrow-left"></i></button>
