@@ -104,27 +104,6 @@ $(document).ready(function() {
     });
     
     
-    $('#popoverRifiuto').on('click', function(e) {e.preventDefault(); return true;});
-    
-    var $div = $('<div>');
-    var content = 'ciao';
-//    $div.load('motivazionerifiuto.html #modalRifiuto', function() {
-//    	content = $(this).html();
-//    });
-
-    $("#popoverRifiuto").click( function(e) {  
-    	$(this).popover({
-	    	placement : 'top', // top, bottom, left or right
-	    	title : 'Rifiuto assegnazione', 
-	    	html: 'true',
-	    	trigger: 'manual',
-	    	content : content // '<div id="popOverBox"><span>Provvedimento non di competenza<span></div>'
-    	}); 
-    	$(this).popover('toggle');
-    	e.stopPropagation();
-    });
-      
-    
     // INSERIMENTO
     $("#dataAtto").datepicker({
     	format: "dd/mm/yyyy",
@@ -692,9 +671,16 @@ $(document).ready(function() {
 	
 	// MODALE RICHIESTA ASSEGNAZIONE
 	gestionePopupRichiestaAssegnazione();
+
+	// MODALE RIFIUTO ASSEGNAZIONE
+	gestionePopupRifiutoAssegnazione(); 
 	
 	//INSERIMENTO
 	gestioneInserimento();
+	
+	//POPOVER RIFIUTO
+	gestionePopoverRifiuto();
+	
 	
 	//GESTIONE NORMATTIVA
 	gestioneNormattiva();
@@ -730,6 +716,13 @@ function eliminaNessunRisultatoAssegnatario(id){
 // GESTIONE NOTIFICHE
 function gestioneNotifiche() {
 	
+	$(".aprinotifica").click(function(e) {
+    	e.preventDefault();
+		e.stopPropagation();
+		var url = $(this).find("a").attr("href");
+		window.location.href = url;		
+    }); 
+	
 	
 	$("#mostraTutteLeNotifiche").click(function(e) {
 		e.stopPropagation();
@@ -745,7 +738,7 @@ function gestioneNotifiche() {
 	    e.preventDefault();
 	    
 	    
-	    if (popoverNotifiche.hasClass('in')) {
+	    if ($("#popoverNotifiche + .popover").hasClass('in')) {
 	    	popoverNotifiche.popover('hide');
 	    } else {
 		    var $div = $("<div>");
@@ -783,6 +776,43 @@ function gestioneNotifiche() {
 	});
 }
 
+
+//GESTIONE POPOVER RIFIUTO
+function gestionePopoverRifiuto() {
+	
+	// popover
+	var popoverRifiuto = $(".popoverRifiuto"); 
+	popoverRifiuto.click(function(e) {
+	    e.stopPropagation();
+	    e.preventDefault();
+	    
+	    
+	    if ($(".popoverRifiuto + .popover").hasClass('in')) {
+	    	popoverRifiuto.popover('hide');
+	    } else {
+		    var $div = $("<div>");
+		    var content = "";
+		    var url = popoverRifiuto.attr("href");
+
+		    $div.load(url + " #contentRifiuto", function() {
+		    	content = $(this).html();
+		    	
+		    	popoverRifiuto.popover({
+				    	placement : 'top', 
+				    	html: 'true',
+				    	trigger: 'manual',
+				    	title: 'Motivazione rifiuto',
+				    	content : content 
+		    	 }); 
+				
+		    	popoverRifiuto.popover('show');
+		    });
+	    }
+	    
+	    
+	});
+}
+
 //MODALE RICHIESTA ASSEGNAZIONE
 function gestionePopupRichiestaAssegnazione() {
 	
@@ -797,6 +827,28 @@ function gestionePopupRichiestaAssegnazione() {
 				e.preventDefault();
 				
 				$(this).closest("form").append("<input type='hidden' name='richiediAssegnazione' />").submit();
+				
+			});
+			
+		}); 
+	});
+	
+}
+
+//MODALE RIFIUTO ASSEGNAZIONE
+function gestionePopupRifiutoAssegnazione() {
+	
+	$('#rifiutaAssegnazione').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		$("#modalRifiutoAssegnazione").modal().on('shown', function() {
+			
+			$("#rifiutoAssegnazioneModal").click(function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				
+				$(this).closest("form").append("<input type='hidden' name='rifiutaAssegnazione' />").submit();
 				
 			});
 			
