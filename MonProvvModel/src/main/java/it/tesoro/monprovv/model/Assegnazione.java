@@ -2,8 +2,10 @@ package it.tesoro.monprovv.model;
 
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Clob;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -19,6 +21,7 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.io.IOUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -66,6 +69,9 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	@Column(name = "MOTIVAZIONE_RICHIESTA")
 	private Clob motivazioneRichiesta;
 
+	@Column(name = "MOTIVAZIONE_RIFIUTO")
+	private Clob motivazioneRifiuto;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -121,7 +127,33 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	public void setMotivazioneRichiesta(Clob motivazioneRichiesta) {
 		this.motivazioneRichiesta = motivazioneRichiesta;
 	}
+	
+	public Clob getMotivazioneRifiuto() {
+		return motivazioneRifiuto;
+	}
 
+	public void setMotivazioneRifiuto(Clob motivazioneRifiuto) {
+		this.motivazioneRifiuto = motivazioneRifiuto;
+	}
+
+	public String getMotivazioneRichiestaAsText() throws IOException, SQLException {
+
+		if (motivazioneRichiesta != null) {
+			return IOUtils.toString(motivazioneRichiesta.getCharacterStream());
+		}
+
+		return null;
+	}
+	
+	public String getMotivazioneRifiutoAsText() throws IOException, SQLException {
+
+		if (motivazioneRifiuto != null) {
+			return IOUtils.toString(motivazioneRifiuto.getCharacterStream());
+		}
+
+		return null;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

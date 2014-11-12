@@ -68,7 +68,6 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 	private String testo;
 
 	@Column(name = "LINK_OPERAZIONE", length = 240)
-	@NotNull
 	private String linkOperazione;
 
 	@Column(name = "FLAG_LETTURA", length = 1)
@@ -136,6 +135,14 @@ public class Notifica extends AbstractCommonEntity implements Serializable {
 
 	public void setTipoNotifica(String tipoNotifica) {
 		this.tipoNotifica = tipoNotifica;
+	}
+	
+	public Utente getUtenteOperatore() {
+		return utenteOperatore;
+	}
+
+	public void setUtenteOperatore(Utente utenteOperatore) {
+		this.utenteOperatore = utenteOperatore;
 	}
 
 	@Override

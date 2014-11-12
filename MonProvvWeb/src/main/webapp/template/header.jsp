@@ -23,7 +23,7 @@
 			<i class="icon-circle icon-stack-base" ></i>
           	<i class="icon-light" id="countNotifiche"></i>
 		</span> 
-		</i> </a>
+		</i></a>
 		 - <a href="<c:url value="/j_spring_security_logout" />" title="logout - ${nome} ${cognome}">ESCI <i class="icon-signout"></i></a>
 	 </span>
 </security:authorize>
