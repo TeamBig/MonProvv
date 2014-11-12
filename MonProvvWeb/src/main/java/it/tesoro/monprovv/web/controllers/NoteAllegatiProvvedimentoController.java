@@ -67,7 +67,6 @@ public class NoteAllegatiProvvedimentoController {
 				}
 			}
 			
-			
 //			List<Integer> idAllegatiList = new ArrayList<Integer>();
 //			for( Allegato tmp : listaAllegati ){
 //				idAllegatiList.add(tmp.getId());
