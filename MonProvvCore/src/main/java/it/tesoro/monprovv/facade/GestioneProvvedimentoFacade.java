@@ -332,6 +332,9 @@ public class GestioneProvvedimentoFacade {
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
 		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
+		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
+			provvedimentoIns.setProponente(null);
+		}
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());

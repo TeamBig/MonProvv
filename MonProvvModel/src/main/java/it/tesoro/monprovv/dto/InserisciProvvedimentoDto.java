@@ -38,6 +38,7 @@ public class InserisciProvvedimentoDto {
 		provv.setOrganoInseritore(this.getOrganoInseritore());
 		provv.setTipoAtto(this.getTipoAtto());
 		provv.setTipoProvvedimento(this.getTipologia());
+		provv.setOrganoConcertante(this.getProponente());
 		// provv.setOggetto(this.getTitoloOggetto());
 		return provv;
 	}
@@ -229,7 +230,7 @@ public class InserisciProvvedimentoDto {
 	}
 
 	public String getCollNormattiva() {
-		return "www.normattiva.it";
+		return collNormattiva;
 	}
 
 	public void setCollNormattiva(String collNormattiva) {

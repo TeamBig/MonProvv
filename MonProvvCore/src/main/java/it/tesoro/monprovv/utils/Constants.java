@@ -21,4 +21,9 @@ public interface Constants {
 	public static String AGGIORNAMENTO = "Aggiornamento" ;
 	public static String INSERIMENTO = "Inserimento" ;
 	public static String CANCELLAZIONE = "Cancellazione" ;
+	
+	//TIPO PROVVEDIMENTO
+	public static String CONCERTANTE_MEF = "CONC_MEF" ;
+	
+	
 }
