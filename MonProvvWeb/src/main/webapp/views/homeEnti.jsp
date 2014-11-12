@@ -96,9 +96,15 @@
 							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
 							<display:column title="${denominazioneEstesaHeader}" property="denominazioneEstesa" headerScope="col" />
-							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
-							<display:column title="${enteConcertanteHeader}" property="concertante" headerScope="col" />
-							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" />
+							<display:column title="${enteConcertanteHeader}" headerScope="col" class="center" headerClass="center">
+							<c:if test="${organo.concertante == 'Concertante' }">
+								SI
+							</c:if>
+							<c:if test="${organo.concertante != 'Concertante' }">
+								NO
+							</c:if>
+							</display:column>
+							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" class="center" headerClass="center" />
 							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
 								<a href="${deletePath}?id=${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Ente"></i></a>
 							</display:column>

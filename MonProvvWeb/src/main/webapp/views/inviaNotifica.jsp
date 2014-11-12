@@ -14,7 +14,7 @@
 			<label class="control-label" for="email">Email</label>
 			<div class="controls">
 
-				<springform:input path="destinatari" data-role="tagsinput" id="tokenfieldemail" />
+				<springform:input path="destinatari" data-role="tagsinput" id="tokenfieldemail" cssClass="input-xlarge" />
 
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="art">Testo</label>
+			<label class="control-label" for="testo">Testo</label>
 			<div class="controls">
 			<springform:textarea path="testo" cssClass="input-xlarge" rows="10" id="testo" />
 			</div>

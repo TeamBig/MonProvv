@@ -111,6 +111,7 @@ $(document).ready(function() {
         language: "it"
     }).on('changeDate', function(ev){
 	        $("#dataAttoV").val(ev.format('dd/mm/yyyy'));
+	        $( "#dataAttoV" ).focus();
         });
     
     $("#dp1").datepicker({
@@ -139,19 +140,7 @@ $(document).ready(function() {
         });
     });
     
-    
-    $("#proponenteDiv").hide();
-    $('#statoDiAttuazione').on('change', function () {
-    	var val = $(this).val();
-    	var option1 = "Concertante MEF";
-    	var option2 = "Concerto preventivo";
-    	if((val==option1) || (val==option2)){
-    		$("#proponenteDiv").show();
-    	} else {
-    		$("#proponenteDiv").hide();
-    	}
-    }); 
-    
+  
     
     
     ///////////////////////////////////////////////////////////////////7
@@ -363,6 +352,21 @@ $(document).ready(function() {
     	}
     });
     
+    //GESTIONE SOLLECITO
+    $(document).on('click', '#anchorModalSollecito', function() { 
+    	var idAssegnatarioSollecito = $(this).parent().siblings(":first").text(); 
+    	 $('#idAssegnatarioSollecito').val(idAssegnatarioSollecito);
+    });
+    
+    
+    
+    $('#inviaSollecitoModal').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var oForm = $(this).closest("form");
+		oForm.append("<input type='hidden' name='inviaSollecito' />");
+		oForm.submit();
+	});
     
     // SALVA E INVIA NOTIFICHE PROVVEDIMENTO
     
@@ -382,35 +386,15 @@ $(document).ready(function() {
     	oForm.submit();
     });
     
-    
     $(document).on('click', '#tokenfieldemail', function() {
 	    var element = $(this);
 	    element.tokenfieldemail(element);
-    
     });    
     
     $.fn.tokenfieldemail = function (element) {
     	element.tagsinput({
         	itemValue: 'email',
-        	itemText: function(item) {
-        		var text = "";
-        		if( item.cognome != "" ){
-        			text = item.cognome + " ";
-        		}
-        		
-        		if( item.nome != "" ){
-        			text = text + item.nome + " ";
-        		}
-        		
-        		if( item.email != "" ){
-        			if( text != "" ){
-        				text = text + "(" + item.email + ")";
-        			}else{
-        				text = item.email;
-        			}
-        		}
-        		return text;
-        	},
+        	itemText: 'descrizione',
         	freeInput: true,
         	allowDuplicates: false,
         	trimValue: true,
@@ -585,19 +569,15 @@ $(document).ready(function() {
 	});
 	
 	$("button#saveNoteAllegati").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'save')
-        .appendTo('#provvedimento');
-		$( "#provvedimento" ).submit();
+		var oForm = $('#provvedimento');
+		oForm.append("<input type='hidden' name='saveNoteAllegati' />");
+		oForm.submit();
 	});
 	
 	$("button#annullaNoteAllegati").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'cancel')
-        .appendTo('#provvedimento');
-		$( "#provvedimento" ).submit();
+		var oForm = $('#provvedimento');
+		oForm.append("<input type='hidden' name='cancelNoteAllegati' />");
+		oForm.submit();
 	});
 	
 	$(document).on('click', '#eliminaAllegatoOld', function() { 
@@ -684,15 +664,6 @@ $(document).ready(function() {
 	
 	//GESTIONE NORMATTIVA
 	gestioneNormattiva();
-	$("#dataAttoV").blur(function(){
-		  var date = $(this).val(); // replace this by $(this).val() to get your date from the input
-		  var newDataAtto = new Date( "13-01-2011".replace( /(\d{2})-(\d{2})-(\d{4})/, "$3-$2-$1") );
-		  alert(dataAtto);
-		  //var validate = Date.parse(date);
-		  if (validate.isNaN()) {
-		    // do something if the date is not valid
-		  }
-		});
 	
 	//GESTIONE MODALE CRONOLOGIA
 	$("a[data-target=#modalCronologia]").click(function(ev) {
@@ -859,6 +830,18 @@ function gestionePopupRifiutoAssegnazione() {
 
 
 function gestioneInserimento(){
+    $("#proponenteDiv").hide();
+    $('#tipologia').on('change', function () {
+    	var val = $(this).val();
+    	var option1 = "2"; //Concertante MEF
+    	var option2 = "3"; //Concerto preventivo
+    	if((val==option1) || (val==option2)){
+    		$("#proponenteDiv").show();
+    	} else {
+    		$("#proponenteDiv").hide();
+    	}
+    }); 
+	
     $('#insertAssegnatarioFromInserimento').click( submit_assegnatarioIns );
     $('#assegnazioneForm').find('input').keydown(keypressedAssIns);
     
@@ -1010,6 +993,62 @@ function do_submitAllegatoIns() {
 }
 
 function gestioneNormattiva(){
-
+	$("#dataAttoV, #tipoAtto, #numeroAtto, #art").each(function(){
+		$(this).focusout(function(){
+		  var staticUrl = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:";
+		  var date = $(this).val(); // replace this by $(this).val() to get your date from the input
+		  var newDataAtto = new Date( $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1") );
+		  var dataAtto = newDataAtto.getFullYear() +'-'+ (newDataAtto.getMonth()+1) +'-'+ newDataAtto.getDate();
+		  
+		  var numeroAtto = $("#numeroAtto").val();
+		  var articolo = $("#art").val();
+		  
+		  var enableLink = false;
+		  
+		  var tipoAtto = $("#tipoAtto option:selected" ).val();
+		  //COSTITUZIONE - CS
+		  if(tipoAtto=='1'){
+			  var append = "costituzione:1947-12-27";
+			  if(articolo!=undefined && articolo!=""){
+				  append = append+"~art"+articolo;
+			  }
+			  staticUrl=staticUrl+append;
+			  enableLink = true;
+		  }
+		  //DECRETO LEGGE - DL == 2 --- //LEGGE - L == 3
+		  if(tipoAtto=='2' || tipoAtto=='3'){
+			  var append = "";
+			  if(tipoAtto=='2'){
+				  append = "decreto.legge:AAAA-MM-GG;NNN";
+			  }
+			  if(tipoAtto=='3'){
+				  append = "legge:AAAA-MM-GG;NNN";
+			  }
+			  if(dataAtto!=undefined && dataAtto!="NaN-NaN-NaN"){
+				  append = append.replace("AAAA-MM-GG", dataAtto);
+			  }
+			  if(numeroAtto!=undefined && numeroAtto!=""){
+				  append = append.replace("NNN",numeroAtto);
+			  }
+			  if(articolo!=undefined && articolo!=""){
+				  append = append+"~art"+articolo;
+			  }
+			  if(dataAtto!=undefined && dataAtto!="NaN-NaN-NaN" && numeroAtto!=undefined && numeroAtto!=""){
+				  enableLink= true;
+			  }
+			  
+			  staticUrl=staticUrl+append;
+		  }
+		  
+		  if(enableLink){
+			  $("#linkNormattiva").attr('href',staticUrl);
+			  $("#linkNormattiva").attr('target',"_blank");
+		  } else {
+			  $("#linkNormattiva").attr('href','#');
+		  }
+		  
+		  $("#collNormattiva").val(staticUrl);
+		});
+	});
 }
 

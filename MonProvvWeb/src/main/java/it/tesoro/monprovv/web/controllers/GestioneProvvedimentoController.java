@@ -7,8 +7,10 @@ import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.IndirizzoEmailDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.Mail;
+import it.tesoro.monprovv.dto.ProvvedimentoStampaDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.dto.SalvaENotificaDto;
+import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
@@ -27,6 +29,7 @@ import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.service.MailService;
+import it.tesoro.monprovv.service.ReportService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SicurezzaUtils;
@@ -35,10 +38,12 @@ import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
 import it.tesoro.monprovv.web.validators.ProvvedimentoValidator;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +51,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -92,6 +99,9 @@ public class GestioneProvvedimentoController {
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private ReportService reportService;
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
@@ -284,6 +294,29 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoDettaglio";
 	}
 	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="inviaSollecito" )
+	public String gestioneSalvaENotifica(
+			@RequestParam(required = false) Integer id, 
+			Model model, 
+			@ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio){
+		
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		if( StringUtils.isEmpty(provvedimentoDettaglio.getOggettoSollecito()) || StringUtils.isEmpty(provvedimentoDettaglio.getTestoSollecito()) ){
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Sollecito non inviato, inserire sia l'oggetto che il testo del sollecito.", false);
+		}else{
+			SollecitoDto sollecitoDto = new SollecitoDto(provvedimentoDettaglio.getOggettoSollecito(), provvedimentoDettaglio.getTestoSollecito(), provvedimentoDettaglio.getIdAssegnatarioSollecito());
+			gestioneProvvedimentoFacade.inserisciInviaSolleciti( sollecitoDto );
+		}
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo.", false);
+		
+		return "provvedimentoDettaglio";
+		
+	}
 	
 	// **************** accettazione assegnazione ******//
 	
@@ -351,7 +384,6 @@ public class GestioneProvvedimentoController {
 		return dettaglio(model, id);
 	}
 	
-	
 	// *************************** SALVA E INVIA NOTIFICA *************************** //
 	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="salvaenotifica" )
 	public String gestioneSalvaENotifica(
@@ -374,6 +406,8 @@ public class GestioneProvvedimentoController {
 		
 		//Invio email
 		if( StringUtils.isNotEmpty( oggetto ) || StringUtils.isNotEmpty( testo ) ){
+			
+			
 			UtenteDto criteria = null;
 			EmailExtra emailExtra = null;
 			Mail mail = null;
@@ -386,11 +420,11 @@ public class GestioneProvvedimentoController {
 					mail.setContent(testo);
 					mail.setHtmlFormat(false);
 					
-					mailService.eseguiInvioMail(mail);
+					gestioneProvvedimentoFacade.invioMail( mail );
+					
 					criteria = new UtenteDto();
 					criteria.setEmail(indirizzo);
-					
-					
+
 					if(gestioneUtenteFacade.countEmailExtra(indirizzo)==0
 						&&	gestioneUtenteFacade.count(criteria)==0
 							){
@@ -523,8 +557,7 @@ public class GestioneProvvedimentoController {
 		return retVal;
 	}
 
-	private void caricaTabelleInferiore(Model model,
-			Provvedimento provvedimentoModifica) {
+	private void caricaTabelleInferiore(Model model, Provvedimento provvedimentoModifica) {
 		List<Allegato> listaAllegati = provvedimentoModifica.getAllegatiList();
 		model.addAttribute("listaAllegati", listaAllegati);
 		List<Assegnazione> listaAssegnazione = provvedimentoModifica.getAssegnazioneList();
@@ -796,6 +829,41 @@ public class GestioneProvvedimentoController {
 		model.addAttribute("assegnazione", assegnazione);
 		return "motivazioneRifiuto";
 	}
+	
+	// ESPORTAZIONE IN EXCEL
+	@RequestMapping(value = "/private/provvedimenti/esportaxls", method = RequestMethod.GET)
+	public String esportaProvvedimentiXls(RedirectAttributes redirectAttributes, HttpServletResponse response){
+	
+		List<ProvvedimentoStampaDto> provvedimenti = gestioneProvvedimentoFacade.recuperaProvvedimentiPerExport();
+		
+		ByteArrayOutputStream baos = null;
+		try {
+			baos = reportService.generaReport(Constants.TIPO_XLS, "ExportXls", null, provvedimenti);
+			
+		} catch (Exception e) {
+			logger.error("Errore nella generazione del report delle autorizzazioni uffici registri " + ExceptionUtils.getStackTrace(e));
+		}
+		if (baos != null) {
+			response.reset();
+			response.setContentType("application/force-download");
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"Provvedimenti_"+ DateFormatUtils.format(new Date(), "yyyyMMdd") + ".xls\"");
+			
+			try {
+				response.getOutputStream().write(baos.toByteArray());
+				response.setContentLength(baos.size());
+				
+				response.flushBuffer();
+				} catch (IOException ioe) {
+					logger.error("Errore nel download del report: " + ExceptionUtils.getStackTrace(ioe));
+				}
+			} else {
+				response.setStatus(500);
+			}
+		
+		return null;
+	}	
+	// FINE ESPORTAZIONE IN EXCEL	
 	
 	
 	@ModelAttribute("provvedimentoInserisci")

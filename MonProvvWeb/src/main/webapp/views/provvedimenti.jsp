@@ -252,10 +252,10 @@
 			</c:if>
 		</div>
 		<div class="span12">
-			<button type="submit" class="btn pull-right" id="esportaXLS"
-				style="margin-right: 10px;">
+			<spring:url value="/private/provvedimenti/esportaxls" var="url_exportxls" />
+			<a href="${url_exportxls}" class="btn pull-right" id="esportaXLS" style="margin-right: 10px;">
 				Esporta in excel &nbsp;<i class="icon-ms-excel"></i>
-			</button>
+			</a>
 
 			<ul class="unstyled">
 				<li><span class="icon-stack"> <i

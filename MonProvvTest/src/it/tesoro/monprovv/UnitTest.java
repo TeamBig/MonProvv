@@ -1,12 +1,24 @@
 package it.tesoro.monprovv;
 
+import it.tesoro.monprovv.dto.ProvvedimentoStampaDto;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
+import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.Provvedimento;
+import it.tesoro.monprovv.service.ReportService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
+import it.tesoro.monprovv.utils.Constants;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +39,41 @@ public class UnitTest {
 	@Autowired 
 	private GestioneEntiFacade gestioneEntiFacade;
 	
+	@Autowired 
+	private ReportService reportService;
 	
+	@Autowired 
+	private GestioneProvvedimentoFacade provvedimentoFacade;
+	
+//	@Test
+//	public void testOrgano(){
+//		
+//		CustomUser user = new CustomUser("BATCH", "batch", true, true, true, true, new ArrayList<GrantedAuthority>() );
+//    	
+//		Authentication authentication = new UsernamePasswordAuthenticationToken(user, "batch");
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//		
+//		Organo o = new Organo();
+//		o.setDenominazione("aaaa");
+//		o.setFlagConcertante("N");
+//		o.setUnitaOrgAstage(gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati().get(0) );
+//		
+//		gestioneEntiFacade.inserisciOrgano(o);
+//		
+//		
+//	}
 	
 	@Test
-	public void testOrgano(){
+	public void report() throws IOException {
+		List<ProvvedimentoStampaDto> provvedimenti = provvedimentoFacade.recuperaProvvedimentiPerExport();
 		
-		CustomUser user = new CustomUser("BATCH", "batch", true, true, true, true, new ArrayList<GrantedAuthority>() );
-    	
-		Authentication authentication = new UsernamePasswordAuthenticationToken(user, "batch");
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+		ByteArrayOutputStream baos = reportService.generaReport(Constants.TIPO_XLS, "ExportXls", null, provvedimenti);
 		
-		Organo o = new Organo();
-		o.setDenominazione("aaaa");
-		o.setFlagConcertante("N");
-		o.setUnitaOrgAstage(gestioneEntiFacade.recuperaUnitaOrgAstageNonUsati().get(0) );
-		
-		gestioneEntiFacade.inserisciOrgano(o);
-		
-		
+		OutputStream outputStream = new FileOutputStream("C:\\Temp\\provvedimenti.xls"); 
+		baos.writeTo(outputStream);
+			
 	}
+	
 	
 	
 	

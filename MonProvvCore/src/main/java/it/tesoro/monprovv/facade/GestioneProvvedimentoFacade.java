@@ -3,6 +3,7 @@ package it.tesoro.monprovv.facade;
 import it.tesoro.monprovv.dao.AllegatoDAO;
 import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.GovernoDAO;
+import it.tesoro.monprovv.dao.NotaDAO;
 import it.tesoro.monprovv.dao.NotificaDAO;
 import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentiParentDAO;
@@ -13,11 +14,16 @@ import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.dao.UtenteDAO;
+import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
+import it.tesoro.monprovv.dto.Mail;
+import it.tesoro.monprovv.dto.ProvvedimentoStampaDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Nota;
 import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.ProvvedimentiParent;
@@ -28,6 +34,7 @@ import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.service.MailService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
@@ -80,6 +87,12 @@ public class GestioneProvvedimentoFacade {
 	
 	@Autowired 
 	private NotificaDAO notificaDAO;
+	
+	@Autowired
+	private MailService mailService;
+	
+	@Autowired
+	private NotaDAO notaDAO;
 	
 	@Autowired
 	private UtenteDAO utenteDAO;
@@ -229,6 +242,18 @@ public class GestioneProvvedimentoFacade {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("id", allegatoId);
 		String hql = "from Allegato u where u.id = :id and u.provvedimento is null";
+		List<Allegato> allegati = allegatoDAO.findByHqlQueryNumeroRecord(hql, params, 1);
+		for(Allegato tmp: allegati){
+			allegato = tmp;
+		}
+		return allegato;
+	}
+	
+	public Allegato getAllegatoByIdnoAssegnazione(Integer allegatoId) {
+		Allegato allegato = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("id", allegatoId);
+		String hql = "from Allegato u where u.id = :id and u.assegnazione is null";
 		List<Allegato> allegati = allegatoDAO.findByHqlQueryNumeroRecord(hql, params, 1);
 		for(Allegato tmp: allegati){
 			allegato = tmp;
@@ -388,13 +413,40 @@ public class GestioneProvvedimentoFacade {
 		Notifica notificaInfo = new Notifica();
 		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
 		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
-		notificaInfo.setOggetto("Assegnazione provvedimento");
+		notificaInfo.setOggetto("Fine lavorazione");
 		notificaInfo.setTesto(testo);
 		notificaInfo.setUtenteMittente(user.getUtente());
 
 		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
 			notificaInfo.setUtenteDestinatario(utenteDestinatario);
 			notificaDAO.save(notificaInfo);
+		}
+		
+		// invio notifica al capofila se tutte le assegnazioni sono in fine lavorazione
+		Provvedimento provvedimento = provvedimentoDAO.findById(assegnazione.getProvvedimento().getId());
+		
+		int countInLavorazione = 0;
+		for (Assegnazione ass : provvedimento.getAssegnazioneList()) {
+			if (ass.getStato().getCodice().equals(Constants.ACCETTATO) || ass.getStato().getCodice().equals(Constants.ASSEGNATO)) {
+				countInLavorazione ++;
+			}
+		}
+		
+		if (countInLavorazione > 0) {
+			String testoFineLav = "Si comunica che tutti gli organi assegnatari hanno concluso la lavorazione del provvedimento " 
+					+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa();
+			
+			Notifica notificaFineLav = new Notifica();
+			notificaFineLav.setFlagLettura(Notifica.NON_LETTA);
+			notificaFineLav.setTipoNotifica(Notifica.INFORMATIVA);
+			notificaFineLav.setOggetto("Fine lavorazione per tutte le assegnazioni");
+			notificaFineLav.setTesto(testoFineLav);
+			notificaFineLav.setUtenteMittente(user.getUtente());
+			
+			for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+				notificaFineLav.setUtenteDestinatario(utenteDestinatario);
+				notificaDAO.save(notificaFineLav);
+			}
 		}
 		
 		return assegnazione;
@@ -462,6 +514,9 @@ public class GestioneProvvedimentoFacade {
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
 		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
+		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
+			provvedimentoIns.setProponente(null);
+		}		
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
@@ -538,8 +593,24 @@ public class GestioneProvvedimentoFacade {
 	public Assegnazione recuperaAssegnazioneById(Integer id) {
 		return assegnazioneDAO.findById(id);
 	}
-	
-	
+
+	public void inserisciInviaSolleciti(SollecitoDto sollecitoDto) {
+		Assegnazione assegnazione = assegnazioneDAO.findById( Integer.valueOf( sollecitoDto.getIdAssegnatarioSollecito() ) );
+		Mail mail = new Mail();
+		mail.setSubject(sollecitoDto.getOggettoSollecito());
+		mail.setContent(sollecitoDto.getTestoSollecito());
+		mail.setHtmlFormat(false);
+		for( Utente tmp : assegnazione.getOrgano().getUtenteList() ){
+			mail.setDestinatario(tmp.getEmail());
+			mailService.eseguiInvioMail(mail);
+		}
+	}
+
+	public void invioMail(Mail mail) {
+		mailService.eseguiInvioMail(mail);
+		
+	}
+
 	private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -582,7 +653,59 @@ public class GestioneProvvedimentoFacade {
 		
 	}
 	
-	public void aggiornaAccettazioneAssegnazione(Provvedimento provvedimento) {
+	public Assegnazione recuperaAssegnazioneByProvvOrgano(AssegnazioneDto assDto) {
+		Assegnazione retval = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("idOrgano", assDto.getIdOrgano());
+		params.put("idProvvedimento", assDto.getIdProvvedimento());
 		
+		String hql = "from Assegnazione u where u.organo.id = :idOrgano and u.provvedimento.id = :idProvvedimento";
+		List<Assegnazione> assegnazioni = assegnazioneDAO.findByHqlQuery(hql, params);                    
+		for(Assegnazione tmp: assegnazioni){
+			retval = tmp;
+		}
+		return retval;
+	}
+	
+
+	public Nota recuperaNotaByAssegnazione(Assegnazione assegnazione){
+		Nota retval = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("idAssegnazione", assegnazione.getId());
+		
+		String hql = "from Nota u where u.assegnazione.id = :idAssegnazione";
+		List<Nota> note = notaDAO.findByHqlQuery(hql, params);                    
+		for(Nota tmp: note){
+			retval = tmp;
+		}
+		return retval;
+	}
+	
+	public Nota recuperaNotaById(Integer id) {
+		return notaDAO.findById(id);
+	}
+
+	public Nota aggiornaNota(Integer idNota, String testoNota) {
+		Nota nota = recuperaNotaById(idNota);
+		nota.setTesto(notaDAO.createClob(testoNota));
+		return notaDAO.merge(nota);
+	}
+
+	public void inserisciNota(Nota nota, String testoNota) {
+		nota.setTesto(notaDAO.createClob(testoNota));
+		notaDAO.save(nota);
+	}
+
+	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(){
+		List<String> order = new ArrayList<String>();
+		order.add("dataInserimento desc");
+		List<Provvedimento> provvedimenti = provvedimentoDAO.findAll(order);
+		
+		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();
+		for (Provvedimento provvedimento : provvedimenti) {
+			provvedimentiDto.add(new ProvvedimentoStampaDto(provvedimento));
+		}
+		
+		return provvedimentiDto;	
 	}
 } 

@@ -31,7 +31,6 @@
 	<link href="${base}css/bootstrap-datepicker.css" rel="stylesheet" >
 	<link href="${base}css/multi-select.css" rel="stylesheet">
 	<link href="${base}css/bootstrap-tagsinput.css" rel="stylesheet">
-	<link href="${base}css/bootstrap-tagsinput.css" rel="stylesheet">
 	<link href="${base}css/style.css" rel="stylesheet">
 
 	<!--[if IE 7]>
