@@ -2,6 +2,7 @@ package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.cache.CacheService;
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
+import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.sicurezza.CustomPermissionEvaluator;
 import it.tesoro.monprovv.sicurezza.CustomRequestHeaderAuthenticationFilter;
 import it.tesoro.monprovv.sicurezza.CustomUser;
@@ -141,10 +142,16 @@ public class GestioneSicurezzaController {
 	@RequestMapping(value= {"/private/home", "/private"}, method = RequestMethod.GET)
 	public String caricaHomepagePrivata(Model model, SecurityContextHolderAwareRequestWrapper request)  {
 
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
-		System.out.println(auth.getPrincipal());
-
+		if (   request.isUserInRole(Ruolo.ROLE_CONSULTATORE) 
+			|| request.isUserInRole(Ruolo.ROLE_LETTORE)
+			|| request.isUserInRole(Ruolo.ROLE_INSERITORE) ) {
+			return "redirect:/private/provvedimenti/ricerca";
+		}
+		
+		if ( request.isUserInRole(Ruolo.ROLE_ADMIN) ) {
+			return "redirect:/private/admin/enti";
+		}
 		
 		return "home";
 	}
@@ -152,11 +159,7 @@ public class GestioneSicurezzaController {
 	@RequestMapping(value= {"/public/home", "/public"}, method = RequestMethod.GET)
 	public String caricaHomepagePubblica(Model model)  {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		System.out.println(auth.getPrincipal());
-		
-		return "home";
+		return "redirect:/private";
 	}
 	
 	

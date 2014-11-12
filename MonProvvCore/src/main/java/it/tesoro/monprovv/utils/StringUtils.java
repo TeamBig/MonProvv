@@ -33,9 +33,9 @@ public class StringUtils {
 		if (matchFound && lastToken.length() >= 2
 				&& email.length() - 1 != lastToken.length()) {
 
-			return false;
-		} else {
 			return true;
+		} else {
+			return false;
 		}
 
 	}

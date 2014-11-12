@@ -143,5 +143,12 @@
 		<put-attribute name="content" value="/views/confermaAssegnazione.jsp" />
 		<put-attribute name="titolo" value="confermaAssegnazione.title" />
 	</definition>
+	
+	<definition name="motivazioneRifiuto" extends="template">
+		<put-attribute name="content" value="/views/motivazioneRifiuto.jsp" />
+		<put-attribute name="titolo" value="motivazioneRifiuto.title" />
+	</definition>
+	
+	
 
 </tiles-definitions>

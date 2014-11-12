@@ -149,6 +149,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				if ("Assegnazione".equals(condizione.getTarget())) {
 					target = gestioneSicurezzaFacade.recuperaAssegnazione((String)targetDomainObject);
 				}
+				
+				if ("Notifica".equals(condizione.getTarget())) {
+					target = gestioneSicurezzaFacade.recuperaNotifica((String)targetDomainObject);
+				}
 			}
 			
 			CustomContext ctx = new CustomContext(authentication, target);

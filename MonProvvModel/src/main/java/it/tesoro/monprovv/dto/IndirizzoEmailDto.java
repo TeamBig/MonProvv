@@ -2,6 +2,8 @@ package it.tesoro.monprovv.dto;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class IndirizzoEmailDto implements Serializable{
 	/**
 	 * 
@@ -20,6 +22,18 @@ public class IndirizzoEmailDto implements Serializable{
 		this.nome = nome;
 		this.cognome = cognome;
 		this.email = email;
+	}
+	
+	public String getDescrizione(){
+		String retval = "";
+		retval = StringUtils.isNotEmpty( this.nome )?this.nome + " ":"";
+		retval = retval + (StringUtils.isNotEmpty( this.cognome )?this.cognome + " ":"");
+		if( StringUtils.isEmpty( retval ) ) {
+			retval = this.email;
+		}else{
+			retval = retval + "(" + this.email + ")";
+		}
+		return retval;
 	}
 	
 	public String getNome() {

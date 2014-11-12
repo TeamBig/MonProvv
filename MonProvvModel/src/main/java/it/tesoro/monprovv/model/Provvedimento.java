@@ -166,7 +166,19 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	@Transient
 	private String motivazioneRichiesta;
+	
+	@Transient
+	private String oggettoSollecito;
+	
+	@Transient
+	private String testoSollecito;
+	
+	@Transient
+	private String idAssegnatarioSollecito;
 
+	@Transient
+	private String motivazioneRifiuto;
+	
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
 
@@ -393,6 +405,38 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	public void setProvvedimentiParentSelected(
 			String[] provvedimentiParentSelected) {
 		this.provvedimentiParentSelected = provvedimentiParentSelected;
+	}
+
+	public String getOggettoSollecito() {
+		return oggettoSollecito;
+	}
+
+	public void setOggettoSollecito(String oggettoSollecito) {
+		this.oggettoSollecito = oggettoSollecito;
+	}
+
+	public String getTestoSollecito() {
+		return testoSollecito;
+	}
+
+	public void setTestoSollecito(String testoSollecito) {
+		this.testoSollecito = testoSollecito;
+	}
+	
+	public String getIdAssegnatarioSollecito() {
+		return idAssegnatarioSollecito;
+	}
+
+	public void setIdAssegnatarioSollecito(String idAssegnatarioSollecito) {
+		this.idAssegnatarioSollecito = idAssegnatarioSollecito;
+	}
+
+	public String getMotivazioneRifiuto() {
+		return motivazioneRifiuto;
+	}
+
+	public void setMotivazioneRifiuto(String motivazioneRifiuto) {
+		this.motivazioneRifiuto = motivazioneRifiuto;
 	}
 
 	@Override

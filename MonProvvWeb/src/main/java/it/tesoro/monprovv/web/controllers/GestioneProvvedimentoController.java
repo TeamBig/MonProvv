@@ -4,12 +4,19 @@ import it.tesoro.monprovv.annotations.PagingAndSorting;
 import it.tesoro.monprovv.dto.AllegatoDto;
 import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
+import it.tesoro.monprovv.dto.IndirizzoEmailDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
+import it.tesoro.monprovv.dto.Mail;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.dto.SalvaENotificaDto;
+import it.tesoro.monprovv.dto.SollecitoDto;
+import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
+import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
+import it.tesoro.monprovv.model.EmailExtra;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
@@ -19,8 +26,11 @@ import it.tesoro.monprovv.model.Storico;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.service.MailService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
+import it.tesoro.monprovv.utils.SicurezzaUtils;
 import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.utils.ProvvedimentiUtil;
@@ -77,6 +87,9 @@ public class GestioneProvvedimentoController {
 
 	@Autowired
 	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
+	
+	@Autowired 
+	private GestioneUtenteFacade gestioneUtenteFacade;
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
@@ -205,6 +218,11 @@ public class GestioneProvvedimentoController {
 //		return retVal;
 //	}
 	
+	@RequestMapping(value = "/private/provvedimenti", method = RequestMethod.GET)
+	public String redirect() {
+		return "redirect:/private/provvedimenti/ricerca";
+	}
+	
 	// **************** modifica -> dettaglio provvedimento ******//
 	
 	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="modifica" )
@@ -221,10 +239,16 @@ public class GestioneProvvedimentoController {
 		return "redirect:/private/provvedimenti/ricerca/noteAllegatiProv?id="+id;
 	}
 	
-	// **************** annulla dettaglio provvedimento ******//
+	// **************** annulla / indietro dettaglio provvedimento ******//
 	
-	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="annulla" )
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params= "annulla")
 	public String gestioneAnnullaDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
+		
+		return "redirect:/private/provvedimenti/ricerca";
+	}
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params= "indietro" )
+	public String gestioneIndietroDettaglioProvv(@RequestParam(required = false) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) {
 		
 		return "redirect:/private/provvedimenti/ricerca";
 	}
@@ -258,6 +282,184 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoDettaglio";
 	}
 	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="inviaSollecito" )
+	public String gestioneSalvaENotifica(
+			@RequestParam(required = false) Integer id, 
+			Model model, 
+			@ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio){
+		
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		if( StringUtils.isEmpty(provvedimentoDettaglio.getOggettoSollecito()) || StringUtils.isEmpty(provvedimentoDettaglio.getTestoSollecito()) ){
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Sollecito non inviato, inserire sia l'oggetto che il testo del sollecito.", false);
+		}else{
+			SollecitoDto sollecitoDto = new SollecitoDto(provvedimentoDettaglio.getOggettoSollecito(), provvedimentoDettaglio.getTestoSollecito(), provvedimentoDettaglio.getIdAssegnatarioSollecito());
+			gestioneProvvedimentoFacade.inserisciInviaSolleciti( sollecitoDto );
+		}
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo.", false);
+		
+		return "provvedimentoDettaglio";
+		
+	}
+	
+	// **************** accettazione assegnazione ******//
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="accettaAssegnazione" )
+	public String accettazioneAssegnazione(@RequestParam(required = true) Integer id, @RequestParam(required = false) Integer idNotifica, 
+				Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) throws Exception {
+	
+		Provvedimento provvedimento = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		
+		Assegnazione assegnazione = SicurezzaUtils.assegnazioneCorrente(provvedimento.getAssegnazioneList());
+		if (assegnazione == null) {
+			throw new Exception("Impossibile determinare l'assegnazione");
+		}
+		Notifica notifica = null;
+		if (idNotifica == null) {
+			// recupera notifica
+			notifica = gestioneNotificaFacade.recuperaNotificaAssegnazione(assegnazione);
+		} else {
+			notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		}
+		
+		gestioneProvvedimentoFacade.aggiornaAssegnazione(assegnazione, notifica, true, null);
+		
+		
+		return dettaglio(model, id);
+	}
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="rifiutaAssegnazione" )
+	public String rifiutaAssegnazione(@RequestParam(required = true) Integer id, @RequestParam(required = false) Integer idNotifica, 
+				Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) throws Exception {
+	
+		Provvedimento provvedimento = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		
+		Assegnazione assegnazione = SicurezzaUtils.assegnazioneCorrente(provvedimento.getAssegnazioneList());
+		if (assegnazione == null) {
+			throw new Exception("Impossibile determinare l'assegnazione");
+		}
+		Notifica notifica = null;
+		if (idNotifica == null) {
+			// recupera notifica
+			notifica = gestioneNotificaFacade.recuperaNotificaAssegnazione(assegnazione);
+		} else {
+			notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		}
+		
+		gestioneProvvedimentoFacade.aggiornaAssegnazione(assegnazione, notifica, false, provvedimentoDettaglio.getMotivazioneRifiuto());
+		
+		return dettaglio(model, id);
+	}
+	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="fineLavorazione" )
+	public String fineLavorazione(@RequestParam(required = true) Integer id, Model model, @ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio) throws Exception {
+	
+		Provvedimento provvedimento = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		
+		Assegnazione assegnazione = SicurezzaUtils.assegnazioneCorrente(provvedimento.getAssegnazioneList());
+		if (assegnazione == null) {
+			throw new Exception("Impossibile determinare l'assegnazione");
+		}
+		
+		gestioneProvvedimentoFacade.aggiornaFineLavorazioneAssegnazione(assegnazione);
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Lavorazione del provvedimento completata.", false);
+		
+		return dettaglio(model, id);
+	}
+	
+	// *************************** SALVA E INVIA NOTIFICA *************************** //
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="salvaenotifica" )
+	public String gestioneSalvaENotifica(
+										RedirectAttributes redirectAttributes, 
+										@RequestParam(required = false) Integer id, 
+										Model model, 
+										@ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio,
+										@RequestParam(required = false) List<String> tokenfieldemail,
+										@RequestParam(required = false) String oggetto,
+										@RequestParam(required = false) String testo
+			) {
+		
+		
+		
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		gestioneProvvedimentoFacade.aggiornaProvvedimento(provvRec);
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		//Invio email
+		if( StringUtils.isNotEmpty( oggetto ) || StringUtils.isNotEmpty( testo ) ){
+			
+			
+			UtenteDto criteria = null;
+			EmailExtra emailExtra = null;
+			Mail mail = null;
+			for(String indirizzo: tokenfieldemail){
+				//Verifico che l'indizizzo email sia stato inserito correttamente
+				if(StringUtils.mailSyntaxCheck(indirizzo)){
+					mail = new Mail();
+					mail.setDestinatario(indirizzo);
+					mail.setSubject(oggetto);
+					mail.setContent(testo);
+					mail.setHtmlFormat(false);
+					
+					gestioneProvvedimentoFacade.invioMail( mail );
+					
+					criteria = new UtenteDto();
+					criteria.setEmail(indirizzo);
+
+					if(gestioneUtenteFacade.countEmailExtra(indirizzo)==0
+						&&	gestioneUtenteFacade.count(criteria)==0
+							){
+						emailExtra = new EmailExtra();
+						emailExtra.setEmailExtra(indirizzo);
+						gestioneUtenteFacade.inserisciEmailExtra(emailExtra);
+					}
+				}
+			}
+		}
+
+		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio e Notifica effettuati con successo.", false);
+		
+		return "redirect:/private/provvedimenti/ricerca";//"provvedimentoDettaglio";
+	}
+	
+	@RequestMapping(value={"/private/provvedimenti/ricerca/dettaglio/salvaeinvianotifica"}, method = RequestMethod.GET)
+	public String salvaeinvianotifica(Model model,@RequestParam(required = false) String id) {		
+		SalvaENotificaDto salvaenotifica = new SalvaENotificaDto();
+		salvaenotifica.setIdProvvedimento(id);
+		model.addAttribute("salvaenotifica", salvaenotifica);
+		
+		return "inviaNotifica";
+	}
+	
+	@RequestMapping(value= {"/private/provvedimenti/ricerca/autocomplateutentemail"}, method = RequestMethod.GET)
+	@ResponseBody
+	public List<IndirizzoEmailDto> autocomplateutentemail(@RequestParam("query") String query){
+		List<Utente> utenti = gestioneUtenteFacade.recuperaUtenti4Notifica(query);
+		List<IndirizzoEmailDto> retval = new ArrayList<IndirizzoEmailDto>();
+		
+		retval.add(new IndirizzoEmailDto(query, "", query));
+		
+		for(Utente tmp: utenti){
+			retval.add(new IndirizzoEmailDto(tmp.getNome(), tmp.getCognome(), tmp.getEmail()));
+		}
+		
+		List<EmailExtra> emailExtras = gestioneUtenteFacade.recuperaEmailExtra4Notifica(query);
+		for(EmailExtra tmp: emailExtras){
+			retval.add(new IndirizzoEmailDto("", "", tmp.getEmailExtra()));
+		}
+		
+		return retval;
+	}
+	
+	// *************************** FINE SALVA E INVIA NOTIFICA *************************** //
+	
 	// **************** richiesta Assegnazione ******//
 	
 	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params = "richiediAssegnazione")
@@ -285,6 +487,41 @@ public class GestioneProvvedimentoController {
 		
 		return "confermaAssegnazione";
 	}
+	
+	@RequestMapping(value = "/private/provvedimenti/confermaassegnazione", method = RequestMethod.POST, params = "accettaRichiestaAssegnazione")
+	//@PreAuthorize("hasPermission(#idAss, 'confermaAssegnazione')")	
+	public String confermaRichiestaAssegnazione(@RequestParam(required = true, value = "id") Integer idAss, @RequestParam(required = true, value = "idNotifica") Integer idNotifica, Model model) {
+		
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.recuperaAssegnazioneById(idAss);
+		Notifica notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		
+		model.addAttribute("assegnazione", assegnazione);
+		model.addAttribute("notifica", notifica);
+		
+		gestioneProvvedimentoFacade.aggiornaRichiestaAssegnazione(assegnazione, true, notifica);
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Operazione conclusa con successo.", false);
+		
+		return "confermaAssegnazione";
+	}	
+	
+	@RequestMapping(value = "/private/provvedimenti/confermaassegnazione", method = RequestMethod.POST, params = "rifiutaRichiestaAssegnazione")
+	//@PreAuthorize("hasPermission(#idAss, 'confermaAssegnazione')")	
+	public String rifiutaRichiestaAssegnazione(@RequestParam(required = true, value = "id") Integer idAss, @RequestParam(required = true, value = "idNotifica") Integer idNotifica, Model model) {
+		
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.recuperaAssegnazioneById(idAss);
+		Notifica notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		
+		model.addAttribute("assegnazione", assegnazione);
+		model.addAttribute("notifica", notifica);
+		
+		gestioneProvvedimentoFacade.aggiornaRichiestaAssegnazione(assegnazione, false, notifica);
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Operazione conclusa con successo.", false);
+		
+		return "confermaAssegnazione";
+	}	
+	
 	
 	//***** MODIFICA PROVVEDIMENTO ******//
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/modifica" } , method = RequestMethod.GET)
@@ -574,6 +811,14 @@ public class GestioneProvvedimentoController {
 		model.addAttribute("listaStorico", listaStorico);
 		return "cronologiaModifiche";
 	}
+	
+	@RequestMapping(value={"/private/provvedimenti/motivazionerifiuto"}, method = RequestMethod.GET)
+	public String getCronologiaAssegnatario(@RequestParam(required = true, value = "id") Integer idAssegnazione, Model model) {		
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.recuperaAssegnazioneById(idAssegnazione);
+		model.addAttribute("assegnazione", assegnazione);
+		return "motivazioneRifiuto";
+	}
+	
 	
 	@ModelAttribute("provvedimentoInserisci")
 	private InserisciProvvedimentoDto initDtoInserisciProv(){

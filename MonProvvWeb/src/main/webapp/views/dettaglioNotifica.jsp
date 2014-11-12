@@ -6,7 +6,7 @@
 <div class="container" id="risultatiRicerca">
 	<div class="row">
 		<div class="span12">
-			<h3 class="text-left underline"><span>Dettaglio notifica</span></h3>
+			<h3 class="text-left underline"><span>Dettaglio notifica ${notifica.tipoNotifica == 'O' ? "operativa" : "informativa"}</span></h3>
 		</div>
 	</div>
 	<div class="row">
@@ -28,10 +28,29 @@
 				<c:if test="${notifica.tipoNotifica == 'O'}">
 					<div class="control-group">
 						<div class="controls">
-							<spring:url value="/private/notifiche/gestione?id=${notifica.id}" var="gestioneNotifica"  />
-							<a href="${gestioneNotifica}">Clicca qui</a> per gestire la richiesta
+							<c:choose>
+								<c:when test="${notifica.flagLettura == 'S'}">
+									<span>Richiesta gestita da ${notifica.utenteOperatore.nome}&nbsp;${notifica.utenteOperatore.cognome}</span>
+								</c:when>
+								<c:otherwise>
+									<spring:url value="/private/notifiche/gestione?id=${notifica.id}" var="gestioneNotifica"  />
+									<a href="${gestioneNotifica}">Clicca qui</a> per gestire la richiesta
+								</c:otherwise>
+							</c:choose>
+							
 						</div>
 					</div>		
+				</c:if>
+				
+				<c:if test="${notifica.tipoNotifica == 'I'}" >
+					<div class="control-group">
+						<div class="form-actions pull-right">
+							<spring:url value="/private/notifiche/daleggere?id={id}" var="url_daleggere" >
+								<spring:param name="id" value="${notifica.id}" />
+							</spring:url>
+							<a class="btn" href="${url_daleggere}">Segna come da leggere&nbsp;<i class="icon-eye-open"></i></a>
+						</div>
+					</div>
 				</c:if>
 			</div>	
 		</div>

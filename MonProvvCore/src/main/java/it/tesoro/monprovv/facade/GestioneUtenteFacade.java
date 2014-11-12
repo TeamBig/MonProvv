@@ -2,11 +2,13 @@ package it.tesoro.monprovv.facade;
 
 
 
+import it.tesoro.monprovv.dao.EmailExtraDAO;
 import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.UtenteAstageDAO;
 import it.tesoro.monprovv.dao.UtenteDAO;
 import it.tesoro.monprovv.dto.IdDescrizioneDto;
 import it.tesoro.monprovv.dto.UtenteDto;
+import it.tesoro.monprovv.model.EmailExtra;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.model.UtenteAstage;
@@ -32,6 +34,9 @@ public class GestioneUtenteFacade {
 	
 	@Autowired
 	private UtenteAstageDAO utenteAstageDAO;
+	
+	@Autowired 
+	private EmailExtraDAO emailExtraDAO;
 
 	public Utente recuperaUtenteById(Integer id) {
 		Utente utente = null;
@@ -56,17 +61,42 @@ public class GestioneUtenteFacade {
 		return utenteDAO.findByPattern(searchPatternObjects, page, order);
 	}
 	
-	public List<Utente> recuperaUtenteiAttivi(String param) {
+	public List<Utente> recuperaUtenti4Notifica(String param) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("param", "%"+param.toUpperCase()+"%");
 		String hql = "from Utente u where upper("
-				+ "concat(u.cognome , ' ' , u.nome , ' ' , u.cognome , ' ' , u.codiceFiscale, ' ' , u.email)"
+				+ "concat(u.cognome , ' ' , u.nome , ' ' , u.cognome , ' ' , u.email)"
 				+ ") like :param and u.flagAttivo = 'S' "
 				+ "order by cognome, nome asc";
 		List<Utente> utenti = utenteDAO.findByHqlQueryNumeroRecord(hql, params, 10);
 		
 		return utenti;
 		
+	}
+	
+	public List<EmailExtra> recuperaEmailExtra4Notifica(String param) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("param", "%"+param.toUpperCase()+"%");
+		String hql = "from EmailExtra u where upper("
+				+ "u.emailExtra"
+				+ ") like :param and u.emailExtra not in (select s.email from Utente s where s.flagAttivo = 'S') "
+				+ "order by emailExtra asc";
+		return emailExtraDAO.findByHqlQueryNumeroRecord(hql, params, 10);
+	}
+	
+	public int countEmailExtra(String param) {
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		SearchPatternUtil pattern = new SearchPatternUtil();
+		pattern.setNomeCampo( "emailExtra" );
+		pattern.setPattern(param);
+		pattern.setPreponi(false);
+		pattern.setPostponi(false);
+		searchPatternObjects.add(pattern);
+		return emailExtraDAO.countByPattern(searchPatternObjects);
+	}
+	
+	public void inserisciEmailExtra(EmailExtra emailExtra) {
+		emailExtraDAO.save(emailExtra);
 	}
 
 	private List<SearchPatternUtil> popolaCriteria(UtenteDto criteria) {
@@ -94,6 +124,14 @@ public class GestioneUtenteFacade {
 			pattern.setPattern(criteria.getCodiceFiscale());
 			pattern.setPreponi(true);
 			pattern.setPostponi(true);
+			searchPatternObjects.add(pattern);
+		}
+		if(criteria.getEmail() != null){
+			pattern = new SearchPatternUtil();
+			pattern.setNomeCampo( "email" );
+			pattern.setPattern(criteria.getEmail());
+			pattern.setPreponi(false);
+			pattern.setPostponi(false);
 			searchPatternObjects.add(pattern);
 		}
 		pattern = new SearchPatternUtil();
