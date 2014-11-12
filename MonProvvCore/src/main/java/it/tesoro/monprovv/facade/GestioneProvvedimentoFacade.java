@@ -13,7 +13,9 @@ import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
+import it.tesoro.monprovv.dto.Mail;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
@@ -26,6 +28,8 @@ import it.tesoro.monprovv.model.Storico;
 import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
+import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.service.MailService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
@@ -78,6 +82,9 @@ public class GestioneProvvedimentoFacade {
 	
 	@Autowired 
 	private NotificaDAO notificaDAO;
+	
+	@Autowired
+	private MailService mailService;
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
@@ -407,5 +414,22 @@ public class GestioneProvvedimentoFacade {
 	
 	public Assegnazione recuperaAssegnazioneById(Integer id) {
 		return assegnazioneDAO.findById(id);
+	}
+
+	public void inserisciInviaSolleciti(SollecitoDto sollecitoDto) {
+		Assegnazione assegnazione = assegnazioneDAO.findById( Integer.valueOf( sollecitoDto.getIdAssegnatarioSollecito() ) );
+		Mail mail = new Mail();
+		mail.setSubject(sollecitoDto.getOggettoSollecito());
+		mail.setContent(sollecitoDto.getTestoSollecito());
+		mail.setHtmlFormat(false);
+		for( Utente tmp : assegnazione.getOrgano().getUtenteList() ){
+			mail.setDestinatario(tmp.getEmail());
+			mailService.eseguiInvioMail(mail);
+		}
+	}
+
+	public void invioMail(Mail mail) {
+		mailService.eseguiInvioMail(mail);
+		
 	}
 }

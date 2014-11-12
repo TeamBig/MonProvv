@@ -235,7 +235,7 @@
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'sollecitoVisible')">
 									<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 										<c:if test="${(assegnazione.stato.codice ne 'RIF')}">
-											<a href="#modalSollecito" role="button" data-toggle="modal"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
+											<a href="#modalSollecito" role="button" data-toggle="modal" id="anchorModalSollecito"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
 										</c:if>
 									</display:column>
 								</security:authorize>
@@ -313,6 +313,7 @@
 		</div>
 	</div>
 	
+	<!--  finestra modale invio notifiche-->
 	<div id="modalSalvaInviaNotifica" class="modal hide fade" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
@@ -327,7 +328,35 @@
 			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaNotificaModal">Invia notifica <i class="icon-send"></i></button>
 		</div>
 	</div>
-<!-- fine finestra modale -->
+	
+	<!--  finestra modale invio sollecito-->
+	<springform:hidden path="idAssegnatarioSollecito" id="idAssegnatarioSollecito" />
+	<div id="modalSollecito" class="modal hide fade" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Invia sollecito</h3>
+		</div>
+		<div class="modal-body">
+			<div class="control-group">
+				<label class="control-label" for="oggettoSollecito">Oggetto</label>
+				<div class="controls">
+					<springform:input path="oggettoSollecito" cssClass="input-xlarge" id="oggettoSollecito" />
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="testoSollecito">Testo</label>
+				<div class="controls">
+				<springform:textarea path="testoSollecito" cssClass="input-xlarge" rows="10" id="testoSollecito" />
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true" id="inviaSollecitoModal">Invia sollecito <i class="icon-send"></i></button>
+		</div>
+	</div>
+	<!-- fine finestra modale -->
 
 	
 	<!--  modal richiesta assegnazione  -->

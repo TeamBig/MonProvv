@@ -9,6 +9,7 @@ import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.Mail;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.dto.SalvaENotificaDto;
+import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
@@ -88,9 +89,6 @@ public class GestioneProvvedimentoController {
 	
 	@Autowired 
 	private GestioneUtenteFacade gestioneUtenteFacade;
-	
-	@Autowired
-	private MailService mailService;
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
 	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
@@ -272,6 +270,29 @@ public class GestioneProvvedimentoController {
 		return "provvedimentoDettaglio";
 	}
 	
+	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="inviaSollecito" )
+	public String gestioneSalvaENotifica(
+			@RequestParam(required = false) Integer id, 
+			Model model, 
+			@ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio){
+		
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
+		
+		if( StringUtils.isEmpty(provvedimentoDettaglio.getOggettoSollecito()) || StringUtils.isEmpty(provvedimentoDettaglio.getTestoSollecito()) ){
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Sollecito non inviato, inserire sia l'oggetto che il testo del sollecito.", false);
+		}else{
+			SollecitoDto sollecitoDto = new SollecitoDto(provvedimentoDettaglio.getOggettoSollecito(), provvedimentoDettaglio.getTestoSollecito(), provvedimentoDettaglio.getIdAssegnatarioSollecito());
+			gestioneProvvedimentoFacade.inserisciInviaSolleciti( sollecitoDto );
+		}
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo.", false);
+		
+		return "provvedimentoDettaglio";
+		
+	}
 	// *************************** SALVA E INVIA NOTIFICA *************************** //
 	@RequestMapping(value = "/private/provvedimenti/ricerca/dettaglio", method = RequestMethod.POST, params="salvaenotifica" )
 	public String gestioneSalvaENotifica(
@@ -294,6 +315,8 @@ public class GestioneProvvedimentoController {
 		
 		//Invio email
 		if( StringUtils.isNotEmpty( oggetto ) || StringUtils.isNotEmpty( testo ) ){
+			
+			
 			UtenteDto criteria = null;
 			EmailExtra emailExtra = null;
 			Mail mail = null;
@@ -306,11 +329,11 @@ public class GestioneProvvedimentoController {
 					mail.setContent(testo);
 					mail.setHtmlFormat(false);
 					
-					mailService.eseguiInvioMail(mail);
+					gestioneProvvedimentoFacade.invioMail( mail );
+					
 					criteria = new UtenteDto();
 					criteria.setEmail(indirizzo);
-					
-					
+
 					if(gestioneUtenteFacade.countEmailExtra(indirizzo)==0
 						&&	gestioneUtenteFacade.count(criteria)==0
 							){

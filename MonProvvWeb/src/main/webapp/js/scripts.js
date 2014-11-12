@@ -384,6 +384,24 @@ $(document).ready(function() {
     	}
     });
     
+    //GESTIONE SOLLECITO
+    $(document).on('click', '#anchorModalSollecito', function() { 
+    	var idAssegnatarioSollecito = $(this).parent().siblings(":first").text(); 
+    	 $('#idAssegnatarioSollecito').val(idAssegnatarioSollecito);
+    });
+    
+    
+    
+    $('#inviaSollecitoModal').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var oForm = $(this).closest("form");
+		//oForm.append("<input type='hidden' name='idAssegnatarioSollecito' value='"+$("#idAssegnatarioSollecito").val()+"' />"); 
+		//oForm.append("<input type='hidden' name='oggettoSollecito' value='"+$("#oggettoSollecito").val()+"' />"); 
+		//oForm.append("<input type='hidden' name='testoSollecito' value='"+$("#testoSollecito").val()+"' />"); 
+		oForm.append("<input type='hidden' name='inviaSollecito' />");
+		oForm.submit();
+	});
     
     // SALVA E INVIA NOTIFICHE PROVVEDIMENTO
     
@@ -403,35 +421,15 @@ $(document).ready(function() {
     	oForm.submit();
     });
     
-    
     $(document).on('click', '#tokenfieldemail', function() {
 	    var element = $(this);
 	    element.tokenfieldemail(element);
-    
     });    
     
     $.fn.tokenfieldemail = function (element) {
     	element.tagsinput({
         	itemValue: 'email',
-        	itemText: function(item) {
-        		var text = "";
-        		if( item.cognome != "" ){
-        			text = item.cognome + " ";
-        		}
-        		
-        		if( item.nome != "" ){
-        			text = text + item.nome + " ";
-        		}
-        		
-        		if( item.email != "" ){
-        			if( text != "" ){
-        				text = text + "(" + item.email + ")";
-        			}else{
-        				text = item.email;
-        			}
-        		}
-        		return text;
-        	},
+        	itemText: 'descrizione',
         	freeInput: true,
         	allowDuplicates: false,
         	trimValue: true,
