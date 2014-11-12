@@ -219,8 +219,11 @@
 								</display:column>
 								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
-										<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
-										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensioneAsText})</div>
+										<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> 
+										<c:if test="${not empty allegato.dimensione }">
+											(<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>)
+										</c:if></div>
 									</c:forEach>
 								</display:column>
 								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />

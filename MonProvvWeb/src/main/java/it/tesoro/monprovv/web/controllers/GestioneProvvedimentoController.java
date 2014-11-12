@@ -27,7 +27,6 @@ import it.tesoro.monprovv.model.TipoAtto;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.model.Utente;
-import it.tesoro.monprovv.service.MailService;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.Constants;
 import it.tesoro.monprovv.utils.StringUtils;
@@ -431,8 +430,7 @@ public class GestioneProvvedimentoController {
 		return retVal;
 	}
 
-	private void caricaTabelleInferiore(Model model,
-			Provvedimento provvedimentoModifica) {
+	private void caricaTabelleInferiore(Model model, Provvedimento provvedimentoModifica) {
 		List<Allegato> listaAllegati = provvedimentoModifica.getAllegatiList();
 		model.addAttribute("listaAllegati", listaAllegati);
 		List<Assegnazione> listaAssegnazione = provvedimentoModifica.getAssegnazioneList();

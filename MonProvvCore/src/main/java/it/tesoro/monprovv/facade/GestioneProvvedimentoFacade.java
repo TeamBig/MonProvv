@@ -3,6 +3,7 @@ package it.tesoro.monprovv.facade;
 import it.tesoro.monprovv.dao.AllegatoDAO;
 import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.GovernoDAO;
+import it.tesoro.monprovv.dao.NotaDAO;
 import it.tesoro.monprovv.dao.NotificaDAO;
 import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.ProvvedimentiParentDAO;
@@ -12,6 +13,7 @@ import it.tesoro.monprovv.dao.StoricoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
+import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.Mail;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
@@ -19,6 +21,7 @@ import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Governo;
+import it.tesoro.monprovv.model.Nota;
 import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.ProvvedimentiParent;
@@ -85,6 +88,9 @@ public class GestioneProvvedimentoFacade {
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private NotaDAO notaDAO;
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
@@ -231,6 +237,18 @@ public class GestioneProvvedimentoFacade {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("id", allegatoId);
 		String hql = "from Allegato u where u.id = :id and u.provvedimento is null";
+		List<Allegato> allegati = allegatoDAO.findByHqlQueryNumeroRecord(hql, params, 1);
+		for(Allegato tmp: allegati){
+			allegato = tmp;
+		}
+		return allegato;
+	}
+	
+	public Allegato getAllegatoByIdnoAssegnazione(Integer allegatoId) {
+		Allegato allegato = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("id", allegatoId);
+		String hql = "from Allegato u where u.id = :id and u.assegnazione is null";
 		List<Allegato> allegati = allegatoDAO.findByHqlQueryNumeroRecord(hql, params, 1);
 		for(Allegato tmp: allegati){
 			allegato = tmp;
@@ -432,4 +450,48 @@ public class GestioneProvvedimentoFacade {
 		mailService.eseguiInvioMail(mail);
 		
 	}
+
+	public Assegnazione recuperaAssegnazioneByProvvOrgano(AssegnazioneDto assDto) {
+		Assegnazione retval = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("idOrgano", assDto.getIdOrgano());
+		params.put("idProvvedimento", assDto.getIdProvvedimento());
+		
+		String hql = "from Assegnazione u where u.organo.id = :idOrgano and u.provvedimento.id = :idProvvedimento";
+		List<Assegnazione> assegnazioni = assegnazioneDAO.findByHqlQuery(hql, params);                    
+		for(Assegnazione tmp: assegnazioni){
+			retval = tmp;
+		}
+		return retval;
+	}
+	
+	
+	public Nota recuperaNotaByAssegnazione(Assegnazione assegnazione){
+		Nota retval = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("idAssegnazione", assegnazione.getId());
+		
+		String hql = "from Nota u where u.assegnazione.id = :idAssegnazione";
+		List<Nota> note = notaDAO.findByHqlQuery(hql, params);                    
+		for(Nota tmp: note){
+			retval = tmp;
+		}
+		return retval;
+	}
+	
+	public Nota recuperaNotaById(Integer id) {
+		return notaDAO.findById(id);
+	}
+
+	public Nota aggiornaNota(Integer idNota, String testoNota) {
+		Nota nota = recuperaNotaById(idNota);
+		nota.setTesto(notaDAO.createClob(testoNota));
+		return notaDAO.merge(nota);
+	}
+
+	public void inserisciNota(Nota nota, String testoNota) {
+		nota.setTesto(notaDAO.createClob(testoNota));
+		notaDAO.save(nota);
+	}
+	
 }
