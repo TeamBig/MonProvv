@@ -140,16 +140,24 @@ body {
 	border-bottom: 1px solid #ccc;
 }
 
-.header.container > .row:first-child {
+.header.container > #row1 {
+	position: relative;
+}
+
+.header.container > #row2 {
 	height: 140px;
 }
 
 .utente {
+	position: absolute;
+	right: 0px;
 	display: block;
 	line-height: 30px;
 	background-color: #004383;
 	color: #fff;
 	padding-left: 10px;
+	text-align: right;
+	padding-right: 10px;
 }
 
 .utente > a, .utente > a:visited {
@@ -276,7 +284,7 @@ i.color-assegnatario {
 }
 
 .img_logomef {
-	margin: 1em 2em 0px 0px;
+	margin: 3em 2em 0px 0px;
 }
 
 a.download {
@@ -343,7 +351,7 @@ NOTIFICHE
 	text-decoration:none;
 }
 
-.utente .icon-stack {
+.utente #notifBadge {
 	color: #cb4437; 
 	text-decoration: none; 
 	position: absolute; 
@@ -377,4 +385,10 @@ NOTIFICHE
   width: 75%;
   line-height: 22px;
   cursor: text;
+}
+
+.form-actions.form-actions-notifica {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border-top: 0px;
 }

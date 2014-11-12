@@ -44,6 +44,8 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'accettazione')" var="canAccettazione" />
 
+<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')" var="canLavorazione" />
+
 <springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="" method="POST">
 	<div class="container inserimento">
 		<div class="row">
@@ -209,11 +211,17 @@
 								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
+									      <c:when test="${assegnazione.stato.codice eq 'FLA'}">
+									      	<i class="icon-thumbs-up-alt icon-large"></i>
+									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
-									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
+										  	<spring:url var="url_popoverrifiuto" value="/private/provvedimenti/motivazionerifiuto?id={id}">
+										  		<spring:param name="id" value="${assegnazione.id}" />
+										  	</spring:url>
+									      	<a href="${url_popoverrifiuto}" class="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
 									      </c:when>
 									</c:choose>
 								</display:column>
@@ -264,17 +272,17 @@
 							<div class="form-actions pull-right">
 								<c:if test="${ canModificaChiusuraLavori }">
 									<button type="button" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="submit" class="btn" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
-								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')">
-									<button type="submit" class="btn btn-primary" id="noteAllegatiProvvedimento" name="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
-									<button type="submit" class="btn" id="fineLavorazioneProvvedimento" name="fineLavorazioneProvvedimento">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
-									<!-- <button type="button" class="btn" id="indietro" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button> -->								
-								</security:authorize>
-
+								<c:if test="${ canLavorazione }">
+									<button type="submit" class="btn btn-primary" name="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
+									<button type="submit" class="btn" name="fineLavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
+									<button type="submit" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
+								</c:if>
+								
 								<c:if test="${ canAccettazione }">
 									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
-									<button type="button" class="btn" name="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
-									<!-- <button type="button" class="btn" name="annulla">Indietro&nbsp;<i class="icon-arrow-left"></i></button> -->
+									<button type="button" class="btn" id="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
 								</c:if>
 
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
@@ -284,13 +292,17 @@
 								</security:authorize>
 							
 								<c:if test="${!canAccettazione and canModificaStato }">
-									<button type="submit" class="btn btn-primary" id="salvaDettaglio" name="salvaDettaglio">Salva &nbsp;<i class="icon-save"></i></button>
-									<!-- <button type="submit" class="btn" id="annullaModificaProvvedimento" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button> -->
+									<button type="submit" class="btn btn-primary" name="salvaDettaglio">Salva &nbsp;<i class="icon-save"></i></button>
+									<button type="submit" class="btn" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'modificaProvvedimento')">
-									<button type="submit" class="btn" id="modificaProvvedimento" name="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+									<button type="submit" class="btn btn-primary" name="modifica">Modifica &nbsp;<i class="icon-edit"></i></button>
+									<button type="submit" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
 								</security:authorize>
-								<button type="submit" class="btn" id="annullaModificaProvvedimento" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
+
+								<c:if test="${ !canLavorazione and !canModificaStato and !canAccettazione and !canModificaChiusuraLavori}">
+									<button type="submit" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
+								</c:if>								
 							</div>
 						</div>
 					</div>
@@ -305,7 +317,7 @@
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
+				aria-hidden="true">&#215;</button>
 			<h3 id="myModalLabel">Cronologia modifiche</h3>
 		</div>
 		<div class="modal-body">
@@ -321,7 +333,7 @@
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
+				aria-hidden="true">&#215;</button>
 			<h3 id="myModalLabel">Invia notifica</h3>
 		</div>
 		<div class="modal-body">
@@ -384,7 +396,27 @@
 	</div>
 	<!-- fine  modal richiesta assegnazione  -->
 	
-	
+	<!--  modal rifiuto assegnazione  -->
+	<div id="modalRifiutoAssegnazione" class="modal hide fade" tabindex="-1" role="dialog">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&#215;</button>
+			<h3>Rifiuto assegnazione</h3>
+		</div>
+		<div class="modal-body">
+			<div class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label" for="art">Motivazione</label>
+					<div class="controls">
+						<springform:textarea path="motivazioneRifiuto" class="input-xlarge" rows="10" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" id="rifiutoAssegnazioneModal" >Invia&nbsp;<i class="icon-location-arrow"></i></button>
+		</div>
+	</div>
+	<!-- fine  modal rifiuto assegnazione  -->
 	
 	
 </springform:form>

@@ -99,7 +99,7 @@
 					<div class="control-group">
 						<label class="control-label" for="collNormattiva">${collNormattivaHeader}</label>
 						<div class="controls">
-							<springform:input path="collNormattiva" cssClass="input-xlarge" disabled="true"/>
+							<springform:input path="collNormattiva" cssClass="input-xxlarge" disabled="true"/><a href="#" id="linkNormattiva">Apri</a>
 						</div>
 					</div>
 					<div class="control-group">
