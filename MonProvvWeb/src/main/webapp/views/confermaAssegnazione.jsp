@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <div class="container" id="risultatiRicerca">
@@ -27,7 +28,7 @@
 				<div class="control-group">
 					<label class="control-label">Titolo/Oggetto</label>
 					<div class="controls">
-						<span>${assegnazione.provvedimento.oggetto}</span>
+						<span>${assegnazione.provvedimento.oggettoAsText}</span>
 					</div>
 				</div>				
 				<div class="control-group">
@@ -46,7 +47,7 @@
 				<div class="control-group">
 					<label class="control-label">Motivazione richiesta</label>
 					<div class="controls">
-						<span>${assegnazione.motivazioneRichiesta}</span>
+						<span>${assegnazione.motivazioneRichiestaAsText}</span>
 					</div>
 				</div>		
 				
@@ -54,21 +55,25 @@
 			</div>	
 		</div>
 	</div>
-	<div class="row">
+	<security:authorize access="hasPermission(#notifica, 'gestioneNotificaOperativa')">
+		<div class="row">
 			<div class="span12">
 				<div class="form-horizontal">
 					<div class="control-group">
 						<div class="form-actions pull-right">
-							<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
-									<button type="submit" class="btn btn-primary" name="accettaRichiestaAssegnazione">Accetta&nbsp;<i class="icon-ok"></i></button>
-									<button type="button" class="btn" name="rifiutaRichiestaAssegnazione">Rifiuta&nbsp;<i class="icon-remove"></i></button> 
-							</security:authorize>
+							
+							<springform:form modelAttribute="assegnazione"> 
+								<button type="submit" class="btn btn-primary" name="accettaRichiestaAssegnazione">Accetta&nbsp;<i class="icon-ok"></i></button>
+								<button type="button" class="btn" name="rifiutaRichiestaAssegnazione">Rifiuta&nbsp;<i class="icon-remove"></i></button>
+							</springform:form> 
+
+						
 
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>	
-	
+	</security:authorize>	
 
 </div>

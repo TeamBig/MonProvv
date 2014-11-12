@@ -39,10 +39,23 @@ public class GestioneNotificheController {
 	}
 	
 	@RequestMapping(value = "/private/notifiche/elencononlette", method = RequestMethod.GET)
-	public String elencoNotifiche(Model model) {
+	public String elencoNotificheNonLette(Model model) {
 		
 		model.addAttribute("notifiche", gestioneNotificaFacade.recuperaNotifichePersonaliNonLette());
 		model.addAttribute("soloNonLette", "S");
+		return "notifiche";
+	}
+	
+	@RequestMapping(value = "/private/notifiche", method = RequestMethod.GET)
+	public String redirectNotifiche(Model model) {
+		
+		return "redirect:/private/notifiche/elenco";
+	}
+	
+	@RequestMapping(value = "/private/notifiche/elenco", method = RequestMethod.GET)
+	public String elencoNotifiche(Model model) {
+		
+		model.addAttribute("notifiche", gestioneNotificaFacade.recuperaNotifichePersonali());
 		return "notifiche";
 	}
 	
@@ -54,7 +67,7 @@ public class GestioneNotificheController {
 		
 		if (notifica.getTipoNotifica().equals(Notifica.INFORMATIVA)) {
 			// contrassegno come già letta
-			notifica.setFlagLettura("S");
+			notifica.setFlagLettura(Notifica.LETTA);
 			
 			gestioneNotificaFacade.aggiornaNotifica(notifica);
 		}
@@ -82,8 +95,18 @@ public class GestioneNotificheController {
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Errore nella generazione della URI", false);
 			return "dettaglioNotifica";
 		}
+	}
+	
+	@RequestMapping(value = "/private/notifiche/daleggere", method = RequestMethod.GET)
+	public String segnaDaLeggere(@RequestParam(value = "id", required = true) Integer idNotifica, 
+			Model model) {
 		
-		
+		Notifica notifica = gestioneNotificaFacade.recuperaNotifica(idNotifica);
+		if (notifica.getTipoNotifica().equals(Notifica.INFORMATIVA)) {
+			notifica.setFlagLettura(Notifica.NON_LETTA);
+			gestioneNotificaFacade.aggiornaNotifica(notifica);
+		}
 
+		return "redirect:/private/notifiche/elenco";
 	}
 }

@@ -5,6 +5,7 @@ import it.tesoro.monprovv.dao.AssegnazioneDAO;
 import it.tesoro.monprovv.dao.CondizioneDAO;
 import it.tesoro.monprovv.dao.FunzioneDAO;
 import it.tesoro.monprovv.dao.MenuDAO;
+import it.tesoro.monprovv.dao.NotificaDAO;
 import it.tesoro.monprovv.dao.ProvvedimentoDAO;
 import it.tesoro.monprovv.dao.RuoloDAO;
 import it.tesoro.monprovv.dao.RuoloFunzioneDAO;
@@ -15,6 +16,7 @@ import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Condizione;
 import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Menu;
+import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloFunzione;
@@ -67,6 +69,9 @@ public class GestioneSicurezzaFacade {
 	
 	@Autowired 
 	private ProvvedimentoDAO provvedimentoDAO;
+
+	@Autowired 
+	private NotificaDAO notificaDAO;	
 	
 	@Autowired 
 	private CacheService cacheService;
@@ -216,4 +221,9 @@ public class GestioneSicurezzaFacade {
 		return assegnazioneDAO.findById(Integer.parseInt(id));
 	}
 
+	public Notifica recuperaNotifica(String id) {
+		return notificaDAO.findById(Integer.parseInt(id));
+	}
+
+	
 }

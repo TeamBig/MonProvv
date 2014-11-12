@@ -9,18 +9,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 @Component("notificaDAO")
 public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 
-	private final static String HQL_NOTIFICHE_PER_UTENTE = "from Notifica as n where n.utenteDestinatario.id = :idUtenteDestinatario or n.organoDestinatario.id = :idOrganoDestinatario ";
+	private final static String HQL_NOTIFICHE_PER_UTENTE = "from Notifica as n where (n.utenteDestinatario.id = :idUtenteDestinatario or n.organoDestinatario.id = :idOrganoDestinatario) ";
 	
 	public long countNonLetteByUtente(Utente utente) {
+		
+		String hql = HQL_NOTIFICHE_PER_UTENTE + " and n.flagLettura = 'N'";
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("idUtenteDestinatario", utente.getId());
 		params.put("idOrganoDestinatario", utente.getOrgano().getId());
-		return countByHqlQuery(HQL_NOTIFICHE_PER_UTENTE, params);
+		return countByHqlQuery(hql, params);
 	}
 	
 	
@@ -31,11 +34,31 @@ public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 			hql += " and n.flagLettura = 'N'";
 		}
 		
+		hql += " order by n.dataInserimento desc";
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("idUtenteDestinatario", utente.getId());
 		params.put("idOrganoDestinatario", utente.getOrgano().getId());
 		
 		return findByHqlQuery(hql, params);
+	}
+	
+	public Notifica findByAssegnazione(Integer idProvvedimento, Integer idOrganoDestinatario) {
+		// url /private/provvedimenti/ricerca/dettaglio?id=3
+		
+		
+		String hql = "from Notifica as n where n.flagLettura = 'N' and n.tipoNotifica = 'O' and n.linkOperazione = :linkOperazione and n.organoDestinatario.id = :idOrganoDestinatario";
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("linkOperazione", "/private/provvedimenti/ricerca/dettaglio?id=" + idProvvedimento);
+		params.put("idOrganoDestinatario", idOrganoDestinatario);
+		List<Notifica> result = findByHqlQuery(hql, params);
+		
+		if (!CollectionUtils.isEmpty(result)) {
+			return result.get(0);
+		}
+		
+		return null;
 	}
 	
 }

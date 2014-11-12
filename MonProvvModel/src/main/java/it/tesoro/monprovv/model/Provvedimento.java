@@ -181,6 +181,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	
 	@Transient
 	private Integer idNotaAssegnazione;
+	
+	@Transient
+	private String motivazioneRifiuto;
 
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
@@ -448,6 +451,14 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setIdNotaAssegnazione(Integer idNotaAssegnazione) {
 		this.idNotaAssegnazione = idNotaAssegnazione;
+	}
+	
+	public String getMotivazioneRifiuto() {
+		return motivazioneRifiuto;
+	}
+
+	public void setMotivazioneRifiuto(String motivazioneRifiuto) {
+		this.motivazioneRifiuto = motivazioneRifiuto;
 	}
 
 	@Override

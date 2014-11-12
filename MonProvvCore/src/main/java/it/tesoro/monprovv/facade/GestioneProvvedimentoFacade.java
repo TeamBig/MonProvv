@@ -13,6 +13,7 @@ import it.tesoro.monprovv.dao.StoricoDAO;
 import it.tesoro.monprovv.dao.TipoAttoDAO;
 import it.tesoro.monprovv.dao.TipoProvvDaAdottareDAO;
 import it.tesoro.monprovv.dao.TipoProvvedimentoDAO;
+import it.tesoro.monprovv.dao.UtenteDAO;
 import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.Mail;
@@ -92,9 +93,12 @@ public class GestioneProvvedimentoFacade {
 	@Autowired
 	private NotaDAO notaDAO;
 	
+	@Autowired
+	private UtenteDAO utenteDAO;
+	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
-		order.add("descrizione");
+		order.add("id");
 		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
 		SearchPatternUtil pattern = new SearchPatternUtil("tipo","P",true,true);
 		searchPatternObjects.add(pattern);
@@ -269,6 +273,12 @@ public class GestioneProvvedimentoFacade {
 
 	public Provvedimento aggiornaProvvedimento(Provvedimento provvedimento) {
 		Provvedimento provvRecuperato = provvedimentoDAO.findById(provvedimento.getId());
+		
+		boolean inviaNotificaCambioStato = false;
+		if (provvedimento.getStato().getId() != provvRecuperato.getStato().getId()) {
+			inviaNotificaCambioStato = true;
+		}
+		
 		provvRecuperato = provvRecuperato.getProvvedimentoToUpdate(provvedimento);
 		if(provvedimento.getProvvedimentiParentSelected()!=null && Arrays.asList(provvedimento.getProvvedimentiParentSelected()).size()>0){
 //			List<String> list = Arrays.asList(provvedimento.getProvvedimentiParentSelected());
@@ -282,6 +292,11 @@ public class GestioneProvvedimentoFacade {
 //			}
 		}
 		Provvedimento provMerge = provvedimentoDAO.merge(provvRecuperato);
+		
+		if (inviaNotificaCambioStato) {
+			invioNotificaCambioStato(provMerge);
+		}
+		
 		return provMerge;
 	}
 
@@ -332,6 +347,120 @@ public class GestioneProvvedimentoFacade {
 		return assegnazione;
 	}
 	
+	public Assegnazione aggiornaAssegnazione(Assegnazione assegnazione, Notifica notifica, boolean accettata, String motivazioneRifiuto) {
+				
+		if (accettata) {
+			assegnazione.setStato(statoDAO.findByCodice(Constants.ACCETTATO));
+		} else {
+			assegnazione.setStato(statoDAO.findByCodice(Constants.RIFIUTATO));
+			assegnazione.setMotivazioneRifiuto(assegnazioneDAO.createClob(motivazioneRifiuto));
+		}
+		assegnazioneDAO.saveOrUpdate(assegnazione);
+		
+		// insert storico operazione
+		// TODO
+		
+		// segno la notifica operativa come letta
+		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		notifica.setFlagLettura(Notifica.LETTA);
+		notifica.setUtenteOperatore(user.getUtente());
+		notificaDAO.saveOrUpdate(notifica);
+		
+		// invio notifiche informative a utenti capofila
+		
+		
+		String testo = "";
+		if (accettata) {
+			testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha accettato la richiesta di assegnazione del provvedimento " 
+					+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione();
+		} else {
+			testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha rifiutato la richiesta di assegnazione del provvedimento " 
+					+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione() +
+					" con la seguente motivazione: " + motivazioneRifiuto;
+		}
+		
+		Notifica notificaInfo = new Notifica();
+		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+		notificaInfo.setOggetto("Assegnazione provvedimento");
+		notificaInfo.setTesto(testo);
+		notificaInfo.setUtenteMittente(user.getUtente());
+
+		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+			notificaInfo.setUtenteDestinatario(utenteDestinatario);
+			notificaDAO.save(notificaInfo);
+		}
+		
+		return assegnazione;
+	}
+	
+	public Assegnazione aggiornaFineLavorazioneAssegnazione(Assegnazione assegnazione) {
+		
+		assegnazione.setStato(statoDAO.findByCodice(Constants.FINE_LAVORAZIONE));
+		assegnazioneDAO.saveOrUpdate(assegnazione);
+		
+		// insert storico operazione
+		// TODO
+		
+		// invio notifiche informative a utenti capofila
+		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha completato la lavorazione del provvedimento " 
+					+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione();
+		
+		Notifica notificaInfo = new Notifica();
+		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+		notificaInfo.setOggetto("Assegnazione provvedimento");
+		notificaInfo.setTesto(testo);
+		notificaInfo.setUtenteMittente(user.getUtente());
+
+		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+			notificaInfo.setUtenteDestinatario(utenteDestinatario);
+			notificaDAO.save(notificaInfo);
+		}
+		
+		return assegnazione;
+	}
+	
+	
+	public Assegnazione aggiornaRichiestaAssegnazione(Assegnazione assegnazione, boolean accettata, Notifica notifica) {
+		Stato stato = null;
+		if (accettata) {
+			stato = statoDAO.findByCodice(Constants.ASSEGNATO);
+		} else {
+			stato = statoDAO.findByCodice(Constants.RIFIUTATO);
+		}
+		assegnazione.setStato(stato);
+		assegnazioneDAO.saveOrUpdate(assegnazione);
+		
+		// contrassegno la notifica come eseguita
+		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		notifica.setFlagLettura(Notifica.LETTA);
+		notifica.setUtenteOperatore(user.getUtente());
+		
+		notificaDAO.saveOrUpdate(notifica);
+		
+		// invio notifica di accettazione assegnazione
+		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha " + (accettata ? "accettato" : "rifiutato") + " la richiesta di assegnazione del provvedimento " 
+				+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione(); 
+		Notifica notificaInfo = new Notifica();
+		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+		notificaInfo.setOggetto("Accettazione richiesta di assegnazione provvedimento");
+		notificaInfo.setTesto(testo);
+		notificaInfo.setUtenteMittente(user.getUtente());
+
+		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {
+			notificaInfo.setUtenteDestinatario(utenteDestinatario);
+			notificaDAO.save(notificaInfo);
+		}
+
+		
+		return assegnazione;
+	}
+	
 	public Stato findStatoById(Integer id){
 		Stato stato = statoDAO.findById(id);
 		return stato;
@@ -357,6 +486,9 @@ public class GestioneProvvedimentoFacade {
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
 		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
+		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
+			provvedimentoIns.setProponente(null);
+		}		
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
@@ -451,6 +583,52 @@ public class GestioneProvvedimentoFacade {
 		
 	}
 
+private void invioNotificaCambioStato(Provvedimento provvedimento) {
+		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		// invio notifica operativa
+		if (provvedimento.getStato().getCodice().equals(Constants.STATO_IN_ISTRUTTORIA)) {
+			
+			
+			for (Assegnazione assegnazione : provvedimento.getAssegnazioneList()) {
+				String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " richiede che l'organo " + assegnazione.getOrgano().getDenominazione() + " prenda in carico la gestione del provvedimento  " 
+						+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa() + " avente capofila l'organo " + provvedimento.getOrganoCapofila().getDenominazione(); 
+				Notifica notifica = new Notifica();
+				notifica.setFlagLettura(Notifica.NON_LETTA);
+				notifica.setTipoNotifica(Notifica.OPERATIVA);
+				notifica.setOggetto("Richiesta presa in carico del provvedimento");
+				notifica.setTesto(testo);
+				notifica.setOrganoDestinatario(assegnazione.getOrgano());
+				notifica.setUtenteMittente(user.getUtente());
+				notifica.setLinkOperazione("/private/provvedimenti/ricerca/dettaglio?id=" + provvedimento.getId());
+				notificaDAO.save(notifica);			
+			}
+		} else {
+			// invio notifica informativa in tutti i casi diversi da non inserito
+			if (!provvedimento.getStato().getCodice().equals(Constants.STATO_INSERITO)) {
+				for (Assegnazione assegnazione : provvedimento.getAssegnazioneList()) {
+					String testo = "Il provvedimento " 	+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa() 
+								+ " ha assunto lo stato " + provvedimento.getStato().getDescrizione(); 
+					Notifica notifica = new Notifica();
+					notifica.setFlagLettura(Notifica.NON_LETTA);
+					notifica.setTipoNotifica(Notifica.INFORMATIVA);
+					notifica.setOggetto("Cambio stato del provvedimento");
+					notifica.setTesto(testo);
+					
+					for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {
+						notifica.setUtenteDestinatario(utenteDestinatario);
+						notificaDAO.save(notifica);
+					}					
+				}	
+			}
+		}
+		
+	}
+	
+	public void aggiornaAccettazioneAssegnazione(Provvedimento provvedimento) {
+		
+	}
+	
 	public Assegnazione recuperaAssegnazioneByProvvOrgano(AssegnazioneDto assDto) {
 		Assegnazione retval = null;
 		HashMap<String, Object> params = new HashMap<String, Object>();
