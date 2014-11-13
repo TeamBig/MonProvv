@@ -117,7 +117,7 @@
 										size="${tableRisultatiSize}" 
 										id="utente" 
 										class="table table-hover table-bordered"
-										summary="Elenco Enti">
+										summary="Elenco Utenti">
 							
 							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
@@ -126,7 +126,7 @@
 							<display:column title="${emailHeader}" property="email" headerScope="col" />
 							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
 							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
-							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
+							<display:column title="${eliminaHeader}" headerScope="col" class="center deleteUtente" headerClass="center">
 								<a href="${deletePath}?id=${utente.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Utente"></i></a>
 							</display:column>
 							

@@ -27,7 +27,7 @@
 
 				
 				<h3 class="text-left underline">
-					<span>Nuovo Ente</span>
+					<span>Nuovo Organo</span>
 				</h3>
 				
 				<div class="row">

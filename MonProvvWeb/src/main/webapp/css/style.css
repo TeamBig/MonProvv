@@ -392,3 +392,7 @@ NOTIFICHE
 	margin-bottom: 0px;
 	border-top: 0px;
 }
+
+#risultatiRicerca .table > tbody > tr {
+	cursor: pointer;
+}

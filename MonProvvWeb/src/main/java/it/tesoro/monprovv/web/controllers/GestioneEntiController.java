@@ -3,6 +3,7 @@ package it.tesoro.monprovv.web.controllers;
 import it.tesoro.monprovv.annotations.PagingAndSorting;
 import it.tesoro.monprovv.dto.CodiceDescrizioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
+import it.tesoro.monprovv.exception.DatabaseException;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
@@ -113,8 +114,15 @@ public class GestioneEntiController {
 	@RequestMapping(value= {"/private/admin/enti/delete"}, method = RequestMethod.GET)
 	public String deleteGet(RedirectAttributes redirectAttributes, @RequestParam(required = false) String id)  {
 		String retval = "redirect:/private/admin/enti";	
-		gestioneEntiFacade.eliminazioneLogica(Integer.valueOf(id));
-		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Ente effettuato con successo", false);	
+		try {
+			gestioneEntiFacade.eliminazioneLogica(Integer.valueOf(id));
+		} catch (DatabaseException de) {
+			if ("NOT_EMPTY_USER_LIST".equals(de.getMessage())) {
+				alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_ERROR, "Impossibile cancellazione organi con utenti associati", false);
+				return retval;
+			}
+		}
+		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Organo effettuata con successo", false);	
 		return retval;
 	}
 	
@@ -148,7 +156,7 @@ public class GestioneEntiController {
 				}
 				organoToEdit.setFlagAttivo("S");
 				gestioneEntiFacade.inserisciOrgano(organoToEdit);
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Ente effettuato con successo", false);
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Organo effettuato con successo", false);
 				model.addAttribute("organoToEdit", organoToEdit );
 				model.addAttribute("tableUtentiListOrganiRisultatiSize", 0);
 				retval = "entiDettaglioEnte"; 							
@@ -244,7 +252,7 @@ public class GestioneEntiController {
 				
 				Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
 				
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Ente effettuato con successo", false);
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);
 				
 				model.addAttribute("organoToEdit", organo );
 				model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());

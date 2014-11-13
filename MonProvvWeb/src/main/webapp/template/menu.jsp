@@ -31,7 +31,8 @@
   		 -->
   		 
   		 <li>
-  		 	<a href="/monprovv/" id="vaiaricerca">Home <i class="icon-home"></i></a>
+  		 	<spring:url value="/private/home" var="url_home" />
+  		 	<a href="${url_home}" id="vaiaricerca">Home <i class="icon-home"></i></a>
   		 </li>
   		 
 		<c:forEach items="${firstLevelMenu}" var="menu">

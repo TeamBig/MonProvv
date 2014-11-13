@@ -66,16 +66,6 @@ $(document).ready(function() {
   	  btnRicAvUp.show();
     });
     
-    $("#salva").click(function() {
-    	if($(this).is(":submit")){
-    		window.location.href = "index.html";
-    	}
-    });
-    
-    $("#annulla, #indietro").click(function() {
-    	window.location.href = "index.html";
-    });
-    
     var risultatiRicerca = $("#risultatiRicerca");
     //risultatiRicerca.hide();
     
@@ -159,11 +149,24 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
-    $("a#delete4risultatiRicerca").click(function(){
+    $(".deleteEnte").click(function(){
     	var retval;
-    	bootbox.confirm("Sei sicuro di voler procedere con la cancellazione della riga?", function(result) {
+    	var td = $(this);
+    	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Organo?", function(result) {
     		if(result){
-    			var url = $("a#delete4risultatiRicerca").attr('href');    
+    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
+    			$(location).attr('href',url);
+    		}
+    	});
+    	return false;
+    });
+    
+    $(".deleteUtente").click(function(){
+    	var retval;
+    	var td = $(this);
+    	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Utente?", function(result) {
+    		if(result){
+    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
     			$(location).attr('href',url);
     		}
     	});

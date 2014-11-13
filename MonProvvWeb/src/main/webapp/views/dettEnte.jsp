@@ -33,7 +33,7 @@
 				<springform:hidden path="versione"/>
 				
 				<h3 class="text-left underline">
-					<span>Dettaglio Ente</span>
+					<span>Dettaglio Organo</span>
 				</h3>
 				
 				<div class="row">
@@ -72,7 +72,7 @@
 				
 		
 				<h3 class="text-left underline">
-					<span>Utenti Ente</span>
+					<span>Utenti appartenenti all'Organo</span>
 				</h3>
 				
 				

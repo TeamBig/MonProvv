@@ -4,6 +4,7 @@ package it.tesoro.monprovv.facade;
 
 import it.tesoro.monprovv.dao.OrganoDAO;
 import it.tesoro.monprovv.dao.UnitaOrgAstageDAO;
+import it.tesoro.monprovv.exception.DatabaseException;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.UnitaOrgAstage;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 @Component("gestioneEntiFacade")
 public class GestioneEntiFacade {
@@ -108,9 +110,14 @@ public class GestioneEntiFacade {
 		organoDAO.save(organo);
 	}
 
-	public void eliminazioneLogica(Integer id) {
+	public void eliminazioneLogica(Integer id) throws DatabaseException {
 		if(id != null){
 			Organo organo = organoDAO.findById(id);
+			
+			if (!CollectionUtils.isEmpty(organo.getUtenteList())) {
+				throw new DatabaseException("NOT_EMPTY_USER_LIST");
+			}
+			
 			organo.setFlagAttivo("N");
 			organoDAO.merge(organo);
 		}		
