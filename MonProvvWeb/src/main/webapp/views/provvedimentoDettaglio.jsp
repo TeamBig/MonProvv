@@ -110,7 +110,7 @@
 						<div class="control-group">
 							<span class="control-label" >${collNormattivaHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.collNormattiva}</span>
+								<span><a href="${provvedimentoDettaglio.collNormattiva}" title="Apri collegamento ${provvedimentoDettaglio.collNormattiva}">${provvedimentoDettaglio.collNormattiva}</a></span>
 							</div>
 						</div>
 						<div class="control-group">

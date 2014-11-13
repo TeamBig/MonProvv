@@ -127,6 +127,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				
 			}
 		
+
+//			if (!(matchCount == authCount)) {
+//				System.out.println("KO");
+//			}
 			return (matchCount == authCount);
 //			FINE SOLUZIONE 1		
 

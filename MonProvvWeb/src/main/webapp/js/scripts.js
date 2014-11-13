@@ -281,7 +281,7 @@ $(document).ready(function() {
     		$("#codiceFiscale").attr('readonly', true);
     		$("#dataNascitaV").attr('readonly', true);
     		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
+    		$("#sesso").attr('disabled', 'disabled');
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
