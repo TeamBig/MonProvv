@@ -422,7 +422,7 @@ public class GestioneProvvedimentoFacade {
 			notificaDAO.save(notificaInfo);
 		}
 		
-// invio notifica al capofila se tutte le assegnazioni sono in fine lavorazione
+		// invio notifica al capofila se tutte le assegnazioni sono in fine lavorazione
 		Provvedimento provvedimento = provvedimentoDAO.findById(assegnazione.getProvvedimento().getId());
 		
 		int countInLavorazione = 0;
@@ -652,10 +652,6 @@ public class GestioneProvvedimentoFacade {
 		
 	}
 	
-	
-
-
-
 	public Assegnazione recuperaAssegnazioneByProvvOrgano(AssegnazioneDto assDto) {
 		Assegnazione retval = null;
 		HashMap<String, Object> params = new HashMap<String, Object>();

@@ -33,11 +33,11 @@ public interface Constants {
 	public static final String STATO_ADOTTATO = "ADO";
 	public static final String STATO_NON_ATTUABILE = "NOA";	
 	public static final String STATO_SUPERATO = "SUP";
-	
+
 	//TIPO PROVVEDIMENTO
 	public static String CONCERTANTE_MEF = "CONC_MEF" ;
 	
-		// REPORT TIPI
+	// REPORT TIPI
 	public static final String TIPO_PDF = "PDF";
 	public static final String TIPO_XLS = "XLS";
 }
