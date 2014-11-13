@@ -610,4 +610,11 @@ public class GestioneProvvedimentoFacade {
 	public void aggiornaAccettazioneAssegnazione(Provvedimento provvedimento) {
 		
 	}
+
+	public List<Organo> initProponente() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "S", order);
+		return listaOrgani;
+	}
 } 

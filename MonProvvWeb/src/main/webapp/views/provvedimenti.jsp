@@ -166,7 +166,7 @@
 							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
-							<button type="button" class="btn " id="annulla">
+							<button type="submit" class="btn " id="annulla" name="annulla">
 								Pulisci &nbsp;<i class="icon-eraser"></i>
 							</button>
 						</div>
@@ -222,8 +222,11 @@
 									<div>
 									${assegnazione.organo.denominazione}
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
 									      	<i class="icon-check " title="Assegnazione presa in carico"></i>
+									      </c:when>
+									      <c:when test="${assegnazione.stato.codice eq 'FLA'}">
+									      	<i class="icon-thumbs-up-alt icon-large" title="Fine lavorazione"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 									      	<i class="icon-remove-sign " title="Assegnazione rifiutata"></i>

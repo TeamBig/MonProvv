@@ -109,20 +109,13 @@ public class GestioneProvvedimentoController {
 		else
 			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
-//		if(ps!=null){
-//			listProvvedimenti = initAllProvvedimenti(ps.getPage());
-//		} else {
-//			listProvvedimenti = initAllProvvedimenti(1);
-//		}
-//		model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
-//		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 		return "ricercaProv";
 	}
 	
-//	@ModelAttribute("ricercaProvvedimenti")
-//	public RicercaProvvedimentoDto ricercaProvvedimentiDto(){
-//		return new RicercaProvvedimentoDto();
-//	}
+	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST, params="annulla")
+	public String resetRicercaProvvedimenti(Model model){
+		return "redirect:/private/provvedimenti/ricerca";
+	}
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST)
 	public String processRegistration(Model model, 
@@ -686,6 +679,8 @@ public class GestioneProvvedimentoController {
 	public String apriNuovoProvvedimento(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String action,
 			BindingResult errors){
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		provvedimento.setOrganoCapofila(principal.getUtente().getOrgano());
 		gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);	
 		return "provvedimentoInserisci";
 	}
@@ -765,7 +760,7 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("assegnatarioNew", new Assegnazione());
 		}
 		if(provvedimento.getCurrentStep().equals("4") && !action.equals(Constants.SALVA)){
-			model.addAttribute("titolo", "Assegna provvedimenti");
+			model.addAttribute("titolo", "Associa provvedimenti pregressi");
 			model.addAttribute("stepSuccessivo", "salvataggio");
 			provvedimento.setListaProvvedimenti(gestioneProvvedimentoFacade.initAllProvvedimenti(1));
 			model.addAttribute("listaProvvedimenti", provvedimento.getListaProvvedimenti());
@@ -861,7 +856,7 @@ public class GestioneProvvedimentoController {
 	
 	@ModelAttribute("listaProponente")
 	private List<Organo> initProponenteInserimento() {
-		return gestioneProvvedimentoFacade.initOrgani();
+		return gestioneProvvedimentoFacade.initProponente();
 	}
 
 	@ModelAttribute("listaOrganoCapofila")

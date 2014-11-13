@@ -1003,7 +1003,7 @@ function gestioneNormattiva(){
 	$("#dataAttoV, #tipoAtto, #numeroAtto, #art").each(function(){
 		$(this).focusout(function(){
 		  var staticUrl = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:";
-		  var date = $(this).val(); // replace this by $(this).val() to get your date from the input
+		  var date = $(this).val();
 		  var newDataAtto = new Date( $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1") );
 		  var dataAtto = newDataAtto.getFullYear() +'-'+ (newDataAtto.getMonth()+1) +'-'+ newDataAtto.getDate();
 		  
@@ -1047,15 +1047,44 @@ function gestioneNormattiva(){
 			  staticUrl=staticUrl+append;
 		  }
 		  
-		  if(enableLink){
-			  $("#linkNormattiva").attr('href',staticUrl);
-			  $("#linkNormattiva").attr('target',"_blank");
-		  } else {
-			  $("#linkNormattiva").attr('href','#');
+		  if($("#linkNormattiva").val()==undefined){
+			  $('<a>',{
+				    text:staticUrl,
+				    href:staticUrl,
+				    id:'linkNormattiva',			    
+				}).appendTo('#linkNormattivaSpan');
+			  if($("#collNormattiva").val()!=undefined && $("#collNormattiva").val()!=""){
+				  $("#linkNormattiva").text($("#collNormattiva").val());
+				  $("#linkNormattiva").attr('href',$("#collNormattiva").val());
+				  $("#linkNormattiva").attr('target',"_blank");
+			  }
 		  }
 		  
-		  $("#collNormattiva").val(staticUrl);
+		  if(enableLink){
+			  $("#linkNormattiva").text(staticUrl);
+			  $("#linkNormattiva").attr('href',staticUrl);
+			  $("#linkNormattiva").attr('target',"_blank");
+			  $("#collNormattiva").val(staticUrl);
+		  } else {
+			  $("#linkNormattiva").text('Inserimento non completato');
+			  $("#linkNormattiva").attr('href','#');
+			  $("#linkNormattiva").attr('target',"_self");
+		  }
+		  
+
+		  
+		  //$("#collNormattiva").val(staticUrl);
 		});
 	});
+	  if($("#linkNormattiva").val()==undefined){
+		  $('<a>',{
+			    id:'linkNormattiva',			    
+			}).appendTo('#linkNormattivaSpan');
+		  if($("#collNormattiva").val()!=undefined && $("#collNormattiva").val()!=""){
+			  $("#linkNormattiva").text($("#collNormattiva").val());
+			  $("#linkNormattiva").attr('href',$("#collNormattiva").val());
+			  $("#linkNormattiva").attr('target',"_blank");
+		  }
+	  }
 }
 

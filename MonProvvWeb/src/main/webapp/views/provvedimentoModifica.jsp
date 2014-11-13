@@ -19,7 +19,7 @@
 <spring:message var="collNormattivaHeader" code="listaProvvedimenti.header.collNormattiva" />
 
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
-<spring:message var="parereHeader" code="label.termineDiScadenza" />
+<spring:message var="parereHeader" code="label.parere" />
 
 <spring:message var="statoDiAttuazioneHeader" code="listaProvvedimenti.header.statoDiAttuazione" />
 <spring:message var="capofilaHeader" code="listaProvvedimenti.header.capofila" />
@@ -273,15 +273,25 @@
 									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
+									      <c:when test="${assegnazione.stato.codice eq 'FLA'}">
+									      	<i class="icon-thumbs-up-alt icon-large"></i>
+									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
-									      	<a href="#" id="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
+										  	<spring:url var="url_popoverrifiuto" value="/private/provvedimenti/motivazionerifiuto?id={id}">
+										  		<spring:param name="id" value="${assegnazione.id}" />
+										  	</spring:url>
+									      	<a href="${url_popoverrifiuto}" class="popoverRifiuto"><i class="icon-remove-sign icon-large" title="Assegnazione rifiutata"></i>&nbsp;Motivazione rifiuto</a>
 									      </c:when>
 									</c:choose>
 								</display:column>
 								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
 										<spring:url value="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" var="urlDownload" />
-										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> (${allegato.dimensioneAsText})</div>
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a>
+											<c:if test="${not empty allegato.dimensione }">
+												(<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>)
+											</c:if> 
+										</div>
 									</c:forEach>
 								</display:column>
 								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
