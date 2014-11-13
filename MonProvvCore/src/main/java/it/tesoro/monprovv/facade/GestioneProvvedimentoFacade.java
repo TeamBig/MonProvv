@@ -248,7 +248,7 @@ public class GestioneProvvedimentoFacade {
 		}
 		return allegato;
 	}
-	
+
 	public Allegato getAllegatoByIdnoAssegnazione(Integer allegatoId) {
 		Allegato allegato = null;
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -448,7 +448,6 @@ public class GestioneProvvedimentoFacade {
 				notificaDAO.save(notificaFineLav);
 			}
 		}
-		
 		return assegnazione;
 	}
 	
@@ -516,7 +515,7 @@ public class GestioneProvvedimentoFacade {
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
 		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
 			provvedimentoIns.setProponente(null);
-		}		
+		}
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
@@ -609,8 +608,8 @@ public class GestioneProvvedimentoFacade {
 	public void invioMail(Mail mail) {
 		mailService.eseguiInvioMail(mail);
 		
-	}
-
+	}	
+	
 	private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -707,5 +706,12 @@ public class GestioneProvvedimentoFacade {
 		}
 		
 		return provvedimentiDto;	
+	}
+
+	public List<Organo> initProponente() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "S", order);
+		return listaOrgani;
 	}
 } 

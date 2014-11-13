@@ -7,6 +7,7 @@ import it.tesoro.monprovv.dto.IdDescrizioneDto;
 import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
+import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,26 +90,55 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		model.addAttribute("tableRisultatiSize", tableRisultatiSize);
 	}
 	
-	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST)
-	public String initPost(Model model, 
-			@RequestParam(required = false) String buttonNew, 
-			@RequestParam(required = false) String buttonFind, 
-			@RequestParam(required = false) String buttonClean, 
+//	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST)
+//	public String initPost(Model model, 
+//			@RequestParam(required = false) String buttonNew, 
+//			@RequestParam(required = false) String buttonFind, 
+//			@RequestParam(required = false) String buttonClean, 
+//			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,				
+//			HttpServletRequest request)  {
+//		String retval = "utenteHomeUtente";
+//		
+//		if("clean".equals( buttonClean )){
+//			ricercaUtente = new UtenteDto();
+//			ricercaUtente.setFlagAttivo("S");
+//			model.addAttribute("ricercaUtente", ricercaUtente);
+//		}
+//		
+//		if("new".equals( buttonNew )){
+//			retval = "redirect:/private/admin/utenti/nuovo";
+//		}else {
+//			initModel(model, ricercaUtente, null);	
+//		}
+//		return retval;
+//	}
+	
+	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST, params="buttonNew")
+	public String initPostButtonNew(Model model, 
+			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,				
+			HttpServletRequest request)  {
+		String retval = "redirect:/private/admin/utenti/nuovo";
+		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST, params="buttonFind")
+	public String initPostButtonFind(Model model, 
 			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,				
 			HttpServletRequest request)  {
 		String retval = "utenteHomeUtente";
-		
-		if("clean".equals( buttonClean )){
-			ricercaUtente = new UtenteDto();
-			ricercaUtente.setFlagAttivo("S");
-			model.addAttribute("ricercaUtente", ricercaUtente);
-		}
-		
-		if("new".equals( buttonNew )){
-			retval = "redirect:/private/admin/utenti/nuovo";
-		}else {
-			initModel(model, ricercaUtente, null);	
-		}
+		initModel(model, ricercaUtente, null);	
+		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST, params="buttonClean")
+	public String initPostButtonClean(Model model,
+			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,				
+			HttpServletRequest request)  {
+		String retval = "utenteHomeUtente";
+		ricercaUtente = new UtenteDto();
+		ricercaUtente.setFlagAttivo("S");
+		model.addAttribute("ricercaUtente", ricercaUtente);
+		initModel(model, ricercaUtente, null);	
 		return retval;
 	}
 
@@ -116,6 +147,19 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		tipos.add( new CodiceDescrizioneDto("I","Interno") );
 		tipos.add( new CodiceDescrizioneDto("E","Esterno") ); 
 		model.addAttribute("tipos", tipos );
+		
+		List<CodiceDescrizioneDto> sessos = new ArrayList<CodiceDescrizioneDto>();
+		sessos.add( new CodiceDescrizioneDto("M","Maschile") );
+		sessos.add( new CodiceDescrizioneDto("F","Femminile") ); 
+		model.addAttribute("sessos", sessos );
+		
+		List<Ruolo> ruoli = new ArrayList<Ruolo>();
+		for( Ruolo tmp: gestioneUtenteFacade.recuperaListaRuoli() ){
+			if( !(Ruolo.ROLE_USER.equals( tmp.getCodice() ) || Ruolo.ROLE_ADMIN.equals( tmp.getCodice() ) ) ){
+				ruoli.add(tmp);
+			}
+		}
+		model.addAttribute("ruoli", ruoli );
 	}
 	
 	@RequestMapping(value= {
@@ -155,39 +199,79 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return "utenteNewUtente";	
 	}
 	
-	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST)
-	public String nuovoPost(@ModelAttribute("utenteToEdit") Utente utenteToEdit,
+//	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST)
+//	public String nuovoPost(@ModelAttribute("utenteToEdit") Utente utenteToEdit,
+//			Model model, 
+//			@RequestParam(required = false) String buttonSave,
+//			@RequestParam(required = false) String buttonCancel,
+//			BindingResult errors, 
+//			HttpServletRequest request)  {
+//	
+//		String retval = "redirect:/private/admin/utenti";	
+//		if("save".equals(buttonSave)){
+//			utenteValidator.validate(utenteToEdit, errors);
+//			if( !errors.hasErrors() ){			
+//				if( "I".equals( utenteToEdit.getFlagIntEst() ) ) {
+//					//Interno
+//				}else{
+//					//Esterno
+//					utenteToEdit.setUtenteAstage(null);
+//				}				
+//				utenteToEdit.setFlagAttivo("S");
+//				gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
+//				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
+//				model.addAttribute("utenteToEdit", utenteToEdit );				
+//				retval = "utenteDettUtente"; 										
+//			}else{
+//				for (FieldError f : errors.getFieldErrors()) {
+//					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+//				}
+//				loadCombo4NewUtente(model);
+//				model.addAttribute("utenteToEdit", utenteToEdit);
+//				retval = "utenteNewUtente";
+//			}
+//		}else if("cancel".equals(buttonCancel)){
+//		}
+//		return retval;
+//	}
+	
+	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST, params="buttonSave")
+	public String nuovoPostButtonSave(@ModelAttribute("utenteToEdit") @Valid Utente utenteToEdit,
+			BindingResult errors, RedirectAttributes redirectAttributes, Model model)  {
+	
+		String retval = "redirect:/private/admin/utenti";	
+		utenteValidator.validate(utenteToEdit, errors);
+		if( !errors.hasErrors() ){			
+			if( "I".equals( utenteToEdit.getFlagIntEst() ) ) {
+				//Interno
+			}else{
+				//Esterno
+				utenteToEdit.setUtenteAstage(null);
+			}				
+			utenteToEdit.setFlagAttivo("S");
+			gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
+			model.addAttribute("utenteToEdit", utenteToEdit );				
+			retval = "utenteDettUtente"; 										
+		}else{
+			for (FieldError f : errors.getFieldErrors()) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+			}
+			loadCombo4NewUtente(model);
+			model.addAttribute("utenteToEdit", utenteToEdit);
+			retval = "utenteNewUtente";
+		}
+
+		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST, params="buttonCancel")
+	public String nuovoPostButtonCancel(@ModelAttribute("utenteToEdit") Utente utenteToEdit,
 			Model model, 
-			@RequestParam(required = false) String buttonSave,
-			@RequestParam(required = false) String buttonCancel,
 			BindingResult errors, 
 			HttpServletRequest request)  {
 	
 		String retval = "redirect:/private/admin/utenti";	
-		if("save".equals(buttonSave)){
-			utenteValidator.validate(utenteToEdit, errors);
-			if( !errors.hasErrors() ){			
-				if( "I".equals( utenteToEdit.getFlagIntEst() ) ) {
-					//Interno
-				}else{
-					//Esterno
-					utenteToEdit.setUtenteAstage(null);
-				}				
-				utenteToEdit.setFlagAttivo("S");
-				gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
-				model.addAttribute("utenteToEdit", utenteToEdit );				
-				retval = "utenteDettUtente"; 										
-			}else{
-				for (FieldError f : errors.getFieldErrors()) {
-					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
-				}
-				loadCombo4NewUtente(model);
-				model.addAttribute("utenteToEdit", utenteToEdit);
-				retval = "utenteNewUtente";
-			}
-		}else if("cancel".equals(buttonCancel)){
-		}
 		return retval;
 	}
 	
@@ -204,28 +288,44 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return retVal;
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.POST)
-	public String dettaglioPost(@ModelAttribute("utenteToEdit") Utente utente, 
-							Model model,
-							@RequestParam(required = false) String buttonBack, 
-							@RequestParam(required = false) String buttonModify)  {
+//	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.POST)
+//	public String dettaglioPost(@ModelAttribute("utenteToEdit") Utente utente, 
+//							Model model,
+//							@RequestParam(required = false) String buttonBack, 
+//							@RequestParam(required = false) String buttonModify)  {
+//		
+//		String retVal = "utenteDettUtente";
+//		if("back".equals(buttonBack)){
+//			retVal = "redirect:/private/admin/utenti";
+//		}else if("modify".equals(buttonModify)){
+//			retVal = "redirect:/private/admin/utenti/modifica?id="+utente.getId();
+//		}
+//		
+//		return retVal;
+//	}
+	
+	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.POST, params="buttonBack")
+	public String dettaglioPostButtonBack(@ModelAttribute("utenteToEdit") Utente utente, 
+							Model model)  {
 		
-		String retVal = "utenteDettUtente";
-		if("back".equals(buttonBack)){
-			retVal = "redirect:/private/admin/utenti";
-		}else if("modify".equals(buttonModify)){
-			retVal = "redirect:/private/admin/utenti/modifica?id="+utente.getId();
-		}
-		
+		String retVal = "redirect:/private/admin/utenti";
 		return retVal;
 	}
 	
+	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.POST, params="buttonModify")
+	public String dettaglioPostButtonModify(@ModelAttribute("utenteToEdit") Utente utente, 
+							Model model)  {
+		
+		String retVal = "redirect:/private/admin/utenti/modifica?id="+utente.getId();
+		return retVal;
+	}
 //	@RequestMapping(value= {"/private/admin/utenti/modifica/{id}"}, method = RequestMethod.GET)
 //	public String modificaGet(Model model, @PathVariable("id") String id)  {
 	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.GET)
 	public String modificaGet(Model model, @RequestParam(required = false) String id)  {
 		String retVal = "utenteHomeUtente";
 		if( StringUtils.isNotEmpty(id) ){
+			loadCombo4NewUtente(model);
 			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
 			model.addAttribute("utenteToEdit", utente );
 			retVal = "utenteEditUtente";
@@ -233,43 +333,81 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		return retVal;
 	}
 	
-	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.POST)
-	public String modificaPost(@ModelAttribute("utenteToEdit") Utente utente,
-			Model model,
-			@RequestParam(required = false) String buttonSave, 
-			@RequestParam(required = false) String buttonCancel,
-			BindingResult errors, HttpServletRequest request
-			)  {
+//	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.POST)
+//	public String modificaPost(@ModelAttribute("utenteToEdit") Utente utente,
+//			Model model,
+//			@RequestParam(required = false) String buttonSave, 
+//			@RequestParam(required = false) String buttonCancel,
+//			BindingResult errors, HttpServletRequest request
+//			)  {
+//		String retVal = "utenteDettUtente";
+//		
+//		if("save".equals( buttonSave )){
+//			
+//			utenteValidator.validate(utente, errors);
+//			
+//			if( !errors.hasErrors() ){
+//				
+//				Utente newUtente = gestioneUtenteFacade.aggiornaUtente(utente);
+//				
+//				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);
+//				
+//				model.addAttribute("utenteToEdit", newUtente );
+//						
+//			}else{
+//				for (FieldError f : errors.getFieldErrors()) {
+//					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+//				}
+//				model.addAttribute("utenteToEdit", utente);
+//				retVal = "utenteEditUtente";
+//			}
+//		
+//		}
+//		
+//		if("cancel".equals( buttonCancel )){
+//			model.addAttribute("utenteToEdit", gestioneUtenteFacade.recuperaUtenteById(utente.getId()));
+//		}
+//		
+//		return retVal;
+//	}
+	
+	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.POST, params="buttonSave")
+	public String modificaPostButtonSave(@ModelAttribute("utenteToEdit") @Valid Utente utente,
+			BindingResult errors, RedirectAttributes redirectAttributes, Model model)  {
+		
 		String retVal = "utenteDettUtente";
-		
-		if("save".equals( buttonSave )){
-			
-			utenteValidator.validate(utente, errors);
-			
-			if( !errors.hasErrors() ){
-				
-				Utente newUtente = gestioneUtenteFacade.aggiornaUtente(utente);
-				
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);
-				
-				model.addAttribute("utenteToEdit", newUtente );
-						
-			}else{
-				for (FieldError f : errors.getFieldErrors()) {
-					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
-				}
-				model.addAttribute("utenteToEdit", utente);
-				retVal = "utenteEditUtente";
+
+		utenteValidator.validate(utente, errors);
+
+		if( !errors.hasErrors() ){
+
+			Utente newUtente = gestioneUtenteFacade.aggiornaUtente(utente);
+
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);
+
+			model.addAttribute("utenteToEdit", newUtente );
+
+		}else{
+			for (FieldError f : errors.getFieldErrors()) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
-		
-		}
-		
-		if("cancel".equals( buttonCancel )){
-			model.addAttribute("utenteToEdit", gestioneUtenteFacade.recuperaUtenteById(utente.getId()));
+			model.addAttribute("utenteToEdit", utente);
+			retVal = "utenteEditUtente";
 		}
 		
 		return retVal;
 	}
 	
+	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.POST, params="buttonCancel")
+	public String modificaPostButtonCancel(@ModelAttribute("utenteToEdit") Utente utente,
+			Model model,
+			BindingResult errors, HttpServletRequest request
+			)  {
+		String retVal = "utenteDettUtente";
+		
+		model.addAttribute("utenteToEdit", gestioneUtenteFacade.recuperaUtenteById(utente.getId()));
+		
+		return retVal;
+	}
 
 }

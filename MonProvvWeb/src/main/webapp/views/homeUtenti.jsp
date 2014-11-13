@@ -103,7 +103,7 @@
 	
 	<div class="row">
 		<div class="span12">
-			<c:if test="${tableRisultatiSize gt 0}">
+			
 				<div class="row">
 					<div class="span12">
 						
@@ -135,7 +135,7 @@
 					</div>
 				</div>
 			
-			</c:if>
+	
 
 		</div>
 	</div>

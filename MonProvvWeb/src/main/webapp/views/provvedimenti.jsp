@@ -166,7 +166,7 @@
 							<button type="submit" class="btn " id="ricerca" name="ricerca" value="OK">
 								Ricerca &nbsp;<i class="icon-search"></i>
 							</button>
-							<button type="button" class="btn " id="annulla">
+							<button type="submit" class="btn " id="annulla" name="annulla">
 								Pulisci &nbsp;<i class="icon-eraser"></i>
 							</button>
 						</div>
@@ -194,8 +194,6 @@
 	</div>
 	<div class="row">
 		<div class="span12">
-		
-			<c:if test="${tableProvvedimentiSize gt 0}">
 				<div class="row">
 					<div class="span12">
 						
@@ -222,8 +220,11 @@
 									<div>
 									${assegnazione.organo.denominazione}
 									<c:choose>
-									      <c:when test="${assegnazione.stato.codice eq 'ASS'}">
+									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
 									      	<i class="icon-check " title="Assegnazione presa in carico"></i>
+									      </c:when>
+									      <c:when test="${assegnazione.stato.codice eq 'FLA'}">
+									      	<i class="icon-thumbs-up-alt icon-large" title="Fine lavorazione"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 									      	<i class="icon-remove-sign " title="Assegnazione rifiutata"></i>
@@ -248,8 +249,6 @@
 						
 					</div>
 				</div>
-			
-			</c:if>
 		</div>
 		<div class="span12">
 			<spring:url value="/private/provvedimenti/esportaxls" var="url_exportxls" />

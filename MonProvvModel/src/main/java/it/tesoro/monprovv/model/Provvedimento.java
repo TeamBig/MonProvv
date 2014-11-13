@@ -184,7 +184,7 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	
 	@Transient
 	private String motivazioneRifiuto;
-	
+
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
 

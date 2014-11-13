@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -69,6 +70,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -121,20 +123,13 @@ public class GestioneProvvedimentoController {
 		else
 			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
 		model.addAttribute("listaProvvedimenti", listProvvedimenti);
-//		if(ps!=null){
-//			listProvvedimenti = initAllProvvedimenti(ps.getPage());
-//		} else {
-//			listProvvedimenti = initAllProvvedimenti(1);
-//		}
-//		model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
-//		model.addAttribute("listaProvvedimenti", listProvvedimenti);
 		return "ricercaProv";
 	}
 	
-//	@ModelAttribute("ricercaProvvedimenti")
-//	public RicercaProvvedimentoDto ricercaProvvedimentiDto(){
-//		return new RicercaProvvedimentoDto();
-//	}
+	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST, params="annulla")
+	public String resetRicercaProvvedimenti(Model model){
+		return "redirect:/private/provvedimenti/ricerca";
+	}
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST)
 	public String processRegistration(Model model, 
@@ -696,8 +691,10 @@ public class GestioneProvvedimentoController {
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.GET)
 	public String apriNuovoProvvedimento(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String action,
-			BindingResult errors){
+			BindingResult errors,SessionStatus status){
+		//pulisciInserimento(model,status);
 		gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);	
+		status.setComplete();
 		return "provvedimentoInserisci";
 	}
 	
@@ -710,7 +707,7 @@ public class GestioneProvvedimentoController {
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.POST)
 	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String[] provvedimentiSelected,@RequestParam(required = false) String _provvedimentiSelected,@RequestParam(required = false) String action,
-			RedirectAttributes redirectAttributes,BindingResult errors){
+			RedirectAttributes redirectAttributes,BindingResult errors,SessionStatus status){
 		provValidator.validate(provvedimento, errors);
 		if( !errors.hasErrors() ){
 			gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);
@@ -723,7 +720,7 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
 		}
 		if(action.equals(Constants.SALVA)){
-			pulisciInserimento(model);
+			pulisciInserimento(model,status);
 			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Provvedimento effettuato con successo", false);
 			return "redirect:/private/provvedimenti/ricerca";
 		}
@@ -745,6 +742,7 @@ public class GestioneProvvedimentoController {
 	}
 	
 	private void gestioneInserimento(Model model, String idStep,String stepSuccessivo,InserisciProvvedimentoDto provvedimento, String action){
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if(StringUtils.isEmpty(action)){
 			action = "";
 		}
@@ -769,6 +767,7 @@ public class GestioneProvvedimentoController {
 		}
 		if(provvedimento.getCurrentStep().equals("2")){
 			model.addAttribute("titolo", "Nomina capofila provvedimento");
+			provvedimento.setOrganoCapofila(principal.getUtente().getOrgano());
 		}
 		if(provvedimento.getCurrentStep().equals("3")){
 			model.addAttribute("titolo", "Assegnatari");
@@ -776,7 +775,7 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("assegnatarioNew", new Assegnazione());
 		}
 		if(provvedimento.getCurrentStep().equals("4") && !action.equals(Constants.SALVA)){
-			model.addAttribute("titolo", "Assegna provvedimenti");
+			model.addAttribute("titolo", "Associa provvedimenti pregressi");
 			model.addAttribute("stepSuccessivo", "salvataggio");
 			provvedimento.setListaProvvedimenti(gestioneProvvedimentoFacade.initAllProvvedimenti(1));
 			model.addAttribute("listaProvvedimenti", provvedimento.getListaProvvedimenti());
@@ -809,7 +808,8 @@ public class GestioneProvvedimentoController {
 		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione());
 	}
 	
-	private void pulisciInserimento(Model model)  {
+	private void pulisciInserimento(Model model,SessionStatus status)  {
+		status.setComplete();
 		model.addAttribute("provvedimentoInserisci", new InserisciProvvedimentoDto());
 	}
 	
@@ -907,7 +907,7 @@ public class GestioneProvvedimentoController {
 	
 	@ModelAttribute("listaProponente")
 	private List<Organo> initProponenteInserimento() {
-		return gestioneProvvedimentoFacade.initOrgani();
+		return gestioneProvvedimentoFacade.initProponente();
 	}
 
 	@ModelAttribute("listaOrganoCapofila")

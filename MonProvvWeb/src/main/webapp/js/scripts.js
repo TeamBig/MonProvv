@@ -255,6 +255,15 @@ $(document).ready(function() {
 //	$("#inserimentoUtenteInternoDiv").hide();
 //	$("#inserimentoUtenteEsternoDiv").hide();
 	
+    $("#dataNascita").datepicker({
+    	format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        language: "it"
+    }).on('changeDate', function(ev){
+	        $("#dataNascitaV").val(ev.format('dd/mm/yyyy'));
+	        $( "#dataNascitaV" ).focus();
+        });
+    
     $('#tipoNuovoUtente').on('change', function () {
     	var val = $(this).val();
     	var optionInterno = "I"; //Interna
@@ -267,6 +276,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
@@ -276,6 +288,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', false);
     		$("#nome").attr('readonly', false);
     		$("#codiceFiscale").attr('readonly', false);
+    		$("#dataNascitaV").attr('readonly', false);
+    		$("#dataNascita").show();
+    		$("#sesso").attr('readonly', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -284,6 +299,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}
     });
@@ -300,6 +318,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
@@ -309,6 +330,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', false);
     		$("#nome").attr('readonly', false);
     		$("#codiceFiscale").attr('readonly', false);
+    		$("#dataNascitaV").attr('readonly', false);
+    		$("#dataNascita").show();
+    		$("#sesso").attr('readonly', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -317,6 +341,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}
     }
@@ -439,8 +466,10 @@ $(document).ready(function() {
         	$('#codiceFiscale').val(map[item].codiceFiscale);
         	$('#email').val(map[item].email);
         	$('#organoDenominazioneInterni').val(map[item].organo);
-        	$('#organo').val(map[item].idOrgano);
+        	$('#hiddenIdOrgano').val(map[item].idOrgano);
         	$('#hiddenUtenteAstage').val(map[item].id);
+        	$('#sesso').val(map[item].sesso);
+        	$('#dataNascitaV').val(map[item].dataNascita);
             return item;
         }
     });   
@@ -455,6 +484,8 @@ $(document).ready(function() {
         	$('#organoDenominazioneInterni').val('');
         	$('#organo').val('');
         	$('#hiddenUtenteAstage').val('');
+        	$('#sesso').val('');
+        	$('#dataNascitaV').val('');
     	}
     });
     
@@ -996,7 +1027,7 @@ function gestioneNormattiva(){
 	$("#dataAttoV, #tipoAtto, #numeroAtto, #art").each(function(){
 		$(this).focusout(function(){
 		  var staticUrl = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:";
-		  var date = $(this).val(); // replace this by $(this).val() to get your date from the input
+		  var date = $(this).val();
 		  var newDataAtto = new Date( $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1") );
 		  var dataAtto = newDataAtto.getFullYear() +'-'+ (newDataAtto.getMonth()+1) +'-'+ newDataAtto.getDate();
 		  
@@ -1040,15 +1071,44 @@ function gestioneNormattiva(){
 			  staticUrl=staticUrl+append;
 		  }
 		  
-		  if(enableLink){
-			  $("#linkNormattiva").attr('href',staticUrl);
-			  $("#linkNormattiva").attr('target',"_blank");
-		  } else {
-			  $("#linkNormattiva").attr('href','#');
+		  if($("#linkNormattiva").val()==undefined){
+			  $('<a>',{
+				    text:staticUrl,
+				    href:staticUrl,
+				    id:'linkNormattiva',			    
+				}).appendTo('#linkNormattivaSpan');
+			  if($("#collNormattiva").val()!=undefined && $("#collNormattiva").val()!=""){
+				  $("#linkNormattiva").text($("#collNormattiva").val());
+				  $("#linkNormattiva").attr('href',$("#collNormattiva").val());
+				  $("#linkNormattiva").attr('target',"_blank");
+			  }
 		  }
 		  
-		  $("#collNormattiva").val(staticUrl);
+		  if(enableLink){
+			  $("#linkNormattiva").text(staticUrl);
+			  $("#linkNormattiva").attr('href',staticUrl);
+			  $("#linkNormattiva").attr('target',"_blank");
+			  $("#collNormattiva").val(staticUrl);
+		  } else {
+			  $("#linkNormattiva").text('Inserimento non completato');
+			  $("#linkNormattiva").attr('href','#');
+			  $("#linkNormattiva").attr('target',"_self");
+		  }
+		  
+
+		  
+		  //$("#collNormattiva").val(staticUrl);
 		});
 	});
+	  if($("#linkNormattiva").val()==undefined){
+		  $('<a>',{
+			    id:'linkNormattiva',			    
+			}).appendTo('#linkNormattivaSpan');
+		  if($("#collNormattiva").val()!=undefined && $("#collNormattiva").val()!=""){
+			  $("#linkNormattiva").text($("#collNormattiva").val());
+			  $("#linkNormattiva").attr('href',$("#collNormattiva").val());
+			  $("#linkNormattiva").attr('target',"_blank");
+		  }
+	  }
 }
 

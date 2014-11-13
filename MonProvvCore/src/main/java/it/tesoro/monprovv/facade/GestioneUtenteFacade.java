@@ -4,19 +4,27 @@ package it.tesoro.monprovv.facade;
 
 import it.tesoro.monprovv.dao.EmailExtraDAO;
 import it.tesoro.monprovv.dao.OrganoDAO;
+import it.tesoro.monprovv.dao.RuoloDAO;
+import it.tesoro.monprovv.dao.RuoloUtenteDAO;
 import it.tesoro.monprovv.dao.UtenteAstageDAO;
 import it.tesoro.monprovv.dao.UtenteDAO;
 import it.tesoro.monprovv.dto.IdDescrizioneDto;
 import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.model.EmailExtra;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.Ruolo;
+import it.tesoro.monprovv.model.RuoloUtente;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.model.UtenteAstage;
 import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,13 +45,31 @@ public class GestioneUtenteFacade {
 	
 	@Autowired 
 	private EmailExtraDAO emailExtraDAO;
-
+	
+	@Autowired 
+	private RuoloDAO ruoloDAO;
+	
+	@Autowired 
+	private RuoloUtenteDAO ruoloUtenteDAO;
+	
 	public Utente recuperaUtenteById(Integer id) {
 		Utente utente = null;
 		if(id!=null){
 			utente = utenteDAO.findById(id);
+			recuperaRuoli(utente);
 		}
 		return utente;
+	}
+
+	private void recuperaRuoli(Utente utente) {
+		List<RuoloUtente> ru = ruoloUtenteDAO.findByProperty("utente.id", utente.getId());
+		for(RuoloUtente tmp: ru){
+			if( tmp.getRuolo().getCodice().equals( Ruolo.ROLE_ADMIN ) ){
+				utente.setAmministratore(true);
+			}else if( ! tmp.getRuolo().getCodice().equals( Ruolo.ROLE_USER ) ){
+				utente.setRuolo(tmp.getRuolo());
+			}
+		}
 	}
 
 //	public List<Utente> recupera(int page) {
@@ -179,6 +205,7 @@ public class GestioneUtenteFacade {
 		UtenteDto ele = null;
 		List<SearchPatternUtil> parametri = new ArrayList<SearchPatternUtil>();
 		parametri.add(new SearchPatternUtil("unitaOrgAstage", "is not null"));
+		parametri.add(new SearchPatternUtil("flagAttivo", "= 'S'"));
 		List<Organo> organi = organoDAO.findByProperty(parametri);
 		
 		for(UtenteAstage tmp: utenteAstage){
@@ -188,6 +215,17 @@ public class GestioneUtenteFacade {
 			ele.setCognome( tmp.getCognome() );
 			ele.setCodiceFiscale( tmp.getCodiceFiscale() );
 			ele.setEmail( tmp.getEmail() );
+			ele.setSesso( tmp.getSesso() );
+			
+			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+			// Get the date today using Calendar object.
+			Date today = Calendar.getInstance().getTime();        
+			// Using DateFormat format method we can create a string 
+			// representation of a date with the defined format.
+			String reportDate = df.format(today);
+
+			ele.setDataNascita( reportDate );
 			
 			for (int i = 6; i > 0; i--) {
 				try {
@@ -220,6 +258,22 @@ public class GestioneUtenteFacade {
 			utente.setUtenteAstage(utenteAstage);
 		}
 		utenteDAO.save(utente);
+		RuoloUtente ru = new RuoloUtente();
+		ru.setUtente(utente);
+		ru.setRuolo(ruoloDAO.findByCodiceRuolo(Ruolo.ROLE_USER));
+		ruoloUtenteDAO.save(ru);
+		if(utente.isAmministratore()){
+			ru = new RuoloUtente();
+			ru.setUtente(utente);
+			ru.setRuolo(ruoloDAO.findByCodiceRuolo(Ruolo.ROLE_ADMIN));
+			ruoloUtenteDAO.save(ru);
+		}
+		if(utente.getRuolo()!=null){
+			ru = new RuoloUtente();
+			ru.setUtente(utente);
+			ru.setRuolo(ruoloDAO.findByCodiceRuolo(utente.getRuolo().getCodice()));
+			ruoloUtenteDAO.save(ru);
+		}
 	}
 
 	public Object recuperaUtenteAstageById(int id) {
@@ -227,7 +281,97 @@ public class GestioneUtenteFacade {
 	}
 
 	public Utente aggiornaUtente(Utente utente) {
-		return utenteDAO.merge(utente);	
+		
+		List<RuoloUtente> newRuoloUtenteList = new ArrayList<RuoloUtente>();
+		RuoloUtente admin = null;
+		RuoloUtente user = null;
+		RuoloUtente other = null;
+		for(RuoloUtente tmp: utente.getRuoloUtenteList()){
+			if( tmp.getRuolo().getCodice().equals(Ruolo.ROLE_USER) ){
+				user = tmp;
+			}else if( tmp.getRuolo().getCodice().equals(Ruolo.ROLE_ADMIN) ){
+				admin = tmp;
+			}else{
+				other = tmp;
+			}
+		}
+		
+		newRuoloUtenteList.add(user);
+		
+		if( utente.isAmministratore() && admin==null ){
+			//Inserisco il profilo amministratore
+			RuoloUtente ru = new RuoloUtente();
+			ru.setUtente(utente);
+			ru.setRuolo(ruoloDAO.findByCodiceRuolo(Ruolo.ROLE_ADMIN));
+			ruoloUtenteDAO.save(ru);
+			newRuoloUtenteList.add(ru);
+		}else if( utente.isAmministratore() && admin!=null ){
+			newRuoloUtenteList.add(admin);
+		}else if( (!utente.isAmministratore()) && admin!=null ){
+			ruoloUtenteDAO.delete(admin);
+		}
+		
+		if( utente.getRuolo()!=null && other!=null && (!utente.getRuolo().equals(other.getRuolo().getCodice())) ){
+			other.setRuolo(ruoloDAO.findByCodiceRuolo(utente.getRuolo().getCodice()));
+			ruoloUtenteDAO.merge(other);
+			newRuoloUtenteList.add(other);
+		}else if( utente.getRuolo()!=null && other!=null && utente.getRuolo().equals(other.getRuolo().getCodice()) ){
+			newRuoloUtenteList.add(other);
+		}else if( utente.getRuolo()!=null && other==null ){
+			RuoloUtente ru = new RuoloUtente();
+			ru.setUtente(utente);
+			ru.setRuolo(ruoloDAO.findByCodiceRuolo(utente.getRuolo().getCodice()));
+			ruoloUtenteDAO.save(ru);
+			newRuoloUtenteList.add(ru);
+		}
+		
+		utente.setRuoloUtenteList(newRuoloUtenteList);
+
+		
+//		Utente utenteDB = recuperaUtenteById(utente.getId());
+//		if( utenteDB.isAmministratore() && (!utente.isAmministratore()) ){
+//			//Elimino il profilo amministratore
+//			List<RuoloUtente> rus = ruoloUtenteDAO.findByProperty("utente.id", utente.getId());
+//			for(RuoloUtente tmp: rus){
+//				if( tmp.getRuolo().getCodice().equals(Ruolo.ROLE_ADMIN) )
+//					ruoloUtenteDAO.delete(tmp);
+//			}
+//		}else if( utente.isAmministratore() && (!utenteDB.isAmministratore()) ){
+//			//Inserisco il profilo amministratore
+//			RuoloUtente ru = new RuoloUtente();
+//			ru.setUtente(utente);
+//			ru.setRuolo(ruoloDAO.findByCodiceRuolo(Ruolo.ROLE_ADMIN));
+//			ruoloUtenteDAO.save(ru);
+//		}
+//		
+//		if( utenteDB.getRuolo()!=null &&  utenteDB.getRuolo()==null ){
+//			//Elimino il ruolo associato diverso da user e admin
+//			List<RuoloUtente> rus = ruoloUtenteDAO.findByProperty("utente.id", utente.getId());
+//			for(RuoloUtente tmp: rus){
+//				if( (!tmp.getRuolo().getCodice().equals(Ruolo.ROLE_ADMIN)) && (!tmp.getRuolo().getCodice().equals(Ruolo.ROLE_USER)) )
+//					ruoloUtenteDAO.delete(tmp);
+//			}
+//		}else if( utenteDB.getRuolo()==null &&  utenteDB.getRuolo()!=null ){
+//			//Inserisco il ruolo
+//			RuoloUtente ru = new RuoloUtente();
+//			ru.setUtente(utente);
+//			ru.setRuolo(utenteDB.getRuolo());
+//			ruoloUtenteDAO.save(ru);
+//		}else if( utenteDB.getRuolo()!=null &&  utenteDB.getRuolo()!=null ){
+//			if(!(utenteDB.getRuolo().getCodice().equals( utente.getRuolo().getCodice()))){
+//				//E' cambiato il ruolo
+//				List<RuoloUtente> rus = ruoloUtenteDAO.findByProperty("utente.id", utente.getId());
+//				for(RuoloUtente tmp: rus){
+//					if( (!tmp.getRuolo().getCodice().equals(Ruolo.ROLE_ADMIN)) && (!tmp.getRuolo().getCodice().equals(Ruolo.ROLE_USER)) ){
+//						tmp.setRuolo(utenteDB.getRuolo());
+//						ruoloUtenteDAO.merge(tmp);
+//					}
+//				}	
+//			}
+//		}
+		utente = utenteDAO.merge(utente);	
+		recuperaRuoli(utente);
+		return utente;
 	}
 
 	public void eliminazioneLogica(Integer id) {
@@ -237,7 +381,16 @@ public class GestioneUtenteFacade {
 			utenteDAO.merge(utente);
 		}		
 	}
-
+	
+	public List<Ruolo> recuperaListaRuoli(){
+		List<String> orderByParams = new ArrayList<String>();
+		orderByParams.add("descrizione");
+		return ruoloDAO.findAll(orderByParams);
+	}
+	
+	public Ruolo recuperaRuoloById(int id){
+		return ruoloDAO.findById(id);
+	}
 	
 //	@Autowired
 //	private UtenteDAO utenteDAO;

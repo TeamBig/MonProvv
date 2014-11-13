@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
@@ -21,7 +22,7 @@
 <spring:message var="collNormattivaHeader" code="listaProvvedimenti.header.collNormattiva" />
 
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
-<spring:message var="parereHeader" code="label.termineDiScadenza" />
+<spring:message var="parereHeader" code="label.parere" />
 
 <spring:message var="statoDiAttuazioneHeader" code="listaProvvedimenti.header.statoDiAttuazione" />
 <spring:message var="capofilaHeader" code="listaProvvedimenti.header.capofila" />
@@ -43,10 +44,11 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'accettazione')" var="canAccettazione" />
-
 <security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')" var="canLavorazione" />
 
 <springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="" method="POST">
+<fmt:formatDate value="${provvedimentoDettaglio.termineScadenza}" var="termineScadenzaFrt" pattern="dd/MM/yyyy" />
+<fmt:formatDate value="${provvedimentoDettaglio.dataAtto}" var="dataAttoFrt" pattern="dd/MM/yyyy" />
 	<div class="container inserimento">
 		<div class="row">
 			<div class="span12">
@@ -84,7 +86,7 @@
 						<div class="control-group">
 							<span class="control-label" >${dataAttoHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.dataAtto}</span>
+								<span>${dataAttoFrt}</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -126,7 +128,9 @@
 						<div class="control-group">
 							<span class="control-label">${termineDiScadenzaHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.termineScadenza}</span>
+								<span>
+									${termineScadenzaFrt}
+								</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -228,10 +232,11 @@
 								<display:column title="${allegatiHeader}" headerScope="col" headerClass="medium">
 									<c:forEach var="allegato" items="${assegnazione.allegatoList}">
 										<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
-										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a> 
-										<c:if test="${not empty allegato.dimensione }">
-											(<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>)
-										</c:if></div>
+										<div><a href="${urlDownload}" class="download">${allegato.descrizione}</a>
+											<c:if test="${not empty allegato.dimensione }">
+												(<spring:eval expression="T(it.tesoro.monprovv.utils.StringUtils).convertBytesToKb(${allegato.dimensione},true)"/>)
+											</c:if> 
+										</div>
 									</c:forEach>
 								</display:column>
 								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
