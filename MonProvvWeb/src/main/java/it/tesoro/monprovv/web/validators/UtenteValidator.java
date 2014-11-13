@@ -20,35 +20,42 @@ public class UtenteValidator implements Validator {
 		Utente utente = (Utente)target;
 		
 		if(StringUtils.isEmpty( utente.getFlagIntEst() )){
-			errors.rejectValue("flagIntEst","generic.error.required" ,"Attenzione: \u00E8 necessario selezionare il tipo di utente");
+//			errors.rejectValue("flagIntEst","generic.error.required" ,"Attenzione: \u00E8 necessario selezionare il tipo di utente");
 		}else{
 			
 			if("I".equals( utente.getFlagIntEst() )){
 				
-				if(StringUtils.isEmpty(utente.getNominativo()))
-					errors.rejectValue("cognome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un nominativo");
-				else
-				if(StringUtils.isEmpty(utente.getUtenteAstage()))
-					errors.rejectValue("cognome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un nominativo valido");
+				if( utente.getId() == null ){
+					if(StringUtils.isEmpty(utente.getNominativo()))
+						errors.rejectValue("cognome","generic.error.required" ,"Il campo 'nominativo' \u00E8 obbligatorio");
+					else
+					if(StringUtils.isEmpty(utente.getUtenteAstage()))
+						errors.rejectValue("cognome","generic.error.required" ,"Il nominativo inserito non \u00E8 valido");
+				}
+				
 				
 			}else{
 				
-				if(StringUtils.isEmpty(utente.getCognome()))
-					errors.rejectValue("cognome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire il Cognome per l'utente");
-				
-				if(StringUtils.isEmpty(utente.getNome()))
-					errors.rejectValue("nome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire il Nome per l'utente");
-				
-				if(StringUtils.isEmpty(utente.getCodiceFiscale()))
-					errors.rejectValue("codiceFiscale","generic.error.required" ,"Attenzione: \u00E8 necessario inserire il Codice Fiscale per l'utente");
-				
-				if(StringUtils.isEmpty(utente.getEmail()))
-					errors.rejectValue("email","generic.error.required" ,"Attenzione: \u00E8 necessario inserire l'indirizzo E-Mail per l'utente");
-				else if(!StringUtils.mailSyntaxCheck(utente.getEmail()))
-					errors.rejectValue("email","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un indirizzo E-Mail valido per l'utente");
+//				if(StringUtils.isEmpty(utente.getCognome()))
+//					errors.rejectValue("cognome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire il Cognome per l'utente");
+//				
+//				if(StringUtils.isEmpty(utente.getNome()))
+//					errors.rejectValue("nome","generic.error.required" ,"Attenzione: \u00E8 necessario inserire il Nome per l'utente");
+//				
+//				if(StringUtils.isEmpty(utente.getCodiceFiscale()))
+//					errors.rejectValue("codiceFiscale","generic.error.required" ,"Attenzione: \u00E8 necessario inserire il Codice Fiscale per l'utente");
+//				
+//				if(StringUtils.isEmpty(utente.getEmail()))
+//					errors.rejectValue("email","generic.error.required" ,"Attenzione: \u00E8 necessario inserire l'indirizzo E-Mail per l'utente");
+//				
+//				else if(!StringUtils.mailSyntaxCheck(utente.getEmail()))
+//					errors.rejectValue("email","generic.error.required" ,"Attenzione: \u00E8 necessario inserire un indirizzo E-Mail valido per l'utente");
 				
 				
 			}
+			
+			if(StringUtils.isEmpty(utente.getOrgano()))
+				errors.rejectValue("organo","generic.error.required" ,"Il campo 'organo' \u00E8 obbligatorio");
 			
 		}
 		

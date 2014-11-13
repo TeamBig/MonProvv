@@ -11,6 +11,11 @@
 <spring:message var="emailHeader" code="gestione.utente.email" />
 <spring:message var="tipoHeader" code="gestione.utente.tipo" />
 <spring:message var="enteHeader" code="gestione.utente.ente" />
+<spring:message var="ruoloHeader" code="gestione.utente.ruolo" />
+<spring:message var="amministratoreHeader" code="gestione.utente.amministratore" />
+<spring:message var="datanascitaHeader" code="gestione.utente.data.nascita" />
+<spring:message var="sessoHeader" code="gestione.utente.sesso" />
+
 
 <div class="container" id="inserimentoUtente">
 
@@ -39,7 +44,7 @@
 								</springform:select>
 							</div>
 						</div>
-						
+
 						<div id="inserimentoUtenteInternoDiv">
 							<div class="control-group" >
 								<label class="control-label" for="cognome">${nominativoHeader}</label>
@@ -67,6 +72,25 @@
 								<span>
 									<springform:input path="nome" id="nome" cssClass="input-xlarge"/>
 								</span>
+							</div>
+						</div>
+						
+						<div class="control-group" >
+							<label class="control-label" for="dataNascita">${datanascitaHeader}</label>
+							<div class="controls">
+								<span>
+									<springform:input path="dataNascita" id="dataNascitaV" cssClass="input-xlarge"/>&nbsp;<i class="icon-calendar icon-large" id="dataNascita"></i>
+								</span>
+							</div>
+						</div>
+						
+						<div class="control-group" >
+							<label class="control-label" for="sesso">${sessoHeader}</label>
+							<div class="controls">
+								<springform:select path="sesso" cssClass="input-xlarge" id="sesso">
+									<springform:option value=""></springform:option>
+									<springform:options items="${sessos}" itemLabel="descrizione" itemValue="codice" />
+								</springform:select>
 							</div>
 						</div>
 						
@@ -107,6 +131,23 @@
 										<springform:input path="organoDenominazione" id="organoDenominazioneEst" cssClass="input-xlarge"/>
 									</span>
 								</div>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="ruolo">${ruoloHeader}</label>
+							<div class="controls">
+								<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
+									<springform:option value=""></springform:option>
+									<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
+								</springform:select>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="ruolo">${amministratoreHeader}</label>
+							<div class="controls">
+								<springform:checkbox path="amministratore" value="S"/>
 							</div>
 						</div>
 						

@@ -255,6 +255,15 @@ $(document).ready(function() {
 //	$("#inserimentoUtenteInternoDiv").hide();
 //	$("#inserimentoUtenteEsternoDiv").hide();
 	
+    $("#dataNascita").datepicker({
+    	format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        language: "it"
+    }).on('changeDate', function(ev){
+	        $("#dataNascitaV").val(ev.format('dd/mm/yyyy'));
+	        $( "#dataNascitaV" ).focus();
+        });
+    
     $('#tipoNuovoUtente').on('change', function () {
     	var val = $(this).val();
     	var optionInterno = "I"; //Interna
@@ -267,6 +276,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
@@ -276,6 +288,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', false);
     		$("#nome").attr('readonly', false);
     		$("#codiceFiscale").attr('readonly', false);
+    		$("#dataNascitaV").attr('readonly', false);
+    		$("#dataNascita").show();
+    		$("#sesso").attr('readonly', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -284,6 +299,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}
     });
@@ -300,6 +318,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
@@ -309,6 +330,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', false);
     		$("#nome").attr('readonly', false);
     		$("#codiceFiscale").attr('readonly', false);
+    		$("#dataNascitaV").attr('readonly', false);
+    		$("#dataNascita").show();
+    		$("#sesso").attr('readonly', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -317,6 +341,9 @@ $(document).ready(function() {
     		$("#cognome").attr('readonly', true);
     		$("#nome").attr('readonly', true);
     		$("#codiceFiscale").attr('readonly', true);
+    		$("#dataNascitaV").attr('readonly', true);
+    		$("#dataNascita").hide();
+    		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}
     }
@@ -439,8 +466,10 @@ $(document).ready(function() {
         	$('#codiceFiscale').val(map[item].codiceFiscale);
         	$('#email').val(map[item].email);
         	$('#organoDenominazioneInterni').val(map[item].organo);
-        	$('#organo').val(map[item].idOrgano);
+        	$('#hiddenIdOrgano').val(map[item].idOrgano);
         	$('#hiddenUtenteAstage').val(map[item].id);
+        	$('#sesso').val(map[item].sesso);
+        	$('#dataNascitaV').val(map[item].dataNascita);
             return item;
         }
     });   
@@ -455,6 +484,8 @@ $(document).ready(function() {
         	$('#organoDenominazioneInterni').val('');
         	$('#organo').val('');
         	$('#hiddenUtenteAstage').val('');
+        	$('#sesso').val('');
+        	$('#dataNascitaV').val('');
     	}
     });
     

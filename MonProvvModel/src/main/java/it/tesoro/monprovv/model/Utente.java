@@ -1,8 +1,9 @@
 package it.tesoro.monprovv.model;
 
-import java.util.List;
-
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
+
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,14 +15,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 
 @Entity
@@ -41,25 +47,38 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	
 	@Column(name="COGNOME", length=240)
 	@NotNull
+	@NotEmpty
 	private String cognome;
 	
 	@Column(name="NOME", length=240)
 	@NotNull
+	@NotEmpty
 	private String nome;
 	
 	@Transient
 	private String nominativo;
 	
+	@Transient
+	private Ruolo ruolo;
+	
+	@Transient
+	private boolean amministratore;
+	
 	@Column(name="CODICE_FISCALE", length=20)
 	@NotNull
+	@NotEmpty
+	@Pattern(regexp="^[a-zA-Z]{6}[0-9]{2}[abcdehlmprstABCDEHLMPRST]{1}[0-9]{2}([a-zA-Z]{1}[0-9]{3})[a-zA-Z]{1}$")
 	private String codiceFiscale;
 	
 	@Column(name="EMAIL", length=240)
 	@NotNull
+	@NotEmpty
 	@Email
 	private String email;
 	
 	@Column(name="FLAG_INT_EST", length=1)
+	@NotNull
+	@NotEmpty
 	private String flagIntEst;
 	
 	@Column(name="FLAG_ATTIVO", length=1)
@@ -69,6 +88,14 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
     @JoinColumn(name="ID_ORGANO", referencedColumnName="ID_ORGANO")
 	@Valid
 	private Organo organo;
+	
+	@Column(name = "DATA_NASCITA")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date dataNascita;
+	
+	@Column(name="SESSO", length=1)
+	private String sesso;
 
 	@Transient
 	private String organoDenominazione;
@@ -111,7 +138,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	}
 
 	public String getEmail() {
-		return email;
+		if(this.utenteAstage != null)
+			return utenteAstage.getEmail();
+		else
+			return email;
 	}
 
 	public void setEmail(String email) {
@@ -127,7 +157,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	}
 
 	public String getNome() {
-		return nome;
+		if(this.utenteAstage != null)
+			return utenteAstage.getNome();
+		else
+			return nome;
 	}
 
 
@@ -137,7 +170,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 
 
 	public String getCognome() {
-		return cognome;
+		if(this.utenteAstage != null)
+			return utenteAstage.getCognome();
+		else
+			return cognome;
 	}
 
 
@@ -156,7 +192,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	}
 
 	public String getCodiceFiscale() {
-		return codiceFiscale;
+		if(this.utenteAstage != null)
+			return utenteAstage.getCodiceFiscale();
+		else
+			return codiceFiscale;
 	}
 
 
@@ -218,6 +257,44 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 
 	public void setFlagAttivo(String flagAttivo) {
 		this.flagAttivo = flagAttivo;
+	}
+
+	public Ruolo getRuolo() {
+		return ruolo;
+	}
+
+	public void setRuolo(Ruolo ruolo) {
+		this.ruolo = ruolo;
+	}
+
+	public Date getDataNascita() {
+		if(this.utenteAstage != null)
+			return utenteAstage.getDataNascita();
+		else
+			return dataNascita;
+	}
+
+	public void setDataNascita(Date dataNascita) {
+		this.dataNascita = dataNascita;
+	}
+
+	public String getSesso() {
+		if(this.utenteAstage != null)
+			return utenteAstage.getSesso();
+		else
+			return sesso;
+	}
+
+	public void setSesso(String sesso) {
+		this.sesso = sesso;
+	}
+
+	public boolean isAmministratore() {
+		return amministratore;
+	}
+
+	public void setAmministratore(boolean amministratore) {
+		this.amministratore = amministratore;
 	}
 
 	@Override

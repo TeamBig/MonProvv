@@ -25,6 +25,10 @@ public class UtenteDto implements Serializable{
 
 	private String flagAttivo;
 	
+	private String sesso;
+	
+	private String dataNascita;
+	
 	public UtenteDto(){
 		this.flagAttivo = "S";
 	}
@@ -92,4 +96,21 @@ public class UtenteDto implements Serializable{
 	public void setFlagAttivo(String flagAttivo) {
 		this.flagAttivo = flagAttivo;
 	}
+
+	public String getSesso() {
+		return sesso;
+	}
+
+	public void setSesso(String sesso) {
+		this.sesso = sesso;
+	}
+
+	public String getDataNascita() {
+		return dataNascita;
+	}
+
+	public void setDataNascita(String dataNascita) {
+		this.dataNascita = dataNascita;
+	}
+	
 }
