@@ -75,7 +75,7 @@
 					<span>Utenti Ente</span>
 				</h3>
 				
-				<c:if test="${tableUtentiListOrganiRisultatiSize gt 0}">
+				
 					<div class="row">
 						<div class="span12">
 						
@@ -106,7 +106,7 @@
 						</div>
 					</div>
 				
-				</c:if>
+		
 
 				<div class="control-group">
 					<div class="pull-right">

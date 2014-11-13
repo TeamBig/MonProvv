@@ -2,6 +2,7 @@
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <spring:message var="idHeader" code="gestione.utente.id" />
 <spring:message var="cognomeHeader" code="gestione.utente.cognome" />
@@ -70,8 +71,8 @@
 							<div class="control-group" >
 								<label class="control-label" for="dataNascita">${datanascitaHeader}</label>
 								<div class="controls">
-									<span>
-										${utenteToEdit.dataNascita}
+									<span>	
+										<fmt:formatDate value="${utenteToEdit.dataNascita}" pattern="dd/MM/yyyy" />
 										<springform:hidden path="dataNascita" id="dataNascitaV" />
 									</span>
 								</div>
