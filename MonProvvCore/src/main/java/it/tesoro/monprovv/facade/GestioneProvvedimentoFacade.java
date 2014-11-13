@@ -17,6 +17,7 @@ import it.tesoro.monprovv.dao.UtenteDAO;
 import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.dto.Mail;
+import it.tesoro.monprovv.dto.ProvvedimentoStampaDto;
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.model.Allegato;
@@ -247,7 +248,7 @@ public class GestioneProvvedimentoFacade {
 		}
 		return allegato;
 	}
-	
+
 	public Allegato getAllegatoByIdnoAssegnazione(Integer allegatoId) {
 		Allegato allegato = null;
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -412,7 +413,7 @@ public class GestioneProvvedimentoFacade {
 		Notifica notificaInfo = new Notifica();
 		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
 		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
-		notificaInfo.setOggetto("Assegnazione provvedimento");
+		notificaInfo.setOggetto("Fine lavorazione");
 		notificaInfo.setTesto(testo);
 		notificaInfo.setUtenteMittente(user.getUtente());
 
@@ -421,6 +422,32 @@ public class GestioneProvvedimentoFacade {
 			notificaDAO.save(notificaInfo);
 		}
 		
+		// invio notifica al capofila se tutte le assegnazioni sono in fine lavorazione
+		Provvedimento provvedimento = provvedimentoDAO.findById(assegnazione.getProvvedimento().getId());
+		
+		int countInLavorazione = 0;
+		for (Assegnazione ass : provvedimento.getAssegnazioneList()) {
+			if (ass.getStato().getCodice().equals(Constants.ACCETTATO) || ass.getStato().getCodice().equals(Constants.ASSEGNATO)) {
+				countInLavorazione ++;
+			}
+		}
+		
+		if (countInLavorazione > 0) {
+			String testoFineLav = "Si comunica che tutti gli organi assegnatari hanno concluso la lavorazione del provvedimento " 
+					+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa();
+			
+			Notifica notificaFineLav = new Notifica();
+			notificaFineLav.setFlagLettura(Notifica.NON_LETTA);
+			notificaFineLav.setTipoNotifica(Notifica.INFORMATIVA);
+			notificaFineLav.setOggetto("Fine lavorazione per tutte le assegnazioni");
+			notificaFineLav.setTesto(testoFineLav);
+			notificaFineLav.setUtenteMittente(user.getUtente());
+			
+			for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+				notificaFineLav.setUtenteDestinatario(utenteDestinatario);
+				notificaDAO.save(notificaFineLav);
+			}
+		}
 		return assegnazione;
 	}
 	
@@ -488,7 +515,7 @@ public class GestioneProvvedimentoFacade {
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
 		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
 			provvedimentoIns.setProponente(null);
-		}		
+		}
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
@@ -581,9 +608,9 @@ public class GestioneProvvedimentoFacade {
 	public void invioMail(Mail mail) {
 		mailService.eseguiInvioMail(mail);
 		
-	}
-
-private void invioNotificaCambioStato(Provvedimento provvedimento) {
+	}	
+	
+	private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		// invio notifica operativa
@@ -625,10 +652,6 @@ private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		
 	}
 	
-	public void aggiornaAccettazioneAssegnazione(Provvedimento provvedimento) {
-		
-	}
-	
 	public Assegnazione recuperaAssegnazioneByProvvOrgano(AssegnazioneDto assDto) {
 		Assegnazione retval = null;
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -643,7 +666,7 @@ private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		return retval;
 	}
 	
-	
+
 	public Nota recuperaNotaByAssegnazione(Assegnazione assegnazione){
 		Nota retval = null;
 		HashMap<String, Object> params = new HashMap<String, Object>();
@@ -671,5 +694,24 @@ private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		nota.setTesto(notaDAO.createClob(testoNota));
 		notaDAO.save(nota);
 	}
-	
-}
+
+	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(){
+		List<String> order = new ArrayList<String>();
+		order.add("dataInserimento desc");
+		List<Provvedimento> provvedimenti = provvedimentoDAO.findAll(order);
+		
+		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();
+		for (Provvedimento provvedimento : provvedimenti) {
+			provvedimentiDto.add(new ProvvedimentoStampaDto(provvedimento));
+		}
+		
+		return provvedimentiDto;	
+	}
+
+	public List<Organo> initProponente() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "S", order);
+		return listaOrgani;
+	}
+} 

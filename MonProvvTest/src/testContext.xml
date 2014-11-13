@@ -42,7 +42,7 @@
 	    <property name="targetMethod" value="bind"/>
 	    <property name="arguments">
 	        <array>
-	            <value type="java.lang.String">java:/MonProvvDS</value>
+	            <value type="java.lang.String">jdbc/MonProvvDS</value>
 	            <ref bean="dataSourceTest"/>
 	        </array>
 	    </property>

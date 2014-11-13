@@ -74,7 +74,7 @@
 				summary="Elenco Allegati" 
 				style="width: 100%">
 
-				<display:column title="${idHeader}" property="id" headerScope="col" />
+				<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
 				<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
 					<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 					<a href="${urlDownload}" class="download">${allegato.descrizione}</a>

@@ -39,6 +39,7 @@
 			</div>
 		</div>
 		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" name="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST" enctype="multipart/form-data">
+		<springform:hidden path="collNormattiva" id="collNormattiva" cssClass="input-xxlarge" />
 		<springform:hidden path="currentStep" name="currentStep"/>
 		<springform:hidden path="stepSuccessivo" name="stepSuccessivo"/>
 		<c:if test="${currentStep eq 1}">
@@ -97,9 +98,10 @@
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="collNormattiva">${collNormattivaHeader}</label>
+						<%-- <label class="control-label" for="collNormattiva">${collNormattivaHeader}</label> --%>
+						<span class="control-label" >${collNormattivaHeader}</span>
 						<div class="controls">
-							<springform:input path="collNormattiva" cssClass="input-xxlarge" disabled="true"/><a href="#" id="linkNormattiva">Apri</a>
+							<span id="linkNormattivaSpan"></span>
 						</div>
 					</div>
 					<div class="control-group">
@@ -164,7 +166,7 @@
 						summary="Elenco Allegati" 
 						style="width: 100%">
 		
-						<display:column title="${idHeader}" property="id" headerScope="col" />
+						<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
 						<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
 							<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 							<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
@@ -274,7 +276,10 @@
 			<div class="row">
 				<div class="span12">
 					<div class="span2 offset2">
-						<springform:select path="provvedimentiSelected" id="provvedimentiSelected" cssClass="input-xlarge" multiple="multiple">
+<%-- 						<springform:select path="provvedimentiSelected" id="provvedimentiSelected" cssClass="input-xlarge" multiple="multiple">
+							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="oggetto" />
+						</springform:select> --%>
+						<springform:select path="provvedimentiSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
 							<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="oggetto" />
 						</springform:select>
 					</div>

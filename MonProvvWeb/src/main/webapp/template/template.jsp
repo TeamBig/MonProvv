@@ -53,9 +53,9 @@
 	<script type="text/javascript" src="${base}js/locales/bootstrap-datepicker.it.js"></script>
 	<script type="text/javascript" src="${base}js/bootbox.min.js"></script>
 	<script type="text/javascript" src="${base}js/jquery.form.js"></script>
-	<script type="text/javascript" src="${base}js/jquery.multi-select.js"></script>
 	<script type="text/javascript" src="${base}js/bootstrap-tagsinput.js"></script>
 	<script type="text/javascript" src="${base}js/jquery.quicksearch.js"></script>
+	<script type="text/javascript" src="${base}js/jquery.multi-select.js"></script>
 	<script type="text/javascript" src="${base}js/scripts.js"></script>
 	
 </head>

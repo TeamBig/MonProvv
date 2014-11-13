@@ -28,7 +28,7 @@
 					<webModule>
 						<groupId>MonProvv</groupId>
 						<artifactId>MonProvvWeb</artifactId>
-						<contextRoot>/monprovv</contextRoot>
+						<contextRoot>/monitoraggioprovvedimenti</contextRoot>
 					</webModule>
 				</modules>
 			</configuration>
