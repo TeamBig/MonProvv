@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -69,6 +70,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -689,10 +691,10 @@ public class GestioneProvvedimentoController {
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.GET)
 	public String apriNuovoProvvedimento(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String action,
-			BindingResult errors){
-		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		provvedimento.setOrganoCapofila(principal.getUtente().getOrgano());
+			BindingResult errors,SessionStatus status){
+		//pulisciInserimento(model,status);
 		gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);	
+		status.setComplete();
 		return "provvedimentoInserisci";
 	}
 	
@@ -705,7 +707,7 @@ public class GestioneProvvedimentoController {
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/nuovo" } , method = RequestMethod.POST)
 	public String apriNuovoProvvedinto(Model model,@RequestParam(value="currentStep", required=false) String idStep,@RequestParam(value="stepSuccessivo", required=false) String stepSuccessivo, @ModelAttribute("provvedimentoInserisci") InserisciProvvedimentoDto provvedimento,
 			@RequestParam(required = false) String[] provvedimentiSelected,@RequestParam(required = false) String _provvedimentiSelected,@RequestParam(required = false) String action,
-			RedirectAttributes redirectAttributes,BindingResult errors){
+			RedirectAttributes redirectAttributes,BindingResult errors,SessionStatus status){
 		provValidator.validate(provvedimento, errors);
 		if( !errors.hasErrors() ){
 			gestioneInserimento(model,idStep,stepSuccessivo,provvedimento,action);
@@ -718,7 +720,7 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
 		}
 		if(action.equals(Constants.SALVA)){
-			pulisciInserimento(model);
+			pulisciInserimento(model,status);
 			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Provvedimento effettuato con successo", false);
 			return "redirect:/private/provvedimenti/ricerca";
 		}
@@ -740,6 +742,7 @@ public class GestioneProvvedimentoController {
 	}
 	
 	private void gestioneInserimento(Model model, String idStep,String stepSuccessivo,InserisciProvvedimentoDto provvedimento, String action){
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		if(StringUtils.isEmpty(action)){
 			action = "";
 		}
@@ -764,6 +767,7 @@ public class GestioneProvvedimentoController {
 		}
 		if(provvedimento.getCurrentStep().equals("2")){
 			model.addAttribute("titolo", "Nomina capofila provvedimento");
+			provvedimento.setOrganoCapofila(principal.getUtente().getOrgano());
 		}
 		if(provvedimento.getCurrentStep().equals("3")){
 			model.addAttribute("titolo", "Assegnatari");
@@ -804,7 +808,8 @@ public class GestioneProvvedimentoController {
 		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione());
 	}
 	
-	private void pulisciInserimento(Model model)  {
+	private void pulisciInserimento(Model model,SessionStatus status)  {
+		status.setComplete();
 		model.addAttribute("provvedimentoInserisci", new InserisciProvvedimentoDto());
 	}
 	
