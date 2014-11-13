@@ -402,7 +402,9 @@ $(document).ready(function() {
     	target = target + '/salvaeinvianotifica?id=' + $('#idProvvedimento').val();
     	// load the url and show modal on success
         $("#modalSalvaInviaNotifica .modal-body").load(target, function() { 
-             $("#modalSalvaInviaNotifica").modal("show"); 
+             $("#modalSalvaInviaNotifica").on('shown', function() {
+            	 $(document).tokenfieldemail($("#tokenfieldemail"));
+             }).modal("show");
         });
     });
     
@@ -412,11 +414,6 @@ $(document).ready(function() {
     	oForm.append("<input type='hidden' name='salvaenotifica' />");
     	oForm.submit();
     });
-    
-    $(document).on('click', '#tokenfieldemail', function() {
-	    var element = $(this);
-	    element.tokenfieldemail(element);
-    });    
     
     $.fn.tokenfieldemail = function (element) {
     	element.tagsinput({
