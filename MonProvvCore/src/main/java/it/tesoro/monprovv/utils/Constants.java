@@ -37,5 +37,7 @@ public interface Constants {
 	//TIPO PROVVEDIMENTO
 	public static String CONCERTANTE_MEF = "CONC_MEF" ;
 	
-	
+		// REPORT TIPI
+	public static final String TIPO_PDF = "PDF";
+	public static final String TIPO_XLS = "XLS";
 }
