@@ -603,6 +603,11 @@ public class GestioneProvvedimentoFacade {
 			mail.setDestinatario(tmp.getEmail());
 			mailService.eseguiInvioMail(mail);
 		}
+		
+		//Incremento il numero dei solleciti inviati
+		Integer numSoll = (assegnazione.getNumSolleciti()==null)?0:assegnazione.getNumSolleciti();
+		assegnazione.setNumSolleciti( numSoll + 1);
+		assegnazioneDAO.merge(assegnazione);
 	}
 
 	public void invioMail(Mail mail) {

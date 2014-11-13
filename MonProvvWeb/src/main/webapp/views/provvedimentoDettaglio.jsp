@@ -251,7 +251,7 @@
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'sollecitoVisible')">
 									<display:column title="${sollecitoHeader}"  headerScope="col" headerClass="center" class="vcenter center">
 										<c:if test="${(assegnazione.stato.codice ne 'RIF')}">
-											<a href="#modalSollecito" role="button" data-toggle="modal" id="anchorModalSollecito"><i class="icon-envelope-alt icon-large" title="Invio sollecito"></i></a>
+											<a href="#modalSollecito" role="button" data-toggle="modal" id="anchorModalSollecito"><i class="icon-envelope-alt icon-large" title="Per questa assegnazione sono stati inviati ${assegnazione.numSolleciti} solleciti"></i></a>
 										</c:if>
 									</display:column>
 								</security:authorize>
