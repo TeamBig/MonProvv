@@ -28,6 +28,7 @@
 				
 				<springform:hidden path="idAllegatiUpdList" id="idAllegatiUpdList" />
 				<springform:hidden path="idAllegatiDelList" id="idAllegatiDelList" />
+				<springform:hidden path="idNotaAssegnazione" id="idNotaAssegnazione" />
 				
 				<h3 class="text-left underline">
 					<span>Nota</span>
@@ -42,10 +43,10 @@
 							</div>
 						</div>	
 						<div class="control-group">
-							<label class="control-label" for="denominazioneEstesa">${noteHeader}</label>
+							<label class="control-label" for="testoNotaAssegnazione">${noteHeader}</label>
 							<div class="controls">
 								<span>
-									<springform:textarea path="noteInterne" id="noteInterne" cssClass="input-xxlarge" cols="30" rows="5"/>
+									<springform:textarea path="testoNotaAssegnazione" id="testoNotaAssegnazione" cssClass="input-xxlarge" cols="30" rows="5"/>
 								</span>
 							</div>
 						</div>

@@ -3,6 +3,9 @@ package it.tesoro.monprovv.dto;
 public class AssegnazioneDto {
 	private Integer id;
 	private String nomeAssegnatario;
+	
+	private Integer idOrgano;
+	private Integer idProvvedimento;
 
 	public AssegnazioneDto() {
 	}
@@ -26,6 +29,22 @@ public class AssegnazioneDto {
 
 	public void setNomeAssegnatario(String nomeAssegnatario) {
 		this.nomeAssegnatario = nomeAssegnatario;
+	}
+
+	public Integer getIdOrgano() {
+		return idOrgano;
+	}
+
+	public void setIdOrgano(Integer idOrgano) {
+		this.idOrgano = idOrgano;
+	}
+
+	public Integer getIdProvvedimento() {
+		return idProvvedimento;
+	}
+
+	public void setIdProvvedimento(Integer idProvvedimento) {
+		this.idProvvedimento = idProvvedimento;
 	}
 
 }

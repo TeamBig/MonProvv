@@ -175,10 +175,16 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	
 	@Transient
 	private String idAssegnatarioSollecito;
-
+	
+	@Transient
+	private String testoNotaAssegnazione;
+	
+	@Transient
+	private Integer idNotaAssegnazione;
+	
 	@Transient
 	private String motivazioneRifiuto;
-	
+
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
 
@@ -431,6 +437,22 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.idAssegnatarioSollecito = idAssegnatarioSollecito;
 	}
 
+	public String getTestoNotaAssegnazione() {
+		return testoNotaAssegnazione;
+	}
+
+	public void setTestoNotaAssegnazione(String testoNotaAssegnazione) {
+		this.testoNotaAssegnazione = testoNotaAssegnazione;
+	}
+
+	public Integer getIdNotaAssegnazione() {
+		return idNotaAssegnazione;
+	}
+
+	public void setIdNotaAssegnazione(Integer idNotaAssegnazione) {
+		this.idNotaAssegnazione = idNotaAssegnazione;
+	}
+	
 	public String getMotivazioneRifiuto() {
 		return motivazioneRifiuto;
 	}

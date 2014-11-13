@@ -364,9 +364,6 @@ $(document).ready(function() {
 		e.preventDefault();
 		e.stopPropagation();
 		var oForm = $(this).closest("form");
-		//oForm.append("<input type='hidden' name='idAssegnatarioSollecito' value='"+$("#idAssegnatarioSollecito").val()+"' />"); 
-		//oForm.append("<input type='hidden' name='oggettoSollecito' value='"+$("#oggettoSollecito").val()+"' />"); 
-		//oForm.append("<input type='hidden' name='testoSollecito' value='"+$("#testoSollecito").val()+"' />"); 
 		oForm.append("<input type='hidden' name='inviaSollecito' />");
 		oForm.submit();
 	});
@@ -572,19 +569,15 @@ $(document).ready(function() {
 	});
 	
 	$("button#saveNoteAllegati").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'save')
-        .appendTo('#provvedimento');
-		$( "#provvedimento" ).submit();
+		var oForm = $('#provvedimento');
+		oForm.append("<input type='hidden' name='saveNoteAllegati' />");
+		oForm.submit();
 	});
 	
 	$("button#annullaNoteAllegati").click(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'action')
-        .attr('value', 'cancel')
-        .appendTo('#provvedimento');
-		$( "#provvedimento" ).submit();
+		var oForm = $('#provvedimento');
+		oForm.append("<input type='hidden' name='cancelNoteAllegati' />");
+		oForm.submit();
 	});
 	
 	$(document).on('click', '#eliminaAllegatoOld', function() { 

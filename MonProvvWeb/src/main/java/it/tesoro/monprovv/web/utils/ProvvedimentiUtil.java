@@ -1,12 +1,16 @@
 package it.tesoro.monprovv.web.utils;
 
+import it.tesoro.monprovv.dto.AssegnazioneDto;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
 import it.tesoro.monprovv.model.Provvedimento;
+import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.utils.StringUtils;
 
 import java.io.Serializable;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 
 public class ProvvedimentiUtil implements Serializable{
 
@@ -72,6 +76,32 @@ public class ProvvedimentiUtil implements Serializable{
 				 }
 			 }
 		 }
+	}
+	
+	public static void gestioneSalvaAllegati4Assegnazioni(Provvedimento provvedimento, Provvedimento provvAggiornato, GestioneProvvedimentoFacade gestioneProvvedimentoFacade) {
+		Allegato ele;
+		//Elimino gli allegati rimossi in maschera
+		for(Integer tmp: provvedimento.getIdAllegatiDelList()){
+			if(tmp!=null){
+				gestioneProvvedimentoFacade.eliminaAllegato(tmp); 
+			}
+		}
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		AssegnazioneDto assDto = new AssegnazioneDto();
+		assDto.setIdOrgano(principal.getUtente().getOrgano().getId());
+		assDto.setIdProvvedimento(provvedimento.getId());
+		Assegnazione assegnazione = gestioneProvvedimentoFacade.recuperaAssegnazioneByProvvOrgano(assDto);
+		
+		//Setto il provvedimento per i nuovi allegati
+		for(Integer tmp: provvedimento.getIdAllegatiUpdList()){
+			if(tmp!=null){
+				ele = gestioneProvvedimentoFacade.getAllegatoByIdnoAssegnazione(tmp);
+				if(ele!=null && ele.getAssegnazione()==null){
+					ele.setAssegnazione(assegnazione);
+					gestioneProvvedimentoFacade.aggiornaAllegato(ele);
+				}
+			}
+		}
 	}
 
 }
