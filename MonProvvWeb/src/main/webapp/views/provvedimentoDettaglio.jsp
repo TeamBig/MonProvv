@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
@@ -43,10 +44,11 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'modificaStato')" var="canModificaStato" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'accettazione')" var="canAccettazione" />
-
 <security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')" var="canLavorazione" />
 
 <springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="" method="POST">
+<fmt:formatDate value="${provvedimentoDettaglio.termineScadenza}" var="termineScadenzaFrt" pattern="dd/MM/yyyy" />
+<fmt:formatDate value="${provvedimentoDettaglio.dataAtto}" var="dataAttoFrt" pattern="dd/MM/yyyy" />
 	<div class="container inserimento">
 		<div class="row">
 			<div class="span12">
@@ -84,7 +86,7 @@
 						<div class="control-group">
 							<span class="control-label" >${dataAttoHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.dataAtto}</span>
+								<span>${dataAttoFrt}</span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -126,7 +128,9 @@
 						<div class="control-group">
 							<span class="control-label">${termineDiScadenzaHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.termineScadenza}</span>
+								<span>
+									${termineScadenzaFrt}
+								</span>
 							</div>
 						</div>
 						<div class="control-group">

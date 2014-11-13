@@ -194,8 +194,6 @@
 	</div>
 	<div class="row">
 		<div class="span12">
-		
-			<c:if test="${tableProvvedimentiSize gt 0}">
 				<div class="row">
 					<div class="span12">
 						
@@ -251,8 +249,6 @@
 						
 					</div>
 				</div>
-			
-			</c:if>
 		</div>
 		<div class="span12">
 			<spring:url value="/private/provvedimenti/esportaxls" var="url_exportxls" />
