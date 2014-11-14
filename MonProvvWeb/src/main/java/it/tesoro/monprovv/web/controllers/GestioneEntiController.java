@@ -118,7 +118,7 @@ public class GestioneEntiController {
 			gestioneEntiFacade.eliminazioneLogica(Integer.valueOf(id));
 		} catch (DatabaseException de) {
 			if ("NOT_EMPTY_USER_LIST".equals(de.getMessage())) {
-				alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_ERROR, "Impossibile cancellazione organi con utenti associati", false);
+				alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_ERROR, "Non \u00E8 possibile procedere all'eliminazione dell'Organo perch\u00E8 ci sono utenti ad esso associati", false);
 				return retval;
 			}
 		}

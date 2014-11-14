@@ -825,7 +825,7 @@ function gestionePopupRichiestaAssegnazione() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#modalRichiestaAssegnazione").modal().on('shown', function() {
+		$("#modalRichiestaAssegnazione").on('shown', function() {
 			
 			$("#richiediAssegnazioneModal").click(function(e) {
 				e.stopPropagation();
@@ -833,9 +833,11 @@ function gestionePopupRichiestaAssegnazione() {
 				
 				$(this).closest("form").append("<input type='hidden' name='richiediAssegnazione' />").submit();
 				
-			});
+			}).modal({show: false});
 			
 		}); 
+		
+		$("#modalRichiestaAssegnazione").modal('show');
 	});
 	
 }
@@ -847,7 +849,7 @@ function gestionePopupRifiutoAssegnazione() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#modalRifiutoAssegnazione").modal().on('shown', function() {
+		$("#modalRifiutoAssegnazione").on('shown', function() {
 			
 			$("#rifiutoAssegnazioneModal").click(function(e) {
 				e.stopPropagation();
@@ -855,9 +857,11 @@ function gestionePopupRifiutoAssegnazione() {
 				
 				$(this).closest("form").append("<input type='hidden' name='rifiutaAssegnazione' />").submit();
 				
-			});
-			
+			}).modal({show: false});
 		}); 
+		
+		$("#modalRifiutoAssegnazione").modal('show');
+		
 	});
 	
 }
