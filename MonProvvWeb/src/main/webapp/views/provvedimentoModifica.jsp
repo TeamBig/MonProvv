@@ -199,7 +199,7 @@
 										class="table table-hover table-bordered"
 										summary="Elenco Allegati" style="width: 100%">
 
-							<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
+							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${descrizioneHeader}" headerScope="col" class="vcenter">
 								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>
@@ -273,8 +273,8 @@
 											class="table table-hover table-bordered"
 											summary="Elenco Assegnatari" style="width: 100%">
 	
-								<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
-								<display:column title="${organoHeader}" property="organo.denominazione" headerClass="medium" headerScope="col" class="medium" />
+								<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
+								<display:column title="${organoHeader}" property="organo.denominazione" headerScope="col" class="medium" headerClass="medium" />
 								<display:column title="${presaInCaricoHeader}"  headerScope="col" class="vcenter center">
 									<c:choose>
 									      <c:when test="${assegnazione.stato.codice eq 'ACC'}">
@@ -307,7 +307,7 @@
 									<a href="${urlModale}" role="button" data-toggle="modal" data-target="#modalCronologia"><i class="icon-time icon-large"></i></a>
 								</display:column>
 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
-									<i class="icon-trash icon-large" title="Elimina assegnazione"></i>
+									<a href="javascript:void(0)" id="eliminaAssegnatario" ><i class="icon-trash icon-large" title="Elimina assegnazione"></i></i></a>
 								</display:column>
 						</display:table>
 				</div>

@@ -40,7 +40,7 @@ public class ProvvedimentiUtil implements Serializable{
 				ret.append("<tr>");
 				ret.append("<td class=\"hidden\">"+assegnazione.getId()+"</td>");
 				ret.append("<td>"+assegnazione.getOrgano().getDenominazione()+"</td>");
-				ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnazione\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
+				ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnatario\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
 				ret.append("</tr>");	
 			} else {
 				ret.append("<tr>");
@@ -50,7 +50,7 @@ public class ProvvedimentiUtil implements Serializable{
 				ret.append("<td></td>");
 				ret.append("<td></td>");
 				ret.append("<td class=\"vcenter center\"><a href=\"#modalCronologia\" role=\"button\" data-toggle=\"modal\"><i class=\"icon-time icon-large\"></i></a></td>");
-				ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnazione\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
+				ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAssegnatario\" ><i class=\"icon-trash icon-large\" title=\"Elimina assegnazione\"></i></a></td>");
 				ret.append("</tr>");
 			}
 			return ret.toString();

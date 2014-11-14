@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -133,13 +135,10 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST, params="buttonClean")
 	public String initPostButtonClean(Model model,
 			@ModelAttribute("ricercaUtente") UtenteDto ricercaUtente,				
-			HttpServletRequest request)  {
-		String retval = "utenteHomeUtente";
-		ricercaUtente = new UtenteDto();
-		ricercaUtente.setFlagAttivo("S");
-		model.addAttribute("ricercaUtente", ricercaUtente);
-		initModel(model, ricercaUtente, null);	
-		return retval;
+			HttpSession session, SessionStatus status)  {
+		status.setComplete();
+        session.removeAttribute("ricercaUtente");
+		return "redirect:/private/admin/utenti";
 	}
 
 	private void loadCombo4NewUtente(Model model) {
