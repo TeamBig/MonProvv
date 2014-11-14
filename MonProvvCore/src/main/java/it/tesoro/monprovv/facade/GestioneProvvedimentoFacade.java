@@ -307,6 +307,11 @@ public class GestioneProvvedimentoFacade {
 		Allegato allegatoToDelete = allegatoDAO.findById(idAllegato);
 		allegatoDAO.delete(allegatoToDelete);
 	}
+	
+	public void eliminaAssegnatario(Integer id) {
+		Assegnazione assegnazione = assegnazioneDAO.findById(id);
+		assegnazioneDAO.delete(assegnazione);
+	}
 
 	public Assegnazione inserisciAssegnazione(Integer idProvv, Integer idOrgano) {
 		Provvedimento provv = provvedimentoDAO.findById(idProvv);

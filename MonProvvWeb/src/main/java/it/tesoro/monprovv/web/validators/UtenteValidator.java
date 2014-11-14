@@ -59,7 +59,7 @@ public class UtenteValidator implements Validator {
 			if(StringUtils.isEmpty(utente.getDataNascita())){
 				errors.rejectValue("organo","generic.error.required" ,"Il campo 'Data di nascita' \u00E8 obbligatorio");
 			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(utente.getDataNascita() ))){
-				errors.rejectValue("organo","generic.error.required" ,"Il campo 'Data di nascita' conteneva un valore non corretto");
+				errors.rejectValue("organo","generic.error.required" ,"Formato 'Data di nascita' non corretto");
 				utente.setDataNascita(null);
 			}
 				
