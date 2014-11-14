@@ -1,5 +1,7 @@
 package it.tesoro.monprovv.web.validators;
 
+import java.text.SimpleDateFormat;
+
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.utils.StringUtils;
 
@@ -27,10 +29,10 @@ public class UtenteValidator implements Validator {
 				
 				if( utente.getId() == null ){
 					if(StringUtils.isEmpty(utente.getNominativo()))
-						errors.rejectValue("cognome","generic.error.required" ,"Il campo 'nominativo' \u00E8 obbligatorio");
+						errors.rejectValue("cognome","generic.error.required" ,"Il campo 'Nominativo' \u00E8 obbligatorio");
 					else
 					if(StringUtils.isEmpty(utente.getUtenteAstage()))
-						errors.rejectValue("cognome","generic.error.required" ,"Il nominativo inserito non \u00E8 valido");
+						errors.rejectValue("cognome","generic.error.required" ,"Il Nominativo inserito non \u00E8 valido");
 				}
 				
 				
@@ -54,11 +56,21 @@ public class UtenteValidator implements Validator {
 				
 			}
 			
-			if(StringUtils.isEmpty(utente.getOrgano()))
-				errors.rejectValue("organo","generic.error.required" ,"Il campo 'organo' \u00E8 obbligatorio");
+			if(StringUtils.isEmpty(utente.getDataNascita())){
+				errors.rejectValue("organo","generic.error.required" ,"Il campo 'Data di nascita' \u00E8 obbligatorio");
+			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(utente.getDataNascita() ))){
+				errors.rejectValue("organo","generic.error.required" ,"Formato 'Data di nascita' non corretto");
+				utente.setDataNascita(null);
+			}
+				
 			
 		}
 		
+		if(StringUtils.isEmpty(utente.getOrgano()))
+			errors.rejectValue("organo","generic.error.required" ,"Il campo 'Organo' \u00E8 obbligatorio");
+		
+		if(StringUtils.isEmpty(utente.getRuolo()))
+			errors.rejectValue("ruolo","generic.error.required" ,"Il campo 'Ruolo' \u00E8 obbligatorio");
 	}
 
 }

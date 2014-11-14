@@ -81,7 +81,13 @@
 							<label class="control-label" for="sesso">${sessoHeader}</label>
 							<div class="controls">
 								<span>
-									${utenteToEdit.sesso}
+									<c:set var = "MASCHIO" value="M" />
+									<c:set var = "FEMMINA" value="F" />
+									<c:choose>
+										<c:when test="${ utenteToEdit.sesso eq MASCHIO }">Maschile</c:when>
+										<c:when test="${ utenteToEdit.sesso eq FEMMINA }">Femminile</c:when>
+										<c:otherwise></c:otherwise>
+									</c:choose>
 									<springform:hidden path="sesso" id="sesso" />
 								</span>
 							</div>

@@ -21,7 +21,7 @@
 
 	<c:url value="/private/admin/utenti/nuovo" var="formPath" />
 
-	<springform:form action="${formPath}" method="POST" commandName="utenteToEdit" cssClass="form-horizontal">
+	<springform:form action="${formPath}" method="POST" commandName="utenteToEdit" cssClass="form-horizontal" id="formIsertUtente">
 		<div class="row">
 			<div class="span12">
 			
@@ -91,6 +91,9 @@
 									<springform:option value=""></springform:option>
 									<springform:options items="${sessos}" itemLabel="descrizione" itemValue="codice" />
 								</springform:select>
+								
+								<springform:hidden path="sessoHidden" id="sessoHidden" cssClass="input-xlarge"/>
+								
 							</div>
 						</div>
 						
@@ -147,7 +150,7 @@
 						<div class="control-group">
 							<label class="control-label" for="ruolo">${amministratoreHeader}</label>
 							<div class="controls">
-								<springform:checkbox path="amministratore" value="S"/>
+								<springform:checkbox path="amministratore" id="flgAmministratore" value="S"/>
 							</div>
 						</div>
 						

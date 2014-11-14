@@ -23,6 +23,7 @@ import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Email;
@@ -95,8 +96,12 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	private Date dataNascita;
 	
 	@Column(name="SESSO", length=1)
+	@NotEmpty
 	private String sesso;
 
+	@Transient
+	private String sessoHidden;
+	
 	@Transient
 	private String organoDenominazione;
 	
@@ -284,9 +289,25 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 		else
 			return sesso;
 	}
-
+	
 	public void setSesso(String sesso) {
 		this.sesso = sesso;
+		
+		if( StringUtils.isNotEmpty(this.sessoHidden) ){
+			this.sesso = this.sessoHidden;
+		}
+		
+	}
+
+	public String getSessoHidden() {
+		return sessoHidden;
+	}
+
+	public void setSessoHidden(String sessoHidden) {
+		this.sessoHidden = sessoHidden;
+		if( StringUtils.isNotEmpty(sessoHidden) ){
+			this.sesso = sessoHidden;
+		}
 	}
 
 	public boolean isAmministratore() {

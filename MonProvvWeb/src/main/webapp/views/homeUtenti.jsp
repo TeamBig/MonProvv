@@ -30,9 +30,9 @@
 			<div class="span12">
 				<div class="form-horizontal">
 					<div class="control-group">
-						<label class="control-label" for="denominazione">${nomeHeader}</label>
+						<label class="control-label" for="cognome">${cognomeHeader}</label>
 						<div class="controls">
-							<springform:input path="nome" cssClass="input-xlarge"/>
+							<springform:input path="cognome" id="cognome" cssClass="input-xlarge"/>
 						</div>
 					</div>
 				</div>
@@ -42,9 +42,9 @@
 			<div class="span12">
 				<div class="form-horizontal">
 					<div class="control-group">
-						<label class="control-label" for="denominazione">${cognomeHeader}</label>
+						<label class="control-label" for="nome">${nomeHeader}</label>
 						<div class="controls">
-							<springform:input path="cognome" cssClass="input-xlarge"/>
+							<springform:input path="nome" id="nome" cssClass="input-xlarge"/>
 						</div>
 					</div>
 				</div>
@@ -54,9 +54,9 @@
 			<div class="span12">
 				<div class="form-horizontal">
 					<div class="control-group">
-						<label class="control-label" for="denominazione">${cfHeader}</label>
+						<label class="control-label" for="codiceFiscale">${cfHeader}</label>
 						<div class="controls">
-							<springform:input path="codiceFiscale" cssClass="input-xlarge"/>
+							<springform:input path="codiceFiscale" id="codiceFiscale" cssClass="input-xlarge"/>
 						</div>
 					</div>
 				</div>

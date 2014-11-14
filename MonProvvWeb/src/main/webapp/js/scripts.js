@@ -149,8 +149,12 @@ $(document).ready(function() {
 //    
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
-    	var currentUrl = $(location).attr('pathname'); 
-    	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+    	
+    	if( $.isNumeric( customerId ) ){
+    	//if( customerId != 'Nessun elemento trovato.'){
+        	var currentUrl = $(location).attr('pathname'); 
+        	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+    	}
     });
     
 //    $("#denominazioneNuovoOrganoDiv").hide();
@@ -278,48 +282,14 @@ $(document).ready(function() {
         });
     
     $('#tipoNuovoUtente').on('change', function () {
-    	var val = $(this).val();
-    	var optionInterno = "I"; //Interna
-    	var optionEsterno = "E"; //Esterna
-    	if(val==optionInterno){
-    		//Inerimento Intenro
-    		$("#inserimentoUtenteInternoDiv").show();
-    		$("#inserimentoUtenteInternoDivOrg").show();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('disabled', 'disabled');
-    		$("#email").attr('readonly', true);
-    	}else if(val==optionEsterno){
-    		//Inserimento Esterno
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#inserimentoUtenteEsternoDiv").show();
-    		$("#cognome").attr('readonly', false);
-    		$("#nome").attr('readonly', false);
-    		$("#codiceFiscale").attr('readonly', false);
-    		$("#dataNascitaV").attr('readonly', false);
-    		$("#dataNascita").show();
-    		$("#sesso").attr('readonly', false);
-    		$("#email").attr('readonly', false);
-    	}else{
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
-    		$("#email").attr('readonly', true);
-    	}
+    	 update_form_inserimento_utente()
     });
     
     if($('#tipoNuovoUtente').length > 0){
+    	 update_form_inserimento_utente()
+    }
+    
+    function update_form_inserimento_utente(){
     	var val = $('#tipoNuovoUtente').val();
     	var optionInterno = "I"; //Interna
     	var optionEsterno = "E"; //Esterna
@@ -334,6 +304,7 @@ $(document).ready(function() {
     		$("#dataNascitaV").attr('readonly', true);
     		$("#dataNascita").hide();
     		$("#sesso").attr('readonly', true);
+    		$('#sesso').prop('disabled', 'disabled');
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
@@ -346,6 +317,8 @@ $(document).ready(function() {
     		$("#dataNascitaV").attr('readonly', false);
     		$("#dataNascita").show();
     		$("#sesso").attr('readonly', false);
+    		$('#sesso').prop('disabled', false);
+    		$('#sesso').prop('disabled', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -357,10 +330,25 @@ $(document).ready(function() {
     		$("#dataNascitaV").attr('readonly', true);
     		$("#dataNascita").hide();
     		$("#sesso").attr('readonly', true);
+    		$('#sesso').prop('disabled', 'disabled');
     		$("#email").attr('readonly', true);
     	}
-    }
+    };
     
+//    $("#sesso").focus(function(){
+//	    if ( $("#sesso").is('[readonly]') ){
+//	    	if ($("#sesso").is(":checked")) {
+//	            $('#sesso').prop('disabled', false);
+//	        }
+//	        else {
+//	            $('#sesso').prop('disabled', 'disabled');
+//	        }
+//	    }
+//    });
+    
+//    $(this).focusout(function(){
+//    	$('#sesso').prop('disabled', 'disabled');
+//    });
     
     $('#organoDenominazioneEst').attr('autocomplete','off');
     $('#organoDenominazioneEst').typeahead({
@@ -479,6 +467,7 @@ $(document).ready(function() {
         	$('#hiddenIdOrgano').val(map[item].idOrgano);
         	$('#hiddenUtenteAstage').val(map[item].id);
         	$('#sesso').val(map[item].sesso);
+        	$('#sessoHidden').val(map[item].sesso);
         	$('#dataNascitaV').val(map[item].dataNascita);
             return item;
         }
@@ -492,10 +481,15 @@ $(document).ready(function() {
         	$('#codiceFiscale').val('');
         	$('#email').val('');
         	$('#organoDenominazioneInterni').val('');
+        	$('#organoDenominazione').val('');
+        	$('#hiddenIdOrgano').val('');
         	$('#organo').val('');
         	$('#hiddenUtenteAstage').val('');
         	$('#sesso').val('');
+        	$('#sessoHidden').val('');
+        	$('#ruoloUtente').val('');
         	$('#dataNascitaV').val('');
+        	$("#flgAmministratore").attr("checked", false);
     	}
     });
     
@@ -639,6 +633,25 @@ $(document).ready(function() {
 	    });
 	});
 	
+	$(document).on('click', '#eliminaAssegnatario', function() { 
+		var id = $(this).parent().siblings(":first").text(); 
+		var trTableToDelete = $(this).parent().parent();
+		$.ajax({
+	    	type: 'GET',
+	    	url: 'deleteAssegnatario/'+id,
+			dataType : 'text',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				trTableToDelete.remove();
+	    	},
+	    	error: function(){
+	    		alert("error");
+	    	}
+	    });
+	});
+	
+	
 //	$("a#eliminaAllegato").click(function(){
 //		var idAllegato = $(this).parent().siblings(":first").text(); 
 //		var trTableToDelete = $(this).parent().parent();
@@ -669,7 +682,7 @@ $(document).ready(function() {
 			processData : false,
 			contentType : false,
 			success : function(response) {
-				eliminaNessunRisultatoAssegnatario();
+				eliminaNessunRisultatoAssegnatario('#assegnazione');
 				$('#assegnazione > tbody:last').append(response);
 	    	},
 	    	error: function(){
@@ -925,7 +938,7 @@ function addRowAllegato(item){
 	eliminaNessunRisultatoAllegato();
 	$('#allegato > tbody:last').append(
 			$('<tr>')
-				.append($('<td>').attr("class","hidden").text(item.id))
+				.append($('<td>').text(item.id).attr("class","hidden"))
 				.append($('<td>').html(
 						$('<a></a>').attr("class","download").attr("href","downloadAllegato?id="+item.id).append(item.descrizione)
 				))
@@ -1129,4 +1142,3 @@ function gestioneNormattiva(){
 		  }
 	  }
 }
-

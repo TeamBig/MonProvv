@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
@@ -92,13 +94,13 @@ public class GestioneEntiController {
 			@RequestParam(required = false) String buttonFind, 
 			@RequestParam(required = false) String buttonClean, 
 			@ModelAttribute("ricercaEnte") Organo ricercaEnte,				
-			HttpServletRequest request)  {
+			HttpSession session, SessionStatus status)  {
 		String retval = "entiHomeEnti";
 		
 		if("clean".equals( buttonClean )){
-			ricercaEnte = new Organo();
-			ricercaEnte.setFlagAttivo("S");
-			model.addAttribute("ricercaEnte",ricercaEnte);
+			status.setComplete();
+	        session.removeAttribute("ricercaUtente");
+			return "redirect:/private/admin/enti";
 		}
 		
 		if("new".equals( buttonNew )){

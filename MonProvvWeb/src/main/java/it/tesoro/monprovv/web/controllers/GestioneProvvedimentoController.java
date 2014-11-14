@@ -624,6 +624,13 @@ public class GestioneProvvedimentoController {
 		return null;
 	}
 	
+	@RequestMapping(value={"/private/provvedimenti/ricerca/deleteAssegnatario/{idAllegato}"}, method = RequestMethod.GET)
+	@ResponseBody
+	public String deleteAssegnatario(@PathVariable("idAllegato") Integer id) {
+		gestioneProvvedimentoFacade.eliminaAssegnatario(id);
+		return null;
+	}
+	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/inserisciAssegnatario"}, method = RequestMethod.GET)
 	@ResponseBody
 	public String inserisciAssegnatario(@RequestParam("provvedimento.id") String idProvvedimento,@RequestParam("organo") String idOrgano ) {
