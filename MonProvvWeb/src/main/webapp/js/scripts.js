@@ -481,7 +481,7 @@ $(document).ready(function() {
         	$('#codiceFiscale').val('');
         	$('#email').val('');
         	$('#organoDenominazioneInterni').val('');
-        	$('#organoDenominazione').val('');
+        	$('#organoDenominazioneEst').val('');
         	$('#hiddenIdOrgano').val('');
         	$('#organo').val('');
         	$('#hiddenUtenteAstage').val('');
