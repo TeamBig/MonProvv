@@ -50,16 +50,17 @@
 							<span>${notifica.testo}</span>
 						</div>
 						
-						<security:authorize access="hasPermission(#notifica, 'gestioneNotificaOperativa')" var="canOperate" /> 
-						
-						<c:if test="${canOperate}">
-							<spring:url value="/private/notifiche/gestione?id=${notifica.id}" var="gestioneNotifica"  />
-							<a href="${gestioneNotifica}">Clicca qui</a> per gestire la richiesta
+						<c:if test="${notifica.tipoNotifica == 'O'}">
+							<security:authorize access="hasPermission(#notifica, 'gestioneNotificaOperativa')" var="canOperate" /> 
+							
+							<c:if test="${canOperate}">
+								<spring:url value="/private/notifiche/gestione?id=${notifica.id}" var="gestioneNotifica"  />
+								<a href="${gestioneNotifica}">Clicca qui</a> per gestire la richiesta
+							</c:if>
+							<c:if test="${not canOperate}">
+								<span>Richiesta gestita da ${notifica.utenteOperatore.nome}&nbsp;${notifica.utenteOperatore.cognome}</span>
+							</c:if>
 						</c:if>
-						<c:if test="${not canOperate}">
-							<span>Richiesta gestita da ${notifica.utenteOperatore.nome}&nbsp;${notifica.utenteOperatore.cognome}</span>
-						</c:if>
-						
 						
 						<hr/>
 					</div>

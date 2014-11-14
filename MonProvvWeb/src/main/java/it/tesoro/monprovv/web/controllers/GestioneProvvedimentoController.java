@@ -47,7 +47,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.rowset.serial.SerialBlob;
 
@@ -553,6 +552,8 @@ public class GestioneProvvedimentoController {
 	}
 
 	private void caricaTabelleInferiore(Model model, Provvedimento provvedimentoModifica) {
+		model.addAttribute("listaProvvedimentiPregressi", provvedimentoModifica.getProvvedimentiParent());
+		
 		List<Allegato> listaAllegati = provvedimentoModifica.getAllegatiList();
 		model.addAttribute("listaAllegati", listaAllegati);
 		List<Assegnazione> listaAssegnazione = provvedimentoModifica.getAssegnazioneList();
@@ -771,6 +772,12 @@ public class GestioneProvvedimentoController {
 		}
 		if(provvedimento.getCurrentStep().equals("3")){
 			model.addAttribute("titolo", "Assegnatari");
+			List<Organo> listaOrganiAssegnatari = initOrgani();
+			if(listaOrganiAssegnatari.contains(principal.getUtente().getOrgano()))
+				listaOrganiAssegnatari.remove(principal.getUtente().getOrgano());
+			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
+				listaOrganiAssegnatari.remove(provvedimento.getOrganoCapofila());
+			model.addAttribute("listaOrganiAssegnatari",listaOrganiAssegnatari);
 			model.addAttribute("listaAssegnazione", provvedimento.getListaAssegnazione());
 			model.addAttribute("assegnatarioNew", new Assegnazione());
 		}

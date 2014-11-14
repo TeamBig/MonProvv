@@ -8,6 +8,8 @@ import it.tesoro.monprovv.sicurezza.CustomRequestHeaderAuthenticationFilter;
 import it.tesoro.monprovv.sicurezza.CustomUser;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -114,11 +116,15 @@ public class GestioneSicurezzaController {
 
 	
 	@RequestMapping(value="/public/refresh", method = RequestMethod.GET)
-	public String refreshSingleton(Model model)  {
+	public String refreshSingleton(Model model) throws UnknownHostException  {
 		permissioneEvaluator.refreshAlberoPermessi();
+		permissioneEvaluator.refreshAlberoCondizioni();
 		cacheService.invalidateCache();
 		
-		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Refresh effettuato con successo", false);
+		String nodo = System.getProperty("weblogic.Name");
+		String hostname = InetAddress.getLocalHost().getHostName();
+		
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Refresh effettuato con successo sull'host " + hostname + ", nodo weblogic " + nodo,  false);
 		
 		return "refresh";
 	}

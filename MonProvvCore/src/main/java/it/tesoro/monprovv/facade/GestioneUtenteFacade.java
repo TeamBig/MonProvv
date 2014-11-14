@@ -20,13 +20,11 @@ import it.tesoro.monprovv.utils.SearchPatternUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -216,15 +214,7 @@ public class GestioneUtenteFacade {
 			ele.setEmail( tmp.getEmail() );
 			ele.setSesso( tmp.getSesso() );
 			
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-
-			// Get the date today using Calendar object.
-			Date today = tmp.getDataNascita();//Calendar.getInstance().getTime();        
-			// Using DateFormat format method we can create a string 
-			// representation of a date with the defined format.
-			String reportDate = df.format(today);
-
-			ele.setDataNascita( reportDate );
+			ele.setDataNascita( DateFormatUtils.format(tmp.getDataNascita(), "dd/MM/yyyy"));
 			
 			for (int i = 6; i > 0; i--) {
 				try {

@@ -22,6 +22,7 @@ import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloFunzione;
 import it.tesoro.monprovv.model.Utente;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -127,7 +128,9 @@ public class GestioneSicurezzaFacade {
 	
 	
 	public List<RuoloFunzione> recuperaRuoliFunzione() {
-		return ruoloFunzioneDAO.findAll();
+		List<String> order = new ArrayList<String>();
+		order.add("id asc");
+		return ruoloFunzioneDAO.findAll(order);
 	}
 
 	public List<Condizione> recuperaCondizione() {

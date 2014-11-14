@@ -11,6 +11,12 @@
         <put-attribute name="footer" value="/template/footer.jsp" />
 		<put-attribute name="titolo" value="#TEMPLATE#" />        
     </definition>	
+
+    <definition name="refresh" extends="template">
+    	<put-attribute name="breadcrumb" value="" />
+		<put-attribute name="content" value="/views/empty.jsp" />
+		<put-attribute name="titolo" value="refresh.title" />
+	</definition>
     
     <definition name="403" extends="template">
     	<put-attribute name="breadcrumb" value="" />

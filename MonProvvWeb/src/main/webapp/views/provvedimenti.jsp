@@ -202,12 +202,13 @@
 										requestURI="" sort="external" partialList="true"
 										size="${tableProvvedimentiSize}" id="provvedimento" 
 										class="table table-hover table-bordered"
-										summary="Elenco Provvedimenti">
+										summary="Elenco Provvedimenti"
+										decorator="it.tesoro.monprovv.web.decorators.ProvvedimentiTableDecorator">
 
 							<display:column title="${idHeader}" property="id" headerScope="col" />
 							<display:column title="${governoHeader}" property="governo.denominazione" headerScope="col" />
 							<display:column title="${tipologiaHeader}" property="tipoProvvedimento.descrizione" headerScope="col" />
-							<display:column title="${fonteNormativaHeader}" property="fonteNormativa" headerScope="col" />
+							<%-- <display:column title="${fonteNormativaHeader}" property="fonteNormativa" headerScope="col" /> --%>
 							<display:column title="${artHeader}" property="articolo" headerScope="col" />
 							<display:column title="${commaHeader}" property="comma" headerScope="col" />
 							<display:column title="${provvDaAdottareHeader}" property="tipoProvvDaAdottare.descrizione" headerScope="col" />

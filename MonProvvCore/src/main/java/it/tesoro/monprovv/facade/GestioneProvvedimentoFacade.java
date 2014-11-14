@@ -279,7 +279,9 @@ public class GestioneProvvedimentoFacade {
 		if (provvedimento.getStato().getId() != provvRecuperato.getStato().getId()) {
 			inviaNotificaCambioStato = true;
 		}
-		
+		if(provvedimento.getTipoProvvedimento().getCodice().equals(Constants.PROPONENTE_MEF)){
+			provvedimento.setOrganoConcertante(null);
+		}
 		provvRecuperato = provvRecuperato.getProvvedimentoToUpdate(provvedimento);
 		if(provvedimento.getProvvedimentiParentSelected()!=null && Arrays.asList(provvedimento.getProvvedimentiParentSelected()).size()>0){
 //			List<String> list = Arrays.asList(provvedimento.getProvvedimentiParentSelected());
@@ -364,13 +366,13 @@ public class GestioneProvvedimentoFacade {
 		// segno la notifica operativa come letta
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		notifica.setFlagLettura(Notifica.LETTA);
-		notifica.setUtenteOperatore(user.getUtente());
-		notificaDAO.saveOrUpdate(notifica);
+		if (notifica != null) {  // problema di dati sporchi in test
+			notifica.setFlagLettura(Notifica.LETTA);
+			notifica.setUtenteOperatore(user.getUtente());
+			notificaDAO.saveOrUpdate(notifica);
+		}
 		
 		// invio notifiche informative a utenti capofila
-		
-		
 		String testo = "";
 		if (accettata) {
 			testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha accettato la richiesta di assegnazione del provvedimento " 
@@ -513,10 +515,11 @@ public class GestioneProvvedimentoFacade {
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
 		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
-		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
+		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.PROPONENTE_MEF)){
 			provvedimentoIns.setProponente(null);
 		}
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
+		provvRecuperato.setOggetto(provvedimentoDAO.createClob(provvedimentoIns.getTitoloOggetto()));
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
 		provvedimentoDAO.save(provvRecuperato);
@@ -702,7 +705,7 @@ public class GestioneProvvedimentoFacade {
 
 	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(){
 		List<String> order = new ArrayList<String>();
-		order.add("dataInserimento desc");
+		order.add("id asc");
 		List<Provvedimento> provvedimenti = provvedimentoDAO.findAll(order);
 		
 		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();

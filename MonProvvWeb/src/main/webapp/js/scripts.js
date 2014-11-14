@@ -66,16 +66,6 @@ $(document).ready(function() {
   	  btnRicAvUp.show();
     });
     
-    $("#salva").click(function() {
-    	if($(this).is(":submit")){
-    		window.location.href = "index.html";
-    	}
-    });
-    
-    $("#annulla, #indietro").click(function() {
-    	window.location.href = "index.html";
-    });
-    
     var risultatiRicerca = $("#risultatiRicerca");
     //risultatiRicerca.hide();
     
@@ -145,8 +135,18 @@ $(document).ready(function() {
     
     ///////////////////////////////////////////////////////////////////7
     
-    
-    
+//    $('#risultatiRicerca .table > tbody > tr > td').each(function() {
+//    	var customerId =  $(this).parent().siblings(":first").html();  
+//    	var currentUrl = $(location).attr('pathname'); 
+//    	var url = currentUrl+"/dettaglio?id="+customerId;
+//        var cellText = $(this).html();
+//        
+//		  $('<a>',{
+//			    text:cellText,
+//			    href:url,			    
+//			}).appendTo($(this));
+//    });
+//    
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('pathname'); 
@@ -159,11 +159,24 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
-    $("a#delete4risultatiRicerca").click(function(){
+    $(".deleteEnte").click(function(){
     	var retval;
-    	bootbox.confirm("Sei sicuro di voler procedere con la cancellazione della riga?", function(result) {
+    	var td = $(this);
+    	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Organo?", function(result) {
     		if(result){
-    			var url = $("a#delete4risultatiRicerca").attr('href');    
+    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
+    			$(location).attr('href',url);
+    		}
+    	});
+    	return false;
+    });
+    
+    $(".deleteUtente").click(function(){
+    	var retval;
+    	var td = $(this);
+    	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Utente?", function(result) {
+    		if(result){
+    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
     			$(location).attr('href',url);
     		}
     	});
@@ -799,7 +812,7 @@ function gestionePopupRichiestaAssegnazione() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#modalRichiestaAssegnazione").modal().on('shown', function() {
+		$("#modalRichiestaAssegnazione").on('shown', function() {
 			
 			$("#richiediAssegnazioneModal").click(function(e) {
 				e.stopPropagation();
@@ -807,9 +820,11 @@ function gestionePopupRichiestaAssegnazione() {
 				
 				$(this).closest("form").append("<input type='hidden' name='richiediAssegnazione' />").submit();
 				
-			});
+			}).modal({show: false});
 			
 		}); 
+		
+		$("#modalRichiestaAssegnazione").modal('show');
 	});
 	
 }
@@ -821,7 +836,7 @@ function gestionePopupRifiutoAssegnazione() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#modalRifiutoAssegnazione").modal().on('shown', function() {
+		$("#modalRifiutoAssegnazione").on('shown', function() {
 			
 			$("#rifiutoAssegnazioneModal").click(function(e) {
 				e.stopPropagation();
@@ -829,16 +844,22 @@ function gestionePopupRifiutoAssegnazione() {
 				
 				$(this).closest("form").append("<input type='hidden' name='rifiutaAssegnazione' />").submit();
 				
-			});
-			
+			}).modal({show: false});
 		}); 
+		
+		$("#modalRifiutoAssegnazione").modal('show');
+		
 	});
 	
 }
 
 
 function gestioneInserimento(){
-    $("#proponenteDiv").hide();
+	if($('#tipologia').val()==undefined || ($('#tipologia').val()!=undefined && $('#tipologia').val()==1)){
+		$("#proponenteDiv").hide();
+	} else {
+		$("#proponenteDiv").show();
+	}
     $('#tipologia').on('change', function () {
     	var val = $(this).val();
     	var option1 = "2"; //Concertante MEF
@@ -1088,4 +1109,3 @@ function gestioneNormattiva(){
 		  }
 	  }
 }
-
