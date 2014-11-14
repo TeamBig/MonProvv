@@ -875,7 +875,7 @@ function gestionePopupRifiutoAssegnazione() {
 
 
 function gestioneInserimento(){
-	if($('#tipologia').val()==undefined || ($('#tipologia').val()!=undefined && $('#tipologia').val()==1)){
+	if($('#tipologia').val()=="" || $('#tipologia').val()==1){
 		$("#proponenteDiv").hide();
 	} else {
 		$("#proponenteDiv").show();
@@ -925,7 +925,7 @@ function addRowAllegato(item){
 	eliminaNessunRisultatoAllegato();
 	$('#allegato > tbody:last').append(
 			$('<tr>')
-				.append($('<td>').text(item.id))
+				.append($('<td>').attr("class","hidden").text(item.id))
 				.append($('<td>').html(
 						$('<a></a>').attr("class","download").attr("href","downloadAllegato?id="+item.id).append(item.descrizione)
 				))

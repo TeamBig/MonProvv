@@ -178,8 +178,8 @@
 				</div>
 			</div>
 			<div class="span2 offset2">
-				<springform:select path="provvedimentiParentSelected" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
-					<springform:options items="${listaProvvedimenti}" itemValue="provvedimentoCollegato.id" itemLabel="provvedimentoCollegato.oggetto" />
+				<springform:select path="provvedimentiParentSel" id="custom-headers" cssClass="input-xlarge" multiple="multiple">
+					<springform:options items="${listaProvvedimenti}" itemValue="id" itemLabel="oggetto" />
 				</springform:select>
 			</div>
 				</springform:form>
@@ -301,7 +301,7 @@
 										</div>
 									</c:forEach>
 								</display:column>
-								<display:column title="${noteHeader}" property="nota.testoAsText"  headerScope="col" />
+								<display:column title="${noteHeader}" property="nota.testoAsText" headerClass="medium"  headerScope="col" />
 								<display:column title="${cronologiaModificheHeader}" headerScope="col" class="vcenter center">
 									<spring:url value="dettaglio/modalCronologia?id=${assegnazione.id}" var="urlModale" />
 									<a href="${urlModale}" role="button" data-toggle="modal" data-target="#modalCronologia"><i class="icon-time icon-large"></i></a>

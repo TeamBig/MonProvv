@@ -198,6 +198,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	@Transient
 	private String[] provvedimentiParentSelected;
+	
+	@Transient
+	private List<Provvedimento> provvedimentiParentSel;
 
 	public Integer getId() {
 		return id;
@@ -460,6 +463,14 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setMotivazioneRifiuto(String motivazioneRifiuto) {
 		this.motivazioneRifiuto = motivazioneRifiuto;
+	}
+
+	public List<Provvedimento> getProvvedimentiParentSel() {
+		return provvedimentiParentSel;
+	}
+
+	public void setProvvedimentiParentSel(List<Provvedimento> provvedimentiParentSel) {
+		this.provvedimentiParentSel = provvedimentiParentSel;
 	}
 
 	@Override
