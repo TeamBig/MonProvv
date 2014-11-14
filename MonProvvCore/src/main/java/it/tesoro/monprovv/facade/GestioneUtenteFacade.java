@@ -23,7 +23,6 @@ import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -220,7 +219,7 @@ public class GestioneUtenteFacade {
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 			// Get the date today using Calendar object.
-			Date today = Calendar.getInstance().getTime();        
+			Date today = tmp.getDataNascita();//Calendar.getInstance().getTime();        
 			// Using DateFormat format method we can create a string 
 			// representation of a date with the defined format.
 			String reportDate = df.format(today);

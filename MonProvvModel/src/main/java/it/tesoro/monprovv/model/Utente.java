@@ -95,6 +95,8 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	private Date dataNascita;
 	
 	@Column(name="SESSO", length=1)
+	@NotNull
+	@NotEmpty
 	private String sesso;
 
 	@Transient

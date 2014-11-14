@@ -265,48 +265,14 @@ $(document).ready(function() {
         });
     
     $('#tipoNuovoUtente').on('change', function () {
-    	var val = $(this).val();
-    	var optionInterno = "I"; //Interna
-    	var optionEsterno = "E"; //Esterna
-    	if(val==optionInterno){
-    		//Inerimento Intenro
-    		$("#inserimentoUtenteInternoDiv").show();
-    		$("#inserimentoUtenteInternoDivOrg").show();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
-    		$("#email").attr('readonly', true);
-    	}else if(val==optionEsterno){
-    		//Inserimento Esterno
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#inserimentoUtenteEsternoDiv").show();
-    		$("#cognome").attr('readonly', false);
-    		$("#nome").attr('readonly', false);
-    		$("#codiceFiscale").attr('readonly', false);
-    		$("#dataNascitaV").attr('readonly', false);
-    		$("#dataNascita").show();
-    		$("#sesso").attr('readonly', false);
-    		$("#email").attr('readonly', false);
-    	}else{
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
-    		$("#email").attr('readonly', true);
-    	}
+    	 update_form_inserimento_utente()
     });
     
     if($('#tipoNuovoUtente').length > 0){
+    	 update_form_inserimento_utente()
+    }
+    
+    function update_form_inserimento_utente(){
     	var val = $('#tipoNuovoUtente').val();
     	var optionInterno = "I"; //Interna
     	var optionEsterno = "E"; //Esterna
@@ -333,6 +299,7 @@ $(document).ready(function() {
     		$("#dataNascitaV").attr('readonly', false);
     		$("#dataNascita").show();
     		$("#sesso").attr('readonly', false);
+    		$('#sesso').prop('disabled', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -346,7 +313,18 @@ $(document).ready(function() {
     		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}
-    }
+    };
+    
+    $("#sesso").focus(function(){
+	    if ( $("#sesso").is('[readonly]') ){
+	    	if ($("#sesso").is(":checked")) {
+	            $('#sesso').prop('disabled', false);
+	        }
+	        else {
+	            $('#sesso').prop('disabled', 'disabled');
+	        }
+	    }
+    });
     
     
     $('#organoDenominazioneEst').attr('autocomplete','off');
@@ -482,7 +460,9 @@ $(document).ready(function() {
         	$('#organo').val('');
         	$('#hiddenUtenteAstage').val('');
         	$('#sesso').val('');
+        	$('#ruoloUtente').val('');
         	$('#dataNascitaV').val('');
+        	$("#flgAmministratore").attr("checked", false);
     	}
     });
     
