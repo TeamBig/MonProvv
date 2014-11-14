@@ -40,5 +40,20 @@
 	   <wls:package-name>oracle.sql.*</wls:package-name>
 	   <wls:package-name>oracle.sql.converter.*</wls:package-name>
 	   <wls:package-name>org.apache.commons.*</wls:package-name>
+	   <wls:package-name>com.sun.activation.*</wls:package-name>
+		<wls:package-name>com.sun.mail.*</wls:package-name>
+		<wls:package-name>javax.activation.*</wls:package-name>
+		<wls:package-name>javax.mail.*</wls:package-name>
+		<wls:package-name>javax.mail.event.*</wls:package-name>
+		<wls:package-name>javax.mail.internet.*</wls:package-name>
+		<wls:package-name>javax.mail.search.*</wls:package-name>
+		<wls:package-name>javax.mail.util.*</wls:package-name>
+		<wls:package-name>javax.transaction.*</wls:package-name>
+		<wls:package-name>javax.transaction.xa.*</wls:package-name>
+		<wls:package-name>org.apache.oro.*</wls:package-name>
+	   <wls:package-name>com.sun.istack.*</wls:package-name>
+	   <wls:package-name>com.sun.xml.*</wls:package-name>
+	   <wls:package-name>javax.xml.bind.*</wls:package-name>
+	   <wls:package-name>javax.xml.stream.*</wls:package-name>
 	</wls:prefer-application-packages>
 </wls:weblogic-application>
