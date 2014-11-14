@@ -82,7 +82,13 @@
 								<label class="control-label" for="sesso">${sessoHeader}</label>
 								<div class="controls">
 									<span>
-										${utenteToEdit.sesso}
+										<c:set var = "MASCHIO" value="M" />
+										<c:set var = "FEMMINA" value="F" />
+										<c:choose>
+											<c:when test="${ utenteToEdit.sesso eq MASCHIO }">Maschile</c:when>
+											<c:when test="${ utenteToEdit.sesso eq FEMMINA }">Femminile</c:when>
+											<c:otherwise></c:otherwise>
+										</c:choose>
 										<springform:hidden path="sesso" id="sesso" />
 									</span>
 								</div>
@@ -243,7 +249,7 @@
 							<div class="control-group">
 								<label class="control-label" for="ruolo">${amministratoreHeader}</label>
 								<div class="controls">
-									<springform:checkbox path="amministratore" value="S"/>
+									<springform:checkbox path="amministratore" id="flgAmministratore" value="S"/>
 								</div>
 							</div>
 							

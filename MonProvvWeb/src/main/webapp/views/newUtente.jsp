@@ -147,7 +147,7 @@
 						<div class="control-group">
 							<label class="control-label" for="ruolo">${amministratoreHeader}</label>
 							<div class="controls">
-								<springform:checkbox path="amministratore" value="S"/>
+								<springform:checkbox path="amministratore" id="flgAmministratore" value="S"/>
 							</div>
 						</div>
 						

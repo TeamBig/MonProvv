@@ -58,6 +58,7 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.setTipoAtto(prov.getTipoAtto());
 		this.setTipoProvvDaAdottare(prov.getTipoProvvDaAdottare());
 		this.setTipoProvvedimento(prov.getTipoProvvedimento());
+		this.setOrganoConcertante(prov.getOrganoConcertante());
 		this.setVersione(prov.getVersione());
 		return this;
 	}

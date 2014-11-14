@@ -135,8 +135,18 @@ $(document).ready(function() {
     
     ///////////////////////////////////////////////////////////////////7
     
-    
-    
+//    $('#risultatiRicerca .table > tbody > tr > td').each(function() {
+//    	var customerId =  $(this).parent().siblings(":first").html();  
+//    	var currentUrl = $(location).attr('pathname'); 
+//    	var url = currentUrl+"/dettaglio?id="+customerId;
+//        var cellText = $(this).html();
+//        
+//		  $('<a>',{
+//			    text:cellText,
+//			    href:url,			    
+//			}).appendTo($(this));
+//    });
+//    
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('pathname'); 
@@ -268,48 +278,14 @@ $(document).ready(function() {
         });
     
     $('#tipoNuovoUtente').on('change', function () {
-    	var val = $(this).val();
-    	var optionInterno = "I"; //Interna
-    	var optionEsterno = "E"; //Esterna
-    	if(val==optionInterno){
-    		//Inerimento Intenro
-    		$("#inserimentoUtenteInternoDiv").show();
-    		$("#inserimentoUtenteInternoDivOrg").show();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('disabled', 'disabled');
-    		$("#email").attr('readonly', true);
-    	}else if(val==optionEsterno){
-    		//Inserimento Esterno
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#inserimentoUtenteEsternoDiv").show();
-    		$("#cognome").attr('readonly', false);
-    		$("#nome").attr('readonly', false);
-    		$("#codiceFiscale").attr('readonly', false);
-    		$("#dataNascitaV").attr('readonly', false);
-    		$("#dataNascita").show();
-    		$("#sesso").attr('readonly', false);
-    		$("#email").attr('readonly', false);
-    	}else{
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
-    		$("#email").attr('readonly', true);
-    	}
+    	 update_form_inserimento_utente()
     });
     
     if($('#tipoNuovoUtente').length > 0){
+    	 update_form_inserimento_utente()
+    }
+    
+    function update_form_inserimento_utente(){
     	var val = $('#tipoNuovoUtente').val();
     	var optionInterno = "I"; //Interna
     	var optionEsterno = "E"; //Esterna
@@ -336,6 +312,7 @@ $(document).ready(function() {
     		$("#dataNascitaV").attr('readonly', false);
     		$("#dataNascita").show();
     		$("#sesso").attr('readonly', false);
+    		$('#sesso').prop('disabled', false);
     		$("#email").attr('readonly', false);
     	}else{
     		$("#inserimentoUtenteInternoDiv").hide();
@@ -349,7 +326,18 @@ $(document).ready(function() {
     		$("#sesso").attr('readonly', true);
     		$("#email").attr('readonly', true);
     	}
-    }
+    };
+    
+    $("#sesso").focus(function(){
+	    if ( $("#sesso").is('[readonly]') ){
+	    	if ($("#sesso").is(":checked")) {
+	            $('#sesso').prop('disabled', false);
+	        }
+	        else {
+	            $('#sesso').prop('disabled', 'disabled');
+	        }
+	    }
+    });
     
     
     $('#organoDenominazioneEst').attr('autocomplete','off');
@@ -405,7 +393,9 @@ $(document).ready(function() {
     	target = target + '/salvaeinvianotifica?id=' + $('#idProvvedimento').val();
     	// load the url and show modal on success
         $("#modalSalvaInviaNotifica .modal-body").load(target, function() { 
-             $("#modalSalvaInviaNotifica").modal("show"); 
+             $("#modalSalvaInviaNotifica").on('shown', function() {
+            	 $(document).tokenfieldemail($("#tokenfieldemail"));
+             }).modal("show");
         });
     });
     
@@ -415,11 +405,6 @@ $(document).ready(function() {
     	oForm.append("<input type='hidden' name='salvaenotifica' />");
     	oForm.submit();
     });
-    
-    $(document).on('click', '#tokenfieldemail', function() {
-	    var element = $(this);
-	    element.tokenfieldemail(element);
-    });    
     
     $.fn.tokenfieldemail = function (element) {
     	element.tagsinput({
@@ -488,7 +473,9 @@ $(document).ready(function() {
         	$('#organo').val('');
         	$('#hiddenUtenteAstage').val('');
         	$('#sesso').val('');
+        	$('#ruoloUtente').val('');
         	$('#dataNascitaV').val('');
+        	$("#flgAmministratore").attr("checked", false);
     	}
     });
     
@@ -868,7 +855,11 @@ function gestionePopupRifiutoAssegnazione() {
 
 
 function gestioneInserimento(){
-    $("#proponenteDiv").hide();
+	if($('#tipologia').val()==undefined || ($('#tipologia').val()!=undefined && $('#tipologia').val()==1)){
+		$("#proponenteDiv").hide();
+	} else {
+		$("#proponenteDiv").show();
+	}
     $('#tipologia').on('change', function () {
     	var val = $(this).val();
     	var option1 = "2"; //Concertante MEF
@@ -1118,4 +1109,3 @@ function gestioneNormattiva(){
 		  }
 	  }
 }
-

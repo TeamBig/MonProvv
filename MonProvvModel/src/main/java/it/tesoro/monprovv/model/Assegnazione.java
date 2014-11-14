@@ -72,6 +72,9 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	@Column(name = "MOTIVAZIONE_RIFIUTO")
 	private Clob motivazioneRifiuto;
 	
+	@Column(name = "NUM_SOLLECITI")
+	private Integer numSolleciti;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -135,6 +138,14 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 	public void setMotivazioneRifiuto(Clob motivazioneRifiuto) {
 		this.motivazioneRifiuto = motivazioneRifiuto;
 	}
+	
+	public Integer getNumSolleciti() {
+		return numSolleciti;
+	}
+
+	public void setNumSolleciti(Integer numSolleciti) {
+		this.numSolleciti = numSolleciti;
+	}
 
 	public String getMotivazioneRichiestaAsText() throws IOException, SQLException {
 
@@ -178,7 +189,5 @@ public class Assegnazione extends AbstractCommonEntity implements Serializable {
 			return false;
 		return true;
 	}
-
-
 
 }
