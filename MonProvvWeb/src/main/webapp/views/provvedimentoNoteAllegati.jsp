@@ -18,7 +18,7 @@
 	
 	<c:url value="/private/provvedimenti/ricerca/noteAllegatiProv" var="formPath" />
 	
-	<springform:form action="${formPath}" method="POST" id="provvedimento" commandName="provvedimento" cssClass="form-horizontal">
+	<springform:form action="${formPath}" method="POST" id="provvedimento" modelAttribute="provvedimento" cssClass="form-horizontal">
 		
 		<div class="row">
 			<div class="span12">
@@ -39,7 +39,7 @@
 						<div class="control-group">
 							<span class="control-label">${organoHeader}</span>
 							<div class="controls">
-								<span>${provvedimento.organoInseritore.denominazione}</span>
+								<span><spring:eval expression="T(it.tesoro.monprovv.utils.SicurezzaUtils).assegnazioneCorrente(provvedimento.assegnazioneList).organo.denominazione"></spring:eval></span>
 							</div>
 						</div>	
 						<div class="control-group">
@@ -147,7 +147,7 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row" style="height: 30px;">
 		<div class="span12"></div>
 	</div>
 </div>

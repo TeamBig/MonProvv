@@ -366,13 +366,13 @@ public class GestioneProvvedimentoFacade {
 		// segno la notifica operativa come letta
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		notifica.setFlagLettura(Notifica.LETTA);
-		notifica.setUtenteOperatore(user.getUtente());
-		notificaDAO.saveOrUpdate(notifica);
+		if (notifica != null) {  // problema di dati sporchi in test
+			notifica.setFlagLettura(Notifica.LETTA);
+			notifica.setUtenteOperatore(user.getUtente());
+			notificaDAO.saveOrUpdate(notifica);
+		}
 		
 		// invio notifiche informative a utenti capofila
-		
-		
 		String testo = "";
 		if (accettata) {
 			testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha accettato la richiesta di assegnazione del provvedimento " 
@@ -606,6 +606,11 @@ public class GestioneProvvedimentoFacade {
 			mail.setDestinatario(tmp.getEmail());
 			mailService.eseguiInvioMail(mail);
 		}
+		
+		//Incremento il numero dei solleciti inviati
+		Integer numSoll = (assegnazione.getNumSolleciti()==null)?0:assegnazione.getNumSolleciti();
+		assegnazione.setNumSolleciti( numSoll + 1);
+		assegnazioneDAO.merge(assegnazione);
 	}
 
 	public void invioMail(Mail mail) {
@@ -700,7 +705,7 @@ public class GestioneProvvedimentoFacade {
 
 	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(){
 		List<String> order = new ArrayList<String>();
-		order.add("dataInserimento desc");
+		order.add("id asc");
 		List<Provvedimento> provvedimenti = provvedimentoDAO.findAll(order);
 		
 		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();

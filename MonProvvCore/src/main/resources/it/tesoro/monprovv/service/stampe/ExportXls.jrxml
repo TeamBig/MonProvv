@@ -59,7 +59,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[GOV.]]></text>
+				<text><![CDATA[GOVERNO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="63" y="0" width="64" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -85,7 +85,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[FONTE INFORM.]]></text>
+				<text><![CDATA[FONTE NORMATIVA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="219" y="0" width="38" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -124,7 +124,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[PROVV. DA ADOTT.]]></text>
+				<text><![CDATA[PROVV. DA ADOTTARE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="432" y="0" width="58" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -137,7 +137,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[TIT./OGG.]]></text>
+				<text><![CDATA[TITOLO/OGGETTO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="490" y="0" width="116" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -150,7 +150,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[STATO DI ATTUAZ.]]></text>
+				<text><![CDATA[STATO DI ATTUAZIONE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="606" y="0" width="52" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -163,7 +163,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[CAPOF.]]></text>
+				<text><![CDATA[CAPOFILA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="658" y="0" width="62" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -176,7 +176,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[PROPON.]]></text>
+				<text><![CDATA[PROPONENTE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="720" y="0" width="82" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -189,7 +189,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
 					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<text><![CDATA[ASSEGNAZ.]]></text>
+				<text><![CDATA[ASSEGNAZIONE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="28" height="16" forecolor="#FEFEFE" backcolor="#1F3093"/>
@@ -339,20 +339,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{proponente}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="720" y="0" width="71" height="20"/>
-				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
-					<topPen lineWidth="0.75"/>
-					<leftPen lineWidth="0.75"/>
-					<bottomPen lineWidth="0.75"/>
-					<rightPen lineWidth="0.75"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="SansSerif"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipologia}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToTallestObject" x="720" y="0" width="81" height="20"/>
+				<reportElement stretchType="RelativeToTallestObject" x="720" y="0" width="82" height="20"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.75"/>
 					<leftPen lineWidth="0.75"/>

@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
@@ -47,6 +48,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		
 	}
 	
+	protected static Logger logger = Logger.getLogger(CustomPermissionEvaluator.class);
+	
 	@Autowired
 	private GestioneSicurezzaFacade gestioneSicurezzaFacade;
 	
@@ -64,6 +67,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		alberoPermessi = new HashMap<String, List<String>>();
 		
 		for (RuoloFunzione ruoloFunzione : ruoloFunzioneList) {
+
 			String url = ruoloFunzione.getFunzione().getUrl();
 			List<String> ruoliList = alberoPermessi.get(url);
 			if (ruoliList == null) {
@@ -99,6 +103,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			String requestUrl = (String)targetDomainObject; 
 						
 			AntPathMatcher matcher = new AntPathMatcher();
+			
+//			SOLUZIONE 1
 			int matchCount = 0;
 			int authCount = 0;
 			
@@ -107,20 +113,56 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			while (iter.hasNext()) {
 				
 				String url = iter.next();
+				
 				if (matcher.match(url, requestUrl)) {
+					
 					matchCount++;
 					for (GrantedAuthority roleUser : authentication.getAuthorities()) {
-						if (alberoPermessi.get(url).contains(roleUser.getAuthority()))
+						if (alberoPermessi.get(url).contains(roleUser.getAuthority())) {
 							authCount++;
+						}
 					}
 					
 				}
 				
 			}
-			
-			return (matchCount == authCount);			
-		}
 		
+
+//			if (!(matchCount == authCount)) {
+//				System.out.println("KO");
+//			}
+			return (matchCount == authCount);
+//			FINE SOLUZIONE 1		
+
+//			SOLUZIONE 2
+//			List<String> ruoliUtente = new ArrayList<String>();
+//			for (GrantedAuthority roleUser : authentication.getAuthorities()) {
+//				ruoliUtente.add(roleUser.getAuthority());
+//			}
+//			List<String> ruoliConsentiti = new ArrayList<String>();
+//			
+//			Iterator<String> iter = alberoPermessi.keySet().iterator();
+//			
+//			logger.debug("Controllo su url " + targetDomainObject);
+//			
+//			while (iter.hasNext()) {
+//				
+//				String url = iter.next();
+//				
+//				logger.debug("... check " + url + " vs " + requestUrl);
+//				
+//				if (matcher.match(url, requestUrl)) {
+//					
+//					ruoliConsentiti.addAll( alberoPermessi.get(url)  );
+//					
+//				}
+//			}
+//			
+//			boolean esito = ruoliUtente.containsAll(ruoliConsentiti);
+//			return esito;
+//			FINE SOLUZIONE 2
+		}
+
 		// visibilità pulsanti
 //		- modifica 
 //		- stato provvedimento = 1

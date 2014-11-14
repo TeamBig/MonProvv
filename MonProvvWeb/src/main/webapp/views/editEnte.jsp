@@ -26,7 +26,7 @@
 				<springform:hidden path="versione"/>
 				
 				<h3 class="text-left underline">
-					<span>Modifica Ente</span>
+					<span>Modifica Organo</span>
 				</h3>
 
 				<div class="row">
