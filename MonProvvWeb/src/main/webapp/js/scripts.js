@@ -66,16 +66,6 @@ $(document).ready(function() {
   	  btnRicAvUp.show();
     });
     
-    $("#salva").click(function() {
-    	if($(this).is(":submit")){
-    		window.location.href = "index.html";
-    	}
-    });
-    
-    $("#annulla, #indietro").click(function() {
-    	window.location.href = "index.html";
-    });
-    
     var risultatiRicerca = $("#risultatiRicerca");
     //risultatiRicerca.hide();
     
@@ -159,11 +149,24 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
-    $("a#delete4risultatiRicerca").click(function(){
+    $(".deleteEnte").click(function(){
     	var retval;
-    	bootbox.confirm("Sei sicuro di voler procedere con la cancellazione della riga?", function(result) {
+    	var td = $(this);
+    	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Organo?", function(result) {
     		if(result){
-    			var url = $("a#delete4risultatiRicerca").attr('href');    
+    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
+    			$(location).attr('href',url);
+    		}
+    	});
+    	return false;
+    });
+    
+    $(".deleteUtente").click(function(){
+    	var retval;
+    	var td = $(this);
+    	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Utente?", function(result) {
+    		if(result){
+    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
     			$(location).attr('href',url);
     		}
     	});
@@ -278,7 +281,7 @@ $(document).ready(function() {
     		$("#codiceFiscale").attr('readonly', true);
     		$("#dataNascitaV").attr('readonly', true);
     		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
+    		$("#sesso").attr('disabled', 'disabled');
     		$("#email").attr('readonly', true);
     	}else if(val==optionEsterno){
     		//Inserimento Esterno
@@ -819,7 +822,7 @@ function gestionePopupRichiestaAssegnazione() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#modalRichiestaAssegnazione").modal().on('shown', function() {
+		$("#modalRichiestaAssegnazione").on('shown', function() {
 			
 			$("#richiediAssegnazioneModal").click(function(e) {
 				e.stopPropagation();
@@ -827,9 +830,11 @@ function gestionePopupRichiestaAssegnazione() {
 				
 				$(this).closest("form").append("<input type='hidden' name='richiediAssegnazione' />").submit();
 				
-			});
+			}).modal({show: false});
 			
 		}); 
+		
+		$("#modalRichiestaAssegnazione").modal('show');
 	});
 	
 }
@@ -841,7 +846,7 @@ function gestionePopupRifiutoAssegnazione() {
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#modalRifiutoAssegnazione").modal().on('shown', function() {
+		$("#modalRifiutoAssegnazione").on('shown', function() {
 			
 			$("#rifiutoAssegnazioneModal").click(function(e) {
 				e.stopPropagation();
@@ -849,9 +854,11 @@ function gestionePopupRifiutoAssegnazione() {
 				
 				$(this).closest("form").append("<input type='hidden' name='rifiutaAssegnazione' />").submit();
 				
-			});
-			
+			}).modal({show: false});
 		}); 
+		
+		$("#modalRifiutoAssegnazione").modal('show');
+		
 	});
 	
 }

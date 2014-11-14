@@ -21,7 +21,7 @@
 	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaEnte" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
-				<h3 class="underline"><span>Ricerca Ente</span></h3>
+				<h3 class="underline"><span>Ricerca Organo</span></h3>
 			</div>
 		</div>			
 		<div class="row">
@@ -63,9 +63,9 @@
 			<c:url value="/private/admin/enti" var="formPath" />
 			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
 				<h3 class="text-left underline">
-					<span>Elenco Enti</span>
+					<span>Elenco Organi</span>
 					<button type="submit" class="btn btn-primary pull-right" id="nuovo" name="buttonNew" value="new">
-						Nuovo Ente &nbsp;<i class="icon-plus"></i>
+						Nuovo Organo &nbsp;<i class="icon-plus"></i>
 					</button>
 					<button type="button" class="btn pull-right" id="toggleRicerca"
 						data-toggle="collapse" data-target="#campiRicerca"
@@ -91,7 +91,7 @@
 										size="${tableOrganiRisultatiSize}" 
 										id="organo" 
 										class="table table-hover table-bordered"
-										summary="Elenco Enti">
+										summary="Elenco Organi">
 
 							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
@@ -105,8 +105,8 @@
 							</c:if>
 							</display:column>
 							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" class="center" headerClass="center" />
-							<display:column title="${eliminaHeader}" headerScope="col" class="center" headerClass="center">
-								<a href="${deletePath}?id=${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Ente"></i></a>
+							<display:column title="${eliminaHeader}" headerScope="col" class="center deleteEnte" headerClass="center">
+								<a href="${deletePath}?id=${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Organo"></i></a>
 							</display:column>
 						
 						</display:table>

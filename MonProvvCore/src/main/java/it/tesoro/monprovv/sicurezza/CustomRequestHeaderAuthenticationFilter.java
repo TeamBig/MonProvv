@@ -1,17 +1,30 @@
 package it.tesoro.monprovv.sicurezza;
 
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
+import it.tesoro.monprovv.model.Ruolo;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
 
 
 
 public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenticatedProcessingFilter {
+	
+	protected static Logger logger = Logger.getLogger(CustomRequestHeaderAuthenticationFilter.class);
 	
     private GestioneSicurezzaFacade gestioneSicurezzaFacade;
     private boolean exceptionIfHeaderMissing = true;
@@ -67,40 +80,55 @@ public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenti
 			HttpServletResponse response, Authentication authResult) {
 		
 		super.successfulAuthentication(request, response, authResult);
-//		CustomUser user = (CustomUser)authResult.getPrincipal();
-//
-//		//gestioneSicurezzaFacade.updateDataUltimoAccessoUtente(user.getIdUtente());
-//
-//		if (user.getRuoliDaScegliere() != null) {
-//			try {
-//				// memorizzo la target url nell'oggetto PdaUser
-//				String queryString = request.getQueryString();
-//				
-//				user.setTargetURL(request.getServletPath() + ( (queryString != null) ? "?" + queryString : ""));
-//				
-//				response.sendRedirect(request.getContextPath() + "/private/sceltaRuolo");
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-		
 	}
 
-//	public String getOamAbilitato() {
-//		return oamAbilitato;
-//	}
-//
-//	public void setOamAbilitato(String oamAbilitato) {
-//		this.oamAbilitato = oamAbilitato;
-//	}
-//
-//	public String getOamLogoutUrl() {
-//		return oamLogoutUrl;
-//	}
-//
-//	public void setOamLogoutUrl(String oamLogoutUrl) {
-//		this.oamLogoutUrl = oamLogoutUrl;
-//	}
-//
+	
+	// TODO gestione zozza dei profili lettore e consultatore
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		
+		String currentPath = ((HttpServletRequest)request).getServletPath();
+
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		if (auth != null) {
+//			Object principal = auth.getPrincipal();
+//			if (principal instanceof CustomUser) {
+//				
+//				Collection<GrantedAuthority> roles = ((CustomUser) principal).getAuthorities();
+//				
+//				for (GrantedAuthority role : roles) {
+//					if (Ruolo.ROLE_LETTORE.equals(role.getAuthority())) {
+//						if 	  (!currentPath.equals("/private/provvedimenti/ricerca") 
+//							&& !currentPath.equals("/private/provvedimenti/ricerca/dettaglio")
+//							&& !currentPath.equals("/private/notifiche/conteggio")
+//							&& !currentPath.equals("/public/403")) {
+//							
+//							logger.debug("KO " + currentPath);
+//							
+//							((HttpServletResponse)response).sendRedirect( ((HttpServletRequest)request).getContextPath() + "/public/403");
+//							return;
+//						}
+//					}
+//					
+//					if (Ruolo.ROLE_CONSULTATORE.equals(role.getAuthority())) {
+//						if 	(!currentPath.equals("/private/provvedimenti/ricerca")) {
+//							((HttpServletResponse)response).sendRedirect( ((HttpServletRequest)request).getContextPath() + "/public/403");
+//							return;
+//						}
+//					}
+//				}
+//				
+//			}
+//		}
+		super.doFilter(request, response, chain);
+	}
+
+	
+
+	
+	
+	
+	
 	
 }

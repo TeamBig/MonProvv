@@ -28,6 +28,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.AntPathMatcher;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:testContext.xml" , "classpath:applicationContext.xml" })
@@ -63,19 +64,24 @@ public class UnitTest {
 //		
 //	}
 	
-	@Test
-	public void report() throws IOException {
-		List<ProvvedimentoStampaDto> provvedimenti = provvedimentoFacade.recuperaProvvedimentiPerExport();
+//	@Test
+//	public void report() throws IOException {
+//		List<ProvvedimentoStampaDto> provvedimenti = provvedimentoFacade.recuperaProvvedimentiPerExport();
+//		
+//		ByteArrayOutputStream baos = reportService.generaReport(Constants.TIPO_XLS, "ExportXls", null, provvedimenti);
+//		
+//		OutputStream outputStream = new FileOutputStream("C:\\Temp\\provvedimenti.xls"); 
+//		baos.writeTo(outputStream);
+//			
+//	}
+	
+	
+	@Test 
+	public void path() {
+		AntPathMatcher matcher = new AntPathMatcher();
 		
-		ByteArrayOutputStream baos = reportService.generaReport(Constants.TIPO_XLS, "ExportXls", null, provvedimenti);
-		
-		OutputStream outputStream = new FileOutputStream("C:\\Temp\\provvedimenti.xls"); 
-		baos.writeTo(outputStream);
-			
+		System.out.println("Ris = " + matcher.match("/private/provvedimentilettore/ricerca", "/private/provvedimentilettore/ricerca"));
 	}
-	
-	
-	
 	
 	
 //	@Test
