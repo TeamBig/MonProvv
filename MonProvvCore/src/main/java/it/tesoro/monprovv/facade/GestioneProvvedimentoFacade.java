@@ -465,6 +465,7 @@ public class GestioneProvvedimentoFacade {
 			stato = statoDAO.findByCodice(Constants.ASSEGNATO);
 		} else {
 			stato = statoDAO.findByCodice(Constants.RIFIUTATO);
+			assegnazione.setMotivazioneRifiuto(assegnazioneDAO.createClob("Richiesta di assegnazione rifiutata dal capo-fila"));
 		}
 		assegnazione.setStato(stato);
 		assegnazioneDAO.saveOrUpdate(assegnazione);
