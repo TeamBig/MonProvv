@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
@@ -18,6 +19,13 @@
 						<span class="${notifica.flagLettura == 'S' ? 'letta' : 'nonletta' }" >${notifica.oggetto}</span>
 					</div>
 				</div>
+				<div class="control-group">
+					<label class="control-label">Data</label>
+					<div class="controls">
+						<span><fmt:formatDate value="${notifica.dataInserimento}" pattern="dd/MM/yyyy HH:mm" /></span>
+					</div>
+				</div>
+				
 				<div class="control-group">
 					<label class="control-label">Testo</label>
 					<div class="controls">
