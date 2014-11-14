@@ -48,6 +48,22 @@ th.allegati {
 
 th.medium {
 	width: 200px;
+	word-wrap: break-word;
+}
+
+td.medium {
+	width: 200px;
+	word-wrap: break-word;
+}
+
+th.large {
+	width: 400px;
+	word-wrap: break-word;
+}
+
+td.large {
+	width: 400px;
+	word-wrap: break-word;
 }
 
 /** CUSTOM DETTAGLIO **/

@@ -888,7 +888,7 @@ function gestionePopupRifiutoAssegnazione() {
 
 
 function gestioneInserimento(){
-	if($('#tipologia').val()==undefined || ($('#tipologia').val()!=undefined && $('#tipologia').val()==1)){
+	if($('#tipologia').val()=="" || $('#tipologia').val()==1){
 		$("#proponenteDiv").hide();
 	} else {
 		$("#proponenteDiv").show();

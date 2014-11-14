@@ -23,7 +23,7 @@ public class ProvvedimentiUtil implements Serializable{
 		if(StringUtils.isNotEmpty(allegato)){
 			StringBuffer ret = new StringBuffer();
 			ret.append("<tr>");
-			ret.append("<td>"+allegato.getId()+"</td>");
+			ret.append("<td class=\"hidden\">"+allegato.getId()+"</td>");
 			ret.append("<td><a href=\"downloadAllegato/"+allegato.getId()+"\" class=\"download\">"+allegato.getDescrizione()+"</a></td>");
 			ret.append("<td>"+StringUtils.convertBytesToKb(allegato.getDimensione(),true)+"</td>");
 			ret.append("<td class=\"vcenter center\"><a href=\"javascript:void(0)\" id=\"eliminaAllegato\" ><i class=\"icon-trash icon-large gray\" title=\"Elimina allegato\"></i></a></td>");
