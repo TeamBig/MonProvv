@@ -145,8 +145,18 @@ $(document).ready(function() {
     
     ///////////////////////////////////////////////////////////////////7
     
-    
-    
+//    $('#risultatiRicerca .table > tbody > tr > td').each(function() {
+//    	var customerId =  $(this).parent().siblings(":first").html();  
+//    	var currentUrl = $(location).attr('pathname'); 
+//    	var url = currentUrl+"/dettaglio?id="+customerId;
+//        var cellText = $(this).html();
+//        
+//		  $('<a>',{
+//			    text:cellText,
+//			    href:url,			    
+//			}).appendTo($(this));
+//    });
+//    
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	var currentUrl = $(location).attr('pathname'); 
@@ -861,7 +871,11 @@ function gestionePopupRifiutoAssegnazione() {
 
 
 function gestioneInserimento(){
-    $("#proponenteDiv").hide();
+	if($('#tipologia').val()==undefined || ($('#tipologia').val()!=undefined && $('#tipologia').val()==1)){
+		$("#proponenteDiv").hide();
+	} else {
+		$("#proponenteDiv").show();
+	}
     $('#tipologia').on('change', function () {
     	var val = $(this).val();
     	var option1 = "2"; //Concertante MEF

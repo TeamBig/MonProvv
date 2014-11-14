@@ -110,7 +110,7 @@
 						<div class="control-group">
 							<span class="control-label" >${collNormattivaHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.collNormattiva}</span>
+								<span><a href="${provvedimentoDettaglio.collNormattiva}" target="_blank">${provvedimentoDettaglio.collNormattiva}</a></span>
 							</div>
 						</div>
 						<div class="control-group">
@@ -166,6 +166,28 @@
 						</div>
 				</div>
 			</div>
+			
+			<!-- Allegati insert -->
+			<div class="row">
+				<div class="span12">
+					<h3 class="text-left underline">
+						<span>Associazione a provvedimenti pregressi</span>
+					</h3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">	
+					<display:table 	name="${listaProvvedimentiPregressi}" 
+										requestURI="" sort="external" partialList="false"
+										 id="provvedimentiParent" 
+										class="table table-hover table-bordered"
+										summary="Elenco Provvedimenti Pregressi" style="width: 100%">
+
+							<display:column title="Titolo / Oggetto" property="provvedimentoCollegato.oggettoAsText" headerScope="col" />
+					</display:table>
+				</div>
+			</div>
+			<!-- allegati end -->
 
 			<!-- Allegati insert -->
 			<div class="row">
@@ -183,7 +205,7 @@
 										class="table table-hover table-bordered"
 										summary="Elenco Allegati" style="width: 100%">
 
-							<display:column title="${idHeader}" property="id" headerScope="col" />
+							<display:column title="${idHeader}" property="id" headerClass="hidden" headerScope="col" class="hidden" />
 							<display:column title="${descrizioneHeader}" href="/private/provvedimenti/ricerca/downloadAllegato/${allegato.id}" headerScope="col" class="vcenter">
 								<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=${allegato.id}" var="urlDownload" />
 								<a href="${urlDownload}" class="download">${allegato.descrizione}</a>

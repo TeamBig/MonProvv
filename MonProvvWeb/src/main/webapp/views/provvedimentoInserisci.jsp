@@ -113,11 +113,10 @@
 							</springform:select>
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="titoloOggetto">Titolo /
-							Oggetto</label>
+ 					<div class="control-group">
+						<label class="control-label" for="titoloOggetto">Titolo / Oggetto</label>
 						<div class="controls">
-							<springform:input path="titoloOggetto" cssClass="input-xlarge"/>
+							<springform:textarea path="titoloOggetto" class="input-xlarge" id="parere" cols="30" rows="4" />
 						</div>
 					</div>
 					<div class="control-group">
@@ -261,7 +260,7 @@
 						<label class="control-label" for="organo">Nuovo assegnatario</label>
 						<div class="controls">
 							<springform:select path="assegnatario" id="assegnatario" cssClass="input-xlarge" >
-								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
+								<springform:options items="${listaOrganiAssegnatari}" itemValue="id" itemLabel="denominazione" />
 							</springform:select>
 							<button type="button" id="insertAssegnatarioFromInserimento" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
 						</div>

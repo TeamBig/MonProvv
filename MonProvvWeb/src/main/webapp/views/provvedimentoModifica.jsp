@@ -133,8 +133,7 @@
 						<div class="control-group">
 							<label class="control-label" for="titoloOggetto">${titoloOggettoHeader}</label>
 							<div class="controls">
-								<%-- <span>${provvedimentoDettaglio.oggetto}</span> --%>
-								<springform:input path="oggetto" id="titoloOggetto" cssClass="input-xlarge"/>
+								<springform:textarea path="oggetto" class="input-xlarge" id="titoloOggetto" cols="30" rows="4" />
 							</div>
 						</div>
 						<div class="control-group">
@@ -158,6 +157,14 @@
 								<%-- <span>${provvedimentoDettaglio.organoCapofila.denominazione}</span> --%>
 								<springform:select path="organoCapofila" id="enteCapofila" cssClass="input-xlarge" >
 									<springform:options items="${listaOrganoCapofila}" itemValue="id" itemLabel="denominazione" />
+								</springform:select>
+							</div>
+						</div>
+						<div class="control-group" id="proponenteDiv">
+							<label class="control-label" for="proponente">${proponenteHeader}</label>
+							<div class="controls">
+								<springform:select path="organoConcertante" id="proponente" cssClass="input-xlarge" >
+									<springform:options items="${listaProponente}" itemValue="id" itemLabel="denominazione" />
 								</springform:select>
 							</div>
 						</div>

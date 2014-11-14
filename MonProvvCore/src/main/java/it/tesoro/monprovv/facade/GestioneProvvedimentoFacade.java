@@ -279,7 +279,9 @@ public class GestioneProvvedimentoFacade {
 		if (provvedimento.getStato().getId() != provvRecuperato.getStato().getId()) {
 			inviaNotificaCambioStato = true;
 		}
-		
+		if(provvedimento.getTipoProvvedimento().getCodice().equals(Constants.PROPONENTE_MEF)){
+			provvedimento.setOrganoConcertante(null);
+		}
 		provvRecuperato = provvRecuperato.getProvvedimentoToUpdate(provvedimento);
 		if(provvedimento.getProvvedimentiParentSelected()!=null && Arrays.asList(provvedimento.getProvvedimentiParentSelected()).size()>0){
 //			List<String> list = Arrays.asList(provvedimento.getProvvedimentiParentSelected());
@@ -513,10 +515,11 @@ public class GestioneProvvedimentoFacade {
 	public Provvedimento inserisciProvvedimento(InserisciProvvedimentoDto provvedimentoIns) {
 		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Stato statoInserito = findStatoById(Constants.INSERITO_ID);
-		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.CONCERTANTE_MEF)){
+		if(provvedimentoIns.getTipologia().getCodice().equals(Constants.PROPONENTE_MEF)){
 			provvedimentoIns.setProponente(null);
 		}
 		Provvedimento provvRecuperato = provvedimentoIns.getProvvedimento();
+		provvRecuperato.setOggetto(provvedimentoDAO.createClob(provvedimentoIns.getTitoloOggetto()));
 		provvRecuperato.setStato(statoInserito);
 		provvRecuperato.setOrganoInseritore(principal.getUtente().getOrgano());
 		provvedimentoDAO.save(provvRecuperato);
