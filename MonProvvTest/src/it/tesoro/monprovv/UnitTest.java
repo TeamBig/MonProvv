@@ -80,7 +80,7 @@ public class UnitTest {
 	public void path() {
 		AntPathMatcher matcher = new AntPathMatcher();
 		
-		System.out.println("Ris = " + matcher.match("/private/provvedimentilettore/ricerca", "/private/provvedimentilettore/ricerca"));
+		System.out.println("Ris = " + matcher.match("/private/home/**", "/private/home"));
 	}
 	
 	
