@@ -401,45 +401,32 @@ $(document).ready(function() {
     
     // SALVA E INVIA NOTIFICHE PROVVEDIMENTO
     
-    $('#salvaeinvianotifica').click( function () {
-    	var target = $(location).attr('pathname');
-    	target = target + '/salvaeinvianotifica?id=' + $('#idProvvedimento').val();
-    	// load the url and show modal on success
-        $("#modalSalvaInviaNotifica .modal-body").load(target, function() { 
-             $("#modalSalvaInviaNotifica").on('shown', function() {
-            	 $(document).tokenfieldemail($("#tokenfieldemail"));
-             }).modal("show");
-        });
-    });
+//    var dataVal=[{id:0,tag:'Volvo'},{id:1,tag:'Saab'},{id:2,tag:'Mercedes'},{id:3,tag:'Fiat'},{id:4,tag:'Audi'}];
+//    
     
-    $('#inviaNotificaModal').click( function () {
-    	var oForm = $(this).closest("form");
-    	oForm.append("<input type='hidden' name='tokenfieldemail' value='"+$("#tokenfieldemail").val()+"' />"); 
-    	oForm.append("<input type='hidden' name='salvaenotifica' />");
-    	oForm.submit();
-    });
+//    $.fn.tokenfieldemail = function (element) {
+//    	element.tagsinput({
+//        	itemValue: 'email',
+//        	itemText: 'descrizione',
+//        	freeInput: true,
+//        	allowDuplicates: false,
+//        	trimValue: true,
+//        	showAutocompleteOnFocus: true,
+//        	typeahead: {
+//        		source: function(param) {
+//        			if( param.length < 2)
+//        				return null;
+//        			else
+//	        			return $.getJSON(
+//	        					'autocomplateutentemail',
+//	        					{ query: param }
+//	        			);
+//        		}
+//        	}
+//        });
+//    }
     
-    $.fn.tokenfieldemail = function (element) {
-    	element.tagsinput({
-        	itemValue: 'email',
-        	itemText: 'descrizione',
-        	freeInput: true,
-        	allowDuplicates: false,
-        	trimValue: true,
-        	showAutocompleteOnFocus: true,
-        	typeahead: {
-        		source: function(param) {
-        			if( param.length < 2)
-        				return null;
-        			else
-	        			return $.getJSON(
-	        					'autocomplateutentemail',
-	        					{ query: param }
-	        			);
-        		}
-        	}
-        });
-    }
+    // FINE SALVA E INVIA NOTIFICHE PROVVEDIMENTO
     
     $('#nominativoUtente').attr('autocomplete','off');
     $('#nominativoUtente').typeahead({
@@ -732,6 +719,9 @@ $(document).ready(function() {
 	         $("#modalCronologia").modal("show"); 
 	    });
 	});
+	
+	// GESTIONE INVIO MAIL FINE LAVORI
+	gestioneInvioMailFineLavori();
 });
 
 function eliminaNessunRisultatoAssegnatario(id){
@@ -739,6 +729,60 @@ function eliminaNessunRisultatoAssegnatario(id){
 		$(id+" tr.empty").fadeOut( 500 );
 	}
 }
+
+// GESTIONE INVIO MAIL FINE LAVORI
+function gestioneInvioMailFineLavori() {
+
+    function myFormatSelection(item) { 
+		var retval = item.descrizione;
+    	return retval; 
+	};
+	
+   
+    $('#salvaeinvianotifica').click( function () {
+    	var target = $(location).attr('pathname');
+    	target = target + '/salvaeinvianotifica?id=' + $('#idProvvedimento').val();
+    	// load the url and show modal on success
+        $("#modalSalvaInviaNotifica .modal-body").load(target, function() { 
+             $("#modalSalvaInviaNotifica").on('shown', function() {
+            	 
+//            	 $(document).tokenfieldemail($("#tokenfieldemail"));
+            	 
+            	 $("#destinatariemail").select2({
+ 					multiple: true,
+ 					placeholder: "destinatari notifica",
+ 					allowClear: true,
+ 					minimumInputLength: 2,
+ 					ajax:{
+ 						url: "autocomplateutentemail",
+ 						dataType: 'json',
+ 						quietMillis: 250,
+ 						data: function (term) {
+ 							return {query: term};
+ 				        },
+ 				        results: function (data, page) {
+						    return { results: data };
+						}
+ 					},
+ 					formatSelection: myFormatSelection,
+ 					formatResult: myFormatSelection
+ 				
+ 				}); 
+            	 
+             }).modal("show");
+        });
+    });
+    
+    $('#inviaNotificaModal').click( function () {
+    	var oForm = $(this).closest("form");
+    	oForm.append("<input type='hidden' name='tokenfieldemail' value='"+$("#destinatariemail").val()+"' />"); 
+    	oForm.append("<input type='hidden' name='salvaenotifica' />");
+    	oForm.submit();
+    });
+
+	
+}
+
 
 
 // GESTIONE NOTIFICHE

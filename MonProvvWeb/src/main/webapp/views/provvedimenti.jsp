@@ -2,6 +2,7 @@
 <%@ taglib prefix="springform" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
 
@@ -173,9 +174,13 @@
 		<div class="span12">
 			<h3 class="text-left underline">
 				<span>Elenco provvedimenti</span>
-				<button type="submit" class="btn btn-primary pull-right" id="apriNuovoProvvedimento">
-					Nuovo provvedimento &nbsp;<i class="icon-plus"></i>
-				</button>
+				
+				<security:authorize access="hasPermission('/private/provvedimenti/ricerca/nuovo', 'urlPermission')">
+					<button type="submit" class="btn btn-primary pull-right" id="apriNuovoProvvedimento">
+						Nuovo provvedimento &nbsp;<i class="icon-plus"></i>
+					</button>
+				</security:authorize>
+				
 				<button class="btn pull-right" id="toggleRicerca"
 					data-toggle="collapse" data-target="#campiRicerca"
 					style="margin-right: 10px;">
@@ -269,3 +274,10 @@
 		</div>
 	</div>
 </div>
+<security:authorize access="hasPermission('/private/provvedimenti/ricerca/dettaglio', 'urlPermission')" var="canDettaglio" />
+<c:if test="${not canDettaglio }">
+	<script type="text/javascript">
+	$('#risultatiRicerca .table > tbody > tr').unbind('click'); // TODO non funziona
+	
+	</script>
+</c:if>

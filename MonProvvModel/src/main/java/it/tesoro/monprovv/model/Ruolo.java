@@ -21,7 +21,7 @@ public class Ruolo extends AbstractCommonEntity implements java.io.Serializable 
 	public static final String ROLE_ADMIN = "ROLE_ADMIN";
 	public static final String ROLE_INSERITORE = "ROLE_INSERITORE";
 	public static final String ROLE_LETTORE = "ROLE_LETTORE";
-	public static final String ROLE_CONSULTATORE = "ROLE_CONSULTATORE";
+	public static final String ROLE_CONSULTANTE = "ROLE_CONSULTANTE";
 	
 	@Id
 	@Column(name="ID_RUOLO",unique=true, nullable=false)
