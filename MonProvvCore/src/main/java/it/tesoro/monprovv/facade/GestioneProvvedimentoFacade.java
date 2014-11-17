@@ -163,6 +163,19 @@ public class GestioneProvvedimentoFacade {
 			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
+		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti())){
+			String paramIn = "IN (";
+			List<String> listaUfficiCoinvolti = Arrays.asList(provvDto.getAmmUfficiCoinvolti());
+			for(String param : listaUfficiCoinvolti){
+				paramIn +=param;
+				if(listaUfficiCoinvolti.indexOf(param)!=listaUfficiCoinvolti.size()-1){
+					paramIn +=",";
+				}
+			}
+			paramIn +=")";
+			SearchPatternUtil pattern = new SearchPatternUtil("organoCapofila",paramIn,false,false,true);
+			searchPatternObjects.add(pattern);
+		}
 		return searchPatternObjects;		
 	}
 	

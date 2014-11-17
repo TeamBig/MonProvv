@@ -2,7 +2,10 @@ $(document).ready(function() {
 	
     $('.multiselect').multiselect({
             nonSelectedText: 'Tutti',
-            numberDisplayed: 20
+            numberDisplayed: 2,
+            maxWidth: 250,
+            nSelectedText: 'selezionati'
+            
 	});
     
 	$('.custom-headers').multiSelect({

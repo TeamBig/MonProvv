@@ -636,9 +636,15 @@ public class GestioneProvvedimentoController {
 	public String inserisciAssegnatario(@RequestParam("provvedimento.id") String idProvvedimento,@RequestParam("organo") String idOrgano ) {
 		Integer idProvv = Integer.parseInt(idProvvedimento);
 		Integer idOrg = Integer.parseInt(idOrgano);
+		AssegnazioneDto assRic = new AssegnazioneDto();
+		assRic.setIdOrgano(idOrg);
+		assRic.setIdProvvedimento(idProvv);
 		
-		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
-		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,false);
+		if(StringUtils.isEmpty(gestioneProvvedimentoFacade.recuperaAssegnazioneByProvvOrgano(assRic))){
+			Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
+			return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,false);
+		}
+		return null;
 	}
 	
 	/* GESTIONE INSERIMENTO PROVVEDIMENTO */
@@ -673,6 +679,7 @@ public class GestioneProvvedimentoController {
 			}
 			model.addAttribute("currentStep", provvedimento.getCurrentStep());
 			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
+			gestioneTabelleAllAss(model,provvedimento);
 		}
 		if(action.equals(Constants.SALVA)){
 			pulisciInserimento(model,status);
