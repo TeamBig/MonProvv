@@ -64,7 +64,7 @@
 							
 							<springform:form modelAttribute="assegnazione"> 
 								<button type="submit" class="btn btn-primary" name="accettaRichiestaAssegnazione">Accetta&nbsp;<i class="icon-ok"></i></button>
-								<button type="button" class="btn" name="rifiutaRichiestaAssegnazione">Rifiuta&nbsp;<i class="icon-remove"></i></button>
+								<button type="submit" class="btn" name="rifiutaRichiestaAssegnazione">Rifiuta&nbsp;<i class="icon-remove"></i></button>
 							</springform:form> 
 
 						

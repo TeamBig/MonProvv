@@ -281,7 +281,7 @@
 									      	<i class="icon-check icon-large"></i>
 									      </c:when>
 									      <c:when test="${assegnazione.stato.codice eq 'FLA'}">
-									      	<i class="icon-thumbs-up-alt icon-large"></i>
+									      	<i class="icon-thumbs-up-alt icon-large" title="Fine lavorazione"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 										  	<spring:url var="url_popoverrifiuto" value="/private/provvedimenti/motivazionerifiuto?id={id}">

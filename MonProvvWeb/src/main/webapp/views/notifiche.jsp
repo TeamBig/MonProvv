@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
@@ -45,7 +46,7 @@
 						<div class="aprinotifica">
 							<spring:url value="/private/notifiche/dettaglio?id=${notifica.id}" var="linkNotifica"  />
 							<a href="${linkNotifica}" class="no"></a>
-							<span class="${notifica.flagLettura == 'S' ? 'letta' : 'nonletta' }" >${notifica.oggetto}</span>
+							<span class="${notifica.flagLettura == 'S' ? 'letta' : 'nonletta' }" ><fmt:formatDate value="${notifica.dataInserimento}" pattern="dd/MM/yyyy HH:mm" /> -  ${notifica.oggetto}</span>
 							<br>
 							<span>${notifica.testo}</span>
 						</div>

@@ -76,6 +76,16 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			ruoliList.add(ruoloFunzione.getRuolo().getCodice());
 			
 			alberoPermessi.put(url, ruoliList);
+			
+//			String ruolo = ruoloFunzione.getRuolo().getCodice();
+//			List<String> ruoliList = alberoPermessi.get(ruolo);
+//			if (ruoliList == null) {
+//				ruoliList = new ArrayList<String>();
+//			}
+//			ruoliList.add(ruoloFunzione.getFunzione().getUrl());
+//			
+//			alberoPermessi.put(ruolo, ruoliList);
+			
 		}
 	}
 	
@@ -103,6 +113,37 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			String requestUrl = (String)targetDomainObject; 
 						
 			AntPathMatcher matcher = new AntPathMatcher();
+
+//			SOLUZIONE 3
+//			int matchCount = 0;
+//			int authCount = 0;
+//			
+//			Iterator<String> iterRuoli = alberoPermessi.keySet().iterator();
+//			
+//			while (iterRuoli.hasNext()) {
+//				
+//				String ruolo = iterRuoli.next();
+//				
+//				for (GrantedAuthority roleUser : authentication.getAuthorities()) {
+//					
+//				}
+//				
+//				if (matcher.match(url, requestUrl)) {
+//					
+//					matchCount++;
+//					for (GrantedAuthority roleUser : authentication.getAuthorities()) {
+//						if (alberoPermessi.get(url).contains(roleUser.getAuthority())) {
+//							authCount++;
+//						}
+//					}
+//					
+//				}
+//				
+//			}
+//			return (matchCount == authCount);
+//			FINE SOLUZIONE 3
+			
+			
 			
 //			SOLUZIONE 1
 			int matchCount = 0;
@@ -126,11 +167,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				}
 				
 			}
-		
-
-//			if (!(matchCount == authCount)) {
-//				System.out.println("KO");
-//			}
 			return (matchCount == authCount);
 //			FINE SOLUZIONE 1		
 

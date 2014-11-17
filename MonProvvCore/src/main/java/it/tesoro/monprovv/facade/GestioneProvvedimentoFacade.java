@@ -468,7 +468,7 @@ public class GestioneProvvedimentoFacade {
 			}
 		}
 		
-		if (countInLavorazione > 0) {
+		if (countInLavorazione == 0) {
 			String testoFineLav = "Si comunica che tutti gli organi assegnatari hanno concluso la lavorazione del provvedimento " 
 					+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa();
 			
@@ -494,6 +494,7 @@ public class GestioneProvvedimentoFacade {
 			stato = statoDAO.findByCodice(Constants.ASSEGNATO);
 		} else {
 			stato = statoDAO.findByCodice(Constants.RIFIUTATO);
+			assegnazione.setMotivazioneRifiuto(assegnazioneDAO.createClob("Richiesta di assegnazione rifiutata dal capo-fila"));
 		}
 		assegnazione.setStato(stato);
 		assegnazioneDAO.saveOrUpdate(assegnazione);
@@ -585,6 +586,27 @@ public class GestioneProvvedimentoFacade {
 				allegatoDAO.save(all);
 			}
 		}
+		
+		// invio notifica al capofila
+		// invio notifiche informative a utenti capofila
+		String testo = "L'utente " + principal.getUtente().getNome() + " " + principal.getUtente().getCognome() + " ha inserito il nuovo provvedimento " 
+				+ provvRecuperato.getGoverno().getDenominazione() + " " + provvRecuperato.getId() + ", fonte normativa " + provvRecuperato.getFonteNormativa() +
+				" di cui ha nominato capo-fila l'organo " + provvRecuperato.getOrganoCapofila().getDenominazione() + " per conto dell'organo " + provvRecuperato.getOrganoInseritore().getDenominazione();
+		
+		Notifica notificaInfo = new Notifica();
+		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+		notificaInfo.setOggetto("Nomina capo-fila di nuovo provvedimento");
+		notificaInfo.setTesto(testo);
+		notificaInfo.setUtenteMittente(principal.getUtente());
+
+		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(provvRecuperato.getOrganoCapofila().getId()) ) {
+			notificaInfo.setUtenteDestinatario(utenteDestinatario);
+			notificaDAO.save(notificaInfo);
+		}
+						
+		
+		
 		return provvRecuperato;
 	}
 
@@ -682,6 +704,7 @@ public class GestioneProvvedimentoFacade {
 					notifica.setFlagLettura(Notifica.NON_LETTA);
 					notifica.setTipoNotifica(Notifica.INFORMATIVA);
 					notifica.setOggetto("Cambio stato del provvedimento");
+					notifica.setUtenteMittente(user.getUtente());
 					notifica.setTesto(testo);
 					
 					for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {

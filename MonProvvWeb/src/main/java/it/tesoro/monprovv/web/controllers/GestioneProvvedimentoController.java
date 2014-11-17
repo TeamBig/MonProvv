@@ -49,12 +49,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -593,7 +593,7 @@ public class GestioneProvvedimentoController {
 			if (file.getBytes().length > 0) {
 				allegato.setNomefile(file.getOriginalFilename());
 				allegato.setDescrizione(StringUtils.isEmpty(desc)?file.getOriginalFilename():desc);
-				allegato.setContenuto(new SerialBlob(file.getBytes()));
+				allegato.setContenuto(Hibernate.createBlob(file.getBytes()));
 				//allegato.setProvvedimento(provv);
 				allegato.setDimensione((int)file.getSize());
 			}
