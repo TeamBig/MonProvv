@@ -77,15 +77,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 			
 			alberoPermessi.put(url, ruoliList);
 			
-//			String ruolo = ruoloFunzione.getRuolo().getCodice();
-//			List<String> ruoliList = alberoPermessi.get(ruolo);
-//			if (ruoliList == null) {
-//				ruoliList = new ArrayList<String>();
-//			}
-//			ruoliList.add(ruoloFunzione.getFunzione().getUrl());
-//			
-//			alberoPermessi.put(ruolo, ruoliList);
-			
 		}
 	}
 	
@@ -114,38 +105,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 						
 			AntPathMatcher matcher = new AntPathMatcher();
 
-//			SOLUZIONE 3
-//			int matchCount = 0;
-//			int authCount = 0;
-//			
-//			Iterator<String> iterRuoli = alberoPermessi.keySet().iterator();
-//			
-//			while (iterRuoli.hasNext()) {
-//				
-//				String ruolo = iterRuoli.next();
-//				
-//				for (GrantedAuthority roleUser : authentication.getAuthorities()) {
-//					
-//				}
-//				
-//				if (matcher.match(url, requestUrl)) {
-//					
-//					matchCount++;
-//					for (GrantedAuthority roleUser : authentication.getAuthorities()) {
-//						if (alberoPermessi.get(url).contains(roleUser.getAuthority())) {
-//							authCount++;
-//						}
-//					}
-//					
-//				}
-//				
-//			}
-//			return (matchCount == authCount);
-//			FINE SOLUZIONE 3
-			
-			
-			
-//			SOLUZIONE 1
 			int matchCount = 0;
 			int authCount = 0;
 			
@@ -168,42 +127,9 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 				
 			}
 			return (matchCount == authCount);
-//			FINE SOLUZIONE 1		
-
-//			SOLUZIONE 2
-//			List<String> ruoliUtente = new ArrayList<String>();
-//			for (GrantedAuthority roleUser : authentication.getAuthorities()) {
-//				ruoliUtente.add(roleUser.getAuthority());
-//			}
-//			List<String> ruoliConsentiti = new ArrayList<String>();
-//			
-//			Iterator<String> iter = alberoPermessi.keySet().iterator();
-//			
-//			logger.debug("Controllo su url " + targetDomainObject);
-//			
-//			while (iter.hasNext()) {
-//				
-//				String url = iter.next();
-//				
-//				logger.debug("... check " + url + " vs " + requestUrl);
-//				
-//				if (matcher.match(url, requestUrl)) {
-//					
-//					ruoliConsentiti.addAll( alberoPermessi.get(url)  );
-//					
-//				}
-//			}
-//			
-//			boolean esito = ruoliUtente.containsAll(ruoliConsentiti);
-//			return esito;
-//			FINE SOLUZIONE 2
 		}
 
 		// visibilità pulsanti
-//		- modifica 
-//		- stato provvedimento = 1
-//		- ruolo = inseritore
-//		- condizione aggiuntiva: organo appartenenza = capofila oppure organo inseritore
 		if (permission instanceof String) {
 			
 			if (alberoCondizioni == null) 
