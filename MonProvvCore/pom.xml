@@ -5,16 +5,37 @@
 	<artifactId>MonProvvCore</artifactId>
 	<version>1.0</version>
 	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>copy-libraries</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<tasks>
+									<echo>Impostazione file di configurazione per ambiente ${ambiente}</echo>
+									<copy file="${basedir}/src/main/resources/monprovv.cfg.${ambiente}" tofile="${basedir}/target/classes/monprovv.cfg" failonerror="true" overwrite="true" flatten="true" />
+								</tasks>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>			
+			</plugins>
+		</pluginManagement>
 	</build>
 	<dependencies>
 		<dependency>

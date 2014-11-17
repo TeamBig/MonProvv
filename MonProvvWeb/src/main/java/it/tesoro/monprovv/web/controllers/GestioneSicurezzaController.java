@@ -148,7 +148,7 @@ public class GestioneSicurezzaController {
 	public String caricaHomepagePrivata(Model model, SecurityContextHolderAwareRequestWrapper request)  {
 
 		
-		if (   request.isUserInRole(Ruolo.ROLE_CONSULTATORE) 
+		if (   request.isUserInRole(Ruolo.ROLE_CONSULTANTE) 
 			|| request.isUserInRole(Ruolo.ROLE_LETTORE)
 			|| request.isUserInRole(Ruolo.ROLE_INSERITORE) ) {
 			return "redirect:/private/provvedimenti/ricerca";
