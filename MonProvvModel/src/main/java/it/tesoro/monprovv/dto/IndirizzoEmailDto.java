@@ -36,6 +36,10 @@ public class IndirizzoEmailDto implements Serializable{
 		return retval;
 	}
 	
+	public String getId(){
+		return this.email;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
