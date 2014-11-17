@@ -23,13 +23,12 @@ notifiche.numVisibili=3
 #servizio email
 email.on=S
 email.from.address=amministrazione@tesoro.it
-email.from.name=PDA MEF
+email.from.name=AMMINISTRATORE DI MONITORAGGIO PROVVEDIMENTI
 
-#EMAIL SVILUPPO
-email.smtp.server=tprlp01.tesoro.it
+#EMAIL COLLAUDO
+email.smtp.server=efeso.tesoro.it
 email.smtp.port=25
-email.smtp.user=NA
-email.smtp.pwd=NA
-email.smtp.authreq=false
-
+email.smtp.user=pdamefgiustizia
+email.smtp.pwd=giustiziapdamef
+email.smtp.authreq=true
 
