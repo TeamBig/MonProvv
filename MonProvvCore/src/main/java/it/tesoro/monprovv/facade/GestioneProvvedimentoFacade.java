@@ -283,18 +283,47 @@ public class GestioneProvvedimentoFacade {
 			provvedimento.setOrganoConcertante(null);
 		}
 		provvRecuperato = provvRecuperato.getProvvedimentoToUpdate(provvedimento);
-		if(provvedimento.getProvvedimentiParentSelected()!=null && Arrays.asList(provvedimento.getProvvedimentiParentSelected()).size()>0){
-//			List<String> list = Arrays.asList(provvedimento.getProvvedimentiParentSelected());
-//			for(Provvedimento provCollegato : provvedimento.getListaProvvedimenti()){
-//				if(list.contains(provCollegato.getId().toString())){
-//					ProvvedimentiParent provParent = new ProvvedimentiParent();
-//					provParent.setProvvedimento(provvRecuperato);
-//					provParent.setProvvedimentoCollegato(provCollegato);
-//					provvedimentiParentDAO.save(provParent);
-//				}
-//			}
-		}
 		Provvedimento provMerge = provvedimentoDAO.merge(provvRecuperato);
+		
+		
+		List<Provvedimento> listaProvvedimentiInDb = new ArrayList<Provvedimento>();
+		for(ProvvedimentiParent pParent : provvRecuperato.getProvvedimentiParent()){
+			listaProvvedimentiInDb.add(pParent.getProvvedimentoCollegato());
+		}
+
+		if (provvedimento.getProvvedimentiParentSel() != null
+				&& provvedimento.getProvvedimentiParentSel().size() > 0) {
+			for (Provvedimento provCollegato : provvedimento
+					.getProvvedimentiParentSel()) {
+				if (!listaProvvedimentiInDb.contains(provCollegato)) {
+					ProvvedimentiParent provParent = new ProvvedimentiParent();
+					provParent.setProvvedimento(provvRecuperato);
+					provParent.setProvvedimentoCollegato(provCollegato);
+					provvedimentiParentDAO.save(provParent);
+				}
+			}
+		}
+		
+		for(Provvedimento p : listaProvvedimentiInDb){
+			if(provvedimento.getProvvedimentiParentSel()!=null && provvedimento.getProvvedimentiParentSel().size()>0){
+				if(!provvedimento.getProvvedimentiParentSel().contains(p)){
+					HashMap<String, Object> params = new HashMap<String, Object>();
+					params.put("provvedimento", provvRecuperato);
+					params.put("provvedimentoCollegato", p);
+					List<ProvvedimentiParent> listToDelete = provvedimentiParentDAO.findByProperty(params);
+					if(listToDelete!=null && listToDelete.size()>0){
+						provvedimentiParentDAO.delete(listToDelete.get(0));
+					}
+				}
+			}
+		}
+//		for(ProvvedimentiParent pParent : provvRecuperato.getProvvedimentiParent()){
+//			if(!listaProvvedimentiInDb.contains(pParent.getProvvedimento())){
+//				ProvvedimentiParent pParenteToDelete = provvedimentiParentDAO.findById(pParent.getId());
+//				provvedimentiParentDAO.delete(pParenteToDelete);
+//			}
+//		}
+		
 		
 		if (inviaNotificaCambioStato) {
 			invioNotificaCambioStato(provMerge);

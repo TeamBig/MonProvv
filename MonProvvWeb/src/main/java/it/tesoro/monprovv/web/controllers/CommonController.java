@@ -8,6 +8,8 @@ import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Menu;
 import it.tesoro.monprovv.model.Organo;
+import it.tesoro.monprovv.model.ProvvedimentiParent;
+import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.TipoAtto;
@@ -19,6 +21,7 @@ import it.tesoro.monprovv.web.propertyeditors.ClobPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.DataPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.GovernoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.OrganoPropertyEditor;
+import it.tesoro.monprovv.web.propertyeditors.ProvvedimentiParentPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.RuoloPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.StatoPropertyEditor;
 import it.tesoro.monprovv.web.propertyeditors.TipoAttoPropertyEditor;
@@ -67,6 +70,7 @@ public class CommonController {
 		binder.registerCustomEditor(TipoAtto.class, new TipoAttoPropertyEditor(tipologicaFacade));
 		binder.registerCustomEditor(UtenteAstage.class, new UtenteAstagePropertyEditor(gestioneUtenteFacade));
 		binder.registerCustomEditor(Ruolo.class, new RuoloPropertyEditor(gestioneUtenteFacade));
+		binder.registerCustomEditor(Provvedimento.class, new ProvvedimentiParentPropertyEditor(tipologicaFacade));
 	}
 	
 	
