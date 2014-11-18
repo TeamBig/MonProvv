@@ -1,5 +1,7 @@
 package it.tesoro.monprovv.web.validators;
 
+import java.text.SimpleDateFormat;
+
 import it.tesoro.monprovv.dto.InserisciProvvedimentoDto;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.utils.StringUtils;
@@ -36,6 +38,9 @@ public class ProvvedimentoValidator implements Validator {
 			if (StringUtils.isEmpty(provv.getDataAtto())) {
 				errors.rejectValue("dataAtto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare data atto");
+			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDataAtto()))){
+				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Data atto' non corretto");
+				provv.setDataAtto(null);
 			}
 			if (StringUtils.isEmpty(provv.getNumeroAtto())) {
 				errors.rejectValue("numeroAtto", "generic.error.required",
@@ -57,6 +62,13 @@ public class ProvvedimentoValidator implements Validator {
 				errors.rejectValue("titoloOggetto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
+			if (StringUtils.isEmpty(provv.getDtTermineScadenza())) {
+				errors.rejectValue("dataAtto", "generic.error.required",
+						"Attenzione: \u00E8 necessario selezionare termine scadenza");
+			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDtTermineScadenza()))){
+				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
+				provv.setDtTermineScadenza(null);
+			}
 		}
 		if (target instanceof Provvedimento) {
 			Provvedimento provv = (Provvedimento) target;
@@ -75,6 +87,9 @@ public class ProvvedimentoValidator implements Validator {
 			if (StringUtils.isEmpty(provv.getDataAtto())) {
 				errors.rejectValue("dataAtto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare data atto");
+			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDataAtto()))){
+				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Data atto' non corretto");
+				provv.setDataAtto(null);
 			}
 			if (StringUtils.isEmpty(provv.getNumeroAtto())) {
 				errors.rejectValue("numeroAtto", "generic.error.required",
@@ -96,6 +111,14 @@ public class ProvvedimentoValidator implements Validator {
 				errors.rejectValue("titoloOggetto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
+			if (StringUtils.isEmpty(provv.getTermineScadenza())) {
+				errors.rejectValue("dataAtto", "generic.error.required",
+						"Attenzione: \u00E8 necessario selezionare termine scadenza");
+			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getTermineScadenza()))){
+				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
+				provv.setTermineScadenza(null);
+			}
+			
 		}
 
 	}

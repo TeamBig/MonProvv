@@ -94,7 +94,7 @@
 						<div class="control-group">
 							<label class="control-label" for="dataAtto" >${dataAttoHeader}</label>
 							<div class="controls">
-								<springform:input type="text" id="dataAttov" path="dataAtto" class="input-xlarge" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
+								<springform:input type="text" id="dataAttov" path="dataAtto" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
 							</div>
 						</div>
 						<div class="control-group">
@@ -141,7 +141,7 @@
 							<label class="control-label" for="dp1v">${termineDiScadenzaHeader}</label>
 							<div class="controls">
 								<%-- <span>${provvedimentoDettaglio.termineScadenza}</span> --%>
-								<springform:input type="text" id="dp1v" path="termineScadenza" class="input-xlarge" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
+								<springform:input type="text" id="dp1v" path="termineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
 							</div>
 						</div>
 						<div class="control-group">

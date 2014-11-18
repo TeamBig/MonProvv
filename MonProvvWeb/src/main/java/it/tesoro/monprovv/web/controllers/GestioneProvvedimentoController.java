@@ -539,8 +539,13 @@ public class GestioneProvvedimentoController {
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
-			Provvedimento provvedimentoModifica = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());			
-			model.addAttribute("listaProvvedimenti", provvedimentoModifica.getProvvedimentiParent());
+			Provvedimento provvedimentoModifica = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());
+			List<Provvedimento> listProvSel = new ArrayList<Provvedimento>();
+			for(ProvvedimentiParent pr : provvedimentoModifica.getProvvedimentiParent()){
+				listProvSel.add(pr.getProvvedimentoCollegato());
+			}
+			provvedimentoModifica.setProvvedimentiParentSel(listProvSel);
+			model.addAttribute("listaProvvedimenti", gestioneProvvedimentoFacade.initAllProvvedimenti(1));
 			
 			List<Integer> idAllegatiList = new ArrayList<Integer>();
 			for( Allegato tmp : provvedimentoModifica.getAllegatiList() ){
@@ -549,7 +554,19 @@ public class GestioneProvvedimentoController {
 			provvedimentoModifica.setIdAllegatiUpdList( idAllegatiList );
 			
 			model.addAttribute("provvedimentoModifica", provvedimento);
-			caricaTabelleInferiore(model, provvedimentoModifica);
+			caricaTabelleInferiore(model, provvedimento);
+			
+//			Provvedimento provvedimentoModifica = gestioneProvvedimentoFacade.ricercaProvvedimentoById(provvedimento.getId());			
+//			model.addAttribute("listaProvvedimenti", provvedimentoModifica.getProvvedimentiParent());
+//			
+//			List<Integer> idAllegatiList = new ArrayList<Integer>();
+//			for( Allegato tmp : provvedimentoModifica.getAllegatiList() ){
+//				idAllegatiList.add(tmp.getId());
+//			}
+//			provvedimentoModifica.setIdAllegatiUpdList( idAllegatiList );
+//			
+//			model.addAttribute("provvedimentoModifica", provvedimento);
+//			caricaTabelleInferiore(model, provvedimentoModifica);
 		}
 		return "provvedimentoModifica";
 	}
