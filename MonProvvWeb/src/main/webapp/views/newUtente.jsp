@@ -79,7 +79,7 @@
 							<label class="control-label" for="dataNascita">${datanascitaHeader}</label>
 							<div class="controls">
 								<span>
-									<springform:input path="dataNascita" id="dataNascitaV" cssClass="input-xlarge"/>&nbsp;<i class="icon-calendar icon-large" id="dataNascita"></i>
+									<springform:input path="dataNascita" id="dataNascitaV" cssClass="input-xlarge dataValid"/>&nbsp;<i class="icon-calendar icon-large" id="dataNascita"></i>
 								</span>
 							</div>
 						</div>

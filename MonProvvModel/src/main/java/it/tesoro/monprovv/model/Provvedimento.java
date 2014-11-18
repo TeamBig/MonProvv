@@ -185,6 +185,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	
 	@Transient
 	private String motivazioneRifiuto;
+	
+	@Transient
+	private String appoDataFormat;
 
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
@@ -471,6 +474,16 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setProvvedimentiParentSel(List<Provvedimento> provvedimentiParentSel) {
 		this.provvedimentiParentSel = provvedimentiParentSel;
+	}
+	
+	
+
+	public String getAppoDataFormat() {
+		return appoDataFormat;
+	}
+
+	public void setAppoDataFormat(String appoDataFormat) {
+		this.appoDataFormat = appoDataFormat;
 	}
 
 	@Override

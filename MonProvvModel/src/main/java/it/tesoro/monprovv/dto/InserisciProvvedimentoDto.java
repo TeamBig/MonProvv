@@ -70,6 +70,7 @@ public class InserisciProvvedimentoDto {
 	private List<Provvedimento> listaProvvedimenti;
 	private String[] provvedimentiSelected;
 	private String noteInterne;
+	private String appoDataFormat;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -278,5 +279,15 @@ public class InserisciProvvedimentoDto {
 	public void setNoteInterne(String noteInterne) {
 		this.noteInterne = noteInterne;
 	}
+
+	public String getAppoDataFormat() {
+		return appoDataFormat;
+	}
+
+	public void setAppoDataFormat(String appoDataFormat) {
+		this.appoDataFormat = appoDataFormat;
+	}
+	
+	
 
 }

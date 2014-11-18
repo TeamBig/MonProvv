@@ -20,7 +20,6 @@ public class UtenteValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Utente utente = (Utente)target;
-		
 		if(StringUtils.isEmpty( utente.getFlagIntEst() )){
 //			errors.rejectValue("flagIntEst","generic.error.required" ,"Attenzione: \u00E8 necessario selezionare il tipo di utente");
 		}else{
@@ -59,7 +58,7 @@ public class UtenteValidator implements Validator {
 			if(StringUtils.isEmpty(utente.getDataNascita())){
 				errors.rejectValue("dataNascita","generic.error.required" ,"Il campo 'Data di nascita' \u00E8 obbligatorio");
 			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(utente.getDataNascita() ))){
-				errors.rejectValue("dataNascita","generic.error.required" ,"Formato 'Data di nascita' non corretto");
+				errors.rejectValue("flagIntEst","generic.error.required" ,"Formato 'Data di nascita' non corretto");
 				utente.setDataNascita(null);
 			}
 				

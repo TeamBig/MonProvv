@@ -244,7 +244,7 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	
 	@RequestMapping(value = "/private/admin/utenti/nuovo", method = RequestMethod.POST, params="buttonSave")
 	public String nuovoPostButtonSave(@ModelAttribute("utenteToEdit") @Valid Utente utenteToEdit,
-			BindingResult errors, RedirectAttributes redirectAttributes, Model model)  {
+			BindingResult errors, Model model)  {
 	
 		String retval = "redirect:/private/admin/utenti";
 		if( "E".equals( utenteToEdit.getFlagIntEst() ) ) {
@@ -261,18 +261,17 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		if( !errors.hasErrors() ){					
 			utenteToEdit.setFlagAttivo("S");
 			gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
-			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
-			model.addAttribute("utenteToEdit", utenteToEdit );				
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);								
 			retval = "utenteDettUtente"; 										
 		}else{
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
 			loadCombo4NewUtente(model);
-			model.addAttribute("utenteToEdit", utenteToEdit);
 			retval = "utenteNewUtente";
 		}
 
+		model.addAttribute("utenteToEdit", utenteToEdit);
 		return retval;
 	}
 	

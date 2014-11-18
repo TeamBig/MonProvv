@@ -515,6 +515,22 @@ function gestineInserimentoUtnete(){
    
     /****** FINE GESTIONE AMMINISTRAZIONE ******/
     
+	/************** FORMATTAZIONE DATA****************/
+	$(".dataValid").on('keypress', 
+			function() {
+		if(window.event.keyCode>=48 && window.event.keyCode<=57){
+			if($(this).val().length == 2 || $(this).val().length == 5 ){
+				$(this).val($(this).val() + "/");
+			}else if($(this).val().length == 10 ){
+				return false;
+			}
+		}else{
+			return false;
+		}
+	});
+	/************** FINE FORMATTAZIONE DATA****************/
+
+
     /****** GESTIONE PROVVEDIMENTO ******/
 
 	
