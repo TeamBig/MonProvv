@@ -90,6 +90,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@Valid
 	private Organo organo;
 	
+	@Transient
+	private Integer organoUteEsterno;
+	
 	@Column(name = "DATA_NASCITA")
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")
@@ -208,6 +211,14 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 		this.codiceFiscale = codiceFiscale;
 	}
 
+
+	public Integer getOrganoUteEsterno() {
+		return organoUteEsterno;
+	}
+
+	public void setOrganoUteEsterno(Integer organoUteEsterno) {
+		this.organoUteEsterno = organoUteEsterno;
+	}
 
 	public Organo getOrgano() {
 		return organo;

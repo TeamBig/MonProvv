@@ -54,6 +54,9 @@ public class GestioneUtenteFacade {
 		if(id!=null){
 			utente = utenteDAO.findById(id);
 			recuperaRuoli(utente);
+			if("E".equals(utente.getFlagIntEst())){
+				utente.setOrganoUteEsterno( utente.getOrgano().getId() );
+			}
 		}
 		return utente;
 	}
@@ -358,6 +361,11 @@ public class GestioneUtenteFacade {
 //				}	
 //			}
 //		}
+		
+		if( "E".equals(utente.getFlagIntEst()) && !(utente.getOrganoUteEsterno().equals( utente.getOrgano().getId() )) ){
+			utente.setOrgano( organoDAO.findById( utente.getOrganoUteEsterno() ) );
+		}
+		
 		utente = utenteDAO.merge(utente);	
 		recuperaRuoli(utente);
 		return utente;

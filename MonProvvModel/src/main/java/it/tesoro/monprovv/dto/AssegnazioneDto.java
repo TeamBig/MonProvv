@@ -14,6 +14,16 @@ public class AssegnazioneDto {
 		this.id = id;
 		this.nomeAssegnatario = nomeAssegnatario;
 	}
+	
+	public AssegnazioneDto(Integer id, String nomeAssegnatario, Integer idOrgano) {
+		this.id = id;
+		this.nomeAssegnatario = nomeAssegnatario;
+		this.idOrgano = idOrgano;
+	}
+	
+	public AssegnazioneDto(Integer idOrgano) {
+		this.idOrgano = idOrgano;
+	}
 
 	public Integer getId() {
 		return id;

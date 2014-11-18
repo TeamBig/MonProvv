@@ -245,6 +245,7 @@
 			<!-- STEP 3  -->
 			<c:if test="${currentStep eq 3}">
 			<springform:hidden path="idAssegnatariUpdList" id="idAssegnatariUpdList" />
+			<input type="hidden" id="idOrganiAggiunti" name="idOrganiAggiunti" />
 			<div class="row">
 				<div class="span12">
 						<display:table 	name="${listaAssegnazione}" 

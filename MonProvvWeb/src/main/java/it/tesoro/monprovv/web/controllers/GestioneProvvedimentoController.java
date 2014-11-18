@@ -626,9 +626,9 @@ public class GestioneProvvedimentoController {
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/deleteAssegnatario/{idAllegato}"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String deleteAssegnatario(@PathVariable("idAllegato") Integer id) {
-		gestioneProvvedimentoFacade.eliminaAssegnatario(id);
-		return null;
+	public AssegnazioneDto deleteAssegnatario(@PathVariable("idAllegato") Integer id) {
+		Assegnazione asseDeleted = gestioneProvvedimentoFacade.eliminaAssegnatario(id);
+		return new AssegnazioneDto(asseDeleted.getOrgano().getId());
 	}
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/inserisciAssegnatario"}, method = RequestMethod.GET)
@@ -775,7 +775,7 @@ public class GestioneProvvedimentoController {
 		Integer idOrg = Integer.parseInt(assegnatario);
 		
 		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idOrg);
-		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione());
+		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione(),assegnazione.getOrgano().getId());
 	}
 	
 	private void pulisciInserimento(Model model,SessionStatus status)  {

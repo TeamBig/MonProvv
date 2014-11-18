@@ -5,6 +5,7 @@ import it.tesoro.monprovv.dto.CodiceDescrizioneDto;
 import it.tesoro.monprovv.dto.DisplayTagPagingAndSorting;
 import it.tesoro.monprovv.dto.IdDescrizioneDto;
 import it.tesoro.monprovv.dto.UtenteDto;
+import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Ruolo;
@@ -50,6 +51,9 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	
 	@Autowired 
 	private GestioneUtenteFacade gestioneUtenteFacade;
+	
+	@Autowired 
+	private GestioneEntiFacade gestioneEntiFacade;
 	
 	@Autowired
 	protected UtenteValidator utenteValidator;
@@ -159,6 +163,10 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 			}
 		}
 		model.addAttribute("ruoli", ruoli );
+		
+		List<IdDescrizioneDto> organiEsterni = gestioneUtenteFacade.recuperaOrganiEsterni("");
+		model.addAttribute("organiEsterni", organiEsterni );
+		
 	}
 	
 	@RequestMapping(value= {
@@ -238,15 +246,19 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	public String nuovoPostButtonSave(@ModelAttribute("utenteToEdit") @Valid Utente utenteToEdit,
 			BindingResult errors, RedirectAttributes redirectAttributes, Model model)  {
 	
-		String retval = "redirect:/private/admin/utenti";	
-		utenteValidator.validate(utenteToEdit, errors);
-		if( !errors.hasErrors() ){			
-			if( "I".equals( utenteToEdit.getFlagIntEst() ) ) {
-				//Interno
+		String retval = "redirect:/private/admin/utenti";
+		if( "E".equals( utenteToEdit.getFlagIntEst() ) ) {
+			//Esterno
+			utenteToEdit.setUtenteAstage(null);
+			if(StringUtils.isNotEmpty( utenteToEdit.getOrganoUteEsterno() )){
+				utenteToEdit.setOrgano(gestioneEntiFacade.recuperaOrganoById(utenteToEdit.getOrganoUteEsterno()));
 			}else{
-				//Esterno
-				utenteToEdit.setUtenteAstage(null);
-			}				
+				utenteToEdit.setOrgano(null);
+			}
+		}		
+		
+		utenteValidator.validate(utenteToEdit, errors);
+		if( !errors.hasErrors() ){					
 			utenteToEdit.setFlagAttivo("S");
 			gestioneUtenteFacade.inserisciUtente(utenteToEdit);				
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Utente effettuato con successo", false);				
@@ -390,6 +402,7 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
+			loadCombo4NewUtente(model);
 			model.addAttribute("utenteToEdit", utente);
 			retVal = "utenteEditUtente";
 		}

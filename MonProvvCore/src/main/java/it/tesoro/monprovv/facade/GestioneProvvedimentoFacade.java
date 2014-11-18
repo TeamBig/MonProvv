@@ -350,9 +350,10 @@ public class GestioneProvvedimentoFacade {
 		allegatoDAO.delete(allegatoToDelete);
 	}
 	
-	public void eliminaAssegnatario(Integer id) {
+	public Assegnazione eliminaAssegnatario(Integer id) {
 		Assegnazione assegnazione = assegnazioneDAO.findById(id);
 		assegnazioneDAO.delete(assegnazione);
+		return assegnazione;
 	}
 
 	public Assegnazione inserisciAssegnazione(Integer idProvv, Integer idOrgano) {
