@@ -21,7 +21,7 @@ public class AdminController {
 		String redirectUrl = null;
 		
 		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CustomUser) {
-			redirectUrl = "/private";
+			redirectUrl = "/private/admin/enti";
 		} else {
 			redirectUrl = "/public";
 		}

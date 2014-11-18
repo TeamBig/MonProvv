@@ -117,13 +117,14 @@
 						</div>
 					</div>
 					<div class="control-group">
-						<label class="control-label" for="inputFonte">Fonte
-							normativa</label>
+						<label class="control-label" for="enteAssegnatario">Amm./uffici
+							coinvolti</label>
 						<div class="controls">
-							<springform:input path="fonteNormativa" id="inputFonte" cssClass="input-xlarge"/>
+							<springform:select path="ammUfficiCoinvolti" id="ammUfficiCoinvolti" cssClass="input-xlarge multiselect" multiple="multiple">
+								<springform:options items="${listaProponente}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="span6">
@@ -138,16 +139,14 @@
 							</springform:select>
 						</div>
 					</div>
-
 					<div class="control-group">
-						<label class="control-label" for="enteAssegnatario">Amm./uffici
-							coinvolti</label>
+						<label class="control-label" for="inputFonte">Fonte
+							normativa</label>
 						<div class="controls">
-							<springform:select path="ammUfficiCoinvolti" id="ammUfficiCoinvolti" cssClass="input-xlarge multiselect" multiple="multiple">
-								<springform:options items="${listaProponente}" itemValue="id" itemLabel="denominazione" />
-							</springform:select>
+							<springform:input path="fonteNormativa" id="inputFonte" cssClass="input-xlarge"/>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -169,7 +168,7 @@
 		</div>
 	</springform:form>
 </div>
-<div class="container" id="risultatiRicerca">
+<div class="container" id="risultatiRicercaProvvedimenti">
 	<div class="row">
 		<div class="span12">
 			<h3 class="text-left underline">
@@ -274,10 +273,17 @@
 		</div>
 	</div>
 </div>
-<security:authorize access="hasPermission('/private/provvedimenti/ricerca/dettaglio', 'urlPermission')" var="canDettaglio" />
-<c:if test="${not canDettaglio }">
+<security:authorize access="hasPermission('/private/provvedimenti/ricerca/dettaglio', 'urlPermission')" >
+
 	<script type="text/javascript">
-	$('#risultatiRicerca .table > tbody > tr').unbind('click'); // TODO non funziona
+	    $('#risultatiRicercaProvvedimenti .table > tbody > tr').click(function() {
+	    	var customerId = $(this).find("td:first").html();  
+	    	
+	    	if( $.isNumeric( customerId ) ){
+	        	var currentUrl = $(location).attr('pathname'); 
+	        	window.location.href = currentUrl+"/dettaglio?id="+customerId;
+	    	}
+	    });
 	
 	</script>
-</c:if>
+</security:authorize>

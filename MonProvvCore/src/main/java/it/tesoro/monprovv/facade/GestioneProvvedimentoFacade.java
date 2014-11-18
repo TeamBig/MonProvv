@@ -431,14 +431,13 @@ public class GestioneProvvedimentoFacade {
 					" con la seguente motivazione: " + motivazioneRifiuto;
 		}
 		
-		Notifica notificaInfo = new Notifica();
-		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
-		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
-		notificaInfo.setOggetto("Assegnazione provvedimento");
-		notificaInfo.setTesto(testo);
-		notificaInfo.setUtenteMittente(user.getUtente());
-
 		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+			Notifica notificaInfo = new Notifica();
+			notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+			notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+			notificaInfo.setOggetto("Assegnazione provvedimento");
+			notificaInfo.setTesto(testo);
+			notificaInfo.setUtenteMittente(user.getUtente());
 			notificaInfo.setUtenteDestinatario(utenteDestinatario);
 			notificaDAO.save(notificaInfo);
 		}
@@ -460,14 +459,13 @@ public class GestioneProvvedimentoFacade {
 		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha completato la lavorazione del provvedimento " 
 					+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione();
 		
-		Notifica notificaInfo = new Notifica();
-		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
-		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
-		notificaInfo.setOggetto("Fine lavorazione");
-		notificaInfo.setTesto(testo);
-		notificaInfo.setUtenteMittente(user.getUtente());
-
 		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+			Notifica notificaInfo = new Notifica();
+			notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+			notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+			notificaInfo.setOggetto("Fine lavorazione");
+			notificaInfo.setTesto(testo);
+			notificaInfo.setUtenteMittente(user.getUtente());
 			notificaInfo.setUtenteDestinatario(utenteDestinatario);
 			notificaDAO.save(notificaInfo);
 		}
@@ -486,14 +484,13 @@ public class GestioneProvvedimentoFacade {
 			String testoFineLav = "Si comunica che tutti gli organi assegnatari hanno concluso la lavorazione del provvedimento " 
 					+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa();
 			
-			Notifica notificaFineLav = new Notifica();
-			notificaFineLav.setFlagLettura(Notifica.NON_LETTA);
-			notificaFineLav.setTipoNotifica(Notifica.INFORMATIVA);
-			notificaFineLav.setOggetto("Fine lavorazione per tutte le assegnazioni");
-			notificaFineLav.setTesto(testoFineLav);
-			notificaFineLav.setUtenteMittente(user.getUtente());
-			
 			for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getProvvedimento().getOrganoCapofila().getId()) ) {
+				Notifica notificaFineLav = new Notifica();
+				notificaFineLav.setFlagLettura(Notifica.NON_LETTA);
+				notificaFineLav.setTipoNotifica(Notifica.INFORMATIVA);
+				notificaFineLav.setOggetto("Fine lavorazione per tutte le assegnazioni");
+				notificaFineLav.setTesto(testoFineLav);
+				notificaFineLav.setUtenteMittente(user.getUtente());
 				notificaFineLav.setUtenteDestinatario(utenteDestinatario);
 				notificaDAO.save(notificaFineLav);
 			}
@@ -523,14 +520,14 @@ public class GestioneProvvedimentoFacade {
 		// invio notifica di accettazione assegnazione
 		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " ha " + (accettata ? "accettato" : "rifiutato") + " la richiesta di assegnazione del provvedimento " 
 				+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa() + " per conto dell'organo " + user.getUtente().getOrgano().getDenominazione(); 
-		Notifica notificaInfo = new Notifica();
-		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
-		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
-		notificaInfo.setOggetto("Accettazione richiesta di assegnazione provvedimento");
-		notificaInfo.setTesto(testo);
-		notificaInfo.setUtenteMittente(user.getUtente());
 
 		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {
+			Notifica notificaInfo = new Notifica();
+			notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+			notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+			notificaInfo.setOggetto("Accettazione richiesta di assegnazione provvedimento");
+			notificaInfo.setTesto(testo);
+			notificaInfo.setUtenteMittente(user.getUtente());
 			notificaInfo.setUtenteDestinatario(utenteDestinatario);
 			notificaDAO.save(notificaInfo);
 		}
@@ -606,15 +603,14 @@ public class GestioneProvvedimentoFacade {
 		String testo = "L'utente " + principal.getUtente().getNome() + " " + principal.getUtente().getCognome() + " ha inserito il nuovo provvedimento " 
 				+ provvRecuperato.getGoverno().getDenominazione() + " " + provvRecuperato.getId() + ", fonte normativa " + provvRecuperato.getFonteNormativa() +
 				" di cui ha nominato capo-fila l'organo " + provvRecuperato.getOrganoCapofila().getDenominazione() + " per conto dell'organo " + provvRecuperato.getOrganoInseritore().getDenominazione();
-		
-		Notifica notificaInfo = new Notifica();
-		notificaInfo.setFlagLettura(Notifica.NON_LETTA);
-		notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
-		notificaInfo.setOggetto("Nomina capo-fila di nuovo provvedimento");
-		notificaInfo.setTesto(testo);
-		notificaInfo.setUtenteMittente(principal.getUtente());
 
 		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(provvRecuperato.getOrganoCapofila().getId()) ) {
+			Notifica notificaInfo = new Notifica();
+			notificaInfo.setFlagLettura(Notifica.NON_LETTA);
+			notificaInfo.setTipoNotifica(Notifica.INFORMATIVA);
+			notificaInfo.setOggetto("Nomina capo-fila di nuovo provvedimento");
+			notificaInfo.setTesto(testo);
+			notificaInfo.setUtenteMittente(principal.getUtente());
 			notificaInfo.setUtenteDestinatario(utenteDestinatario);
 			notificaDAO.save(notificaInfo);
 		}
@@ -714,14 +710,14 @@ public class GestioneProvvedimentoFacade {
 				for (Assegnazione assegnazione : provvedimento.getAssegnazioneList()) {
 					String testo = "Il provvedimento " 	+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa() 
 								+ " ha assunto lo stato " + provvedimento.getStato().getDescrizione(); 
-					Notifica notifica = new Notifica();
-					notifica.setFlagLettura(Notifica.NON_LETTA);
-					notifica.setTipoNotifica(Notifica.INFORMATIVA);
-					notifica.setOggetto("Cambio stato del provvedimento");
-					notifica.setUtenteMittente(user.getUtente());
-					notifica.setTesto(testo);
 					
 					for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {
+						Notifica notifica = new Notifica();
+						notifica.setFlagLettura(Notifica.NON_LETTA);
+						notifica.setTipoNotifica(Notifica.INFORMATIVA);
+						notifica.setOggetto("Cambio stato del provvedimento");
+						notifica.setUtenteMittente(user.getUtente());
+						notifica.setTesto(testo);
 						notifica.setUtenteDestinatario(utenteDestinatario);
 						notificaDAO.save(notifica);
 					}					

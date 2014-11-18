@@ -413,6 +413,9 @@ NOTIFICHE
 	cursor: pointer;
 }
 
+#risultatiRicercaProvvedimenti .table > tbody > tr {
+	cursor: pointer;
+}
 .icon-calendar{
 	cursor: pointer;
 }

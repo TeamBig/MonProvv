@@ -27,7 +27,7 @@
 						<configuration>
 							<tasks>
 								<echo>Impostazione file di configurazione per ambiente ${ambiente}</echo>
-								<copy file="${basedir}/src/main/resources/monprovv.cfg.${ambiente}" tofile="${basedir}/target/classes/monprovv.cfg" failonerror="true" overwrite="true" flatten="true" />
+								<copy file="${basedir}/src/main/resources/monprovv.cfg.${ambiente}" tofile="${basedir}/target/classes/monprovv.cfg" failonerror="false" overwrite="true" flatten="true" />
 							</tasks>
 						</configuration>
 					</execution>
