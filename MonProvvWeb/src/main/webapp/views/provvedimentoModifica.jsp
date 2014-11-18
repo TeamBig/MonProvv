@@ -20,6 +20,7 @@
 
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
 <spring:message var="parereHeader" code="label.parere" />
+<spring:message var="noteInterneHeader" code="listaProvvedimenti.header.noteInterne" />
 
 <spring:message var="statoDiAttuazioneHeader" code="listaProvvedimenti.header.statoDiAttuazione" />
 <spring:message var="capofilaHeader" code="listaProvvedimenti.header.capofila" />
@@ -173,6 +174,12 @@
 							<div class="controls">
 								<%-- <span>${provvedimentoDettaglio.parere}</span> --%>
 								<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label" for="noteInterne">${noteInterneHeader}</label>
+							<div class="controls">
+								<springform:textarea path="noteInterne" class="input-xlarge" id="noteInterne" cols="30" rows="4" />
 							</div>
 						</div>
 				</div>

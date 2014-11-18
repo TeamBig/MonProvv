@@ -19,7 +19,7 @@ public class RicercaProvvedimentoDto {
 	private Date dtTermineScadenzaA;
 	private String fonteNormativa;
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
-
+	private String[] ammUfficiCoinvolti;
 
 	public String getArt() {
 		return art;
@@ -99,6 +99,14 @@ public class RicercaProvvedimentoDto {
 
 	public void setTipoProvvDaAdottare(TipoProvvDaAdottare tipoProvvDaAdottare) {
 		this.tipoProvvDaAdottare = tipoProvvDaAdottare;
+	}
+
+	public String[] getAmmUfficiCoinvolti() {
+		return ammUfficiCoinvolti;
+	}
+
+	public void setAmmUfficiCoinvolti(String[] ammUfficiCoinvolti) {
+		this.ammUfficiCoinvolti = ammUfficiCoinvolti;
 	}
 
 }

@@ -143,17 +143,9 @@
 						<label class="control-label" for="enteAssegnatario">Amm./uffici
 							coinvolti</label>
 						<div class="controls">
-							<select id="enteAssegnatario" class="input-xlarge multiselect"
-								multiple="multiple">
-								<option>Tutti</option>
-								<option>Agenzia Entrate e Territorio</option>
-								<option>Agenzia Dogane e Monopoli</option>
-								<option>Agenzia Entrate</option>
-								<option>Dipartimento finanze (DLTFF)</option>
-								<option>Dip.to Tesoro</option>
-								<option>Guardia di finanza</option>
-								<option>Ragioneria Generale dello Stato</option>
-							</select>
+							<springform:select path="ammUfficiCoinvolti" id="ammUfficiCoinvolti" cssClass="input-xlarge multiselect" multiple="multiple">
+								<springform:options items="${listaProponente}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
 						</div>
 					</div>
 				</div>

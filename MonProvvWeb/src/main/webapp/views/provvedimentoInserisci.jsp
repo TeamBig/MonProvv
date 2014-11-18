@@ -147,6 +147,12 @@
 							<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
 						</div>
 					</div>
+ 					<div class="control-group">
+						<label class="control-label" for="noteInterne">Note interne</label>
+						<div class="controls">
+							<springform:textarea path="noteInterne" class="input-xlarge" id="noteInterne" cols="30" rows="4" />
+						</div>
+					</div>
 				</div>
 			</div>
 
