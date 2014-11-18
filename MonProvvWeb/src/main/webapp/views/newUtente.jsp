@@ -45,9 +45,9 @@
 							</div>
 						</div>
 
-						<div id="inserimentoUtenteInternoDiv">
+						<div id="inserimentoUtenteInternoNominativoDiv">
 							<div class="control-group" >
-								<label class="control-label" for="cognome">${nominativoHeader}</label>
+								<label class="control-label" for="nominativo">${nominativoHeader}</label>
 								<div class="controls">
 									<span>
 										<springform:input path="nominativo" id="nominativoUtente" cssClass="input-xlarge"/>
@@ -115,9 +115,9 @@
 							</div>
 						</div>
 							
-						<div id="inserimentoUtenteInternoDivOrg">
+						<div id="inserimentoUtenteInternoOrganoDiv">
 							<div class="control-group" >	
-								<label class="control-label" for="ente">${enteHeader}</label>
+								<label class="control-label" for="organoDenominazioneInterni">${enteHeader}</label>
 								<div class="controls">
 									<span>
 										<springform:input path="organoDenominazioneInterni" id="organoDenominazioneInterni" cssClass="input-xlarge" readonly="true"/>
@@ -126,12 +126,19 @@
 							</div>
 						</div>
 						
-						<div id="inserimentoUtenteEsternoDiv">
+						<div id="inserimentoUtenteEsternoOrganoDiv">
 							<div class="control-group" >	
-								<label class="control-label" for="ente">${enteHeader}</label>
+								<label class="control-label" for=organoUteEsterno>${enteHeader}</label>
 								<div class="controls">
 									<span>
+										<%-- 
 										<springform:input path="organoDenominazione" id="organoDenominazioneEst" cssClass="input-xlarge"/>
+										--%>
+										<springform:select path="organoUteEsterno" id="organoUteEsterno" cssClass="input-xlarge">
+											<springform:option value=""></springform:option>
+											<springform:options items="${organiEsterni}" itemLabel="descrizione" itemValue="id" />
+										</springform:select>
+									
 									</span>
 								</div>
 							</div>

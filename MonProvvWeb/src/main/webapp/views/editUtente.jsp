@@ -203,7 +203,6 @@
 								<label class="control-label" for="sesso">${sessoHeader}</label>
 								<div class="controls">
 									<springform:select path="sesso" cssClass="input-xlarge" id="sesso">
-										<springform:option value=""></springform:option>
 										<springform:options items="${sessos}" itemLabel="descrizione" itemValue="codice" />
 									</springform:select>
 								</div>
@@ -228,10 +227,16 @@
 							</div>					
 							
 							<div class="control-group" >	
-								<label class="control-label" for="ente">${enteHeader}</label>
+								<label class="control-label" for="organoUteEsterno">${enteHeader}</label>
 								<div class="controls">
 									<span>
+										<%-- 
 										<springform:input path="organoDenominazione" id="organoDenominazioneEst" cssClass="input-xlarge"/>
+										--%>
+										<springform:select path="organoUteEsterno" id="organoUteEsterno" cssClass="input-xlarge">
+											<springform:options items="${organiEsterni}" itemLabel="descrizione" itemValue="id" />
+										</springform:select>
+										
 									</span>
 								</div>
 							</div>
@@ -240,7 +245,6 @@
 								<label class="control-label" for="ruolo">${ruoloHeader}</label>
 								<div class="controls">
 									<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
-										<springform:option value=""></springform:option>
 										<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
 									</springform:select>
 								</div>

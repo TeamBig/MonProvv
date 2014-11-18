@@ -272,68 +272,6 @@ $(document).ready(function() {
 //	$("#inserimentoUtenteInternoDiv").hide();
 //	$("#inserimentoUtenteEsternoDiv").hide();
 	
-    $("#dataNascita").datepicker({
-    	format: "dd/mm/yyyy",
-        todayBtn: "linked",
-        language: "it"
-    }).on('changeDate', function(ev){
-	        $("#dataNascitaV").val(ev.format('dd/mm/yyyy'));
-	        $( "#dataNascitaV" ).focus();
-        });
-    
-    $('#tipoNuovoUtente').on('change', function () {
-    	 update_form_inserimento_utente()
-    });
-    
-    if($('#tipoNuovoUtente').length > 0){
-    	 update_form_inserimento_utente()
-    }
-    
-    function update_form_inserimento_utente(){
-    	var val = $('#tipoNuovoUtente').val();
-    	var optionInterno = "I"; //Interna
-    	var optionEsterno = "E"; //Esterna
-    	if(val==optionInterno){
-    		//Inerimento Intenro
-    		$("#inserimentoUtenteInternoDiv").show();
-    		$("#inserimentoUtenteInternoDivOrg").show();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
-    		$('#sesso').prop('disabled', 'disabled');
-    		$("#email").attr('readonly', true);
-    	}else if(val==optionEsterno){
-    		//Inserimento Esterno
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#inserimentoUtenteEsternoDiv").show();
-    		$("#cognome").attr('readonly', false);
-    		$("#nome").attr('readonly', false);
-    		$("#codiceFiscale").attr('readonly', false);
-    		$("#dataNascitaV").attr('readonly', false);
-    		$("#dataNascita").show();
-    		$("#sesso").attr('readonly', false);
-    		$('#sesso').prop('disabled', false);
-    		$('#sesso').prop('disabled', false);
-    		$("#email").attr('readonly', false);
-    	}else{
-    		$("#inserimentoUtenteInternoDiv").hide();
-    		$("#inserimentoUtenteEsternoDiv").hide();
-    		$("#inserimentoUtenteInternoDivOrg").hide();
-    		$("#cognome").attr('readonly', true);
-    		$("#nome").attr('readonly', true);
-    		$("#codiceFiscale").attr('readonly', true);
-    		$("#dataNascitaV").attr('readonly', true);
-    		$("#dataNascita").hide();
-    		$("#sesso").attr('readonly', true);
-    		$('#sesso').prop('disabled', 'disabled');
-    		$("#email").attr('readonly', true);
-    	}
-    };
     
 //    $("#sesso").focus(function(){
 //	    if ( $("#sesso").is('[readonly]') ){
@@ -350,35 +288,35 @@ $(document).ready(function() {
 //    	$('#sesso').prop('disabled', 'disabled');
 //    });
     
-    $('#organoDenominazioneEst').attr('autocomplete','off');
-    $('#organoDenominazioneEst').typeahead({
-    	minLength: 2,
-        source: function(query, process) {
-            objects = [];
-            map = {};
-            $.get(
-            		$(location).attr('pathname')+'/autocomporganoesterno',
-            		{ query: query },
-            		function (data) {
-            			$.each(data, function(i, object) {
-                            map[object.descrizione] = object;
-                            objects.push(object.descrizione);
-                        });      
-                        process(objects);
-            		}); 
-        },
-        updater: function(item) {
-            $('#hiddenIdOrgano').val(map[item].id);
-            return item;
-        }
-    });   
-    
-    $('#organoDenominazioneEst').on('change', function () {
-    	var organoDenominazione = $.trim( $(this).val() );
-    	if( organoDenominazione=='' ){
-    		$('#hiddenIdOrgano').val('');
-    	}
-    });
+//    $('#organoDenominazioneEst').attr('autocomplete','off');
+//    $('#organoDenominazioneEst').typeahead({
+//    	minLength: 2,
+//        source: function(query, process) {
+//            objects = [];
+//            map = {};
+//            $.get(
+//            		$(location).attr('pathname')+'/autocomporganoesterno',
+//            		{ query: query },
+//            		function (data) {
+//            			$.each(data, function(i, object) {
+//                            map[object.descrizione] = object;
+//                            objects.push(object.descrizione);
+//                        });      
+//                        process(objects);
+//            		}); 
+//        },
+//        updater: function(item) {
+//            $('#hiddenIdOrgano').val(map[item].id);
+//            return item;
+//        }
+//    });   
+//    
+//    $('#organoDenominazioneEst').on('change', function () {
+//    	var organoDenominazione = $.trim( $(this).val() );
+//    	if( organoDenominazione=='' ){
+//    		$('#hiddenIdOrgano').val('');
+//    	}
+//    });
     
     //GESTIONE SOLLECITO
     $(document).on('click', '#anchorModalSollecito', function() { 
@@ -425,12 +363,110 @@ $(document).ready(function() {
     
     // FINE SALVA E INVIA NOTIFICHE PROVVEDIMENTO
     
-    $('#nominativoUtente').attr('autocomplete','off');
-    $('#nominativoUtente').typeahead({
+    
+    // INSERIMENTO UTENTE
+    gestineInserimentoUtnete();
+    
+    
+function gestineInserimentoUtnete(){
+	
+	$("#dataNascita").datepicker({
+    	format: "dd/mm/yyyy",
+        todayBtn: "linked",
+        language: "it"
+    }).on('changeDate', function(ev){
+	        $("#dataNascitaV").val(ev.format('dd/mm/yyyy'));
+	        $( "#dataNascitaV" ).focus();
+	});
+    
+    $('#tipoNuovoUtente').on('change', function () {
+    	cleanUtente();
+    	update_form_inserimento_utente();
+    });
+    
+    if($('#tipoNuovoUtente').length > 0){
+    	 update_form_inserimento_utente();
+    }
+    
+    function cleanUtente(){
+    	$('#nominativo').val('');
+    	$('#cognome').val('');
+    	$('#nome').val('');
+    	$('#dataNascitaV').val('');
+    	$('#sesso').val('');
+    	$('#sessoHidden').val('');
+    	$('#codiceFiscale').val('');
+    	$('#email').val('');
+    	$('#organoDenominazioneInterni').val('');
+    	$('#organoUteEsterno').val('');
+    	$('#ruoloUtente').val('');	
+    	$("#flgAmministratore").attr("checked", false);
+    	$('#hiddenIdOrgano').val('');
+    	$('#hiddenUtenteAstage').val('');
+    };
+    
+    function update_form_inserimento_utente(){
+    	var val = $('#tipoNuovoUtente').val();
+    	var optionInterno = "I"; //Interna
+    	var optionEsterno = "E"; //Esterna
+    	
+    	if(val==optionInterno){
+    		//Inerimento Intenro
+    		$("#inserimentoUtenteInternoNominativoDiv").show();
+    		$("#inserimentoUtenteInternoOrganoDiv").show();
+    		$("#inserimentoUtenteEsternoOrganoDiv").hide();
+    		$("#dataNascita").hide();
+    		$('#sesso').prop('disabled', 'disabled');
+    		setreadonly(true);
+    	}else if(val==optionEsterno){
+    		//Inserimento Esterno
+    		$("#inserimentoUtenteInternoNominativoDiv").hide();
+    		$("#inserimentoUtenteInternoOrganoDiv").hide();
+    		$("#inserimentoUtenteEsternoOrganoDiv").show();
+    		$("#dataNascita").show();
+    		$('#sesso').prop('disabled', false);
+    		setreadonly(false);
+    	}else{
+    		$("#inserimentoUtenteInternoNominativoDiv").hide();
+    		$("#inserimentoUtenteInternoOrganoDiv").show();
+    		$("#inserimentoUtenteEsternoOrganoDiv").hide();
+    		$("#dataNascita").hide();
+    		$('#sesso').prop('disabled', 'disabled');
+    		setreadonly(true);
+    	}
+    };
+    
+    function setreadonly(readonly){
+   		$("#cognome").attr('readonly', readonly);
+		$("#nome").attr('readonly', readonly);
+		$("#codiceFiscale").attr('readonly', readonly);
+		$("#dataNascitaV").attr('readonly', readonly);
+		$("#sesso").attr('readonly', readonly);
+		$("#email").attr('readonly', readonly);
+    }
+    
+	$('#nominativoUtente').attr('autocomplete','off');
+	
+	objects = [];
+    map = {};
+    
+	function updater(item) {
+    	$('#cognome').val(map[item].cognome);
+    	$('#nome').val(map[item].nome);
+    	$('#codiceFiscale').val(map[item].codiceFiscale);
+    	$('#email').val(map[item].email);
+    	$('#organoDenominazioneInterni').val(map[item].organo);
+    	$('#hiddenIdOrgano').val(map[item].idOrgano);
+    	$('#hiddenUtenteAstage').val(map[item].id);
+    	$('#sesso').val(map[item].sesso);
+    	$('#sessoHidden').val(map[item].sesso);
+    	$('#dataNascitaV').val(map[item].dataNascita);
+        return item;
+    }
+	
+	$('#nominativoUtente').typeahead({
     	minLength: 2,
         source: function(query, process) {
-            objects = [];
-            map = {};
             $.get(
             		'nuovo/autocomputenteinterno',
             		{ query: query },
@@ -445,7 +481,7 @@ $(document).ready(function() {
         matcher: function(item){
         	return true;
         },
-        updater: function(item) {
+        updater: function (item) {
         	$('#cognome').val(map[item].cognome);
         	$('#nome').val(map[item].nome);
         	$('#codiceFiscale').val(map[item].codiceFiscale);
@@ -458,28 +494,17 @@ $(document).ready(function() {
         	$('#dataNascitaV').val(map[item].dataNascita);
             return item;
         }
-    });   
-    
+    });  
+	
     $('#nominativoUtente').on('change', function () {
     	var nominativoUtente = $.trim( $(this).val() );
     	if( nominativoUtente=='' ){
-    		$('#cognome').val('');
-        	$('#nome').val('');
-        	$('#codiceFiscale').val('');
-        	$('#email').val('');
-        	$('#organoDenominazioneInterni').val('');
-        	$('#organoDenominazioneEst').val('');
-        	$('#hiddenIdOrgano').val('');
-        	$('#organo').val('');
-        	$('#hiddenUtenteAstage').val('');
-        	$('#sesso').val('');
-        	$('#sessoHidden').val('');
-        	$('#ruoloUtente').val('');
-        	$('#dataNascitaV').val('');
-        	$("#flgAmministratore").attr("checked", false);
+    		cleanUtente();
     	}
     });
-    
+	
+}
+   
     /****** FINE GESTIONE AMMINISTRAZIONE ******/
     
     /****** GESTIONE PROVVEDIMENTO ******/
