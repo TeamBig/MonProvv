@@ -2,7 +2,10 @@ $(document).ready(function() {
 	
     $('.multiselect').multiselect({
             nonSelectedText: 'Tutti',
-            numberDisplayed: 20
+            numberDisplayed: 2,
+            maxWidth: 250,
+            nSelectedText: 'selezionati'
+            
 	});
     
 	$('.custom-headers').multiSelect({
@@ -651,11 +654,18 @@ function gestineInserimentoUtnete(){
 		$.ajax({
 	    	type: 'GET',
 	    	url: 'deleteAssegnatario/'+id,
-			dataType : 'text',
+			dataType : 'json',
 			processData : false,
 			contentType : false,
 			success : function(response) {
 				trTableToDelete.remove();
+				if($('#idOrganiAggiunti').val()!=undefined){
+					var arrayOrganiAggiunti = $('#idOrganiAggiunti').val().split(',');
+					arrayOrganiAggiunti = $.grep(arrayOrganiAggiunti, function(value) {
+						return value != response.idOrgano;
+					});
+					$('#idOrganiAggiunti').val(arrayOrganiAggiunti);
+				}
 	    	},
 	    	error: function(){
 	    		alert("error");
@@ -1053,23 +1063,27 @@ function keypressedAssIns( event ) {
 
 function do_submitAssegnatarioIns() {
 	var formData = $('#assegnatario').serialize();
-	
-    $.ajax({
-    	type: 'GET',
-    	url: 'addAssegnatario',
-        data: formData,
-		dataType : 'json',
-		processData : false,
-		contentType : false,
-		success : function(response) {
-			eliminaNessunRisultatoAssegnatario("#assegnazione");
-			addRowAssegnazione(response,true);
-        	addUpdList('#idAssegnatariUpdList',response.id);
-    	},
-    	error: function(){
-    		alert("Inserimento non riuscito");
-    	}
-    });
+	var arrayOrganiAggiunti = $('#idOrganiAggiunti').val().split(',');
+	//verifico se l'organo è gia stato aggiunto
+	if($.inArray( $('#assegnatario').val(), arrayOrganiAggiunti )<0){
+	    $.ajax({
+	    	type: 'GET',
+	    	url: 'addAssegnatario',
+	        data: formData,
+			dataType : 'json',
+			processData : false,
+			contentType : false,
+			success : function(response) {
+				eliminaNessunRisultatoAssegnatario("#assegnazione");
+				addRowAssegnazione(response,true);
+	        	addUpdList('#idAssegnatariUpdList',response.id);
+	        	addUpdList('#idOrganiAggiunti',response.idOrgano);
+	    	},
+	    	error: function(){
+	    		alert("Inserimento non riuscito");
+	    	}
+	    });
+	}
 }
 function do_submitAllegatoIns() {
 	var progress = $('.progress');

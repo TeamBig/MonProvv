@@ -626,9 +626,9 @@ public class GestioneProvvedimentoController {
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/deleteAssegnatario/{idAllegato}"}, method = RequestMethod.GET)
 	@ResponseBody
-	public String deleteAssegnatario(@PathVariable("idAllegato") Integer id) {
-		gestioneProvvedimentoFacade.eliminaAssegnatario(id);
-		return null;
+	public AssegnazioneDto deleteAssegnatario(@PathVariable("idAllegato") Integer id) {
+		Assegnazione asseDeleted = gestioneProvvedimentoFacade.eliminaAssegnatario(id);
+		return new AssegnazioneDto(asseDeleted.getOrgano().getId());
 	}
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/inserisciAssegnatario"}, method = RequestMethod.GET)
@@ -636,9 +636,15 @@ public class GestioneProvvedimentoController {
 	public String inserisciAssegnatario(@RequestParam("provvedimento.id") String idProvvedimento,@RequestParam("organo") String idOrgano ) {
 		Integer idProvv = Integer.parseInt(idProvvedimento);
 		Integer idOrg = Integer.parseInt(idOrgano);
+		AssegnazioneDto assRic = new AssegnazioneDto();
+		assRic.setIdOrgano(idOrg);
+		assRic.setIdProvvedimento(idProvv);
 		
-		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
-		return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,false);
+		if(StringUtils.isEmpty(gestioneProvvedimentoFacade.recuperaAssegnazioneByProvvOrgano(assRic))){
+			Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idProvv,idOrg);
+			return ProvvedimentiUtil.addRowTableAssegnatariAjax(assegnazione,false);
+		}
+		return null;
 	}
 	
 	/* GESTIONE INSERIMENTO PROVVEDIMENTO */
@@ -673,6 +679,7 @@ public class GestioneProvvedimentoController {
 			}
 			model.addAttribute("currentStep", provvedimento.getCurrentStep());
 			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
+			gestioneTabelleAllAss(model,provvedimento);
 		}
 		if(action.equals(Constants.SALVA)){
 			pulisciInserimento(model,status);
@@ -768,7 +775,7 @@ public class GestioneProvvedimentoController {
 		Integer idOrg = Integer.parseInt(assegnatario);
 		
 		Assegnazione assegnazione = gestioneProvvedimentoFacade.inserisciAssegnazione(idOrg);
-		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione());
+		return new AssegnazioneDto(assegnazione.getId(),assegnazione.getOrgano().getDenominazione(),assegnazione.getOrgano().getId());
 	}
 	
 	private void pulisciInserimento(Model model,SessionStatus status)  {

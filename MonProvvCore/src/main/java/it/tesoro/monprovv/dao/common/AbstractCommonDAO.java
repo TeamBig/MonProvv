@@ -613,19 +613,29 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 			String queryString = "from "+ nomeOggetto +" as model ";
 			for (SearchPatternUtil patternElement:searchPatternObjects){
 				StringBuffer structuredPattern=new StringBuffer();
-				structuredPattern.append("'");
-				if (patternElement.isPreponi()){
-					structuredPattern.append("%");
+				if(!patternElement.isCustomPattern()){
+					structuredPattern.append("'");
+					if (patternElement.isPreponi()){
+						structuredPattern.append("%");
+					}
+					structuredPattern.append(patternElement.getPattern());
+					if (patternElement.isPostponi()){
+						structuredPattern.append("%");
+					}
+					structuredPattern.append("'");
 				}
-				structuredPattern.append(patternElement.getPattern());
-				if (patternElement.isPostponi()){
-					structuredPattern.append("%");
-				}
-				structuredPattern.append("'");
 				if (searchPatternObjects.indexOf(patternElement)==0){
-					queryString += " where upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+					if(patternElement.isCustomPattern()){
+						queryString += " where upper(model."+patternElement.getNomeCampo()+") "+patternElement.getPattern();	
+					} else {
+						queryString += " where upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+					}
 				}else{
-					queryString += " and upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+					if(patternElement.isCustomPattern()){
+						queryString += " and upper(model."+patternElement.getNomeCampo()+") "+structuredPattern.toString();
+					} else {
+						queryString += " and upper(model."+patternElement.getNomeCampo()+") like upper("+structuredPattern.toString()+" || '%')";
+					}
 				}
 			}
 			queryString = addOrderBy(queryString, orderByParams);

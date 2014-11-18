@@ -163,6 +163,19 @@ public class GestioneProvvedimentoFacade {
 			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
+		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti()) && provvDto.getAmmUfficiCoinvolti().length>0){
+			String paramIn = "IN (";
+			List<String> listaUfficiCoinvolti = Arrays.asList(provvDto.getAmmUfficiCoinvolti());
+			for(String param : listaUfficiCoinvolti){
+				paramIn +=param;
+				if(listaUfficiCoinvolti.indexOf(param)!=listaUfficiCoinvolti.size()-1){
+					paramIn +=",";
+				}
+			}
+			paramIn +=")";
+			SearchPatternUtil pattern = new SearchPatternUtil("organoCapofila",paramIn,false,false,true);
+			searchPatternObjects.add(pattern);
+		}
 		return searchPatternObjects;		
 	}
 	
@@ -337,9 +350,10 @@ public class GestioneProvvedimentoFacade {
 		allegatoDAO.delete(allegatoToDelete);
 	}
 	
-	public void eliminaAssegnatario(Integer id) {
+	public Assegnazione eliminaAssegnatario(Integer id) {
 		Assegnazione assegnazione = assegnazioneDAO.findById(id);
 		assegnazioneDAO.delete(assegnazione);
+		return assegnazione;
 	}
 
 	public Assegnazione inserisciAssegnazione(Integer idProvv, Integer idOrgano) {

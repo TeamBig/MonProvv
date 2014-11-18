@@ -147,6 +147,12 @@
 							<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
 						</div>
 					</div>
+ 					<div class="control-group">
+						<label class="control-label" for="noteInterne">Note interne</label>
+						<div class="controls">
+							<springform:textarea path="noteInterne" class="input-xlarge" id="noteInterne" cols="30" rows="4" />
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -239,6 +245,7 @@
 			<!-- STEP 3  -->
 			<c:if test="${currentStep eq 3}">
 			<springform:hidden path="idAssegnatariUpdList" id="idAssegnatariUpdList" />
+			<input type="hidden" id="idOrganiAggiunti" name="idOrganiAggiunti" />
 			<div class="row">
 				<div class="span12">
 						<display:table 	name="${listaAssegnazione}" 

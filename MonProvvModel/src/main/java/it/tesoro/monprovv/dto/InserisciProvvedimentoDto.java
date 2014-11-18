@@ -39,6 +39,7 @@ public class InserisciProvvedimentoDto {
 		provv.setTipoAtto(this.getTipoAtto());
 		provv.setTipoProvvedimento(this.getTipologia());
 		provv.setOrganoConcertante(this.getProponente());
+		provv.setNoteInterne(this.getNoteInterne());
 		// provv.setOggetto(this.getTitoloOggetto());
 		return provv;
 	}
@@ -68,6 +69,7 @@ public class InserisciProvvedimentoDto {
 	private List<Integer> idAllegatiUpdList;
 	private List<Provvedimento> listaProvvedimenti;
 	private String[] provvedimentiSelected;
+	private String noteInterne;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -267,6 +269,14 @@ public class InserisciProvvedimentoDto {
 
 	public void setIdAssegnatariUpdList(List<Integer> idAssegnatariUpdList) {
 		this.idAssegnatariUpdList = idAssegnatariUpdList;
+	}
+
+	public String getNoteInterne() {
+		return noteInterne;
+	}
+
+	public void setNoteInterne(String noteInterne) {
+		this.noteInterne = noteInterne;
 	}
 
 }
