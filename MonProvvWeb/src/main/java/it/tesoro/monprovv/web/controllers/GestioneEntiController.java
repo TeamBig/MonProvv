@@ -88,26 +88,47 @@ public class GestioneEntiController {
 		model.addAttribute("tableOrganiRisultatiSize", tableRisultatiSize);
 	}
 	
-	@RequestMapping(value = "/private/admin/enti", method = RequestMethod.POST)
-	public String initEntiPost(Model model, 
-			@RequestParam(required = false) String buttonNew, 
-			@RequestParam(required = false) String buttonFind, 
-			@RequestParam(required = false) String buttonClean, 
-			@ModelAttribute("ricercaEnte") Organo ricercaEnte,				
-			HttpSession session, SessionStatus status)  {
+//	@RequestMapping(value = "/private/admin/enti", method = RequestMethod.POST)
+//	public String initEntiPost(Model model, 
+//			@RequestParam(required = false) String buttonNew, 
+//			@RequestParam(required = false) String buttonFind, 
+//			@RequestParam(required = false) String buttonClean, 
+//			@ModelAttribute("ricercaEnte") Organo ricercaEnte,				
+//			HttpSession session, SessionStatus status)  {
+//		String retval = "entiHomeEnti";
+//		
+//		if("clean".equals( buttonClean )){
+//			status.setComplete();
+//	        session.removeAttribute("ricercaUtente");
+//			return "redirect:/private/admin/enti";
+//		}
+//		
+//		if("new".equals( buttonNew )){
+//			retval = "redirect:/private/admin/enti/nuovo";
+//		}else{
+//			initModel(model, ricercaEnte, null);
+//		}
+//		return retval;
+//	}
+	
+	@RequestMapping(value = "/private/admin/enti", method = RequestMethod.POST, params="buttonClean")
+	public String initEntiPostClean(HttpSession session, SessionStatus status)  {
+		String retval = "redirect:/private/admin/enti";
+		status.setComplete();
+	    session.removeAttribute("ricercaUtente");
+		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/enti", method = RequestMethod.POST, params="buttonNew")
+	public String initEntiPostNew()  {
+		String retval = "redirect:/private/admin/enti/nuovo";
+		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/enti", method = RequestMethod.POST, params="buttonFind")
+	public String initEntiPostFind(Model model, @ModelAttribute("ricercaEnte") Organo ricercaEnte)  {
 		String retval = "entiHomeEnti";
-		
-		if("clean".equals( buttonClean )){
-			status.setComplete();
-	        session.removeAttribute("ricercaUtente");
-			return "redirect:/private/admin/enti";
-		}
-		
-		if("new".equals( buttonNew )){
-			retval = "redirect:/private/admin/enti/nuovo";
-		}else{
-			initModel(model, ricercaEnte, null);
-		}
+		initModel(model, ricercaEnte, null);
 		return retval;
 	}
 	
@@ -137,41 +158,82 @@ public class GestioneEntiController {
 		return "entiNewEnte";
 	}
 	
-	@RequestMapping(value = "/private/admin/enti/nuovo", method = RequestMethod.POST)
-	public String nuovoPost(@ModelAttribute("organoToEdit") Organo organoToEdit,
+//	@RequestMapping(value = "/private/admin/enti/nuovo", method = RequestMethod.POST)
+//	public String nuovoPost(@ModelAttribute("organoToEdit") Organo organoToEdit,
+//			Model model, 
+//			@RequestParam(required = false) String buttonSave,
+//			@RequestParam(required = false) String buttonCancel,
+//			BindingResult errors, 
+//			HttpServletRequest request)  {
+//		String retval = "redirect:/private/admin/enti";
+//		if("save".equals(buttonSave)){
+//			enteValidator.validate(organoToEdit, errors);
+//			if( !errors.hasErrors() ){
+//				if( "I".equals( organoToEdit.getFlgInternoEsterno() ) ) {
+//					//Interno
+//					organoToEdit.setDenominazione( organoToEdit.getUnitaOrgAstage().getNome() );
+//					organoToEdit.setDenominazioneEstesa( organoToEdit.getUnitaOrgAstage().getNomeEsteso() );
+//				}else{
+//					//Esterno
+//					organoToEdit.setUnitaOrgAstage(null);
+//				}
+//				organoToEdit.setFlagAttivo("S");
+//				gestioneEntiFacade.inserisciOrgano(organoToEdit);
+//				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Organo effettuato con successo", false);
+//				model.addAttribute("organoToEdit", organoToEdit );
+//				model.addAttribute("tableUtentiListOrganiRisultatiSize", 0);
+//				retval = "entiDettaglioEnte"; 							
+//			}else{
+//				for (FieldError f : errors.getFieldErrors()) {
+//					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+//				}
+//				loadCombo4NewEnte(model, request);
+//				model.addAttribute("organoToEdit", organoToEdit);
+//				retval = "entiNewEnte";
+//			}
+//		}else if("cancel".equals(buttonCancel)){
+//		}
+//		return retval;
+//	}
+	
+	@RequestMapping(value = "/private/admin/enti/nuovo", method = RequestMethod.POST, params="buttonSave")
+	public String nuovoPostSave(@ModelAttribute("organoToEdit") Organo organoToEdit,
 			Model model, 
-			@RequestParam(required = false) String buttonSave,
-			@RequestParam(required = false) String buttonCancel,
 			BindingResult errors, 
 			HttpServletRequest request)  {
 		String retval = "redirect:/private/admin/enti";
-		if("save".equals(buttonSave)){
-			enteValidator.validate(organoToEdit, errors);
-			if( !errors.hasErrors() ){
-				if( "I".equals( organoToEdit.getFlgInternoEsterno() ) ) {
-					//Interno
-					organoToEdit.setDenominazione( organoToEdit.getUnitaOrgAstage().getNome() );
-					organoToEdit.setDenominazioneEstesa( organoToEdit.getUnitaOrgAstage().getNomeEsteso() );
-				}else{
-					//Esterno
-					organoToEdit.setUnitaOrgAstage(null);
-				}
-				organoToEdit.setFlagAttivo("S");
-				gestioneEntiFacade.inserisciOrgano(organoToEdit);
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Organo effettuato con successo", false);
-				model.addAttribute("organoToEdit", organoToEdit );
-				model.addAttribute("tableUtentiListOrganiRisultatiSize", 0);
-				retval = "entiDettaglioEnte"; 							
+
+		enteValidator.validate(organoToEdit, errors);
+		if( !errors.hasErrors() ){
+			if( "I".equals( organoToEdit.getFlgInternoEsterno() ) ) {
+				//Interno
+				organoToEdit.setDenominazione( organoToEdit.getUnitaOrgAstage().getNome() );
+				organoToEdit.setDenominazioneEstesa( organoToEdit.getUnitaOrgAstage().getNomeEsteso() );
 			}else{
-				for (FieldError f : errors.getFieldErrors()) {
-					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
-				}
-				loadCombo4NewEnte(model, request);
-				model.addAttribute("organoToEdit", organoToEdit);
-				retval = "entiNewEnte";
+				//Esterno
+				organoToEdit.setUnitaOrgAstage(null);
 			}
-		}else if("cancel".equals(buttonCancel)){
+			organoToEdit.setFlagAttivo("S");
+			gestioneEntiFacade.inserisciOrgano(organoToEdit);
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Inserimento Organo effettuato con successo", false);
+			model.addAttribute("organoToEdit", organoToEdit );
+			model.addAttribute("tableUtentiListOrganiRisultatiSize", 0);
+			retval = "entiDettaglioEnte"; 							
+		}else{
+			for (FieldError f : errors.getFieldErrors()) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+			}
+			loadCombo4NewEnte(model, request);
+			model.addAttribute("organoToEdit", organoToEdit);
+			retval = "entiNewEnte";
 		}
+
+		return retval;
+	}
+	
+	@RequestMapping(value = "/private/admin/enti/nuovo", method = RequestMethod.POST, params="buttonCancel")
+	public String nuovoPostCancel()  {
+		String retval = "redirect:/private/admin/enti";
 		return retval;
 	}
 
@@ -205,19 +267,31 @@ public class GestioneEntiController {
 		return retVal;
 	}
 	
-	@RequestMapping(value= {"/private/admin/enti/dettaglio"}, method = RequestMethod.POST)
-	public String dettaglioPost(@ModelAttribute("organoToEdit") Organo organo, 
-							Model model,
-							@RequestParam(required = false) String buttonBack, 
-							@RequestParam(required = false) String buttonModify)  {
-		
-		String retVal = "entiDettaglioEnte";
-		if("back".equals(buttonBack)){
-			retVal = "redirect:/private/admin/enti";
-		}else if("modify".equals(buttonModify)){
-			retVal = "redirect:/private/admin/enti/modifica?id="+organo.getId();
-		}
-		
+//	@RequestMapping(value= {"/private/admin/enti/dettaglio"}, method = RequestMethod.POST)
+//	public String dettaglioPost(@ModelAttribute("organoToEdit") Organo organo, 
+//							Model model,
+//							@RequestParam(required = false) String buttonBack, 
+//							@RequestParam(required = false) String buttonModify)  {
+//		
+//		String retVal = "entiDettaglioEnte";
+//		if("back".equals(buttonBack)){
+//			retVal = "redirect:/private/admin/enti";
+//		}else if("modify".equals(buttonModify)){
+//			retVal = "redirect:/private/admin/enti/modifica?id="+organo.getId();
+//		}
+//		
+//		return retVal;
+//	}
+	
+	@RequestMapping(value= {"/private/admin/enti/dettaglio"}, method = RequestMethod.POST, params="buttonBack")
+	public String dettaglioPostBack()  {
+		String retVal = "redirect:/private/admin/enti";
+		return retVal;
+	}
+	
+	@RequestMapping(value= {"/private/admin/enti/dettaglio"}, method = RequestMethod.POST, params="buttonModify")
+	public String dettaglioPostModify(@ModelAttribute("organoToEdit") Organo organo)  {
+		String retVal = "redirect:/private/admin/enti/modifica?id="+organo.getId();
 		return retVal;
 	}
 	
@@ -236,51 +310,84 @@ public class GestioneEntiController {
 		return retVal;
 	}
 	
-	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.POST)
-	public String modificaPost(
-							@ModelAttribute("organoToEdit") Organo organoToEdit, 
-							Model model,
-							@RequestParam(required = false) String buttonSave, 
-							@RequestParam(required = false) String buttonCancel,
-							BindingResult errors, HttpServletRequest request)  {
-		
+//	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.POST)
+//	public String modificaPost(
+//							@ModelAttribute("organoToEdit") Organo organoToEdit, 
+//							Model model,
+//							@RequestParam(required = false) String buttonSave, 
+//							@RequestParam(required = false) String buttonCancel,
+//							BindingResult errors, HttpServletRequest request)  {
+//		
+//		String retVal = "entiDettaglioEnte"; 
+//		
+//		if("save".equals( buttonSave )){
+//			
+//			enteValidator.validate(organoToEdit, errors);
+//			
+//			if( !errors.hasErrors() ){
+//				
+//				Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
+//				
+//				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);
+//				
+//				model.addAttribute("organoToEdit", organo );
+//				model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());
+//						
+//			}else{
+//				for (FieldError f : errors.getFieldErrors()) {
+//					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+//				}
+//				loadComboConcertante(model);
+//				model.addAttribute("organoToEdit", organoToEdit);
+//				retVal = "entiEditEnte";
+//			}
+//		
+//		}
+//		
+//		
+//		if("cancel".equals( buttonCancel )){
+//			Integer id = organoToEdit.getId();
+//			organoToEdit = new Organo();
+//			if( id != null ){
+//				organoToEdit = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));
+//			}
+//			model.addAttribute("organoToEdit", organoToEdit );
+//			model.addAttribute("tableUtentiListOrganiRisultatiSize", organoToEdit.getUtenteList().size());
+//		}
+//		
+//		return retVal;
+//	}
+	
+	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.POST, params="buttonSave")
+	public String modificaPostSave(@ModelAttribute("organoToEdit") Organo organoToEdit, Model model, BindingResult errors)  {
 		String retVal = "entiDettaglioEnte"; 
-		
-		if("save".equals( buttonSave )){
-			
-			enteValidator.validate(organoToEdit, errors);
-			
-			if( !errors.hasErrors() ){
-				
-				Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
-				
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);
-				
-				model.addAttribute("organoToEdit", organo );
-				model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());
-						
-			}else{
-				for (FieldError f : errors.getFieldErrors()) {
-					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
-				}
-				loadComboConcertante(model);
-				model.addAttribute("organoToEdit", organoToEdit);
-				retVal = "entiEditEnte";
+		enteValidator.validate(organoToEdit, errors);
+		if( !errors.hasErrors() ){
+			Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);
+			model.addAttribute("organoToEdit", organo );
+			model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());	
+		}else{
+			for (FieldError f : errors.getFieldErrors()) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
-		
+			loadComboConcertante(model);
+			model.addAttribute("organoToEdit", organoToEdit);
+			retVal = "entiEditEnte";
 		}
-		
-		
-		if("cancel".equals( buttonCancel )){
-			Integer id = organoToEdit.getId();
-			organoToEdit = new Organo();
-			if( id != null ){
-				organoToEdit = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));
-			}
-			model.addAttribute("organoToEdit", organoToEdit );
-			model.addAttribute("tableUtentiListOrganiRisultatiSize", organoToEdit.getUtenteList().size());
+		return retVal;
+	}
+	
+	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.POST, params="buttonCancel")
+	public String modificaPostCancel(@ModelAttribute("organoToEdit") Organo organoToEdit, Model model, BindingResult errors)  {
+		String retVal = "entiDettaglioEnte"; 
+		Integer id = organoToEdit.getId();
+		organoToEdit = new Organo();
+		if( id != null ){
+			organoToEdit = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));
 		}
-		
+		model.addAttribute("organoToEdit", organoToEdit );
+		model.addAttribute("tableUtentiListOrganiRisultatiSize", organoToEdit.getUtenteList().size());
 		return retVal;
 	}
 

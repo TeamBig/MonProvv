@@ -166,6 +166,9 @@ $(document).ready(function() {
 
     /****** GESTIONE AMMINISTRAZIONE ******/
 
+    confirmCancellazioneAdmin();
+    
+function confirmCancellazioneAdmin(){
     $(".deleteEnte").click(function(){
     	var retval;
     	var td = $(this);
@@ -189,71 +192,62 @@ $(document).ready(function() {
     	});
     	return false;
     });
+};
     
-    $('#tipoNuovoOrgano').on('change', function () {
-    	var val = $(this).val();
-    	var option1 = "E"; //Esterna
-    	var option2 = "I"; //Interna
-    	if( val==option1){
-    		$("#denominazioneNuovoOrganoDiv").show();
-    		$("#denominazioneEstesaNuovoOrganoDiv").show();
-    		$("#listaOrganiInterniNuovoOrganoDiv").hide();
-    		//Interna
+	gestioneOrganoAdmin();
 
-    	}else if( val==option2){
+function gestioneOrganoAdmin() {
+
+	function gestioneVisibilita(val){
+		var option1 = "E"; //Esterna
+		var option2 = "I"; //Interna
+		if( val==option1){
+			//Interna
+			$("#denominazioneNuovoOrganoDiv").show();
+			$("#denominazioneEstesaNuovoOrganoDiv").show();
+			$("#listaOrganiInterniNuovoOrganoDiv").hide();
+		}else if( val==option2){
+			//Esterna
 			$("#denominazioneNuovoOrganoDiv").hide();
 			$("#denominazioneEstesaNuovoOrganoDiv").hide();
 			$("#listaOrganiInterniNuovoOrganoDiv").show();
-    		//Esterna
-    		
-    	}else{
-    		$("#denominazioneNuovoOrganoDiv").hide();
+		}else{
+			//NO SELECT
+			$("#denominazioneNuovoOrganoDiv").hide();
 			$("#denominazioneEstesaNuovoOrganoDiv").hide();
 			$("#listaOrganiInterniNuovoOrganoDiv").hide();
-    		//NO SELECT
-    		
-    	}
-
+		}
+	}
+	
+	$('#tipoNuovoOrgano').on('change', function () {
+    	var val = $(this).val();
+    	gestioneVisibilita(val);
     });  
     
     if($('#tipoNuovoOrgano').length > 0){
     	var val = $('#tipoNuovoOrgano').val();
-    	var option1 = "E"; //Esterna
-    	var option2 = "I"; //Interna
-    	if( val==option1){
-    		$("#denominazioneNuovoOrganoDiv").show();
-    		$("#denominazioneEstesaNuovoOrganoDiv").show();
-    		$("#listaOrganiInterniNuovoOrganoDiv").hide();
-    		//Interna
-
-    	}else if( val==option2){
-			$("#denominazioneNuovoOrganoDiv").hide();
-			$("#denominazioneEstesaNuovoOrganoDiv").hide();
-			$("#listaOrganiInterniNuovoOrganoDiv").show();
-    		//Esterna
-    		
-    	}else{
-    		$("#denominazioneNuovoOrganoDiv").hide();
-			$("#denominazioneEstesaNuovoOrganoDiv").hide();
-			$("#listaOrganiInterniNuovoOrganoDiv").hide();
-    		//NO SELECT
-    		
-    	}
-
+    	gestioneVisibilita(val);
     }
     
     $('#autocompleteUo').attr('autocomplete','off');
+    
+    var primoElemento = null;
+    
     $('#autocompleteUo').typeahead({
     	minLength: 2,
         source: function(query, process) {
             objects = [];
             map = {};
+            primoElemento = null;
             $.get(
             		'nuovo/autocompletamento',
             		{ query: query },
             		function (data) {
             			$.each(data, function(i, object) {
-                            map[object.nome] = object;
+                            if( primoElemento == null){
+                            	 primoElemento = object;
+                            }
+            				map[object.nome] = object;
                             objects.push(object.nome);
                         });      
                         process(objects);
@@ -261,8 +255,16 @@ $(document).ready(function() {
         },
         updater: function(item) {
             $('#hiddenIdUo').val(map[item].id);
+            primoElemento = map[item];
             return item;
         }
+    }).on('blur', function(){
+    	if(primoElemento==null){
+    		$('#hiddenIdUo').val(null);
+    	}else{
+    		$('#hiddenIdUo').val(primoElemento.id);
+    		$('#autocompleteUo').val(primoElemento.nome);
+    	}    	
     });   
     
     $('#autocompleteUo').on('change', function () {
@@ -271,6 +273,7 @@ $(document).ready(function() {
     		$('#hiddenIdUo').val('');
     	}
     });
+};
 
 //	$("#inserimentoUtenteInternoDiv").hide();
 //	$("#inserimentoUtenteEsternoDiv").hide();
@@ -450,8 +453,8 @@ function gestineInserimentoUtnete(){
     
 	$('#nominativoUtente').attr('autocomplete','off');
 	
-	objects = [];
-    map = {};
+	var objects = [];
+    var map = {};
     
 	function updater(item) {
     	$('#cognome').val(map[item].cognome);
@@ -470,7 +473,9 @@ function gestineInserimentoUtnete(){
 	$('#nominativoUtente').typeahead({
     	minLength: 2,
         source: function(query, process) {
-            $.get(
+        	objects = [];
+            map = {};
+        	$.get(
             		'nuovo/autocomputenteinterno',
             		{ query: query },
             		function (data) {
