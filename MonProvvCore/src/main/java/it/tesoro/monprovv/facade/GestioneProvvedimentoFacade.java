@@ -163,7 +163,7 @@ public class GestioneProvvedimentoFacade {
 			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),false,false);
 			searchPatternObjects.add(pattern);
 		}
-		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti())){
+		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti()) && provvDto.getAmmUfficiCoinvolti().length>0){
 			String paramIn = "IN (";
 			List<String> listaUfficiCoinvolti = Arrays.asList(provvDto.getAmmUfficiCoinvolti());
 			for(String param : listaUfficiCoinvolti){
