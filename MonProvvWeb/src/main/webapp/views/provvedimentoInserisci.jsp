@@ -38,7 +38,7 @@
 				<h3 class="text-left underline"><span><c:out value="${titolo}" /></span></h3>
 			</div>
 		</div>
-		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" name="provvedimentoInserisci" commandName="provvedimentoInserisci" cssClass="form-horizontal" method="POST" enctype="multipart/form-data">
+		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" name="provvedimentoInserisci" cssClass="form-horizontal" method="POST" enctype="multipart/form-data">
 		<springform:hidden path="collNormattiva" id="collNormattiva" cssClass="input-xxlarge" />
 		<springform:hidden path="currentStep" name="currentStep"/>
 		<springform:hidden path="stepSuccessivo" name="stepSuccessivo"/>
@@ -317,3 +317,11 @@
 			</div>
 		</springform:form>
 	</div>
+	<script type="text/javascript">
+		$("#avantiStep, #salva, #indietro, #annulla").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			
+			$("#provvedimentoInserisci").attr("enctype", "").append("<input type='hidden' name='action' value='" + $(this).val() + "'>").submit();
+		});
+	</script>

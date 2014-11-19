@@ -770,10 +770,14 @@ public class GestioneProvvedimentoFacade {
 		notaDAO.save(nota);
 	}
 
-	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(){
+	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(RicercaProvvedimentoDto provvDto){
+		
 		List<String> order = new ArrayList<String>();
-		order.add("id asc");
-		List<Provvedimento> provvedimenti = provvedimentoDAO.findAll(order);
+		order.add("id");
+		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+		searchPatternObjects = getCriteriRicercaList(provvDto);
+		List<Provvedimento> provvedimenti = provvedimentoDAO.findByPattern(searchPatternObjects, 0, order);
+		
 		
 		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();
 		for (Provvedimento provvedimento : provvedimenti) {

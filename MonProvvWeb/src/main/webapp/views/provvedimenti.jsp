@@ -21,7 +21,7 @@
 <spring:message var="allegatiHeader" code="listaProvvedimenti.header.allegati" />
 
 <div class="container collapse" id="campiRicerca">
-	<springform:form modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" action="#" method="POST">
+	<springform:form modelAttribute="ricercaProvvedimenti" action="#" method="POST" >
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline">
@@ -248,10 +248,9 @@
 				</div>
 		</div>
 		<div class="span12">
-			<spring:url value="/private/provvedimenti/esportaxls" var="url_exportxls" />
-			<a href="${url_exportxls}" class="btn pull-right" id="esportaXLS" style="margin-right: 10px;">
+			<button type="button" class="btn pull-right" id="esportaXLS" style="margin-right: 10px;">
 				Esporta in excel &nbsp;<i class="icon-ms-excel"></i>
-			</a>
+			</button>
 
 			<ul class="unstyled">
 				<li><span class="icon-stack"> <i

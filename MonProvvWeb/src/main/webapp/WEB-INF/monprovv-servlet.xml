@@ -110,7 +110,5 @@
 		<security:expression-handler ref="methodExpressionHandler" />
 	</security:global-method-security>	
 	
-	<!-- GESTIONE ALLEGATI WEB -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
    		 	
 </beans>

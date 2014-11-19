@@ -697,6 +697,7 @@ public class GestioneProvvedimentoController {
 			model.addAttribute("currentStep", provvedimento.getCurrentStep());
 			model.addAttribute("stepSuccessivo", provvedimento.getStepSuccessivo());
 			gestioneTabelleAllAss(model,provvedimento);
+			return "provvedimentoInserisci";
 		}
 		if(action.equals(Constants.SALVA)){
 			pulisciInserimento(model,status);
@@ -818,10 +819,10 @@ public class GestioneProvvedimentoController {
 	}
 	
 	// ESPORTAZIONE IN EXCEL
-	@RequestMapping(value = "/private/provvedimenti/esportaxls", method = RequestMethod.GET)
-	public String esportaProvvedimentiXls(RedirectAttributes redirectAttributes, HttpServletResponse response){
+	@RequestMapping(value = "/private/provvedimenti/ricerca", method = RequestMethod.POST, params = "exportXls")
+	public String esportaProvvedimentiXls(@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto cercaProvvedimento, HttpServletResponse response){
 	
-		List<ProvvedimentoStampaDto> provvedimenti = gestioneProvvedimentoFacade.recuperaProvvedimentiPerExport();
+		List<ProvvedimentoStampaDto> provvedimenti = gestioneProvvedimentoFacade.recuperaProvvedimentiPerExport(cercaProvvedimento);
 		
 		ByteArrayOutputStream baos = null;
 		try {

@@ -17,15 +17,18 @@
 	<security:authentication property="principal.ruoloCorrente.descrizione" var="ruolo" />
 	<security:authentication property="principal.utente.organo.denominazione" var="organo" />
 
-	<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elencononlette">
-		<i class="icon-bell-alt"> 
-		<span class="icon-stack" id="notifBadge">
-			<i class="icon-circle icon-stack-base" ></i>
-          	<i class="icon-light" id="countNotifiche"></i>
-		</span> 
-		</i></a>
-		 - <a href="<c:url value="/j_spring_security_logout" />" title="logout - ${nome} ${cognome}">ESCI <i class="icon-signout"></i></a>
-	 </span>
+	<form action="${base}/j_spring_security_logout" method="post" style="margin-bottom: 0px;">
+		<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elencononlette">
+			<i class="icon-bell-alt"> 
+			<span class="icon-stack" id="notifBadge">
+				<i class="icon-circle icon-stack-base" ></i>
+	          	<i class="icon-light" id="countNotifiche"></i>
+			</span> 
+			</i></a>
+			 - <a href="#" id="logout" title="logout - ${nome} ${cognome}">ESCI <i class="icon-signout"></i></a>
+		 </span>
+		 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	 </form>
 </security:authorize>
 <security:authorize access="!isAuthenticated()">
 	<span class="utente"><a href="${base}/private">ACCEDI <i class="icon-signin"></i></a></span>

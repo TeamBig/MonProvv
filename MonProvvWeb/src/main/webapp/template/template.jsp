@@ -21,6 +21,10 @@
 	<meta http-equiv="content-language" content="it" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
+	<!-- Protezione CSRF -->
+	<meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+	
 	<spring:url value="/" var="base" />
 
 	<link href="${base}css/normalize.css" rel="stylesheet" />

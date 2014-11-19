@@ -69,9 +69,6 @@ $(document).ready(function() {
   	  btnRicAvUp.show();
     });
     
-    var risultatiRicerca = $("#risultatiRicerca");
-    //risultatiRicerca.hide();
-    
     $("#ricerca").click(function() {
          risultatiRicerca.show();
     });
@@ -134,36 +131,16 @@ $(document).ready(function() {
     });
     
   
-    
-    
-    ///////////////////////////////////////////////////////////////////7
-    
-//    $('#risultatiRicerca .table > tbody > tr > td').each(function() {
-//    	var customerId =  $(this).parent().siblings(":first").html();  
-//    	var currentUrl = $(location).attr('pathname'); 
-//    	var url = currentUrl+"/dettaglio?id="+customerId;
-//        var cellText = $(this).html();
-//        
-//		  $('<a>',{
-//			    text:cellText,
-//			    href:url,			    
-//			}).appendTo($(this));
-//    });
-//    
     $('#risultatiRicerca .table > tbody > tr').click(function() {
     	var customerId = $(this).find("td:first").html();  
     	
     	if( $.isNumeric( customerId ) ){
-    	//if( customerId != 'Nessun elemento trovato.'){
         	var currentUrl = $(location).attr('pathname'); 
         	window.location.href = currentUrl+"/dettaglio?id="+customerId;
     	}
     });
     
-//    $("#denominazioneNuovoOrganoDiv").hide();
-//    $("#denominazioneEstesaNuovoOrganoDiv").hide();
-//    $("#listaOrganiInterniNuovoOrganoDiv").hide();
-
+    
     /****** GESTIONE AMMINISTRAZIONE ******/
 
     confirmCancellazioneAdmin();
@@ -552,6 +529,11 @@ function gestineInserimentoUtnete(){
 		 $('#allegatoForm').ajaxForm({
 			 dataType: 'text',   
 			 contentType: "multipart/form-data",
+			 beforeSend: function(xhr) {
+				 var token = $("meta[name='_csrf']").attr("content");
+				 var header = $("meta[name='_csrf_header']").attr("content");
+				 xhr.setRequestHeader(header, token);
+			 },
 			 beforeSubmit: function() {
 		        	$("#allegatoProvvedimento").attr('disabled','disabled');
 		        	$("#descrizioneAllegato").attr('disabled','disabled');
@@ -742,6 +724,12 @@ function gestineInserimentoUtnete(){
 //		  selectionFooter: "<div class='custom-header'>Selection footer</div>"
 	});
     /****** FINE GESTIONE PROVVEDIMENTO ******/
+	
+	// EXPORT XLS
+	gestioneExportXls();
+	
+	// LOGOUT
+	gestioneLogout();
 
     // NOTIFICHE
 	gestioneNotifiche();
@@ -781,6 +769,29 @@ function eliminaNessunRisultatoAssegnatario(id){
 	if($(id+" tr.empty")) {
 		$(id+" tr.empty").fadeOut( 500 );
 	}
+}
+
+//LOGOUT
+function gestioneExportXls() {
+    $('#esportaXLS').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		var input = $("<input type='hidden' name='exportXls' />");
+		
+		$("form").append(input).submit();
+		input.remove();
+	});
+}
+
+// LOGOUT
+function gestioneLogout() {
+    $('#logout').click(function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		var oForm = $(this).closest("form");
+		oForm.submit();
+	});
 }
 
 // GESTIONE INVIO MAIL FINE LAVORI
@@ -1115,7 +1126,12 @@ function do_submitAllegatoIns() {
 		 dataType: 'text',   
 		 contentType: "multipart/form-data",
 		 url: "modifica/inserisciAllegato",
-		 beforeSubmit: function() {
+		 beforeSend: function(xhr) {
+			 var token = $("meta[name='_csrf']").attr("content");
+			 var header = $("meta[name='_csrf_header']").attr("content");
+			 xhr.setRequestHeader(header, token);
+		 },
+		 beforeSubmit: function(xhr) {
 	        	$("#allegatoProvvedimento").attr('disabled','disabled');
 	        	$("#descrizioneAllegato").attr('disabled','disabled');
 	        	$("button#allegatoInserisci").attr('disabled','disabled');
@@ -1124,38 +1140,37 @@ function do_submitAllegatoIns() {
 	        	var percentVal = '0%';
 		        bar.width(percentVal)
 		        percent.html(percentVal);
-	        },
-		    uploadProgress: function(event, position, total, percentComplete) {
-		        var percentVal = percentComplete + '%';
-		       
-		        bar.removeAttr('style');
-		        bar.attr('style', 'width: ' + percentVal + ';');
-		        
-		        if( percentComplete == '100' )
-		        	percentVal = 'Elaborazione in corso...';
-		        percent.html(percentVal);
-		    },
-		    success: function(data) {
+	    },
+	    uploadProgress: function(event, position, total, percentComplete) {
+	        var percentVal = percentComplete + '%';
+	       
+	        bar.removeAttr('style');
+	        bar.attr('style', 'width: ' + percentVal + ';');
+	        
+	        if( percentComplete == '100' )
+	        	percentVal = 'Elaborazione in corso...';
+	        percent.html(percentVal);
+	    },
+	    success: function(data) {
 
-		        progress.hide();
-		        bar.removeAttr('style');
-		        bar.attr('style', 'width: 0%;');
-	        },
-	        complete: function(data) {
-				
-	        	responseText = $.parseJSON(data.responseText);
-	        	
-	        	addRowAllegato(responseText);
-				addUpdList('#idAllegatiUpdList',responseText.id);
-				
-				$("button#allegatoInserisci").removeAttr('disabled');
-	        	$("#allegatoProvvedimento").removeAttr('disabled');
-	        	$("#descrizioneAllegato").removeAttr('disabled');
-		        
-				resetFormAllegati();
-				
-	        }
-	    });
+	        progress.hide();
+	        bar.removeAttr('style');
+	        bar.attr('style', 'width: 0%;');
+        },
+        complete: function(data) {
+			
+        	responseText = $.parseJSON(data.responseText);
+        	
+        	addRowAllegato(responseText);
+			addUpdList('#idAllegatiUpdList',responseText.id);
+			
+			$("button#allegatoInserisci").removeAttr('disabled');
+        	$("#allegatoProvvedimento").removeAttr('disabled');
+        	$("#descrizioneAllegato").removeAttr('disabled');
+	        
+			resetFormAllegati();
+	    }
+	 });
 }
 
 function gestioneNormattiva(){
