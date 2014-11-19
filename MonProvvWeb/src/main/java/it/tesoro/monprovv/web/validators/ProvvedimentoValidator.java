@@ -62,10 +62,7 @@ public class ProvvedimentoValidator implements Validator {
 				errors.rejectValue("titoloOggetto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
-			if (StringUtils.isEmpty(provv.getDtTermineScadenza())) {
-				errors.rejectValue("dataAtto", "generic.error.required",
-						"Attenzione: \u00E8 necessario selezionare termine scadenza");
-			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDtTermineScadenza()))){
+			if (StringUtils.isNotEmpty(provv.getDtTermineScadenza()) && "01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDtTermineScadenza()))){
 				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
 				provv.setDtTermineScadenza(null);
 			}
@@ -111,10 +108,7 @@ public class ProvvedimentoValidator implements Validator {
 				errors.rejectValue("titoloOggetto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
-			if (StringUtils.isEmpty(provv.getTermineScadenza())) {
-				errors.rejectValue("dataAtto", "generic.error.required",
-						"Attenzione: \u00E8 necessario selezionare termine scadenza");
-			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getTermineScadenza()))){
+			if (StringUtils.isEmpty(provv.getTermineScadenza()) && "01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getTermineScadenza()))){
 				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
 				provv.setTermineScadenza(null);
 			}

@@ -271,6 +271,14 @@ public class GestioneUtenteFacade {
 	public Object recuperaUtenteAstageById(int id) {
 		return utenteAstageDAO.findById(id);
 	}
+	
+	public Utente recuperaUtenteByCodiceFiscale(String codiceFiscale) {
+		return utenteDAO.findByCodiceFiscale(codiceFiscale);
+	}
+	
+	public UtenteAstage recuperaUtenteAstageByCodiceFiscale(String codiceFiscale) {
+		return utenteAstageDAO.findByCodiceFiscale(codiceFiscale);
+	}
 
 	public Utente aggiornaUtente(Utente utente) {
 		

@@ -68,7 +68,7 @@
 						</div>
 						
 						<div class="control-group" >
-							<label class="control-label" for="dataNascita">${datanascitaHeader}</label>
+							<label class="control-label">${datanascitaHeader}</label>
 							<div class="controls">
 								<span>
 									<fmt:formatDate value="${utenteToEdit.dataNascita}" pattern="dd/MM/yyyy" />
@@ -78,7 +78,7 @@
 						</div>
 						
 						<div class="control-group" >
-							<label class="control-label" for="sesso">${sessoHeader}</label>
+							<label class="control-label">${sessoHeader}</label>
 							<div class="controls">
 								<span>
 									<c:set var = "MASCHIO" value="M" />
@@ -126,7 +126,7 @@
 						</div>
 						
 						<div class="control-group">
-							<label class="control-label" for="ruolo">${ruoloHeader}</label>
+							<label class="control-label">${ruoloHeader}</label>
 							<div class="controls">
 								<span>
 									<c:if test="${not empty utenteToEdit.ruolo}">
@@ -137,7 +137,7 @@
 						</div>
 						
 						<div class="control-group">
-							<label class="control-label" for="ruolo">${amministratoreHeader}</label>
+							<label class="control-label">${amministratoreHeader}</label>
 							<div class="controls">
 								<span>
 									<c:if test="${utenteToEdit.amministratore}">
