@@ -852,6 +852,9 @@ function gestioneInvioMailFineLavori() {
 // GESTIONE NOTIFICHE
 function gestioneNotifiche() {
 	
+	var firstTime = true;
+	var position = 0;
+	
 	$(".aprinotifica").click(function(e) {
     	e.preventDefault();
 		e.stopPropagation();
@@ -890,8 +893,15 @@ function gestioneNotifiche() {
 				    	trigger: 'manual',
 				    	content : content 
 			    }).on('shown', function () {
-			    	  $("#popoverNotifiche + .popover").css('left', parseInt($('#popoverNotifiche + .popover').css('left')) - 190 + 'px');
-			    	  $("#popoverNotifiche + .popover > .arrow").css('left', '87.5%');
+
+			    	if (firstTime) {
+			    		position = parseInt($('#popoverNotifiche + .popover').css('left')) - 190;
+			    		firstTime = false;
+			    	}
+			    		
+				    $("#popoverNotifiche + .popover").css('left', position + 'px');
+				    $("#popoverNotifiche + .popover > .arrow").css('left', '87.5%');
+				    	
 			    }).parent().on('click', '.aprinotifica', function(e) {
 			    	e.preventDefault();
 					e.stopPropagation();

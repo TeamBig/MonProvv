@@ -677,7 +677,25 @@ public class GestioneProvvedimentoFacade {
 		Integer numSoll = (assegnazione.getNumSolleciti()==null)?0:assegnazione.getNumSolleciti();
 		assegnazione.setNumSolleciti( numSoll + 1);
 		assegnazioneDAO.merge(assegnazione);
+		
+		// invio notifica informativa
+		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " sollecita la presa in carico o la lavorazione del provvedimento " 
+				+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa(); 
+
+	
+		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {
+			Notifica notifica = new Notifica();
+			notifica.setFlagLettura(Notifica.NON_LETTA);
+			notifica.setTipoNotifica(Notifica.INFORMATIVA);
+			notifica.setOggetto("Sollecito");
+			notifica.setUtenteMittente(user.getUtente());
+			notifica.setTesto(testo);
+			notifica.setUtenteDestinatario(utenteDestinatario);
+			notificaDAO.save(notifica);
+		}					
 	}
+	
 
 	public void invioMail(Mail mail) {
 		mailService.eseguiInvioMail(mail);

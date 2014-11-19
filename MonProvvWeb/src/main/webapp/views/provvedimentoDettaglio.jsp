@@ -385,7 +385,7 @@
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal"
-				aria-hidden="true">×</button>
+				aria-hidden="true">&#215;</button>
 			<h3 id="myModalLabel">Invia sollecito</h3>
 		</div>
 		<div class="modal-body">
