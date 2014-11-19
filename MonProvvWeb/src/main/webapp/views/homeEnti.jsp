@@ -67,9 +67,7 @@
 					<button type="submit" class="btn btn-primary pull-right" id="nuovo" name="buttonNew" value="new">
 						Nuovo Organo &nbsp;<i class="icon-plus"></i>
 					</button>
-					<button type="button" class="btn pull-right" id="toggleRicerca"
-						data-toggle="collapse" data-target="#campiRicerca"
-						style="margin-right: 10px;">
+					<button type="button" class="btn pull-right" id="toggleRicerca" data-toggle="collapse" data-target="#campiRicerca" style="margin-right: 10px;">
 						Toggle ricerca &nbsp;<i class="icon-search"></i>
 					</button>
 				</h3>
@@ -90,8 +88,7 @@
 										requestURI="" sort="external" partialList="true" 
 										size="${tableOrganiRisultatiSize}" 
 										id="organo" 
-										class="table table-hover table-bordered"
-										summary="Elenco Organi">
+										class="table table-hover table-bordered">
 
 							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
@@ -106,7 +103,7 @@
 							</display:column>
 							<display:column title="${enteTipoHeader}" property="tipo" headerScope="col" class="center" headerClass="center" />
 							<display:column title="${eliminaHeader}" headerScope="col" class="center deleteEnte" headerClass="center">
-								<a href="${deletePath}?id=${organo.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Organo"></i></a>
+								<a href="${deletePath}?id=${organo.id}" id="delete4risultatiRicerca_${organo.id}" ><i class="icon-trash icon-large gray" title="Elimina Organo"></i></a>
 							</display:column>
 						
 						</display:table>

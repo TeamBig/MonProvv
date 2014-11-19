@@ -10,6 +10,7 @@ import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.Utente;
+import it.tesoro.monprovv.model.UtenteAstage;
 import it.tesoro.monprovv.utils.StringUtils;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 import it.tesoro.monprovv.web.validators.UtenteValidator;
@@ -256,6 +257,18 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 				utenteToEdit.setOrgano(null);
 			}
 		}		
+		
+		if(StringUtils.isNotEmpty(utenteToEdit.getCodiceFiscale())){
+			Utente u = gestioneUtenteFacade.recuperaUtenteByCodiceFiscale(utenteToEdit.getCodiceFiscale());
+			if( u!=null ){
+				errors.rejectValue("codiceFiscale","generic.error.required" ,"E' gi\u00E0 presente un' utente per il Codice Fiscale inserito");
+			}else if( "E".equals( utenteToEdit.getFlagIntEst() ) ){
+				UtenteAstage ua = gestioneUtenteFacade.recuperaUtenteAstageByCodiceFiscale(utenteToEdit.getCodiceFiscale());
+				if( ua!=null ){
+					errors.rejectValue("codiceFiscale","generic.error.required" ,"Il Codice Fiscale inserito corrisponde ad un utente interno");
+				}
+			}
+		}
 		
 		utenteValidator.validate(utenteToEdit, errors);
 		if( !errors.hasErrors() ){					

@@ -14,13 +14,15 @@ import org.springframework.util.CollectionUtils;
 public class UtenteDAO extends AbstractCommonDAO<Utente> {
 
 	public Utente findByCodiceFiscale(String codiceFiscale) {
+		String hql = "from Utente u where u.codiceFiscale = :codiceFiscale and flagAttivo = 'S' ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("codiceFiscale", codiceFiscale);
 		
-		List<Utente> risultati = findByProperty("codiceFiscale", codiceFiscale);
+		List<Utente> risultati =  findByHqlQuery(hql, params);
 		if (!CollectionUtils.isEmpty(risultati)) {
 			return risultati.get(0);
 		}
 		return null;
-		
 	}
 	
 	

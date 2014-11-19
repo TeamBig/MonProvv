@@ -87,7 +87,7 @@
 	<div class="row">
 		<div class="span12">
 			<c:url value="/private/admin/utenti" var="formPath" />
-			<springform:form action="${formPath}" method="POST" modelAttribute="ricercaUtente" cssClass="bo clfix" id="formCampiRicerca">
+			<springform:form action="${formPath}" method="POST" cssClass="form-horizontal">
 				<h3 class="text-left underline">
 					<span>Elenco Utenti</span>
 					<button type="submit" class="btn btn-primary pull-right" id="nuovo" name="buttonNew" value="new">
@@ -116,8 +116,7 @@
 										partialList="true" 
 										size="${tableRisultatiSize}" 
 										id="utente" 
-										class="table table-hover table-bordered"
-										summary="Elenco Utenti">
+										class="table table-hover table-bordered">
 							
 							<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 							<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
@@ -127,7 +126,7 @@
 							<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
 							<display:column title="${enteHeader}" property="organo.denominazione" headerScope="col" />
 							<display:column title="${eliminaHeader}" headerScope="col" class="center deleteUtente" headerClass="center">
-								<a href="${deletePath}?id=${utente.id}" id="delete4risultatiRicerca" ><i class="icon-trash icon-large gray" title="Elimina Utente"></i></a>
+								<a href="${deletePath}?id=${utente.id}" id="delete4risultatiRicerca_${utente.id}" ><i class="icon-trash icon-large gray" title="Elimina Utente"></i></a>
 							</display:column>
 							
 						</display:table>

@@ -69,7 +69,7 @@
 							</div>
 							
 							<div class="control-group" >
-								<label class="control-label" for="dataNascita">${datanascitaHeader}</label>
+								<label class="control-label">${datanascitaHeader}</label>
 								<div class="controls">
 									<span>	
 										<fmt:formatDate value="${utenteToEdit.dataNascita}" pattern="dd/MM/yyyy" />
@@ -127,7 +127,7 @@
 							</div>
 							
 							<div class="control-group">
-								<label class="control-label" for="ruolo">${ruoloHeader}</label>
+								<label class="control-label" for="ruoloUtente">${ruoloHeader}</label>
 								<div class="controls">
 									<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
 										<springform:option value=""></springform:option>
@@ -137,9 +137,9 @@
 							</div>
 							
 							<div class="control-group">
-								<label class="control-label" for="ruolo">${amministratoreHeader}</label>
+								<label class="control-label" for="flgAmministratore">${amministratoreHeader}</label>
 								<div class="controls">
-									<springform:checkbox path="amministratore" value="S"/>
+									<springform:checkbox path="amministratore" id="flgAmministratore" value="S"/>
 								</div>
 							</div>
 							
@@ -191,7 +191,7 @@
 							</div>
 							
 							<div class="control-group" >
-								<label class="control-label" for="dataNascita">${datanascitaHeader}</label>
+								<label class="control-label" for="dataNascitaV">${datanascitaHeader}</label>
 								<div class="controls">
 									<span>
 										<springform:input path="dataNascita" id="dataNascitaV" cssClass="input-xlarge dataValid"/>&nbsp;<i class="icon-calendar icon-large" id="dataNascita"></i>
@@ -242,7 +242,7 @@
 							</div>
 							
 							<div class="control-group">
-								<label class="control-label" for="ruolo">${ruoloHeader}</label>
+								<label class="control-label" for="ruoloUtente">${ruoloHeader}</label>
 								<div class="controls">
 									<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
 										<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
@@ -251,7 +251,7 @@
 							</div>
 							
 							<div class="control-group">
-								<label class="control-label" for="ruolo">${amministratoreHeader}</label>
+								<label class="control-label" for="flgAmministratore">${amministratoreHeader}</label>
 								<div class="controls">
 									<springform:checkbox path="amministratore" id="flgAmministratore" value="S"/>
 								</div>
