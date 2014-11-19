@@ -237,6 +237,12 @@ body {
 	line-height: 20px;
 }
 
+#popoverNotifiche + .popover > .popover-content {
+	max-height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
 .inserimento table a {
 	color: #545454; 
 }
@@ -413,6 +419,9 @@ NOTIFICHE
 	cursor: pointer;
 }
 
+#risultatiRicercaProvvedimenti .table > tbody > tr {
+	cursor: pointer;
+}
 .icon-calendar{
 	cursor: pointer;
 }

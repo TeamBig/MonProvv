@@ -641,12 +641,19 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 			queryString = addOrderBy(queryString, orderByParams);
 			Query query= currentSession().createQuery(queryString);
 			
+			if (page <= 0) {
+				return query.list();
+			}
+			
 			return query.setFirstResult(maxResult * (page-1)).setMaxResults(maxResult).list();
 		} catch (Exception re) {
 			log.error("find all  instances by pattern failed", re);
 			throw new DatabaseException(re);
 		}
 	}
+	
+	
+	
 	
 	public  int countByPattern(List<SearchPatternUtil> searchPatternObjects) {
 		log.debug("count all instances by pattern");

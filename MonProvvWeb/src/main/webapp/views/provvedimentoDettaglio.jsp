@@ -323,7 +323,6 @@
 
 								<security:authorize access="hasPermission(#provvedimentoDettaglio, 'richiesta')">
 									<button type="submit" class="btn btn-primary" id="richiediAssegnazione">Richiedi assegnazione&nbsp;<i class="icon-check"></i></button>
-									<button type="button" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>
 									<input type="hidden" id="richiediAssegnazioneId" value="${provvedimentoDettaglio.id}" /> 
 								</security:authorize>
 							
