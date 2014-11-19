@@ -888,7 +888,10 @@ function gestioneNotifiche() {
 				    	placement : 'bottom', 
 				    	html: 'true',
 				    	trigger: 'manual',
-				    	content : content // '<div id="popOverBox"><span>Provvedimento non di competenza<span></div>'
+				    	content : content 
+			    }).on('shown', function () {
+			    	  $("#popoverNotifiche + .popover").css('left', parseInt($('#popoverNotifiche + .popover').css('left')) - 190 + 'px');
+			    	  $("#popoverNotifiche + .popover > .arrow").css('left', '87.5%');
 			    }).parent().on('click', '.aprinotifica', function(e) {
 			    	e.preventDefault();
 					e.stopPropagation();
