@@ -6,7 +6,7 @@ jndiDataSourceName=jdbc/MonProvvDS
 ##### abilitazione OAM per ambiente di collaudo
 
 oam.abilitato=S
-oam.logoutUrl=/private/logout.jsp?end_url=/public/home
+oam.logoutUrl=/private/logout.jsp
 
 # gestione log eccezioni
 log.printStackTrace=false
