@@ -34,17 +34,17 @@
 					<div class="span10 offset2 dettaglio">
 
 						<div class="control-group">
-							<label class="control-label" for="flgInternoEsterno">${enteTipoHeader}</label>
+							<label class="control-label" for="tipoNuovoOrgano">${enteTipoHeader}</label>
 							<div class="controls">
 								<springform:select path="flgInternoEsterno" cssClass="input-xlarge" id="tipoNuovoOrgano">
-									<springform:option value=""></springform:option>
+									<springform:option value=""> </springform:option>
 									<springform:options items="${tipos}" itemLabel="descrizione" itemValue="codice" />
 								</springform:select>
 							</div>
 						</div>
 						
 						<div class="control-group" id="listaOrganiInterniNuovoOrganoDiv">
-							<label class="control-label" for="unitaOrgAstage">${enteInternoHeader}</label>
+							<label class="control-label" for="autocompleteUo">${enteInternoHeader}</label>
 							<div class="controls">
 								<springform:input path="denominazioneAstage" id="autocompleteUo" cssClass="input-xlarge"/>
 								
@@ -63,7 +63,7 @@
 							<label class="control-label" for="denominazione">${denominazioneHeader}</label>
 							<div class="controls">
 								<span>
-									<springform:input path="denominazione" cssClass="input-xlarge"/>
+									<springform:input path="denominazione" id="denominazione" cssClass="input-xlarge"/>
 								</span>
 							</div>
 						</div>	
@@ -78,9 +78,9 @@
 						</div>
 				
 						<div class="control-group">
-							<label class="control-label" for="flagConcertante">${enteConcertanteHeader}</label>
+							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader}</label>
 							<div class="controls">
-								<span class="form-inline"><springform:radiobuttons path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+								<span class="form-inline"><springform:radiobuttons path="flagConcertante" id="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
 							</div>
 						</div>
 						

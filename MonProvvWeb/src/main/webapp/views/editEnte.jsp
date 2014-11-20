@@ -68,9 +68,9 @@
 						</div>
 				
 						<div class="control-group">
-							<label class="control-label" for="flagConcertante">${enteConcertanteHeader}</label>
+							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader}</label>
 							<div class="controls">
-								<span class="form-inline"><springform:radiobuttons path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+								<span class="form-inline"><springform:radiobuttons id="flagConcertante" path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
 							</div>
 						</div>
 						

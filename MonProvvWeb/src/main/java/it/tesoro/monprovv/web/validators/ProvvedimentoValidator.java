@@ -108,7 +108,12 @@ public class ProvvedimentoValidator implements Validator {
 				errors.rejectValue("titoloOggetto", "generic.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
-			if (StringUtils.isEmpty(provv.getTermineScadenza()) && "01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getTermineScadenza()))){
+			
+			if( StringUtils.isEmpty(provv.getTermineScadenza()) ){
+				provv.setSenzaTermine(true);
+			}
+			
+			if (StringUtils.isNotEmpty(provv.getTermineScadenza()) && "01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getTermineScadenza()))){
 				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
 				provv.setTermineScadenza(null);
 			}

@@ -38,7 +38,7 @@
 <spring:message var="cronologiaModificheHeader" code="listaAssegnatari.header.cronologiaModifiche" />
 <spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
 <spring:message var="sollecitoHeader" code="listaAssegnatari.header.sollecito" />
-
+<spring:message var="senzaTermineHeader" code="label.senza.termine" />
 
 
 	<div class="container inserimento">
@@ -142,6 +142,13 @@
 							<div class="controls">
 								<%-- <span>${provvedimentoDettaglio.termineScadenza}</span> --%>
 								<springform:input type="text" id="dp1v" path="termineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="senzaTermine">${senzaTermineHeader}</label>
+							<div class="controls">	
+								<springform:checkbox path="senzaTermine" id="senzaTermine" value="S"/>	
 							</div>
 						</div>
 						<div class="control-group">

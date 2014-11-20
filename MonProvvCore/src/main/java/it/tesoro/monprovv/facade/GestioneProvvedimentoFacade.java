@@ -242,6 +242,8 @@ public class GestioneProvvedimentoFacade {
 	
 	public Provvedimento ricercaProvvedimentoById(Integer id){
 		Provvedimento prov = provvedimentoDAO.findById(id);
+		if(StringUtils.isEmpty(prov.getTermineScadenza()))
+			prov.setSenzaTermine(true);
 		return prov;
 	}
 
@@ -472,6 +474,8 @@ public class GestioneProvvedimentoFacade {
 		
 		// invio notifica al capofila se tutte le assegnazioni sono in fine lavorazione
 		Provvedimento provvedimento = provvedimentoDAO.findById(assegnazione.getProvvedimento().getId());
+		if(StringUtils.isEmpty(provvedimento.getTermineScadenza()))
+			provvedimento.setSenzaTermine(true);
 		
 		int countInLavorazione = 0;
 		for (Assegnazione ass : provvedimento.getAssegnazioneList()) {

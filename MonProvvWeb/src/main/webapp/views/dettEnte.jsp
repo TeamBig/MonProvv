@@ -83,8 +83,7 @@
 											pagesize="${risultatiPerPagina}" 
 											requestURI="" sort="external" partialList="true"
 											size="${tableUtentiListOrganiRisultatiSize}" id="utente" 
-											class="table table-hover table-bordered"
-											summary="Elenco Utenti">
+											class="table table-hover table-bordered">
 	
 								<display:column title="${idHeader}" property="id" headerScope="col" />
 								<display:column title="${nomeHeader}" property="nome" headerScope="col" />

@@ -55,6 +55,7 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.setParere(prov.getParere());
 		this.setStato(prov.getStato());
 		this.setTermineScadenza(prov.getTermineScadenza());
+		this.setSenzaTermine(prov.isSenzaTermine());
 		this.setTipoAtto(prov.getTipoAtto());
 		this.setTipoProvvDaAdottare(prov.getTipoProvvDaAdottare());
 		this.setTipoProvvedimento(prov.getTipoProvvedimento());
@@ -158,7 +159,13 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@OneToMany(targetEntity = Assegnazione.class, fetch = FetchType.EAGER, mappedBy = "provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
+	
+//	@Column(name = "FLG_SENZA_TERMINE", length = 1)
+//	private String flgSenzaTermine;
 
+	@Transient
+	private boolean senzaTermine;
+	
 	@Transient
 	private List<Integer> idAllegatiDelList;
 
@@ -272,6 +279,9 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setTermineScadenza(Date termineScadenza) {
 		this.termineScadenza = termineScadenza;
+		if( StringUtils.isEmpty(termineScadenza) ){
+			this.setSenzaTermine(true);
+		}
 	}
 
 	public Stato getStato() {
@@ -476,7 +486,21 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.provvedimentiParentSel = provvedimentiParentSel;
 	}
 	
+//	public String getFlgSenzaTermine() {
+//		return flgSenzaTermine;
+//	}
+//
+//	public void setFlgSenzaTermine(String flgSenzaTermine) {
+//		this.flgSenzaTermine = flgSenzaTermine;
+//	}
 	
+	public boolean isSenzaTermine() {
+		return this.senzaTermine; //(this.termineScadenza==null);// ("S".equals(this.flgSenzaTermine));
+	}
+
+	public void setSenzaTermine(boolean senzaTermine) {
+		this.senzaTermine = senzaTermine;//this.flgSenzaTermine = (senzaTermine)?"S":"N";
+	}
 
 	public String getAppoDataFormat() {
 		return appoDataFormat;
