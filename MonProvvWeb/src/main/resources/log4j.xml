@@ -35,23 +35,27 @@
 	<logger name="it.tesoro.monprovv" additivity="false">
 		<level value="DEBUG"/>
 		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="ROLL" />
 	</logger>
 
 	<!-- logger di spring-->
 	<category name="org.springframework" additivity="false">
 		<level value="DEBUG"/>
 		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="ROLL" />
 	</category>
 	
 	<!-- logger di Hibernate-->
 	<logger name="org.hibernate" additivity="false">
 		<level value="ERROR"/>
 		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="ROLL" />
 	</logger>
 	
 	<root>
 		<level value="DEBUG"/>
 		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ROLL" />
 	</root>
 
 </log4j:configuration>

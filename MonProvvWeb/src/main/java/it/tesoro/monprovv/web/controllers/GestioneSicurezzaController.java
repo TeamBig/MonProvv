@@ -73,7 +73,7 @@ public class GestioneSicurezzaController {
 	private void init() {
 	}
 	
-	@RequestMapping(value="/public/logout")
+	@RequestMapping(value={"/public/logout", "/private/logout.jsp"})
 	public String logout(Model model)  {
 		alertUtils.message(model, AlertUtils.ALERT_TYPE_INFO, "Logout effettuato", false);
 		return "logout";
@@ -167,61 +167,4 @@ public class GestioneSicurezzaController {
 		return "redirect:/private";
 	}
 	
-	
-//	@RequestMapping(value="/private/sceltaRuolo", method = RequestMethod.GET)
-//	public String sceltaRuolo(Model model)  {
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
-//		PdaUser user = (PdaUser)auth.getPrincipal();
-//		
-//		if (user.getRuoloAttivo() != null) {
-//			return "redirect:/private/home";
-//		}
-//		
-//		
-//		model.addAttribute("ruoliDaScegliere", user.getRuoliDaScegliere());
-//		model.addAttribute("ruoloScelto", new Ruolo());
-//		
-//		return "sceltaRuolo";
-//	}
-//	
-//	@RequestMapping(value="/private/sceltaRuolo", method = RequestMethod.POST)
-//	public String assegnaRuolo(@ModelAttribute("ruoloScelto") Ruolo ruoloScelto, BindingResult result, Model model)  {
-//		
-//		if (ruoloScelto.getCodice() == null) {
-//			result.rejectValue("codice", "sceltaRuolo.erroreScelta");
-//			
-//			Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
-//			PdaUser user = (PdaUser)auth.getPrincipal();
-//			
-//			model.addAttribute("ruoliDaScegliere", user.getRuoliDaScegliere());
-//			return "sceltaRuolo";
-//		}
-//		
-//		Authentication auth = SecurityContextHolder.getContext().getAuthentication(); 
-//		PdaAuthentication pdaAuth = new PdaAuthentication(auth);
-//		pdaAuth.addAuthority(new SimpleGrantedAuthority(ruoloScelto.getCodice()));
-//		
-//		SecurityContextHolder.getContext().setAuthentication(pdaAuth);
-//	     
-//		PdaUser user = (PdaUser)auth.getPrincipal();
-//		int numNuoveNotifiche=0;
-//		List <UtenteRuoloNotifica> notificheUtente=gestioneSicurezzaFacade.findNotificheUtente(ruoloScelto.getCodice(),user.getIdUtente());
-//			for (UtenteRuoloNotifica notifica:notificheUtente){
-//				user.getNotificheUtente().add(notifica);
-//				if (!notifica.isNotificaLetta()){
-//					numNuoveNotifiche++;
-//				}
-//		}
-//		user.setNumNuoveNotifiche(numNuoveNotifiche);
-//
-//		String targetURL = user.getTargetURL();
-//		user.setTargetURL(null);
-//
-//		// assegno il ruolo attivo
-//		user.setRuoloAttivo(gestioneSicurezzaFacade.recuperaRuolo(ruoloScelto.getCodice()));
-//		
-//	    return "redirect:" + targetURL; 
-//	}
-	
-
 }
