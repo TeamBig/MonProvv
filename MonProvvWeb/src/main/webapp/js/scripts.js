@@ -610,9 +610,17 @@ function gestineInserimentoUtnete(){
 			$("#dp1").hide();
 			$("#dp1v").val('');
 			$("#dp1v").attr('readonly', true);
+			$("#plus30").hide();
+			$("#plus60").hide();
+			$("#plus90").hide();
+			$("#plus120").hide();
 		}else{
 			// unchecked
 			$("#dp1").show();
+			$("#plus30").show();
+			$("#plus60").show();
+			$("#plus90").show();
+			$("#plus120").show();
 			$("#dp1v").attr('readonly', false);
 		}
 	}
@@ -767,6 +775,8 @@ function gestineInserimentoUtnete(){
 	//POPOVER RIFIUTO
 	gestionePopoverRifiuto();
 	
+	//GESTIONE MODIFICA TERMINE SCADENZA +30 +60 +90 +120 GIORNI
+	gestioneTermineScadenza();
 	
 	//GESTIONE NORMATTIVA
 	gestioneNormattiva();
@@ -1294,4 +1304,47 @@ function gestioneNormattiva(){
 			  $("#linkNormattiva").attr('target',"_blank");
 		  }
 	  }
+}
+
+function gestioneTermineScadenza(){
+	
+	function dateToString(dData){
+	    /*
+		var ndateArr = dData.toString().split(' ');
+	    var Months = 'Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec';
+	    var dd = ndateArr[2].toString();
+	    var mm = ((parseInt(Months.indexOf(ndateArr[1])/4)+1)).toString();;
+	    var yyyy = ndateArr[3];
+	    */
+		var dd = (dData.getDate()).toString();
+	    var mm = (dData.getMonth() + 1).toString();
+	    var yyyy = (dData.getFullYear()).toString();
+	    var sData = ((dd[1])?dd:'0'+dd) +'/'+ ((mm[1])?mm:'0'+mm) +'/'+ yyyy;
+	    return sData;
+	}
+	function addDayToTermineScadenza(addDay){
+		var oldDate = $("#dp1v").val();
+		var newDate;
+		if(oldDate==""){
+		    oldDate = dateToString(new Date());
+		}
+		var numbers = oldDate.match(/\d+/g); 
+		newDate = new Date(numbers[2], numbers[1]-1, parseInt(numbers[0])+addDay);
+		var sNewDate = oldDate = dateToString(newDate);
+		$('#dp1v').val(sNewDate);
+	}
+	
+	$("#plus30").on('click', function(){
+		addDayToTermineScadenza(30);
+	});
+	$("#plus60").on('click', function(){
+		addDayToTermineScadenza(60);
+	});
+	$("#plus90").on('click', function(){
+		addDayToTermineScadenza(90);
+	});
+	$("#plus120").on('click', function(){
+		addDayToTermineScadenza(120);
+	});
+	
 }
