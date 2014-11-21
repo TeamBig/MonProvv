@@ -69,8 +69,10 @@ $(document).ready(function() {
   	  btnRicAvUp.show();
     });
     
+    
     $("#ricerca").click(function() {
-         risultatiRicerca.show();
+         $("risultatiRicercaProvvedimenti").show();
+         $("risultatiRicerca").show();
     });
     
     
@@ -526,9 +528,18 @@ function gestineInserimentoUtnete(){
 		var bar = $('.bar');
 		var percent = $('.percent');
 		
+		var url =  "modifica/inserisciAllegato";
+		if (detectIE()) {
+			
+			var token = $("meta[name='_csrf']").attr("content");
+			
+			url += "?_csrf=" + token;
+		}
+		
 		 $('#allegatoForm').ajaxForm({
 			 dataType: 'text',   
 			 contentType: "multipart/form-data",
+			 url: url,
 			 beforeSend: function(xhr) {
 				 var token = $("meta[name='_csrf']").attr("content");
 				 var header = $("meta[name='_csrf_header']").attr("content");
@@ -1155,14 +1166,20 @@ function do_submitAllegatoIns() {
 	var progress = $('.progress');
 	var bar = $('.bar');
 	var percent = $('.percent');
+
+	var url =  "modifica/inserisciAllegato";
+	if (detectIE()) {
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		
+		url += "?_csrf=" + token;
+	}
 	
-	 var req = $('#provvedimentoInserisci').ajaxSubmit({
+	
+	var req = $('#provvedimentoInserisci').ajaxSubmit({
 		 dataType: 'text',   
 		 contentType: "multipart/form-data",
-		 url: "modifica/inserisciAllegato",
-//		 headers: {
-//			 'X-CSRF-TOKEN':  'PROVA'
-//		 },
+		 url: url,
 		 beforeSend: function(xhr, settings) {
 				var token = $("meta[name='_csrf']").attr("content");
 				var header = $("meta[name='_csrf_header']").attr("content");
@@ -1303,4 +1320,25 @@ function gestioneNormattiva(){
 			  $("#linkNormattiva").attr('target',"_blank");
 		  }
 	  }
+}
+
+
+function detectIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    var trident = ua.indexOf('Trident/');
+
+    if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+    }
+
+    if (trident > 0) {
+        // IE 11 (or newer) => return version number
+        var rv = ua.indexOf('rv:');
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+
+    // other browser
+    return false;
 }
