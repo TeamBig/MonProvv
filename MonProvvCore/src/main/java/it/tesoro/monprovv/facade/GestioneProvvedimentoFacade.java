@@ -28,6 +28,8 @@ import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
+import it.tesoro.monprovv.model.Ruolo;
+import it.tesoro.monprovv.model.RuoloUtente;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.Storico;
 import it.tesoro.monprovv.model.TipoAtto;
@@ -534,6 +536,30 @@ public class GestioneProvvedimentoFacade {
 			notificaInfo.setUtenteMittente(user.getUtente());
 			notificaInfo.setUtenteDestinatario(utenteDestinatario);
 			notificaDAO.save(notificaInfo);
+		}
+		
+		// fix anomalia 41
+		// se il richiedente ha profilo LETTORE, mando una notifica informativa agli amministratori con la richiesta di cambio profilo per l'utente
+		boolean isLettore = false;
+		for (RuoloUtente ruoloUtente : notifica.getUtenteMittente().getRuoloUtenteList()) {
+			if (Ruolo.ROLE_LETTORE.equals(ruoloUtente.getRuolo().getCodice())) {
+				isLettore = true;
+			}
+		}
+		if (isLettore) {
+			String testoAmm = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + ", capofila dell'organo " + user.getUtente().getOrgano().getDenominazione() 
+					+ ", richiede il cambio di ruolo da Lettore a Inseritore per l'utente " + notifica.getUtenteMittente().getNome() + " " + notifica.getUtenteMittente().getCognome() 
+					+ " appartenente all'organo " + notifica.getUtenteMittente().getOrgano().getDenominazione();
+			for (Utente utenteAmm : utenteDAO.findAttiviByRuolo(Ruolo.ROLE_ADMIN)) {
+				Notifica notificaAmm = new Notifica();
+				notificaAmm.setFlagLettura(Notifica.NON_LETTA);
+				notificaAmm.setTipoNotifica(Notifica.INFORMATIVA);
+				notificaAmm.setOggetto("Richiesta modifica ruolo");
+				notificaAmm.setTesto(testoAmm);
+				notificaAmm.setUtenteMittente(user.getUtente());
+				notificaAmm.setUtenteDestinatario(utenteAmm);
+				notificaDAO.save(notificaAmm);				
+			}
 		}
 
 		
