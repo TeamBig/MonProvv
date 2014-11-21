@@ -27,9 +27,17 @@ public class UtenteDAO extends AbstractCommonDAO<Utente> {
 	
 	
 	public List<Utente> findAttiviByOrgano(Integer idOrgano) {
-		String hql = "from Utente u where u.organo.id = :idOrgano and flagAttivo = 'S' ";
+		String hql = "from Utente u where u.organo.id = :idOrgano and u.flagAttivo = 'S' ";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("idOrgano", idOrgano);
+		
+		return findByHqlQuery(hql, params);
+	}
+	
+	public List<Utente> findAttiviByRuolo(String codiceRuolo) {
+		String hql = "select u from Utente u inner join u.ruoloUtenteList ru where ru.ruolo.codice = :codiceRuolo and u.flagAttivo = 'S' ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("codiceRuolo", codiceRuolo);
 		
 		return findByHqlQuery(hql, params);
 	}

@@ -69,8 +69,10 @@ $(document).ready(function() {
   	  btnRicAvUp.show();
     });
     
+    
     $("#ricerca").click(function() {
-         risultatiRicerca.show();
+         $("risultatiRicercaProvvedimenti").show();
+         $("risultatiRicerca").show();
     });
     
     
@@ -526,9 +528,18 @@ function gestineInserimentoUtnete(){
 		var bar = $('.bar');
 		var percent = $('.percent');
 		
+		var url =  "modifica/inserisciAllegato";
+		if (detectIE()) {
+			
+			var token = $("meta[name='_csrf']").attr("content");
+			
+			url += "?_csrf=" + token;
+		}
+		
 		 $('#allegatoForm').ajaxForm({
 			 dataType: 'text',   
 			 contentType: "multipart/form-data",
+			 url: url,
 			 beforeSend: function(xhr) {
 				 var token = $("meta[name='_csrf']").attr("content");
 				 var header = $("meta[name='_csrf_header']").attr("content");
@@ -624,7 +635,6 @@ function gestineInserimentoUtnete(){
 			$("#dp1v").attr('readonly', false);
 		}
 	}
-	
 	
 	$("#statoDiAttuazioneDettaglio").change(function(){
 		$('<input />').attr('type', 'hidden')
@@ -1165,26 +1175,39 @@ function do_submitAllegatoIns() {
 	var progress = $('.progress');
 	var bar = $('.bar');
 	var percent = $('.percent');
+
+	var url =  "modifica/inserisciAllegato";
+	if (detectIE()) {
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		
+		url += "?_csrf=" + token;
+	}
 	
-	 var req = $('#provvedimentoInserisci').ajaxSubmit({
+	
+	var req = $('#provvedimentoInserisci').ajaxSubmit({
 		 dataType: 'text',   
 		 contentType: "multipart/form-data",
-		 url: "modifica/inserisciAllegato",
-		 beforeSend: function(xhr) {
-			 var token = $("meta[name='_csrf']").attr("content");
-			 var header = $("meta[name='_csrf_header']").attr("content");
-			 xhr.setRequestHeader(header, token);
+		 url: url,
+		 beforeSend: function(xhr, settings) {
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				xhr.setRequestHeader(header, token);
 		 },
-		 beforeSubmit: function(xhr) {
-	        	$("#allegatoProvvedimento").attr('disabled','disabled');
-	        	$("#descrizioneAllegato").attr('disabled','disabled');
-	        	$("button#allegatoInserisci").attr('disabled','disabled');
-	        	
-	        	progress.show();
-	        	var percentVal = '0%';
-		        bar.width(percentVal)
-		        percent.html(percentVal);
-	    },
+		 beforeSubmit: function(arr, $form, options) {
+//			var token = $("meta[name='_csrf']").attr("content");
+//			var header = $("meta[name='_csrf_header']").attr("content");
+//			xhr.setRequestHeader(header, token);
+			
+			$("#allegatoProvvedimento").attr('disabled','disabled');
+        	$("#descrizioneAllegato").attr('disabled','disabled');
+        	$("button#allegatoInserisci").attr('disabled','disabled');
+        	
+        	progress.show();
+        	var percentVal = '0%';
+	        bar.width(percentVal)
+	        percent.html(percentVal);
+		 },
 	    uploadProgress: function(event, position, total, percentComplete) {
 	        var percentVal = percentComplete + '%';
 	       
@@ -1221,9 +1244,11 @@ function gestioneNormattiva(){
 	$("#dataAttoV, #tipoAtto, #numeroAtto, #art").each(function(){
 		$(this).focusout(function(){
 		  var staticUrl = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:";
-		  var date = $(this).val();
-		  var newDataAtto = new Date( $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1") );
-		  var dataAtto = newDataAtto.getFullYear() +'-'+ (newDataAtto.getMonth()+1) +'-'+ newDataAtto.getDate();
+		  var dataAtto = $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1");
+		  
+		  if (dataAtto == $("#dataAttoV").val()) {
+			  dataAtto = "NaN-NaN-NaN";
+		  }
 		  
 		  var numeroAtto = $("#numeroAtto").val();
 		  var articolo = $("#art").val();
@@ -1305,6 +1330,28 @@ function gestioneNormattiva(){
 		  }
 	  }
 }
+
+
+function detectIE() {
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf('MSIE ');
+    var trident = ua.indexOf('Trident/');
+
+    if (msie > 0) {
+        // IE 10 or older => return version number
+        return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+    }
+
+    if (trident > 0) {
+        // IE 11 (or newer) => return version number
+        var rv = ua.indexOf('rv:');
+        return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+    }
+
+    // other browser
+    return false;
+}
+
 
 function gestioneTermineScadenza(){
 	
