@@ -141,7 +141,11 @@
 							<label class="control-label" for="dp1v">${termineDiScadenzaHeader}</label>
 							<div class="controls">
 								<%-- <span>${provvedimentoDettaglio.termineScadenza}</span> --%>
-								<springform:input type="text" id="dp1v" path="termineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
+								<springform:input type="text" id="dp1v" path="termineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>&nbsp;
+								<button type="button" class="btn" id="plus30">+ 30 gg</button>&nbsp;
+								<button type="button" class="btn" id="plus60">+ 60 gg</button>&nbsp;
+								<button type="button" class="btn" id="plus90">+ 90 gg</button>&nbsp;
+								<button type="button" class="btn" id="plus120">+ 120 gg</button>
 							</div>
 						</div>
 						
