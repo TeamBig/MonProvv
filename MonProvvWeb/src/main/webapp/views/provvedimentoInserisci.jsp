@@ -119,6 +119,8 @@
 							<springform:textarea path="titoloOggetto" class="input-xlarge" id="parere" cols="30" rows="4" />
 						</div>
 					</div>
+					
+					
 					<div class="control-group">
 						<label class="control-label" for="dp1v">Termine di
 							scadenza</label>
@@ -126,6 +128,15 @@
 							<springform:input type="text" id="dp1v" path="dtTermineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>
 						</div>
 					</div>
+					
+					
+					<div class="control-group">
+						<label class="control-label" for="senzaTermine">Senza termine</label>
+						<div class="controls">
+							<springform:checkbox path="senzaTermine" id="senzaTermine" value="S"/>
+						</div>
+					</div>
+					
 					<div class="control-group">
 						<label class="control-label" for="statoDiAttuazione">Stato
 							di attuazione</label>
@@ -318,10 +329,16 @@
 		</springform:form>
 	</div>
 	<script type="text/javascript">
-		$("#avantiStep, #salva, #indietro, #annulla").click(function(e) {
+		$("#avantiStep, #salva, #indietro").click(function(e) {
 			e.preventDefault();
 			e.stopPropagation();
 			
 			$("#provvedimentoInserisci").attr("enctype", "").append("<input type='hidden' name='action' value='" + $(this).val() + "'>").submit();
+		});
+		$("#annulla").click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			
+			$("#provvedimentoInserisci").attr("enctype", "").append("<input type='hidden' name='indietroPagina' value='" + $(this).val() + "'>").submit();
 		});
 	</script>

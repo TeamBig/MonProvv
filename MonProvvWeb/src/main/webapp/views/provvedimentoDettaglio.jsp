@@ -22,6 +22,8 @@
 <spring:message var="collNormattivaHeader" code="listaProvvedimenti.header.collNormattiva" />
 
 <spring:message var="termineDiScadenzaHeader" code="label.termineDiScadenza" />
+<spring:message var="senzaTermineHeader" code="label.senza.termine" />
+
 <spring:message var="parereHeader" code="label.parere" />
 <spring:message var="noteInterneHeader" code="listaProvvedimenti.header.noteInterne" />
 
@@ -134,6 +136,22 @@
 								</span>
 							</div>
 						</div>
+						<div class="control-group">
+							<span class="control-label">${senzaTermineHeader}</span>
+							<div class="controls">
+								<span>
+									<c:if test="${provvedimentoDettaglio.senzaTermine}">
+										Si
+									</c:if>
+									<c:if test="${not provvedimentoDettaglio.senzaTermine}">
+										No
+									</c:if>
+								</span>
+							</div>
+						</div>
+						
+						
+						
 						<div class="control-group">
 							<label class="control-label" for="statoDiAttuazione">${statoDiAttuazioneHeader}</label>
 							<div class="controls">

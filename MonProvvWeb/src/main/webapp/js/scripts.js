@@ -597,6 +597,27 @@ function gestineInserimentoUtnete(){
 		window.location = currentUrl+"/nuovo";
 	});
 	
+	
+	
+	$('#senzaTermine').click(function () {
+		testcheckedsenzaTermine();
+	});
+	testcheckedsenzaTermine();
+	
+	function testcheckedsenzaTermine(){
+		if($("#senzaTermine").is(':checked')){
+		    // checked
+			$("#dp1").hide();
+			$("#dp1v").val('');
+			$("#dp1v").attr('readonly', true);
+		}else{
+			// unchecked
+			$("#dp1").show();
+			$("#dp1v").attr('readonly', false);
+		}
+	}
+	
+	
 	$("#statoDiAttuazioneDettaglio").change(function(){
 		$('<input />').attr('type', 'hidden')
         .attr('name', 'cambioStato')

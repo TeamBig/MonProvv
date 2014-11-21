@@ -40,6 +40,7 @@ public class InserisciProvvedimentoDto {
 		provv.setTipoProvvedimento(this.getTipologia());
 		provv.setOrganoConcertante(this.getProponente());
 		provv.setNoteInterne(this.getNoteInterne());
+		provv.setSenzaTermine(this.isSenzaTermine());
 		// provv.setOggetto(this.getTitoloOggetto());
 		return provv;
 	}
@@ -71,6 +72,7 @@ public class InserisciProvvedimentoDto {
 	private String[] provvedimentiSelected;
 	private String noteInterne;
 	private String appoDataFormat;
+	private boolean senzaTermine;
 
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
@@ -286,6 +288,14 @@ public class InserisciProvvedimentoDto {
 
 	public void setAppoDataFormat(String appoDataFormat) {
 		this.appoDataFormat = appoDataFormat;
+	}
+
+	public boolean isSenzaTermine() {
+		return senzaTermine;
+	}
+
+	public void setSenzaTermine(boolean senzaTermine) {
+		this.senzaTermine = senzaTermine;
 	}
 	
 	
