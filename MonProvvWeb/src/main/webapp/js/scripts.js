@@ -1160,21 +1160,28 @@ function do_submitAllegatoIns() {
 		 dataType: 'text',   
 		 contentType: "multipart/form-data",
 		 url: "modifica/inserisciAllegato",
-		 beforeSend: function(xhr) {
-			 var token = $("meta[name='_csrf']").attr("content");
-			 var header = $("meta[name='_csrf_header']").attr("content");
-			 xhr.setRequestHeader(header, token);
+//		 headers: {
+//			 'X-CSRF-TOKEN':  'PROVA'
+//		 },
+		 beforeSend: function(xhr, settings) {
+				var token = $("meta[name='_csrf']").attr("content");
+				var header = $("meta[name='_csrf_header']").attr("content");
+				xhr.setRequestHeader(header, token);
 		 },
-		 beforeSubmit: function(xhr) {
-	        	$("#allegatoProvvedimento").attr('disabled','disabled');
-	        	$("#descrizioneAllegato").attr('disabled','disabled');
-	        	$("button#allegatoInserisci").attr('disabled','disabled');
-	        	
-	        	progress.show();
-	        	var percentVal = '0%';
-		        bar.width(percentVal)
-		        percent.html(percentVal);
-	    },
+		 beforeSubmit: function(arr, $form, options) {
+//			var token = $("meta[name='_csrf']").attr("content");
+//			var header = $("meta[name='_csrf_header']").attr("content");
+//			xhr.setRequestHeader(header, token);
+			
+			$("#allegatoProvvedimento").attr('disabled','disabled');
+        	$("#descrizioneAllegato").attr('disabled','disabled');
+        	$("button#allegatoInserisci").attr('disabled','disabled');
+        	
+        	progress.show();
+        	var percentVal = '0%';
+	        bar.width(percentVal)
+	        percent.html(percentVal);
+		 },
 	    uploadProgress: function(event, position, total, percentComplete) {
 	        var percentVal = percentComplete + '%';
 	       
@@ -1211,9 +1218,11 @@ function gestioneNormattiva(){
 	$("#dataAttoV, #tipoAtto, #numeroAtto, #art").each(function(){
 		$(this).focusout(function(){
 		  var staticUrl = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:";
-		  var date = $(this).val();
-		  var newDataAtto = new Date( $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1") );
-		  var dataAtto = newDataAtto.getFullYear() +'-'+ (newDataAtto.getMonth()+1) +'-'+ newDataAtto.getDate();
+		  var dataAtto = $("#dataAttoV").val().replace( /(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1");
+		  
+		  if (dataAtto == $("#dataAttoV").val()) {
+			  dataAtto = "NaN-NaN-NaN";
+		  }
 		  
 		  var numeroAtto = $("#numeroAtto").val();
 		  var articolo = $("#art").val();
