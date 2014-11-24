@@ -28,7 +28,7 @@ email.from.name=AMMINISTRATORE DI MONITORAGGIO PROVVEDIMENTI
 #EMAIL COLLAUDO
 email.smtp.server=efeso.tesoro.it
 email.smtp.port=25
-email.smtp.user=pdamefgiustizia
-email.smtp.pwd=giustiziapdamef
+email.smtp.user=comuincarichi 
+email.smtp.pwd=incarichicomu
 email.smtp.authreq=true
 
