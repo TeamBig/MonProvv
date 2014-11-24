@@ -357,7 +357,7 @@ public class GestioneProvvedimentoController {
 					mail.setContent(testo);
 					mail.setHtmlFormat(false);
 					
-					gestioneProvvedimentoFacade.invioMail( mail );
+					mailService.eseguiInvioMail(mail);
 					
 					criteria = new UtenteDto();
 					criteria.setEmail(indirizzo);
