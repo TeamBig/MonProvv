@@ -1,7 +1,13 @@
 package it.tesoro.monprovv.sicurezza;
 
+import java.io.IOException;
+
 import it.tesoro.monprovv.facade.GestioneSicurezzaFacade;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,11 +24,7 @@ public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenti
 	
     private GestioneSicurezzaFacade gestioneSicurezzaFacade;
     private boolean exceptionIfHeaderMissing = true;
-
-//    private String oamAbilitato;
-//    private String oamLogoutUrl;
-//    
-    
+ 
     
     /**
      * Read and returns the header named by {@code principalRequestHeader} from the request.
@@ -71,5 +73,22 @@ public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenti
 		
 		super.successfulAuthentication(request, response, authResult);
 	}
+	
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
+		
+		String currentPath = ((HttpServletRequest)request).getServletPath();
+		
+		if (gestioneSicurezzaFacade.checkLogout(currentPath) ) {
+			((HttpServletResponse)response).sendRedirect( ((HttpServletRequest)request).getContextPath() + "/public/logout");
+			return;
+		}
+		
+   
+		
+		super.doFilter(request, response, chain);
+	}
+	
 	
 }
