@@ -1,0 +1,34 @@
+############ File di configurazione per PDA Giustizia ###########
+
+jndiDataSourceName=jdbc/MonProvvDS
+
+
+##### abilitazione OAM per ambiente di esercizio
+
+oam.abilitato=S
+oam.logoutUrl=/private/logout.jsp
+
+# gestione log eccezioni
+log.printStackTrace=false
+
+# configurazione paginazione
+paginazione.risultatiPerPagina=20
+
+# caching refresh in minuti
+cache.intervallo=30
+
+#notifiche
+notifiche.numVisibili=3
+
+#servizio email
+email.on=S
+email.from.address=amministrazione@tesoro.it
+email.from.name=AMMINISTRATORE DI MONITORAGGIO PROVVEDIMENTI
+
+#EMAIL COLLAUDO
+email.smtp.server=efeso.tesoro.it
+email.smtp.port=25
+email.smtp.user=comuincarichi 
+email.smtp.pwd=incarichicomu
+email.smtp.authreq=true
+
