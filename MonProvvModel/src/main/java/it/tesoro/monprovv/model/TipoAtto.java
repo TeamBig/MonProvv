@@ -6,9 +6,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name = "TIPO_ATTO")
@@ -19,6 +23,8 @@ public class TipoAtto extends AbstractCommonEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = -2347489597613278029L;
 
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_TIPO_ATTO"))
+	@GeneratedValue(generator = "generator")
 	@Id
 	@Column(name = "ID_TIPO_ATTO", unique = true, nullable = false)
 	private Integer id;
@@ -30,6 +36,13 @@ public class TipoAtto extends AbstractCommonEntity implements Serializable {
 	@Column(name = "DESCRIZIONE", length = 240)
 	@NotNull
 	private String descrizione;
+	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
+	
+	public TipoAtto(){
+		this.flagAttivo = "S";
+	}
 
 	public Integer getId() {
 		return id;
@@ -55,6 +68,14 @@ public class TipoAtto extends AbstractCommonEntity implements Serializable {
 		this.codice = codice;
 	}
 
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

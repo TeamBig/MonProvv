@@ -155,6 +155,9 @@
 		<put-attribute name="titolo" value="motivazioneRifiuto.title" />
 	</definition>
 	
-	
+	<definition name="tipologicheHome" extends="template">
+		<put-attribute name="content" value="/views/tipologicheHome.jsp" />
+		<put-attribute name="titolo" value="tipologicheHome.title" />
+	</definition>
 
 </tiles-definitions>

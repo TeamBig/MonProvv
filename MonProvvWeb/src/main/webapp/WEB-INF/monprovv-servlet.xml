@@ -43,6 +43,7 @@
     			<value>messages-enti</value>
     			<value>messages-provvedimento</value>
     			<value>messages-utente</value>
+    			<value>messages-tipologiche</value>
     		</list>
     	</property>
 	</bean>

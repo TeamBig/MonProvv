@@ -14,6 +14,8 @@ import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 
 import java.sql.Clob;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -52,6 +54,13 @@ public class GestioneTipologicaFacade {
 	public Governo recuperaGovernoById(Integer id) {
 		return governoDAO.findById(id);
 	}
+	
+	public List<Governo> initGoverno(){
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Governo> listaGoverno = governoDAO.findByPropertyOrdered("flagAttivo", "S", order);
+		return listaGoverno;
+	}
 
 	public TipoProvvedimento recuperaTipoProvvedimentoById(Integer id) {
 		return tipoProvvedimentoDAO.findById(id);
@@ -60,9 +69,23 @@ public class GestioneTipologicaFacade {
 	public TipoProvvDaAdottare recuperaTipoProvvDaAdottareById(Integer id) {
 		return tipoProvvDaAdottareDAO.findById(id);
 	}
+	
+	public List<TipoProvvDaAdottare> initTipoProvvDaAdottare() {
+		List<String> order = new ArrayList<String>();
+		order.add("descrizione");
+		List<TipoProvvDaAdottare> listaTipoProvvedimento = tipoProvvDaAdottareDAO.findByPropertyOrdered("flagAttivo", "S", order);
+		return listaTipoProvvedimento;
+	}
 
 	public TipoAtto recuperaTipoAttoById(Integer id) {
 		return tipoAttoDAO.findById(id);
+	}
+	
+	public List<TipoAtto> initTipoAtto() {
+		List<String> order = new ArrayList<String>();
+		order.add("descrizione");
+		List<TipoAtto> listaTipoAtto = tipoAttoDAO.findByPropertyOrdered("flagAttivo", "S", order);
+		return listaTipoAtto;
 	}
 	
 	public Clob creaClob(String data) {
@@ -71,5 +94,20 @@ public class GestioneTipologicaFacade {
 	
 	public Provvedimento recuperaProvvedimentoById(Integer id) {
 		return provvedimentoDAO.findById(id);
+	}
+
+	public Governo inserisciAggiornaGoverno(Governo governo) {
+		Integer id = (Integer) governoDAO.saveOrUpdate(governo);
+		return governoDAO.findById(id);
+	}
+
+	public TipoAtto inserisciAggiornaTipoAtto(TipoAtto tipoAtto) {
+		Integer id = (Integer) tipoAttoDAO.saveOrUpdate(tipoAtto);
+		return tipoAttoDAO.findById(id);
+	}
+
+	public TipoProvvDaAdottare inserisciAggiornaTipoProvvDaAdottare(TipoProvvDaAdottare tipoProvvDaAdottare) {
+		Integer id = (Integer) tipoProvvDaAdottareDAO.saveOrUpdate(tipoProvvDaAdottare);
+		return tipoProvvDaAdottareDAO.findById(id);
 	}
 }

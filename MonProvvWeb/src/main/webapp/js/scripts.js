@@ -153,7 +153,8 @@ function confirmCancellazioneAdmin(){
     	var td = $(this);
     	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Organo?", function(result) {
     		if(result){
-    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
+    			var currentRowID = td.parent().find("td:eq(0)").html();
+				var url = td.find("a#delete4risultatiRicerca_"+currentRowID).attr('href');    
     			$(location).attr('href',url);
     		}
     	});
@@ -165,7 +166,8 @@ function confirmCancellazioneAdmin(){
     	var td = $(this);
     	bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione dell'Utente?", function(result) {
     		if(result){
-    			var url = td.find("a#delete4risultatiRicerca").attr('href');    
+    			var currentRowID = td.parent().find("td:eq(0)").html();
+				var url = td.find("a#delete4risultatiRicerca_"+currentRowID).attr('href');     
     			$(location).attr('href',url);
     		}
     	});
@@ -791,6 +793,9 @@ function gestineInserimentoUtnete(){
 	//GESTIONE NORMATTIVA
 	gestioneNormattiva();
 	
+	//GESTIONE TIPOLOGICHE
+	gestioneTipologiche();
+	
 	//GESTIONE MODALE CRONOLOGIA
 	$("a[data-target=#modalCronologia]").click(function(ev) {
 	    ev.preventDefault();
@@ -1394,4 +1399,106 @@ function gestioneTermineScadenza(){
 		addDayToTermineScadenza(120);
 	});
 	
+}
+
+function gestioneTipologiche(){
+
+	$('#tipoTipologica').on('change', function () {
+		var oForm = $("#formGestioneTipologiche");
+		oForm.append("<input type='hidden' name='changeTipologica' />");
+		oForm.submit();
+	});
+	
+	$('#nuovaTipologica').on('click', function (ev) {
+		ev.preventDefault();
+		var myModalLabela = '';
+		if($('#idGoverno').length){
+			myModalLabela = 'Nuovo Governo';
+		}
+
+		if($('#idTipoAtto').length){
+			myModalLabela = 'Nuovo Tipo Atto';
+		}
+		
+		if($('#idTipoProv').length){
+			myModalLabela = 'Nuovo Tipo Provvedimento da Adottare';
+		}
+		
+		$(".modal-header-tipologica h3").html(myModalLabela);
+		$("#modalNuovaTipologia").modal("show"); 
+	});
+	
+	$('#saveTipologica').on('click', function () {
+		var oForm = $("#formGestioneTipologiche");
+		
+		if($('#idGoverno').length){
+			oForm.append("<input type='hidden' name='saveGoverno' value='save' />");
+			oForm.append("<input type='hidden' name='idGoverno' value='"+$('#idGoverno').val()+"' />");
+			oForm.append("<input type='hidden' name='denominazioneGoverno' value='"+$('#denominazioneGoverno').val()+"' />");
+		}
+
+		if($('#idTipoAtto').length){
+			oForm.append("<input type='hidden' name='saveTipoAtto' value='save' />");
+			oForm.append("<input type='hidden' name='idTipoAtto' value='"+$('#idTipoAtto').val()+"' />");
+			oForm.append("<input type='hidden' name='codiceTipoAtto' value='"+$('#codiceTipoAtto').val()+"' />");
+			oForm.append("<input type='hidden' name='descrizioneTipoAtto' value='"+$('#descrizioneTipoAtto').val()+"' />");
+		}
+		
+		if($('#idTipoProv').length){
+			oForm.append("<input type='hidden' name='saveTipoProv' value='save' />");
+			oForm.append("<input type='hidden' name='idTipoProv' value='"+$('#idTipoProv').val()+"' />");
+			oForm.append("<input type='hidden' name='descrizioneTipoProv' value='"+$('#descrizioneTipoProv').val()+"' />");
+		}
+		
+		oForm.submit();
+	});
+	
+	$('#gestioneTipologiche .table > tbody > tr').click(function(ev) {
+    	
+		ev.preventDefault();
+		
+		var customerId = $(this).find("td:eq(0)").html();  
+		var myModalLabela = '';
+		
+    	if( $.isNumeric( customerId ) ){
+        	
+    		if($('#idGoverno').length){
+    			$('#idGoverno').val(customerId);
+    			$('#denominazioneGoverno').val($(this).find("td:eq(1)").html());
+    			myModalLabela = 'Modifica Governo';
+    		}
+
+    		if($('#idTipoAtto').length){
+    			$('#idTipoAtto').val(customerId);
+    			$('#codiceTipoAtto').val($(this).find("td:eq(1)").html());
+    			$('#descrizioneTipoAtto').val($(this).find("td:eq(2)").html());
+    			myModalLabela = 'Modifica Tipo Atto';
+    		}
+    		
+    		if($('#idTipoProv').length){
+    			$('#idTipoProv').val(customerId);
+    			$('#descrizioneTipoProv').val($(this).find("td:eq(1)").html());
+    			myModalLabela = 'Modifica Tipo Provvedimento da Adottare';
+    		}
+    		
+    		$(".modal-header-tipologica h3").html(myModalLabela);
+    		$("#modalNuovaTipologia").modal("show"); 
+    		
+    	}
+    });
+	
+	$(".deleteTipologica").click(function(){
+		var retval;
+		var td = $(this);
+		bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione la riga?", function(result) {
+			if(result){
+				var currentRowID = td.parent().find("td:eq(0)").html();    
+				var url = td.find("a#delete4risultatiRicerca_"+currentRowID).attr('href');   
+				$(location).attr('href',url);
+			}
+		});
+		return false;
+	});
+	
+
 }

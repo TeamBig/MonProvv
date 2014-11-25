@@ -8,7 +8,6 @@ import it.tesoro.monprovv.model.Funzione;
 import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Menu;
 import it.tesoro.monprovv.model.Organo;
-import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.Stato;
