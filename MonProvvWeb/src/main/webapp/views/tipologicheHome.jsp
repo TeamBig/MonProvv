@@ -130,10 +130,10 @@
 									<a href="${deletePath}?id=${tipoProvv.id}" id="cambiaStato_${tipoProvv.id}" >
 										<c:choose>
 											<c:when test="${ tipoProvv.flagAttivo eq 'S' }">
-												<i class="icon-check-empty icon-large gray" title="Disattiva Tipo Provvedimento da Adottare"></i>
+												<i class="icon-check icon-large gray" title="Disattiva Tipo Provvedimento da Adottare"></i>
 											</c:when>
 											<c:otherwise>
-												<i class="icon-check icon-large gray" title="Attiva Tipo Provvedimento da Adottare"></i>
+												<i class="icon-check-empty icon-large gray" title="Attiva Tipo Provvedimento da Adottare"></i>
 											</c:otherwise>
 										</c:choose>
 									</a>
