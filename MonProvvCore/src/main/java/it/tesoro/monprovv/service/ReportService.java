@@ -53,6 +53,7 @@ public class ReportService {
 				JRXlsExporter JrXlsExporter = new JRXlsExporter();
 				JrXlsExporter.setParameter(JRXlsExporterParameter.JASPER_PRINT, jp);
 				JrXlsExporter.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, baos);
+				JrXlsExporter.setParameter(JRXlsExporterParameter.IGNORE_PAGE_MARGINS, Boolean.TRUE);
 				JrXlsExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
 				JrXlsExporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
 				JrXlsExporter.setParameter(JRXlsExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.FALSE);
