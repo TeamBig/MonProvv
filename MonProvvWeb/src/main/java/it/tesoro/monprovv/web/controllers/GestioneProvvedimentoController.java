@@ -361,7 +361,7 @@ public class GestioneProvvedimentoController {
 					mail.setContent(testo);
 					mail.setHtmlFormat(false);
 					
-					gestioneProvvedimentoFacade.invioMail( mail );
+					mailService.eseguiInvioMail(mail);
 					
 					criteria = new UtenteDto();
 					criteria.setEmail(indirizzo);
@@ -757,7 +757,7 @@ public class GestioneProvvedimentoController {
 		}
 		if(provvedimento.getCurrentStep().equals("3")){
 			model.addAttribute("titolo", "Assegnatari");
-			List<Organo> listaOrganiAssegnatari = initOrgani();
+			List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initOrgani();
 			if(listaOrganiAssegnatari.contains(principal.getUtente().getOrgano()))
 				listaOrganiAssegnatari.remove(principal.getUtente().getOrgano());
 			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
@@ -893,8 +893,19 @@ public class GestioneProvvedimentoController {
 	}
 	
 	@ModelAttribute("listaOrgani")
-	private List<Organo> initOrgani() {
-		return gestioneProvvedimentoFacade.initOrgani();
+	private List<Organo> initOrgani(@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento) {
+		
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initOrgani();
+		if (provvedimento != null) {
+			if(listaOrganiAssegnatari.contains(principal.getUtente().getOrgano()))
+				listaOrganiAssegnatari.remove(principal.getUtente().getOrgano());
+			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
+				listaOrganiAssegnatari.remove(provvedimento.getOrganoCapofila());
+		}
+		
+		return listaOrganiAssegnatari;
 	}
 	
 	@ModelAttribute("listaProponente")

@@ -73,12 +73,12 @@ public class GestioneSicurezzaController {
 	private void init() {
 	}
 	
-	@RequestMapping(value={"/public/logout", "/private/logout.jsp"})
+	@RequestMapping(value = "/public/logout")
 	public String logout(Model model)  {
 		alertUtils.message(model, AlertUtils.ALERT_TYPE_INFO, "Logout effettuato", false);
 		return "logout";
 	}
-
+	
 	@RequestMapping(value="/public/403")
 	public String accessoNegato(Model model, HttpServletRequest request)  {
 		

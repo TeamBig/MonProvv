@@ -40,6 +40,9 @@ public class GestioneSicurezzaFacade {
 	
 	@Value("#{config['oam.abilitato']}")
     private String oamAbilitato;
+	
+	@Value("#{config['oam.logoutUrl']}")
+	private String oamLogoutUrl;
 
 	@Autowired 
 	private RuoloUtenteDAO ruoloUtenteDAO;
@@ -228,5 +231,12 @@ public class GestioneSicurezzaFacade {
 		return notificaDAO.findById(Integer.parseInt(id));
 	}
 
+	
+	public boolean checkLogout(String path) {
+		if ("S".equals(oamAbilitato) && path.equals(oamLogoutUrl) ) {
+			return true;
+		}
+		return false;
+	}
 	
 }

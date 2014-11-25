@@ -463,6 +463,13 @@ public class GestioneProvvedimentoFacade {
 		}
 		
 		if (countInLavorazione == 0) {
+			
+			// inserisco pausa per ordine notifica
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			
 			String testoFineLav = "Si comunica che tutti gli organi assegnatari hanno concluso la lavorazione del provvedimento " 
 					+ provvedimento.getGoverno().getDenominazione() + " " + provvedimento.getId() + ", fonte normativa " + provvedimento.getFonteNormativa();
 			
@@ -550,7 +557,7 @@ public class GestioneProvvedimentoFacade {
 	public List<Organo> initOrgani() {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Organo> listaOrgani = organoDAO.findAll(order);
+		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "N", order);
 		return listaOrgani;
 	}
 
@@ -701,12 +708,6 @@ public class GestioneProvvedimentoFacade {
 			notificaDAO.save(notifica);
 		}					
 	}
-	
-
-	public void invioMail(Mail mail) {
-		mailService.eseguiInvioMail(mail);
-		
-	}	
 	
 	private void invioNotificaCambioStato(Provvedimento provvedimento) {
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
