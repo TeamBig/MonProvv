@@ -48,14 +48,23 @@
 					</h3>
 					<div class="row">
 						<div class="span12">										
-							<c:url value="/private/admin/tipologiche/governo/delete" var="deletePath" />
+							<c:url value="/private/admin/tipologiche/governo/cambiastato" var="deletePath" />
 							<display:table name="${gestioneTipologiche.governi}"
 								requestURI="" sort="external" partialList="false" id="governo"
 								class="table table-hover table-bordered">
 								<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 								<display:column title="${denominazioneHeader}" property="denominazione" headerScope="col" />
-								<display:column title="${eliminaHeader}" headerScope="col" class="center deleteTipologica" headerClass="center">
-									<a href="${deletePath}?id=${governo.id}" id="delete4risultatiRicerca_${governo.id}" ><i class="icon-trash icon-large gray" title="Elimina Governo"></i></a>
+								<display:column title="${eliminaHeader}" headerScope="col" class="center medium cambiaStatoTipologica" headerClass="center">
+									<a href="${deletePath}?id=${governo.id}" id="cambiaStato_${governo.id}" >
+										<c:choose>
+											<c:when test="${ governo.flagAttivo eq 'S' }">
+												<i class="icon-check-empty icon-large gray" title="Disattiva Governo"></i>
+											</c:when>
+											<c:otherwise>
+												<i class="icon-check icon-large gray" title="Attiva Governo"></i>
+											</c:otherwise>
+										</c:choose>
+									</a>
 								</display:column>
 							</display:table>
 						</div>
@@ -70,16 +79,34 @@
 					</h3>
 					<div class="row">
 						<div class="span12">
-							<c:url value="/private/admin/tipologiche/tipoatto/delete" var="deletePath" />
+							<c:url value="/private/admin/tipologiche/tipoatto/cambiastato" var="deletePath" />
 							<display:table name="${gestioneTipologiche.tipiAtto}"
 								requestURI="" sort="external" partialList="false" id="tipoAtto"
 								class="table table-hover table-bordered">
 								<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 								<display:column title="${codiceHeader}" property="codice" headerScope="col" />
 								<display:column title="${descrizioneHeader}" property="descrizione" headerScope="col" />
-								<display:column title="${eliminaHeader}" headerScope="col" class="center deleteTipologica" headerClass="center">
-									<a href="${deletePath}?id=${tipoAtto.id}" id="delete4risultatiRicerca_${tipoAtto.id}" ><i class="icon-trash icon-large gray" title="Elimina Tipo Atto"></i></a>
-								</display:column>
+								<c:choose>
+									<c:when test="${tipoAtto.disattivabile}">	
+										<display:column title="${eliminaHeader}" headerScope="col" class="center medium cambiaStatoTipologica" headerClass="center">
+											<a href="${deletePath}?id=${tipoAtto.id}" id="cambiaStato_${tipoAtto.id}" >
+												<c:choose>
+													<c:when test="${ tipoAtto.flagAttivo eq 'S' }">
+														<i class="icon-check-empty icon-large gray" title="Disattiva Tipo Atto"></i>
+													</c:when>
+													<c:otherwise>
+														<i class="icon-check icon-large gray" title="Attiva Tipo Atto"></i>
+													</c:otherwise>
+												</c:choose>
+											</a>
+										</display:column>
+									</c:when>
+									<c:otherwise>
+										<display:column title="${eliminaHeader}" headerScope="col" class="center medium" headerClass="center">
+											Non disattivabile
+										</display:column>
+									</c:otherwise>
+								</c:choose>
 							</display:table>
 						</div>
 					</div>
@@ -93,14 +120,23 @@
 					</h3>
 					<div class="row">
 						<div class="span12">
-							<c:url value="/private/admin/tipologiche/tipiprovv/delete" var="deletePath" />
+							<c:url value="/private/admin/tipologiche/tipiprovv/cambiastato" var="deletePath" />
 							<display:table name="${gestioneTipologiche.tipiProvv}"
 								requestURI="" sort="external" partialList="false" id="tipoProvv"
 								class="table table-hover table-bordered">
 								<display:column title="${idHeader}" property="id" headerScope="col" class="hidden" headerClass="hidden" />
 								<display:column title="${descrizioneHeader}" property="descrizione" headerScope="col" />
-								<display:column title="${eliminaHeader}" headerScope="col" class="center deleteTipologica" headerClass="center">
-									<a href="${deletePath}?id=${tipoProvv.id}" id="delete4risultatiRicerca_${tipoProvv.id}" ><i class="icon-trash icon-large gray" title="Elimina Tipo Provvedimento da Adottare"></i></a>
+								<display:column title="${eliminaHeader}" headerScope="col" class="center medium cambiaStatoTipologica" headerClass="center">
+									<a href="${deletePath}?id=${tipoProvv.id}" id="cambiaStato_${tipoProvv.id}" >
+										<c:choose>
+											<c:when test="${ tipoProvv.flagAttivo eq 'S' }">
+												<i class="icon-check-empty icon-large gray" title="Disattiva Tipo Provvedimento da Adottare"></i>
+											</c:when>
+											<c:otherwise>
+												<i class="icon-check icon-large gray" title="Attiva Tipo Provvedimento da Adottare"></i>
+											</c:otherwise>
+										</c:choose>
+									</a>
 								</display:column>
 							</display:table>
 						</div>

@@ -557,7 +557,10 @@ public class GestioneProvvedimentoFacade {
 	public List<Organo> initOrgani() {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "N", order);
+		HashMap<String, Object> parametri = new HashMap<String, Object>();
+		parametri.put("flagConcertante", "N");
+		parametri.put("flagAttivo", "S");
+		List<Organo> listaOrgani = organoDAO.findByProperty(parametri, order);
 		return listaOrgani;
 	}
 
@@ -815,7 +818,10 @@ public class GestioneProvvedimentoFacade {
 	public List<Organo> initProponente() {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "S", order);
+		HashMap<String, Object> parametri = new HashMap<String, Object>();
+		parametri.put("flagConcertante", "S");
+		parametri.put("flagAttivo", "S");
+		List<Organo> listaOrgani = organoDAO.findByProperty(parametri, order);
 		return listaOrgani;
 	}
 } 
