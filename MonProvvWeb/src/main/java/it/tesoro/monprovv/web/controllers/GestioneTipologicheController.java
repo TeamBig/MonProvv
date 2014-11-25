@@ -56,17 +56,17 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 		if( idSchelta != null ){
 			gestioneTipologiche.setIdSchelta(idSchelta);
 			switch (idSchelta){
-			case 1: gestioneTipologiche.setGoverni(gestioneTipologicaFacade.initGoverno());
+			case 1: gestioneTipologiche.setGoverni(gestioneTipologicaFacade.initGoverno4Tipologiche());
 					gestioneTipologiche.setTipiAtto(null);
 					gestioneTipologiche.setTipiProvv(null);
 					break;
 			case 2: gestioneTipologiche.setGoverni(null);
-					gestioneTipologiche.setTipiAtto(gestioneTipologicaFacade.initTipoAtto());
+					gestioneTipologiche.setTipiAtto(gestioneTipologicaFacade.initTipoAtto4Tipologiche());
 					gestioneTipologiche.setTipiProvv(null);
 					break;
 			case 3: gestioneTipologiche.setGoverni(null);
 					gestioneTipologiche.setTipiAtto(null);
-					gestioneTipologiche.setTipiProvv(gestioneTipologicaFacade.initTipoProvvDaAdottare());
+					gestioneTipologiche.setTipiProvv(gestioneTipologicaFacade.initTipoProvvDaAdottare4Tipologiche());
 					break;
 			}
 			
@@ -107,10 +107,25 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 	public String saveGovernoPost(@ModelAttribute("gestioneTipologiche") GestioneTipologicheDto gestioneTipologiche,
 			BindingResult errors, Model model)  {
 		
+		Governo governo = null;
 		tipologicheValidator.validate(gestioneTipologiche, errors);
-		if( !errors.hasErrors() ){			
 		
-			Governo governo =  (StringUtils.isEmpty( gestioneTipologiche.getIdGoverno() ))? new Governo() : gestioneTipologicaFacade.recuperaGovernoById( gestioneTipologiche.getIdGoverno() );
+		if( !errors.hasErrors() ){			
+			
+			governo =  (StringUtils.isEmpty( gestioneTipologiche.getIdGoverno() ))? new Governo() : gestioneTipologicaFacade.recuperaGovernoById( gestioneTipologiche.getIdGoverno() );
+			
+			List<Governo> governiPrenseti = gestioneTipologicaFacade.recuperaGovernoByDenominazione(gestioneTipologiche.getDenominazioneGoverno());
+			
+			for( Governo tmp: governiPrenseti ){
+				if( ! tmp.equals(governo) ){
+					//Denominazione già presente per un altro id
+					errors.rejectValue("denominazioneGoverno","generic.error.required" ,"La 'Denominazione' del Governo è già presente");
+					break;
+				}
+			}
+		}
+		if( !errors.hasErrors() ){			
+			
 			governo.setDenominazione(gestioneTipologiche.getDenominazioneGoverno());
 			
 			gestioneTipologicaFacade.inserisciAggiornaGoverno(governo);
@@ -121,9 +136,9 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Modifica Governo effettuato con successo", false);	
 			}
 			
-			gestioneTipologiche.setGoverni(gestioneTipologicaFacade.initGoverno());
+			gestioneTipologiche.setGoverni(gestioneTipologicaFacade.initGoverno4Tipologiche());
 			
-		}else{
+		}else{			
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
@@ -138,13 +153,34 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 	public String saveTipoAttoPost(@ModelAttribute("gestioneTipologiche") GestioneTipologicheDto gestioneTipologiche,
 			BindingResult errors, Model model)  {
 		
+		TipoAtto tipoAtto = null;
 		tipologicheValidator.validate(gestioneTipologiche, errors);
 		if( !errors.hasErrors() ){	
 		
-			TipoAtto tipoAtto = (StringUtils.isEmpty( gestioneTipologiche.getIdTipoAtto() ))? new TipoAtto() : gestioneTipologicaFacade.recuperaTipoAttoById( gestioneTipologiche.getIdTipoAtto() );
+			tipoAtto = (StringUtils.isEmpty( gestioneTipologiche.getIdTipoAtto() ))? new TipoAtto() : gestioneTipologicaFacade.recuperaTipoAttoById( gestioneTipologiche.getIdTipoAtto() );
 			tipoAtto.setCodice(gestioneTipologiche.getCodiceTipoAtto());
 			tipoAtto.setDescrizione(gestioneTipologiche.getDescrizioneTipoAtto());
 			
+			List<TipoAtto> attiByCodice = gestioneTipologicaFacade.recuperaTipoAttoByoByCodice(gestioneTipologiche.getCodiceTipoAtto());
+			for( TipoAtto tmp: attiByCodice ){
+				if( ! tmp.equals(tipoAtto) ){
+					//Descrizione già presente per un altro id
+					errors.rejectValue("codiceTipoAtto","generic.error.required" ,"Il 'Codice' del Tipo Atto è già presente");
+					break;
+				}
+			}
+			
+			List<TipoAtto> attiByDesc = gestioneTipologicaFacade.recuperaTipoAttoByDescrizione(gestioneTipologiche.getDescrizioneTipoAtto());
+			for( TipoAtto tmp: attiByDesc ){
+				if( ! tmp.equals(tipoAtto) ){
+					//Descrizione già presente per un altro id
+					errors.rejectValue("descrizioneTipoAtto","generic.error.required" ,"La 'Descrizione' del Tipo Atto è già presente");
+					break;
+				}
+			}
+			
+		}
+		if( !errors.hasErrors() ){	
 			gestioneTipologicaFacade.inserisciAggiornaTipoAtto(tipoAtto);
 			
 			if(StringUtils.isEmpty( gestioneTipologiche.getIdTipoAtto() )){
@@ -153,9 +189,9 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Modifica Tipo Atto effettuato con successo", false);	
 			}
 			
-			gestioneTipologiche.setTipiAtto(gestioneTipologicaFacade.initTipoAtto());
+			gestioneTipologiche.setTipiAtto(gestioneTipologicaFacade.initTipoAtto4Tipologiche());
 		
-		}else{
+		}else{	
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
 			}
@@ -169,12 +205,25 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 	public String saveTipoProvPost(@ModelAttribute("gestioneTipologiche") GestioneTipologicheDto gestioneTipologiche,
 			BindingResult errors, Model model)  {
 		
+		TipoProvvDaAdottare tipoProvvDaAdottare = null;
 		tipologicheValidator.validate(gestioneTipologiche, errors);
 		if( !errors.hasErrors() ){	
 		
-			TipoProvvDaAdottare tipoProvvDaAdottare =  (StringUtils.isEmpty( gestioneTipologiche.getIdTipoProv() ))? new TipoProvvDaAdottare() : gestioneTipologicaFacade.recuperaTipoProvvDaAdottareById( gestioneTipologiche.getIdTipoProv() );
+			tipoProvvDaAdottare =  (StringUtils.isEmpty( gestioneTipologiche.getIdTipoProv() ))? new TipoProvvDaAdottare() : gestioneTipologicaFacade.recuperaTipoProvvDaAdottareById( gestioneTipologiche.getIdTipoProv() );
 			tipoProvvDaAdottare.setDescrizione(gestioneTipologiche.getDescrizioneTipoProv());
+		
+			List<TipoProvvDaAdottare> tipoProvByDesc = gestioneTipologicaFacade.recuperaTipoProvvDaAdottareByDescrizione(gestioneTipologiche.getDescrizioneTipoProv());
+			for( TipoProvvDaAdottare tmp: tipoProvByDesc ){
+				if( ! tmp.equals(tipoProvvDaAdottare) ){
+					//Descrizione già presente per un altro id
+					errors.rejectValue("descrizioneTipoProv","generic.error.required" ,"La 'Descrizione' del Tipo Provvedimento da Adottare è già presente");
+					break;
+				}
+			}
 			
+		}
+		
+		if( !errors.hasErrors() ){	
 			gestioneTipologicaFacade.inserisciAggiornaTipoProvvDaAdottare(tipoProvvDaAdottare);
 			
 			if(StringUtils.isEmpty( gestioneTipologiche.getIdTipoProv() )){
@@ -183,7 +232,7 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Modifica Tipo Provvedimento da Adottare effettuato con successo", false);	
 			}
 			
-			gestioneTipologiche.setTipiProvv(gestioneTipologicaFacade.initTipoProvvDaAdottare());
+			gestioneTipologiche.setTipiProvv(gestioneTipologicaFacade.initTipoProvvDaAdottare4Tipologiche());
 		
 		}else{
 			for (FieldError f : errors.getFieldErrors()) {
@@ -195,11 +244,14 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 		return "tipologicheHome";
 	}
 	
-	@RequestMapping(value= {"/private/admin/tipologiche/governo/delete"}, method = RequestMethod.GET)
+	@RequestMapping(value= {"/private/admin/tipologiche/governo/cambiastato"}, method = RequestMethod.GET)
 	public String deleteGovernoGet(@RequestParam(required = false) Integer id, Model model)  {
 		if(StringUtils.isNotEmpty( id )){
 			Governo o = gestioneTipologicaFacade.recuperaGovernoById( id );
-			o.setFlagAttivo("N");
+			if( "N".equals( o.getFlagAttivo() ) )
+				o.setFlagAttivo("S");
+			else
+				o.setFlagAttivo("N");
 			gestioneTipologicaFacade.inserisciAggiornaGoverno(o);
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Governo effettuato con successo", false);	
 		}
@@ -210,11 +262,14 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 		return "tipologicheHome";
 	}
 	
-	@RequestMapping(value= {"/private/admin/tipologiche/tipoatto/delete"}, method = RequestMethod.GET)
+	@RequestMapping(value= {"/private/admin/tipologiche/tipoatto/cambiastato"}, method = RequestMethod.GET)
 	public String deleteTipoAttoGet(@RequestParam(required = false) Integer id, Model model)  {
 		if(StringUtils.isNotEmpty( id )){
 			TipoAtto o = gestioneTipologicaFacade.recuperaTipoAttoById( id );
-			o.setFlagAttivo("N");
+			if( "N".equals( o.getFlagAttivo() ) )
+				o.setFlagAttivo("S");
+			else
+				o.setFlagAttivo("N");
 			gestioneTipologicaFacade.inserisciAggiornaTipoAtto(o);
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Tipo Atto effettuato con successo", false);	
 		}
@@ -225,11 +280,14 @@ protected static Logger logger = Logger.getLogger(GestioneTipologicheController.
 		return "tipologicheHome";
 	}
 	
-	@RequestMapping(value= {"/private/admin/tipologiche/tipiprovv/delete"}, method = RequestMethod.GET)
+	@RequestMapping(value= {"/private/admin/tipologiche/tipiprovv/cambiastato"}, method = RequestMethod.GET)
 	public String deleteTipoProvvGet(@RequestParam(required = false) Integer id, Model model)  {
 		if(StringUtils.isNotEmpty( id )){
 			TipoProvvDaAdottare o = gestioneTipologicaFacade.recuperaTipoProvvDaAdottareById( id );
-			o.setFlagAttivo("N");
+			if( "N".equals( o.getFlagAttivo() ) )
+				o.setFlagAttivo("S");
+			else
+				o.setFlagAttivo("N");
 			gestioneTipologicaFacade.inserisciAggiornaTipoProvvDaAdottare(o);
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Cancellazione Tipo Provvedimento da Adottare effettuato con successo", false);	
 		}

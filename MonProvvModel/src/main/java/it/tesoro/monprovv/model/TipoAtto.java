@@ -3,6 +3,7 @@ package it.tesoro.monprovv.model;
 import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +43,12 @@ public class TipoAtto extends AbstractCommonEntity implements Serializable {
 	
 	public TipoAtto(){
 		this.flagAttivo = "S";
+	}
+	
+	public static final String[] CODICI_NON_DISATTIVABILI = new String[] {"CS", "DL", "L"};
+	
+	public boolean isDisattivabile(){
+		return ! Arrays.asList(CODICI_NON_DISATTIVABILI).contains(codice);
 	}
 
 	public Integer getId() {

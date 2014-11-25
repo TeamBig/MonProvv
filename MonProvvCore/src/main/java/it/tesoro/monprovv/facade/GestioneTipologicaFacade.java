@@ -15,6 +15,7 @@ import it.tesoro.monprovv.model.TipoProvvedimento;
 
 import java.sql.Clob;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,22 @@ public class GestioneTipologicaFacade {
 	public List<Governo> initGoverno(){
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Governo> listaGoverno = governoDAO.findByPropertyOrdered("flagAttivo", "S", order);
-		return listaGoverno;
+		return governoDAO.findByPropertyOrdered("flagAttivo", "S", order);
+	}
+	
+	public List<Governo> recuperaGovernoByDenominazione(String denominazioneGoverno) {	
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("param", denominazioneGoverno.toUpperCase());
+		String hql = "from Governo u where upper(u.denominazione) = :param ";
+		return governoDAO.findByHqlQuery(hql, params);
 	}
 
+	public List<Governo> initGoverno4Tipologiche(){
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		return governoDAO.findAll(order);
+	}
+	
 	public TipoProvvedimento recuperaTipoProvvedimentoById(Integer id) {
 		return tipoProvvedimentoDAO.findById(id);
 	}
@@ -73,8 +86,20 @@ public class GestioneTipologicaFacade {
 	public List<TipoProvvDaAdottare> initTipoProvvDaAdottare() {
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
-		List<TipoProvvDaAdottare> listaTipoProvvedimento = tipoProvvDaAdottareDAO.findByPropertyOrdered("flagAttivo", "S", order);
-		return listaTipoProvvedimento;
+		return tipoProvvDaAdottareDAO.findByPropertyOrdered("flagAttivo", "S", order);
+	}
+	
+	public List<TipoProvvDaAdottare> initTipoProvvDaAdottare4Tipologiche() {
+		List<String> order = new ArrayList<String>();
+		order.add("descrizione");
+		return tipoProvvDaAdottareDAO.findAll(order);
+	}
+	
+	public List<TipoProvvDaAdottare> recuperaTipoProvvDaAdottareByDescrizione(String descrizione) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("param", descrizione.toUpperCase());
+		String hql = "from TipoProvvDaAdottare u where upper(u.descrizione) = :param ";
+		return tipoProvvDaAdottareDAO.findByHqlQuery(hql, params);
 	}
 
 	public TipoAtto recuperaTipoAttoById(Integer id) {
@@ -84,9 +109,29 @@ public class GestioneTipologicaFacade {
 	public List<TipoAtto> initTipoAtto() {
 		List<String> order = new ArrayList<String>();
 		order.add("descrizione");
-		List<TipoAtto> listaTipoAtto = tipoAttoDAO.findByPropertyOrdered("flagAttivo", "S", order);
-		return listaTipoAtto;
+		return tipoAttoDAO.findByPropertyOrdered("flagAttivo", "S", order);
 	}
+	
+	public List<TipoAtto> initTipoAtto4Tipologiche() {
+		List<String> order = new ArrayList<String>();
+		order.add("descrizione");
+		return tipoAttoDAO.findAll(order);
+	}
+	
+	public List<TipoAtto> recuperaTipoAttoByDescrizione(String descrizione) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("param", descrizione.toUpperCase());
+		String hql = "from TipoAtto u where upper(u.descrizione) = :param ";
+		return tipoAttoDAO.findByHqlQuery(hql, params);
+	}
+	
+	public List<TipoAtto> recuperaTipoAttoByoByCodice(String codice) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("param", codice.toUpperCase());
+		String hql = "from TipoAtto u where upper(u.codice) = :param ";
+		return tipoAttoDAO.findByHqlQuery(hql, params);
+	}
+	
 	
 	public Clob creaClob(String data) {
 		return statoDAO.createClob(data);
@@ -110,4 +155,5 @@ public class GestioneTipologicaFacade {
 		Integer id = (Integer) tipoProvvDaAdottareDAO.saveOrUpdate(tipoProvvDaAdottare);
 		return tipoProvvDaAdottareDAO.findById(id);
 	}
+	
 }

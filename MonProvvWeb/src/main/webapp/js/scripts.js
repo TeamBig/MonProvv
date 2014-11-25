@@ -1487,13 +1487,13 @@ function gestioneTipologiche(){
     	}
     });
 	
-	$(".deleteTipologica").click(function(){
+	$(".cambiaStatoTipologica").click(function(){
 		var retval;
 		var td = $(this);
-		bootbox.confirm("Sei sicuro di voler procedere con l'eliminazione la riga?", function(result) {
+		bootbox.confirm("Sei sicuro di voler procedere con il cambio dello stato della riga?", function(result) {
 			if(result){
 				var currentRowID = td.parent().find("td:eq(0)").html();    
-				var url = td.find("a#delete4risultatiRicerca_"+currentRowID).attr('href');   
+				var url = td.find("a#cambiaStato_"+currentRowID).attr('href');   
 				$(location).attr('href',url);
 			}
 		});
