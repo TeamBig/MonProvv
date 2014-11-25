@@ -557,7 +557,7 @@ public class GestioneProvvedimentoFacade {
 	public List<Organo> initOrgani() {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "N", order);
+		List<Organo> listaOrgani = organoDAO.findAttiviByFlagConcertante("N", order);
 		return listaOrgani;
 	}
 
@@ -815,7 +815,7 @@ public class GestioneProvvedimentoFacade {
 	public List<Organo> initProponente() {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
-		List<Organo> listaOrgani = organoDAO.findByPropertyOrdered("flagConcertante", "S", order);
+		List<Organo> listaOrgani = organoDAO.findAttiviByFlagConcertante("S", order);
 		return listaOrgani;
 	}
 } 
