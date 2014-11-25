@@ -1,31 +1,13 @@
 package it.tesoro.monprovv;
 
-import it.tesoro.monprovv.dto.ProvvedimentoStampaDto;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
-import it.tesoro.monprovv.model.Organo;
-import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.service.ReportService;
-import it.tesoro.monprovv.sicurezza.CustomUser;
-import it.tesoro.monprovv.utils.Constants;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.AntPathMatcher;

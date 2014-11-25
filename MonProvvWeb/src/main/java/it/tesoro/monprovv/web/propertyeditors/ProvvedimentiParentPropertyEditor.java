@@ -1,7 +1,6 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
-import it.tesoro.monprovv.model.ProvvedimentiParent;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.utils.StringUtils;
 

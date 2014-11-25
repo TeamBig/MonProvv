@@ -22,7 +22,6 @@ import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
-import it.tesoro.monprovv.model.Governo;
 import it.tesoro.monprovv.model.Nota;
 import it.tesoro.monprovv.model.Notifica;
 import it.tesoro.monprovv.model.Organo;
@@ -32,8 +31,6 @@ import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.RuoloUtente;
 import it.tesoro.monprovv.model.Stato;
 import it.tesoro.monprovv.model.Storico;
-import it.tesoro.monprovv.model.TipoAtto;
-import it.tesoro.monprovv.model.TipoProvvDaAdottare;
 import it.tesoro.monprovv.model.TipoProvvedimento;
 import it.tesoro.monprovv.model.Utente;
 import it.tesoro.monprovv.service.MailService;
@@ -107,13 +104,6 @@ public class GestioneProvvedimentoFacade {
 		searchPatternObjects.add(pattern);
 		List<Stato> listaStati = statoDAO.findByPattern(searchPatternObjects, 1, order);
 		return listaStati;
-	}
-	
-	public List<Governo> initGoverno(){
-		List<String> order = new ArrayList<String>();
-		order.add("denominazione");
-		List<Governo> listaGoverno = governoDAO.findAll(order);
-		return listaGoverno;
 	}
 	
 	
@@ -228,13 +218,6 @@ public class GestioneProvvedimentoFacade {
 		List<TipoProvvedimento> listaTipoProvvedimento = tipoProvvedimentoDAO.findAll(order);
 		return listaTipoProvvedimento;
 	}
-
-	public List<TipoProvvDaAdottare> initTipoProvvDaAdottare() {
-		List<String> order = new ArrayList<String>();
-		order.add("descrizione");
-		List<TipoProvvDaAdottare> listaTipoProvvedimento = tipoProvvDaAdottareDAO.findAll(order);
-		return listaTipoProvvedimento;
-	}
 	
 	public List<Provvedimento> initAllProvvedimenti(Integer page){
 		List<String> order = new ArrayList<String>();
@@ -280,13 +263,6 @@ public class GestioneProvvedimentoFacade {
 
 	public Integer countAllProvvedimenti() {
 		return provvedimentoDAO.countAll();
-	}
-	
-	public List<TipoAtto> initTipoAtto() {
-		List<String> order = new ArrayList<String>();
-		order.add("descrizione");
-		List<TipoAtto> listaTipoAtto = tipoAttoDAO.findAll(order);
-		return listaTipoAtto;
 	}
 
 	public Provvedimento aggiornaProvvedimento(Provvedimento provvedimento) {

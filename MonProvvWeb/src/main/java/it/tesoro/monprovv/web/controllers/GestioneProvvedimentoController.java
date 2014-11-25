@@ -14,6 +14,7 @@ import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
+import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Assegnazione;
@@ -95,6 +96,9 @@ public class GestioneProvvedimentoController {
 
 	@Autowired
 	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
+	
+	@Autowired
+	private GestioneTipologicaFacade gestioneTipologicaFacade;
 	
 	@Autowired 
 	private GestioneUtenteFacade gestioneUtenteFacade;
@@ -870,7 +874,7 @@ public class GestioneProvvedimentoController {
 	
 	@ModelAttribute("listaGoverno")
 	private List<Governo> initGoverno() {
-		return gestioneProvvedimentoFacade.initGoverno();
+		return gestioneTipologicaFacade.initGoverno();
 	}
 
 	@ModelAttribute("listaTipologia")
@@ -880,12 +884,12 @@ public class GestioneProvvedimentoController {
 	
 	@ModelAttribute("listaTipoProvvDaAdottare")
 	private List<TipoProvvDaAdottare> initTipoProvvDaAdottare() {
-		return gestioneProvvedimentoFacade.initTipoProvvDaAdottare();
+		return gestioneTipologicaFacade.initTipoProvvDaAdottare();
 	}
 	
 	@ModelAttribute("listaTipoAtto")
 	private List<TipoAtto> initTipoAtto() {
-		return gestioneProvvedimentoFacade.initTipoAtto();
+		return gestioneTipologicaFacade.initTipoAtto();
 	}
 	
 	@ModelAttribute("listaOrgani")

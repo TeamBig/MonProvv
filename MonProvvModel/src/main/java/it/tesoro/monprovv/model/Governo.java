@@ -29,6 +29,9 @@ public class Governo extends AbstractCommonEntity implements Serializable {
 	@Column(name = "DENOMINAZIONE", length = 240)
 	@NotNull
 	private String denominazione;
+	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
 
 	public Integer getId() {
 		return id;
@@ -44,6 +47,18 @@ public class Governo extends AbstractCommonEntity implements Serializable {
 
 	public void setDenominazione(String denominazione) {
 		this.denominazione = denominazione;
+	}
+
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
+	
+	public Governo(){
+		this.flagAttivo = "S";
 	}
 
 	@Override

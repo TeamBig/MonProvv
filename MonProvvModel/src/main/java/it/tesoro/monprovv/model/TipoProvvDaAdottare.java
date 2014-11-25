@@ -4,16 +4,22 @@ import it.tesoro.monprovv.model.common.AbstractCommonEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 @Table(name="TIPO_PROVV_DA_ADOTTARE")
 public class TipoProvvDaAdottare extends AbstractCommonEntity implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 3155052174053130863L;
-
+	
+	@GenericGenerator(name = "generator", strategy = "sequence-identity", parameters = @Parameter(name = "sequence", value = "SEQU_ID_TIPO_PROVV_DA_ADOTTARE"))
+	@GeneratedValue(generator = "generator")
 	@Id
 	@Column(name="ID_TIPO_PROVV_DA_ADOTTARE",unique=true, nullable=false)
 	private Integer id;
@@ -21,7 +27,14 @@ public class TipoProvvDaAdottare extends AbstractCommonEntity implements java.io
 	@Column(name = "DESCRIZIONE", length = 240)
 	@NotNull
 	private String descrizione;
+	
+	@Column(name="FLAG_ATTIVO", length=1)
+	private String flagAttivo;
 
+	public TipoProvvDaAdottare(){
+		this.flagAttivo = "S";
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -38,6 +51,14 @@ public class TipoProvvDaAdottare extends AbstractCommonEntity implements java.io
 		this.descrizione = descrizione;
 	}
 
+	public String getFlagAttivo() {
+		return flagAttivo;
+	}
+
+	public void setFlagAttivo(String flagAttivo) {
+		this.flagAttivo = flagAttivo;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -325,7 +325,7 @@
 									<a href="${urlModale}" role="button" data-toggle="modal" data-target="#modalCronologia"><i class="icon-time icon-large"></i></a>
 								</display:column>
 								<display:column title="${eliminaHeader}"  headerScope="col" headerClass="center" class="vcenter center">
-									<a href="javascript:void(0)" id="eliminaAssegnatario" ><i class="icon-trash icon-large" title="Elimina assegnazione"></i></i></a>
+									<a href="javascript:void(0)" id="eliminaAssegnatario" ><i class="icon-trash icon-large" title="Elimina assegnazione"></i></a>
 								</display:column>
 						</display:table>
 				</div>
