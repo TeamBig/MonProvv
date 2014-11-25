@@ -121,7 +121,7 @@
 							coinvolti</label>
 						<div class="controls">
 							<springform:select path="ammUfficiCoinvolti" id="ammUfficiCoinvolti" cssClass="input-xlarge multiselect" multiple="multiple">
-								<springform:options items="${listaProponente}" itemValue="id" itemLabel="denominazione" />
+								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
 							</springform:select>
 						</div>
 					</div>

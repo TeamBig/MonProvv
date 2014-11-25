@@ -820,7 +820,7 @@ function gestioneExportXls() {
 		
 		var input = $("<input type='hidden' name='exportXls' />");
 		
-		$("form").append(input).submit();
+		$("form#ricercaProvvedimenti").append(input).submit();
 		input.remove();
 	});
 }
