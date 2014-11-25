@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="springform"	uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 
 
@@ -14,7 +14,9 @@
 					class="table table-hover table-bordered"
 					summary="Elenco Allegati" style="width: 100%">
 
-		<display:column title="Data" property="dataOperazione" headerScope="col" />
+		<display:column title="Data" headerScope="col">
+			<fmt:formatDate value="${storico.dataOperazione}" pattern="dd/MM/yyyy" />
+		</display:column>
 		<display:column title="Operazione" headerScope="col" >
 			<c:out value="${storico.tipoOperazione} ${storico.tipoEntita}"></c:out>
 		</display:column>

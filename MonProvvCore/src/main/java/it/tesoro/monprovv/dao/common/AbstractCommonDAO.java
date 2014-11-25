@@ -546,6 +546,45 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<T> findByProperty(HashMap<String,Object> parametri, List<String> orderByParams) {
+		try {
+			Query query;
+			String queryString = "from " + nomeOggetto + " as model";
+
+			int cont = 0;
+
+			for(Map.Entry<String,Object> entry : parametri.entrySet())
+			{
+				cont++;
+				if(cont == 1)
+				{
+					queryString += " where model." + entry.getKey() + "= :"+entry.getKey();
+				}
+				else
+				{
+					queryString += " and model." + entry.getKey() + "= :"+entry.getKey();
+				}
+				
+			}
+			
+			queryString = addOrderBy(queryString, orderByParams);	
+			
+			query = currentSession().createQuery(queryString);
+			
+			for(Map.Entry<String,Object> entry : parametri.entrySet())
+			{
+				query.setParameter(entry.getKey(), entry.getValue());	
+			}
+			
+			return query.list();
+
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<T> findByProperty(List<SearchPatternUtil> parametri) {
 		try {
 			Query query;

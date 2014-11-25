@@ -181,7 +181,7 @@ public class GestioneUtenteFacade {
 	public List<IdDescrizioneDto> recuperaOrganiEsterni(String denominazione) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("denominazione", "%"+denominazione.toUpperCase()+"%");
-		String hql = "from Organo u where upper(u.denominazione) like :denominazione and u.unitaOrgAstage is null order by denominazione asc";
+		String hql = "from Organo u where upper(u.denominazione) like :denominazione and u.unitaOrgAstage is null and u.flagAttivo = 'S' order by denominazione asc";
 		List<Organo> organi = organoDAO.findByHqlQueryNumeroRecord(hql, params, 10);
 		List<IdDescrizioneDto> retval = new ArrayList<IdDescrizioneDto>();
 		for(Organo tmp: organi){
