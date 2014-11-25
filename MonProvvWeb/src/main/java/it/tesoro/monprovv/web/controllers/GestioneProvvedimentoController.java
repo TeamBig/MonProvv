@@ -361,7 +361,11 @@ public class GestioneProvvedimentoController {
 					mail.setContent(testo);
 					mail.setHtmlFormat(false);
 					
-					mailService.eseguiInvioMail(mail);
+					try {
+						mailService.eseguiInvioMail(mail);
+					} catch (Exception e) {
+						// TODO gestire eccezione invio mail
+					}
 					
 					criteria = new UtenteDto();
 					criteria.setEmail(indirizzo);

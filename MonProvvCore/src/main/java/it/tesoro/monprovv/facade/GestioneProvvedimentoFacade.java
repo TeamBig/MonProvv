@@ -683,7 +683,11 @@ public class GestioneProvvedimentoFacade {
 		mail.setHtmlFormat(false);
 		for( Utente tmp : assegnazione.getOrgano().getUtenteList() ){
 			mail.setDestinatario(tmp.getEmail());
-			mailService.eseguiInvioMail(mail);
+			try {
+				mailService.eseguiInvioMail(mail);
+			} catch (Exception e) {
+				// TODO gestire eccezione invio mail
+			}
 		}
 		
 		//Incremento il numero dei solleciti inviati
