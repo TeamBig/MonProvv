@@ -18,7 +18,7 @@
 	<security:authentication property="principal.utente.organo.denominazione" var="organo" />
 
 	<form action="${base}/j_spring_security_logout" method="post" style="margin-bottom: 0px;">
-		<span class="utente">${nome} ${cognome} (${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elencononlette">
+		<span class="utente">${nome} ${cognome} (Ruolo: ${ruolo}) - ${organo} - <a id="popoverNotifiche" href="${base}/private/notifiche/conteggio" title="Notifiche" data-url="${base}/private/notifiche/elencononlette">
 			<i class="icon-bell-alt"> 
 			<span class="icon-stack" id="notifBadge">
 				<i class="icon-circle icon-stack-base" ></i>

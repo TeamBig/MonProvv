@@ -28,7 +28,7 @@
 						<label class="control-label" for="tipoTipologica">${tipologicaHeader}</label>
 						<div class="controls">
 							<springform:select path="idSchelta" cssClass="input-xlarge" id="tipoTipologica">
-								<springform:option value="">&nbsp;</springform:option>
+								<springform:option value="">Selezionare una tipologica</springform:option>
 								<springform:options items="${sceltas}" itemLabel="descrizione" itemValue="id" />
 							</springform:select>
 						</div>
@@ -115,7 +115,7 @@
 	
 	<div id="modalNuovaTipologia" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header modal-header-tipologica">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&#215;</button>
 			<h3 id="myModalLabel"></h3>
 		</div>
 		<c:choose>
