@@ -57,7 +57,7 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	private String nome;
 	
 	@Transient
-	private String nominativo;
+	private String nominativoUtente;
 	
 	@Transient
 	private Ruolo ruolo;
@@ -97,6 +97,10 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")
 	private Date dataNascita;
+	
+	@Transient
+	private String dataNascitaHidden;
+	
 	
 	@Column(name="SESSO", length=1)
 	@NotEmpty
@@ -249,12 +253,12 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 		this.ruoloUtenteList = ruoloUtenteList;
 	}
 	
-	public String getNominativo() {
-		return nominativo;
+	public String getNominativoUtente() {
+		return nominativoUtente;
 	}
 
-	public void setNominativo(String nominativo) {
-		this.nominativo = nominativo;
+	public void setNominativoUtente(String nominativoUtente) {
+		this.nominativoUtente = nominativoUtente;
 	}
 	
 	
@@ -327,6 +331,14 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 
 	public void setAmministratore(boolean amministratore) {
 		this.amministratore = amministratore;
+	}
+
+	public String getDataNascitaHidden() {
+		return dataNascitaHidden;
+	}
+
+	public void setDataNascitaHidden(String dataNascitaHidden) {
+		this.dataNascitaHidden = dataNascitaHidden;
 	}
 
 	@Override

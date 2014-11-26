@@ -261,11 +261,11 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		if(StringUtils.isNotEmpty(utenteToEdit.getCodiceFiscale())){
 			Utente u = gestioneUtenteFacade.recuperaUtenteByCodiceFiscale(utenteToEdit.getCodiceFiscale());
 			if( u!=null ){
-				errors.rejectValue("codiceFiscale","generic.error.required" ,"E' gi\u00E0 presente un utente per il Codice Fiscale inserito");
+				errors.rejectValue("codiceFiscale","codice.fiscale.gia.presente" ,"E' gi\u00E0 presente un utente per il Codice Fiscale inserito");
 			}else if( "E".equals( utenteToEdit.getFlagIntEst() ) ){
 				UtenteAstage ua = gestioneUtenteFacade.recuperaUtenteAstageByCodiceFiscale(utenteToEdit.getCodiceFiscale());
 				if( ua!=null ){
-					errors.rejectValue("codiceFiscale","generic.error.required" ,"Il Codice Fiscale inserito corrisponde ad un utente interno");
+					errors.rejectValue("codiceFiscale","codice.fiscale.utente.interno" ,"Il Codice Fiscale inserito corrisponde ad un utente interno");
 				}
 			}
 		}

@@ -20,18 +20,18 @@ public class UtenteValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Utente utente = (Utente)target;
-		if(StringUtils.isEmpty( utente.getFlagIntEst() )){
-//			errors.rejectValue("flagIntEst","generic.error.required" ,"Attenzione: \u00E8 necessario selezionare il tipo di utente");
+		if(  StringUtils.isEmpty( utente.getId() ) && StringUtils.isEmpty( utente.getFlagIntEst() )){
+//			errors.rejectValue("flagIntEst","seleziona.tipo.utente" ,"Attenzione: \u00E8 necessario selezionare il tipo di utente");
 		}else{
 			
 			if("I".equals( utente.getFlagIntEst() )){
 				
 				if( utente.getId() == null ){
-					if(StringUtils.isEmpty(utente.getNominativo()))
-						errors.rejectValue("cognome","generic.error.required" ,"Il campo 'Nominativo' \u00E8 obbligatorio");
+					if(StringUtils.isEmpty(utente.getNominativoUtente()))
+						errors.rejectValue("nominativoUtente","nominativo.utente.obbligatorio" ,"Il campo 'Nominativo' \u00E8 obbligatorio");
 					else
 					if(StringUtils.isEmpty(utente.getUtenteAstage()))
-						errors.rejectValue("cognome","generic.error.required" ,"Il Nominativo inserito non \u00E8 valido");
+						errors.rejectValue("nominativoUtente","nominativo.utente.non.valido" ,"Il Nominativo inserito non \u00E8 valido");
 				}
 				
 				
@@ -55,21 +55,21 @@ public class UtenteValidator implements Validator {
 				
 			}
 			
-			if(StringUtils.isEmpty(utente.getDataNascita())){
-				errors.rejectValue("dataNascita","generic.error.required" ,"Il campo 'Data di nascita' \u00E8 obbligatorio");
-			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(utente.getDataNascita() ))){
-				errors.rejectValue("flagIntEst","generic.error.required" ,"Formato 'Data di nascita' non corretto");
-				utente.setDataNascita(null);
-			}
-				
-			
+		}
+		if(StringUtils.isEmpty(utente.getDataNascita())){
+			errors.rejectValue("dataNascitaHidden","data.nascita.obbligatoria" ,"Il campo 'Data di nascita' \u00E8 obbligatorio");
+		}else 		
+		if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(utente.getDataNascita() ))){
+			errors.rejectValue("dataNascitaHidden","formato.data.non.valido" ,"Formato 'Data di nascita' non corretto");
+			utente.setDataNascita(null);
 		}
 		
+		
 		if(StringUtils.isEmpty(utente.getOrgano()))
-			errors.rejectValue("organo","generic.error.required" ,"Il campo 'Organo' \u00E8 obbligatorio");
+			errors.rejectValue("organo","organo.obbligatorio" ,"Il campo 'Organo' \u00E8 obbligatorio");
 		
 		if(StringUtils.isEmpty(utente.getRuolo()))
-			errors.rejectValue("ruolo","generic.error.required" ,"Il campo 'Ruolo' \u00E8 obbligatorio");
+			errors.rejectValue("ruolo","ruolo.obbligatorio" ,"Il campo 'Ruolo' \u00E8 obbligatorio");
 	}
 
 }

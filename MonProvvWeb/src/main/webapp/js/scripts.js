@@ -376,7 +376,7 @@ function gestineInserimentoUtnete(){
     }
     
     function cleanUtente(){
-    	$('#nominativo').val('');
+    	$('#nominativoUtente').val('');
     	$('#cognome').val('');
     	$('#nome').val('');
     	$('#dataNascitaV').val('');
@@ -386,7 +386,7 @@ function gestineInserimentoUtnete(){
     	$('#email').val('');
     	$('#organoDenominazioneInterni').val('');
     	$('#organoUteEsterno').val('');
-    	$('#ruoloUtente').val('');	
+    	$('#ruolo').val('');	
     	$("#flgAmministratore").attr("checked", false);
     	$('#hiddenIdOrgano').val('');
     	$('#hiddenUtenteAstage').val('');
@@ -1500,5 +1500,4 @@ function gestioneTipologiche(){
 		return false;
 	});
 	
-
 }

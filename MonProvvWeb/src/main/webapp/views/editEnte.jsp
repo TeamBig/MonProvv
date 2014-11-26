@@ -30,15 +30,20 @@
 				</h3>
 
 				<div class="row">
+					<div class="offset0 text-left">
+						<p>&nbsp;(<sup id="n2">*</sup>) <em>Campi obbligatori</em></p>
+					</div>
 					<div class="span10 offset2 dettaglio">
+						<%-- 
 						<div class="control-group">
 							<span class="control-label">Id</span>
 							<div class="controls">
 								<span>${organoToEdit.id}</span>
 							</div>
-						</div>	
+						</div>
+						--%>	
 						<div class="control-group">
-							<label class="control-label" for="denominazione">${denominazioneHeader}</label>
+							<label class="control-label" for="denominazione">${denominazioneHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<span>
 									<c:if test="${not empty organoToEdit.unitaOrgAstage}">
@@ -48,6 +53,9 @@
 									<c:if test="${empty organoToEdit.unitaOrgAstage}">
 										<springform:input path="denominazione" cssClass="input-xlarge"/>
 									</c:if>
+									<springform:errors path="unitaOrgAstage" cssClass="text-error"></springform:errors>
+									<springform:errors path="denominazione" cssClass="text-error"></springform:errors>
+									
 								</span>
 							</div>
 						</div>	
@@ -68,9 +76,10 @@
 						</div>
 				
 						<div class="control-group">
-							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader}</label>
+							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<span class="form-inline"><springform:radiobuttons id="flagConcertante" path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+								<springform:errors path="flagConcertante" cssClass="text-error"></springform:errors>
 							</div>
 						</div>
 						

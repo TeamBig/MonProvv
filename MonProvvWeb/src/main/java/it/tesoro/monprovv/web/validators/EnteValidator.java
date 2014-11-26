@@ -22,25 +22,25 @@ public class EnteValidator implements Validator {
 		
 		
 		if(StringUtils.isEmpty( organo.getFlgInternoEsterno() )){
-			errors.rejectValue("flgInternoEsterno","generic.error.required" ,"Attenzione: \u00E8 necessario selezionare il tipo di Organo");
+			errors.rejectValue("flgInternoEsterno","interno.esterno.obbligatorio" ,"Attenzione: \u00E8 necessario selezionare il tipo di Organo");
 		}else{
 			
 			 if( "I".equals( organo.getFlgInternoEsterno() ) ) {
 				 //Interna
 				 if( organo.getUnitaOrgAstage() == null ){
-					errors.rejectValue("unitaOrgAstage","generic.error.required" ,"Attenzione: \u00E8 necessario selezionare un Organo Interno");
+					errors.rejectValue("unitaOrgAstage","organo.area.stage.obbligatorio" ,"Attenzione: \u00E8 necessario selezionare un Organo Interno");
 				}
 			 }else{
 				 //Esterna
 				 if( StringUtils.isEmpty( organo.getDenominazione() )){
-						errors.rejectValue("denominazione","generic.error.required" ,"Attenzione: \u00E8 necessario inserire una Denominazione");
+						errors.rejectValue("denominazione","denominazione.organo.esterno.obbiligatorio" ,"Attenzione: \u00E8 necessario inserire una Denominazione");
 				 }
 			 }
 			
 		}
 		
 		if( StringUtils.isEmpty( organo.getFlagConcertante() )){
-			errors.rejectValue("flagConcertante","generic.error.required" ,"Attenzione: \u00E8 necessario indicare se l'Organo è concertante o no");
+			errors.rejectValue("flagConcertante","flag.concertante.obbligatorio" ,"Attenzione: \u00E8 necessario indicare se l'Organo è concertante o no");
 		}
 		
 		

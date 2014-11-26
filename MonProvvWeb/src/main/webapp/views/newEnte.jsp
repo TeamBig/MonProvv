@@ -31,24 +31,28 @@
 				</h3>
 				
 				<div class="row">
+					<div class="offset0 text-left">
+						<p>&nbsp;(<sup id="n2">*</sup>) <em>Campi obbligatori</em></p>
+					</div>
 					<div class="span10 offset2 dettaglio">
-
 						<div class="control-group">
-							<label class="control-label" for="tipoNuovoOrgano">${enteTipoHeader}</label>
+							<label class="control-label" for="tipoNuovoOrgano">${enteTipoHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<springform:select path="flgInternoEsterno" cssClass="input-xlarge" id="tipoNuovoOrgano">
 									<springform:option value=""> </springform:option>
 									<springform:options items="${tipos}" itemLabel="descrizione" itemValue="codice" />
 								</springform:select>
+								<springform:errors path="flgInternoEsterno" cssClass="text-error"></springform:errors>
 							</div>
 						</div>
 						
 						<div class="control-group" id="listaOrganiInterniNuovoOrganoDiv">
-							<label class="control-label" for="autocompleteUo">${enteInternoHeader}</label>
+							<label class="control-label" for="autocompleteUo">${enteInternoHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<springform:input path="denominazioneAstage" id="autocompleteUo" cssClass="input-xlarge"/>
-								
+								<springform:errors path="denominazioneAstage" cssClass="text-error"></springform:errors>
 								<springform:hidden path="unitaOrgAstage" id="hiddenIdUo"/>
+								<springform:errors path="unitaOrgAstage" cssClass="text-error"></springform:errors>
 								<%--
 								<springform:select path="unitaOrgAstage" cssClass="input-xlarge" id="tipoNuovoOrgano">
 									<springform:option value=""></springform:option>
@@ -60,11 +64,12 @@
 						</div>
 						
 						<div class="control-group" id="denominazioneNuovoOrganoDiv">
-							<label class="control-label" for="denominazione">${denominazioneHeader}</label>
+							<label class="control-label" for="denominazione">${denominazioneHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<span>
 									<springform:input path="denominazione" id="denominazione" cssClass="input-xlarge"/>
 								</span>
+								<springform:errors path="denominazione" cssClass="text-error"></springform:errors>
 							</div>
 						</div>	
 						
@@ -78,9 +83,10 @@
 						</div>
 				
 						<div class="control-group">
-							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader}</label>
+							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<span class="form-inline"><springform:radiobuttons path="flagConcertante" id="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+								<springform:errors path="flagConcertante" cssClass="text-error"></springform:errors>
 							</div>
 						</div>
 						

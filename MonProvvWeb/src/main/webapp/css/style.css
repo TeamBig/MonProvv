@@ -433,3 +433,6 @@ a[id^="cambiaStato"] {
 a[id^="cambiaStato"]:hover {
 	text-decoration: none;
 }
+.offset0 {
+  margin-left: 10px;
+}
