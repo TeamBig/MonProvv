@@ -2,12 +2,15 @@ package it.tesoro.monprovv.web.controllers;
 
 import java.net.InetAddress;
 
+import javax.servlet.http.HttpServletRequest;
+
 import it.tesoro.monprovv.dto.Mail;
 import it.tesoro.monprovv.facade.TestFacade;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.service.MailService;
 import it.tesoro.monprovv.web.utils.AlertUtils;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,14 +89,27 @@ public class TestController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/private/testmail", method = RequestMethod.GET, produces = "text/html")
+	@RequestMapping(value = "/public/testmail", method = RequestMethod.GET, produces = "text/html")
 	@ResponseBody
-	public String testmail(@RequestParam("to") String to) throws Exception {
+	public String testmail(@RequestParam("to") String to, HttpServletRequest request) throws Exception {
 
 		StringBuffer sb = new StringBuffer();
 		
 		String nodo = System.getProperty("weblogic.Name");
 		String hostname = InetAddress.getLocalHost().getHostName();
+		
+		smtpServer = StringUtils.isNotBlank(request.getParameter("smtpServer")) ? request.getParameter("smtpServer") : smtpServer; 
+		smtpPort = StringUtils.isNotBlank(request.getParameter("smtpPort")) ? request.getParameter("smtpPort") : smtpPort;
+		smtpUser = StringUtils.isNotBlank(request.getParameter("smtpUser")) ? request.getParameter("smtpUser") : smtpUser;
+		smtpPassword = StringUtils.isNotBlank(request.getParameter("smtpPassword")) ? request.getParameter("smtpPassword") : smtpPassword;
+		smtpAuthReq = StringUtils.isNotBlank(request.getParameter("smtpAuthReq")) ? request.getParameter("smtpAuthReq") : smtpAuthReq;
+		
+		mailService.setSmtpServer(smtpServer);
+		mailService.setSmtpPort(smtpPort);
+		mailService.setSmtpUser(smtpUser);
+		mailService.setSmtpPassword(smtpPassword);
+		mailService.setSmtpAuthReq(smtpAuthReq);
+		
 		
 		sb.append("<html><body><pre>");
 		sb.append("Nodo: " + nodo + "\n");
@@ -102,6 +118,9 @@ public class TestController {
 		sb.append("Username: " + smtpUser + "\n");
 		sb.append("Password: " + smtpPassword + "\n");
 		sb.append("AuthReq: " + smtpAuthReq + "\n");
+		sb.append("To: " + to + "\n");
+		
+		
 		
 		try {
 			Mail mail = new Mail();
@@ -111,7 +130,11 @@ public class TestController {
 			mail.setHtmlFormat(false);
 			
 			mailService.eseguiInvioMail(mail);
+			
+			sb.append("\n\nInvio email effettuato con successo.\n");
 		} catch (Exception e) {
+			
+			sb.append("\n\nERRORE\n");
 			sb.append(ExceptionUtils.getFullStackTrace(e));
 		}
 		
