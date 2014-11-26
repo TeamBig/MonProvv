@@ -58,10 +58,10 @@
 									<a href="${deletePath}?id=${governo.id}" id="cambiaStato_${governo.id}" >
 										<c:choose>
 											<c:when test="${ governo.flagAttivo eq 'S' }">
-												<i class="icon-check-empty icon-large gray" title="Disattiva Governo"></i>
+												<i class="icon-check icon-large gray" title="Disattiva Governo"></i>
 											</c:when>
 											<c:otherwise>
-												<i class="icon-check icon-large gray" title="Attiva Governo"></i>
+												<i class="icon-check-empty icon-large gray" title="Attiva Governo"></i>
 											</c:otherwise>
 										</c:choose>
 									</a>
@@ -92,10 +92,10 @@
 											<a href="${deletePath}?id=${tipoAtto.id}" id="cambiaStato_${tipoAtto.id}" >
 												<c:choose>
 													<c:when test="${ tipoAtto.flagAttivo eq 'S' }">
-														<i class="icon-check-empty icon-large gray" title="Disattiva Tipo Atto"></i>
+														<i class="icon-check icon-large gray" title="Disattiva Tipo Atto"></i>
 													</c:when>
 													<c:otherwise>
-														<i class="icon-check icon-large gray" title="Attiva Tipo Atto"></i>
+														<i class="icon-check-empty icon-large gray" title="Attiva Tipo Atto"></i>
 													</c:otherwise>
 												</c:choose>
 											</a>
