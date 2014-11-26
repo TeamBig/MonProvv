@@ -154,12 +154,15 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&#215;</button>
 			<h3 id="myModalLabel"></h3>
 		</div>
+		<div class="offset0 text-left">
+			<p>&nbsp;(<sup id="n2">*</sup>) <em>Campi obbligatori</em></p>
+		</div>
 		<c:choose>
 			<c:when test="${gestioneTipologiche.idSchelta == 1}">	
 				<div class="modal-body">
 					<div class="form-horizontal">
 						<div class="control-group">
-							<label class="control-label" for="denominazioneGoverno">Governo</label>
+							<label class="control-label" for="denominazioneGoverno">Governo <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<input type="hidden" class="input-xlarge" id="idGoverno"></input>
 								<input type="text" class="input-xlarge" id="denominazioneGoverno"></input>
@@ -172,14 +175,14 @@
 				<div class="modal-body">
 					<div class="form-horizontal">
 						<div class="control-group">
-							<label class="control-label" for="codice">Codice</label>
+							<label class="control-label" for="codice">Codice <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<input type="hidden" class="input-xlarge" id="idTipoAtto"></input>
 								<input type="text" class="input-xlarge" id="codiceTipoAtto"></input>
 							</div>
 						</div>
 						<div class="control-group">
-							<label class="control-label" for="descrizione">Descrizione</label>
+							<label class="control-label" for="descrizione">Descrizione <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<input type="text" class="input-xlarge" id="descrizioneTipoAtto"></input>
 							</div>
@@ -191,7 +194,7 @@
 				<div class="modal-body">
 					<div class="form-horizontal">
 						<div class="control-group">
-							<label class="control-label" for="descrizione">Descrizione</label>
+							<label class="control-label" for="descrizione">Descrizione <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<input type="hidden" class="input-xlarge" id="idTipoProv"></input>
 								<input type="text" class="input-xlarge" id="descrizioneTipoProv"></input>

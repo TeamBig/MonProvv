@@ -425,3 +425,6 @@ NOTIFICHE
 .icon-calendar{
 	cursor: pointer;
 }
+.offset0 {
+  margin-left: 10px;
+}
