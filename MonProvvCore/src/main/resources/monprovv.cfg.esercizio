@@ -25,7 +25,7 @@ email.on=S
 email.from.address=amministrazione@tesoro.it
 email.from.name=AMMINISTRATORE DI MONITORAGGIO PROVVEDIMENTI
 
-#EMAIL COLLAUDO
+#EMAIL ESERCIZIO
 email.smtp.server=efeso.tesoro.it
 email.smtp.port=25
 email.smtp.user=comuincarichi 

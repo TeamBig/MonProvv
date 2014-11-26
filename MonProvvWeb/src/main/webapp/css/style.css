@@ -425,6 +425,14 @@ NOTIFICHE
 .icon-calendar{
 	cursor: pointer;
 }
+
+a[id^="cambiaStato"] {
+	text-decoration: none;
+}
+
+a[id^="cambiaStato"]:hover {
+	text-decoration: none;
+}
 .offset0 {
   margin-left: 10px;
 }
