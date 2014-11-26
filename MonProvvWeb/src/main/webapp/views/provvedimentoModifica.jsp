@@ -87,6 +87,7 @@
 							<label class="control-label" for="tipoAtto">${tipoAttoHeader}</label>
 							<div class="controls">
 								<springform:select path="tipoAtto" id="tipoAtto" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
 									<springform:options items="${listaTipoAtto}" itemValue="id" itemLabel="descrizione" />
 								</springform:select>
 							</div>
