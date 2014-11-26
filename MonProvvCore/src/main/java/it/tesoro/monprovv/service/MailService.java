@@ -2,7 +2,6 @@ package it.tesoro.monprovv.service;
 
 
 import it.tesoro.monprovv.dto.Mail;
-import it.tesoro.monprovv.dto.MailAuthenticator;
 import it.tesoro.monprovv.exception.MailException;
 
 import java.io.UnsupportedEncodingException;
@@ -56,10 +55,11 @@ public class MailService {
 		try {
 			if (emailSwitch.equalsIgnoreCase("S")) {
 				Properties props = new Properties();
-				props.put("mail.smtp.user", smtpUser);
-				props.put("mail.smtp.host", smtpServer);
-				props.put("mail.smtp.port", smtpPort);
+
 				props.put("mail.smtp.auth", smtpAuthReq);
+				props.put("mail.smtp.ssl.enable", false);
+				props.put("mail.smtp.starttls.enable", false);
+				
 				if (mail.isHtmlFormat()) {
 					sendEmailHtml(mail,props);
 				} else {
@@ -74,20 +74,27 @@ public class MailService {
 		
 	}
 
-	private void sendEmail(Mail mail,Properties props) throws MessagingException, UnsupportedEncodingException {
+	private void sendEmail(Mail mail, Properties props) throws MessagingException, UnsupportedEncodingException {
 
-		Session session = Session.getInstance(props, new MailAuthenticator(smtpUser, smtpPassword));
+		Session session = Session.getInstance(props, null);
+		session.setDebug(true);
 		MimeMessage msg = new MimeMessage(session);
 		msg.setText(mail.getContent());
 		msg.setSubject(mail.getSubject());
 		msg.setFrom(new InternetAddress(emailFromAddress, emailFromName));
 		msg.addRecipient(Message.RecipientType.TO, new InternetAddress(mail.getDestinatario()));
-		Transport.send(msg);
+		msg.saveChanges();
+		
+		// invio 
+		Transport transport = session.getTransport("smtp");
+		transport.connect(smtpServer, Integer.parseInt(smtpPort), smtpUser, smtpPassword);
+        transport.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+        transport.close();
 	}
 
-	private void sendEmailHtml(Mail mail,Properties props) throws MessagingException, UnsupportedEncodingException {
+	private void sendEmailHtml(Mail mail, Properties props) throws MessagingException, UnsupportedEncodingException {
 
-		Session session = Session.getInstance(props, new MailAuthenticator(smtpUser, smtpPassword));
+		Session session = Session.getInstance(props, null);
 		MimeMessage msg = new MimeMessage(session);
 		msg.setSubject(mail.getSubject());
 		msg.setFrom(new InternetAddress(emailFromAddress, emailFromName));
@@ -99,7 +106,12 @@ public class MailService {
 		multipart.addBodyPart(messageBodyPart);
 		msg.setContent(multipart);
 		msg.saveChanges();
-		Transport.send(msg);
+		
+		// invio 
+		Transport transport = session.getTransport("smtp");
+		transport.connect(smtpServer, Integer.parseInt(smtpPort), smtpUser, smtpPassword);
+		transport.sendMessage(msg, msg.getRecipients(Message.RecipientType.TO));
+        transport.close();
 	}
 
 	public String getSmtpServer() {
