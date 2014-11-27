@@ -128,16 +128,17 @@
 								</div>
 							</div>
 							
-							<div class="control-group">
-								<label class="control-label" for="ruoloUtente">${ruoloHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
-										<springform:option value=""></springform:option>
-										<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
-									</springform:select>
-									<springform:errors path="ruolo" cssClass="text-error"></springform:errors>
+							<spring:bind path="ruolo" >
+								<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+									<springform:label path="ruolo" cssClass="control-label" cssErrorClass="control-label text-error" for="ruoloUtente">${ruoloHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
+											<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
+										</springform:select>
+										<springform:errors path="ruolo" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>
+							</spring:bind>
 							
 							<div class="control-group">
 								<label class="control-label" for="flgAmministratore">${amministratoreHeader}</label>
@@ -177,96 +178,110 @@
 								</div>
 							</div>		
 							
-							<div class="control-group" >
-								<label class="control-label" for="cognome">${cognomeHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:input path="cognome" id="cognome" cssClass="input-xlarge"/>
-									</span>
-									<springform:errors path="cognome" cssClass="text-error"></springform:errors>
-								</div>
-							</div>
 							
-							<div class="control-group" >
-								<label class="control-label" for="nome">${nomeHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:input path="nome" id="nome" cssClass="input-xlarge"/>
-									</span>
-									<springform:errors path="nome" cssClass="text-error"></springform:errors>
+							<spring:bind path="cognome" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+								<springform:label path="cognome" cssClass="control-label" cssErrorClass="control-label text-error" for="cognome">${cognomeHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:input path="cognome" id="cognome" cssClass="input-xlarge"/>
+										</span>
+										<springform:errors path="cognome" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>
+							</spring:bind>
 							
-							<div class="control-group" >
-								<label class="control-label" for="dataNascitaV">${datanascitaHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:input path="dataNascita" id="dataNascitaV" cssClass="input-xlarge dataValid"/>&nbsp;<i class="icon-calendar icon-large" id="dataNascita"></i>
-									</span>
-									<springform:hidden path="dataNascitaHidden" id="dataNascitaHidden" />
-									<springform:errors path="dataNascitaHidden" cssClass="text-error"></springform:errors>
+							<spring:bind path="nome" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+								<springform:label path="nome" cssClass="control-label" cssErrorClass="control-label text-error" for="nome">${nomeHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:input path="nome" id="nome" cssClass="input-xlarge"/>
+										</span>
+										<springform:errors path="nome" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>
+							</spring:bind>
 							
-							<div class="control-group" >
-								<label class="control-label" for="sesso">${sessoHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:select path="sesso" cssClass="input-xlarge" id="sesso">
-											<springform:options items="${sessos}" itemLabel="descrizione" itemValue="codice" />
-										</springform:select>
-									</span>
-									<springform:errors path="sesso" cssClass="text-error"></springform:errors>
+							<spring:bind path="dataNascitaHidden" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+								<springform:label path="dataNascitaHidden" cssClass="control-label" cssErrorClass="control-label text-error" for="dataNascitaV">${datanascitaHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:input path="dataNascita" id="dataNascitaV" cssClass="input-xlarge dataValid"/>&nbsp;<i class="icon-calendar icon-large" id="dataNascita"></i>
+										</span>
+										<springform:hidden path="dataNascitaHidden" id="dataNascitaHidden" />
+										<springform:errors path="dataNascitaHidden" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>
+							</spring:bind>
 							
-							<div class="control-group" >
-								<label class="control-label" for="codiceFiscale">${cfHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:input path="codiceFiscale" id="codiceFiscale" cssClass="input-xlarge"/>
-									</span>
-									<springform:errors path="codiceFiscale" cssClass="text-error"></springform:errors>
+							<spring:bind path="sesso" >
+								<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+									<springform:label path="sesso" cssClass="control-label" cssErrorClass="control-label text-error" for="sesso">${sessoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:select path="sesso" cssClass="input-xlarge" id="sesso">
+												<springform:options items="${sessos}" itemLabel="descrizione" itemValue="codice" />
+											</springform:select>
+										</span>
+										<springform:errors path="sesso" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>
+							</spring:bind>
 							
-							<div class="control-group" >	
-								<label class="control-label" for="email">${emailHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:input path="email" id="email" cssClass="input-xlarge"/>
-									</span>
-									<springform:errors path="email" cssClass="text-error"></springform:errors>
+							<spring:bind path="codiceFiscale" >
+								<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+									<springform:label path="codiceFiscale" cssClass="control-label" cssErrorClass="control-label text-error" for="codiceFiscale">${cfHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:input path="codiceFiscale" id="codiceFiscale" cssClass="input-xlarge"/>
+										</span>
+										<springform:errors path="codiceFiscale" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>					
+							</spring:bind>
 							
-							<div class="control-group" >	
-								<label class="control-label" for="organoUteEsterno">${enteHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<%-- 
-										<springform:input path="organoDenominazione" id="organoDenominazioneEst" cssClass="input-xlarge"/>
-										--%>
-										<springform:select path="organoUteEsterno" id="organoUteEsterno" cssClass="input-xlarge">
-											<springform:options items="${organiEsterni}" itemLabel="descrizione" itemValue="id" />
-										</springform:select>
+							<spring:bind path="email" >
+								<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+									<springform:label path="email" cssClass="control-label" cssErrorClass="control-label text-error" for="email">${emailHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:input path="email" id="email" cssClass="input-xlarge"/>
+										</span>
+										<springform:errors path="email" cssClass="text-error help-inline"></springform:errors>
+									</div>
+								</div>	
+							</spring:bind>				
+							
+							<spring:bind path="organo" >
+								<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+									<springform:label path="organo" cssClass="control-label" cssErrorClass="control-label text-error" for="organoUteEsterno">${enteHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
+										<span>
+											<springform:select path="organoUteEsterno" id="organoUteEsterno" cssClass="input-xlarge">
+												<springform:options items="${organiEsterni}" itemLabel="descrizione" itemValue="id" />
+											</springform:select>
+										</span>
+										<springform:errors path="organo" cssClass="text-error help-inline"></springform:errors>
+									</div>
+								</div>
+							</spring:bind>
+							
+							<spring:bind path="ruolo" >
+								<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" >
+									<springform:label path="ruolo" cssClass="control-label" cssErrorClass="control-label text-error" for="ruoloUtente">${ruoloHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+									<div class="controls">
 										
-									</span>
-									<springform:errors path="organo" cssClass="text-error"></springform:errors>
+										<span>
+											<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
+												<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
+											</springform:select>
+										</span>
+										<springform:errors path="ruolo" cssClass="text-error help-inline"></springform:errors>
+									</div>
 								</div>
-							</div>
-							
-							<div class="control-group">
-								<label class="control-label" for="ruoloUtente">${ruoloHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-								<div class="controls">
-									<span>
-										<springform:select path="ruolo" cssClass="input-xlarge" id="ruoloUtente">
-											<springform:options items="${ruoli}" itemLabel="descrizione" itemValue="id" />
-										</springform:select>
-									</span>
-									<springform:errors path="organoUteEsterno" cssClass="text-error"></springform:errors>
-								</div>
-							</div>
+							</spring:bind>
 							
 							<div class="control-group">
 								<label class="control-label" for="flgAmministratore">${amministratoreHeader}</label>

@@ -511,6 +511,16 @@ function gestineInserimentoUtnete(){
 	});
 	/************** FINE FORMATTAZIONE DATA****************/
 
+	/************** CAMPO NUMERICO ****************/
+	$(".numberValid").on('keypress', 
+			function() {
+		if(window.event.keyCode>=48 && window.event.keyCode<=57){
+			return true;
+		}else{
+			return false;
+		}
+	});
+	/************** FINE CAMPO NUMERICO ****************/
 
     /****** GESTIONE PROVVEDIMENTO ******/
 
@@ -525,70 +535,71 @@ function gestineInserimentoUtnete(){
 	$('.progress').hide();
 	
 	$("button#allegatoInserisci").click(function(){
-		
-		var progress = $('.progress');
-		var bar = $('.bar');
-		var percent = $('.percent');
-		
-		var url =  "modifica/inserisciAllegato";
-		if (detectIE()) {
+		if($("#allegatoProvvedimento").val()!=''){
 			
-			var token = $("meta[name='_csrf']").attr("content");
+			var progress = $('.progress');
+			var bar = $('.bar');
+			var percent = $('.percent');
 			
-			url += "?_csrf=" + token;
-		}
-		
-		 $('#allegatoForm').ajaxForm({
-			 dataType: 'text',   
-			 contentType: "multipart/form-data",
-			 url: url,
-			 beforeSend: function(xhr) {
-				 var token = $("meta[name='_csrf']").attr("content");
-				 var header = $("meta[name='_csrf_header']").attr("content");
-				 xhr.setRequestHeader(header, token);
-			 },
-			 beforeSubmit: function() {
-		        	$("#allegatoProvvedimento").attr('disabled','disabled');
-		        	$("#descrizioneAllegato").attr('disabled','disabled');
-		        	$("button#allegatoInserisci").attr('disabled','disabled');
-		        	
-		        	progress.show();
-		        	var percentVal = '0%';
-			        bar.width(percentVal)
-			        percent.html(percentVal);
-		        },
-			    uploadProgress: function(event, position, total, percentComplete) {
-			        var percentVal = percentComplete + '%';
-			       
-			        bar.removeAttr('style');
-			        bar.attr('style', 'width: ' + percentVal + ';');
-			        
-			        if( percentComplete == '100' )
-			        	percentVal = 'Elaborazione in corso...';
-			        percent.html(percentVal);
-			    },
-			    success: function(data) {
+			var url =  "modifica/inserisciAllegato";
+			if (detectIE()) {
+				
+				var token = $("meta[name='_csrf']").attr("content");
+				
+				url += "?_csrf=" + token;
+			}
+			
+			$('#allegatoForm').ajaxForm({
+				 dataType: 'text',   
+				 contentType: "multipart/form-data",
+				 url: url,
+				 beforeSend: function(xhr) {
+					 var token = $("meta[name='_csrf']").attr("content");
+					 var header = $("meta[name='_csrf_header']").attr("content");
+					 xhr.setRequestHeader(header, token);
+				 },
+				 beforeSubmit: function() {
+			        	$("#allegatoProvvedimento").attr('disabled','disabled');
+			        	$("#descrizioneAllegato").attr('disabled','disabled');
+			        	$("button#allegatoInserisci").attr('disabled','disabled');
+			        	
+			        	progress.show();
+			        	var percentVal = '0%';
+				        bar.width(percentVal)
+				        percent.html(percentVal);
+			        },
+				    uploadProgress: function(event, position, total, percentComplete) {
+				        var percentVal = percentComplete + '%';
+				       
+				        bar.removeAttr('style');
+				        bar.attr('style', 'width: ' + percentVal + ';');
+				        
+				        if( percentComplete == '100' )
+				        	percentVal = 'Elaborazione in corso...';
+				        percent.html(percentVal);
+				    },
+				    success: function(data) {
 
-			        progress.hide();
-			        bar.removeAttr('style');
-			        bar.attr('style', 'width: 0%;');
-		        },
-		        complete: function(data) {
-					
-		        	responseText = $.parseJSON(data.responseText);
-		        	
-		        	addRowAllegato(responseText);
-					addAllegatiUpdList(responseText.id);
-					
-					$("button#allegatoInserisci").removeAttr('disabled');
-		        	$("#allegatoProvvedimento").removeAttr('disabled');
-		        	$("#descrizioneAllegato").removeAttr('disabled');
-			        
-					resetFormAllegati();
-					
-		        }
-		    }).submit(); 
-		
+				        progress.hide();
+				        bar.removeAttr('style');
+				        bar.attr('style', 'width: 0%;');
+			        },
+			        complete: function(data) {
+						
+			        	responseText = $.parseJSON(data.responseText);
+			        	
+			        	addRowAllegato(responseText);
+						addAllegatiUpdList(responseText.id);
+						
+						$("button#allegatoInserisci").removeAttr('disabled');
+			        	$("#allegatoProvvedimento").removeAttr('disabled');
+			        	$("#descrizioneAllegato").removeAttr('disabled');
+				        
+						resetFormAllegati();
+						
+			        }
+			    }).submit(); 
+		}		
 	});
 	
 	function addAllegatiUpdList(id){

@@ -38,65 +38,110 @@
 				<h3 class="text-left underline"><span><c:out value="${titolo}" /></span></h3>
 			</div>
 		</div>
+		
 		<springform:form action="${formPath}" modelAttribute="provvedimentoInserisci" name="provvedimentoInserisci" cssClass="form-horizontal" method="POST" enctype="multipart/form-data">
+		
 		<springform:hidden path="collNormattiva" id="collNormattiva" cssClass="input-xxlarge" />
 		<springform:hidden path="currentStep" name="currentStep"/>
 		<springform:hidden path="stepSuccessivo" name="stepSuccessivo"/>
 		<c:if test="${currentStep eq 1}">
 		<!-- STEP 1  -->
 			<div class="row">
+				<div class="offset0 text-left">
+					<p>&nbsp;(<sup id="n2">*</sup>) <em>Campi obbligatori</em></p>
+				</div>
 				<div class="span10 offset2">
-					<div class="control-group">
-						<springform:label path="tipoGoverno" cssClass="control-label" for="governo"><spring:message code="label.tipoGoverno"/></springform:label>
-						<div class="controls">
-							<springform:select path="tipoGoverno" id="governo" cssClass="input-xlarge" >
-								<springform:option value="">Sceglierne uno...</springform:option>
-								<springform:options items="${listaGoverno}" itemValue="id" itemLabel="denominazione" />
-							</springform:select>
+				
+					<spring:bind path="provvedimentoInserisci.tipoGoverno" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="tipoGoverno" cssClass="control-label" cssErrorClass="control-label text-error" for="governo"><spring:message code="label.tipoGoverno"/> <sup style="font-weight: normal!important">(*)</sup></springform:label>
+							<div class="controls">
+								<springform:select path="tipoGoverno" id="governo" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
+									<springform:options items="${listaGoverno}" itemValue="id" itemLabel="denominazione" />
+								</springform:select>
+								<springform:errors path="tipoGoverno" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<springform:label path="tipologia" cssClass="control-label" for="tipologia"><spring:message code="label.tipologia"/></springform:label>
-						<div class="controls">
-							<springform:select path="tipologia" id="tipologia" cssClass="input-xlarge" >
-								<springform:option value="">Sceglierne uno...</springform:option>
-								<springform:options items="${listaTipologia}" itemValue="id" itemLabel="descrizione" />
-							</springform:select>
+					</spring:bind>
+					
+					<spring:bind path="provvedimentoInserisci.tipologia" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="tipologia" cssClass="control-label" cssErrorClass="control-label text-error" for="tipologia"><spring:message code="label.tipologia"/> <sup style="font-weight: normal!important">(*)</sup></springform:label>
+							<div class="controls">
+								<springform:select path="tipologia" id="tipologia" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
+									<springform:options items="${listaTipologia}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
+								<springform:errors path="tipologia" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="tipoAtto">${tipoAttoHeader}</label>
-						<div class="controls">
-							<springform:select path="tipoAtto" id="tipoAtto" cssClass="input-xlarge" >
-								<springform:option value="">Sceglierne uno...</springform:option>
-								<springform:options items="${listaTipoAtto}" itemValue="id" itemLabel="descrizione" />
-							</springform:select>
+					</spring:bind>
+					
+					<spring:bind path="provvedimentoInserisci.tipoAtto" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="tipoAtto" cssClass="control-label" cssErrorClass="control-label text-error" for="tipoAtto">${tipoAttoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+							<div class="controls">
+								<springform:select path="tipoAtto" id="tipoAtto" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
+									<springform:options items="${listaTipoAtto}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
+								<springform:errors path="tipoAtto" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="dataAtto" >${dataAttoHeader}</label>
+					</spring:bind>
+			
+					<c:set value="OK" var="erroreInDataAtto"  />
+					<spring:bind path="provvedimentoInserisci.dataAtto" >
+						<c:if test="${(not empty status.errorMessage)}">
+							<c:set value="ERRORE" var="erroreInDataAtto" />
+						</c:if>
+					</spring:bind>
+					<spring:bind path="provvedimentoInserisci.appoDataFormat4dataAtto" >
+						<c:if test="${(not empty status.errorMessage)}">
+							<c:set value="ERRORE" var="erroreInDataAtto" />
+						</c:if>
+					</spring:bind>
+					
+					<div class="control-group ${('ERRORE' == erroreInDataAtto) ? ' error':''}">
+						<springform:label path="dataAtto" cssClass="control-label ${('ERRORE' == erroreInDataAtto) ? ' text-error':''}" cssErrorClass="control-label text-error" for="dataAtto">${dataAttoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>	
 						<div class="controls">
 							<springform:input type="text" id="dataAttoV" path="dataAtto" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
+							<springform:errors path="dataAtto" cssClass="text-error help-inline"></springform:errors>
+							<springform:errors path="appoDataFormat4dataAtto" cssClass="text-error help-inline"></springform:errors>
 						</div>
 					</div>
-					<div class="control-group">
-						<label class="control-label" for="numeroAtto" >${numeroAttoHeader}</label>
-						<div class="controls">
-							<springform:input path="numeroAtto" id="numeroAtto" cssClass="input-small"/>
+					
+					<spring:bind path="provvedimentoInserisci.numeroAtto" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="numeroAtto" cssClass="control-label" cssErrorClass="control-label text-error" for="numeroAtto">${numeroAttoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>							
+							<div class="controls">
+								<springform:input path="numeroAtto" id="numeroAtto" cssClass="input-small numberValid"/>
+								<springform:errors path="numeroAtto" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="art">Art.</label>
-						<div class="controls">
-							<springform:input path="art" cssClass="input-small"/>
+					</spring:bind>
+					
+					<spring:bind path="provvedimentoInserisci.art" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="art" cssClass="control-label" cssErrorClass="control-label text-error" for="art">Art. <sup style="font-weight: normal!important">(*)</sup></springform:label>							
+							<div class="controls">	
+								<springform:input path="art" cssClass="input-small"/>
+								<springform:errors path="art" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="comma">Comma</label>
-						<div class="controls">
-							<springform:input path="comma" cssClass="input-small"/>
+					</spring:bind>
+					
+					<spring:bind path="provvedimentoInserisci.comma" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="comma" cssClass="control-label" cssErrorClass="control-label text-error" for="comma">Comma <sup style="font-weight: normal!important">(*)</sup></springform:label>							
+							<div class="controls">	
+								<springform:input path="comma" cssClass="input-small"/>
+								<springform:errors path="comma" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
+					</spring:bind>
+					
 					<div class="control-group">
 						<%-- <label class="control-label" for="collNormattiva">${collNormattivaHeader}</label> --%>
 						<span class="control-label" >${collNormattivaHeader}</span>
@@ -104,35 +149,43 @@
 							<span id="linkNormattivaSpan"></span>
 						</div>
 					</div>
-					<div class="control-group">
-						<springform:label path="tipoProvvDaAdottare" cssClass="control-label" for="tipoProvvDaAdottare"><spring:message code="label.provvDaAdottare"/></springform:label>
-						<div class="controls">
-							<springform:select path="tipoProvvDaAdottare" id="tipoProvvDaAdottare" cssClass="input-xlarge" >
-								<springform:option value="">Sceglierne uno...</springform:option>
-								<springform:options items="${listaTipoProvvDaAdottare}" itemValue="id" itemLabel="descrizione" />
-							</springform:select>
-						</div>
-					</div>
- 					<div class="control-group">
-						<label class="control-label" for="titoloOggetto">Titolo / Oggetto</label>
-						<div class="controls">
-							<springform:textarea path="titoloOggetto" class="input-xlarge" id="parere" cols="30" rows="4" />
-						</div>
-					</div>
 					
-					
-					<div class="control-group">
-						<label class="control-label" for="dp1v">Termine di
-							scadenza</label>
-						<div class="controls form-inline">
-							<springform:input type="text" id="dp1v" path="dtTermineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>&nbsp;
-							<button type="button" class="btn" id="plus30">+ 30 gg</button>&nbsp;
-							<button type="button" class="btn" id="plus60">+ 60 gg</button>&nbsp;
-							<button type="button" class="btn" id="plus90">+ 90 gg</button>&nbsp;
-							<button type="button" class="btn" id="plus120">+ 120 gg</button>
+					<spring:bind path="provvedimentoInserisci.tipoProvvDaAdottare" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="tipoProvvDaAdottare" cssClass="control-label" cssErrorClass="control-label text-error" for="tipoProvvDaAdottare"><spring:message code="label.provvDaAdottare"/> <sup style="font-weight: normal!important">(*)</sup></springform:label>							
+							<div class="controls">	
+								<springform:select path="tipoProvvDaAdottare" id="tipoProvvDaAdottare" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
+									<springform:options items="${listaTipoProvvDaAdottare}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
+								<springform:errors path="tipoProvvDaAdottare" cssClass="text-error help-inline"></springform:errors>
+							</div>
 						</div>
-					</div>
+					</spring:bind>
 					
+					<spring:bind path="provvedimentoInserisci.titoloOggetto" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="titoloOggetto" cssClass="control-label" cssErrorClass="control-label text-error" for="titoloOggetto">Titolo / Oggetto <sup style="font-weight: normal!important">(*)</sup></springform:label>							
+							<div class="controls">
+								<springform:textarea path="titoloOggetto" class="input-xlarge" id="parere" cols="30" rows="4" />
+								<springform:errors path="titoloOggetto" cssClass="text-error help-inline"></springform:errors>
+							</div>
+						</div>
+					</spring:bind>	
+					
+					<spring:bind path="provvedimentoInserisci.appoDataFormat4dtTermineScadenza" >
+						<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+							<springform:label path="dtTermineScadenza" cssClass="control-label" cssErrorClass="control-label text-error" for="dp1v">Termine di scadenza</springform:label>							
+							<div class="controls form-inline">
+								<springform:input type="text" id="dp1v" path="dtTermineScadenza" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dp1"></i>&nbsp;
+								<button type="button" class="btn" id="plus30">+ 30 gg</button>&nbsp;
+								<button type="button" class="btn" id="plus60">+ 60 gg</button>&nbsp;
+								<button type="button" class="btn" id="plus90">+ 90 gg</button>&nbsp;
+								<button type="button" class="btn" id="plus120">+ 120 gg</button>
+								<springform:errors path="appoDataFormat4dtTermineScadenza" cssClass="text-error help-inline"></springform:errors>
+							</div>
+						</div>
+					</spring:bind>
 					
 					<div class="control-group">
 						<label class="control-label" for="senzaTermine">Senza termine</label>

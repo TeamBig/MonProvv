@@ -71,7 +71,8 @@ public class InserisciProvvedimentoDto {
 	private List<Provvedimento> listaProvvedimenti;
 	private String[] provvedimentiSelected;
 	private String noteInterne;
-	private String appoDataFormat;
+	private String appoDataFormat4dataAtto;
+	private String appoDataFormat4dtTermineScadenza;
 	private boolean senzaTermine;
 
 	public Stato getStatoDiAttuazione() {
@@ -282,12 +283,21 @@ public class InserisciProvvedimentoDto {
 		this.noteInterne = noteInterne;
 	}
 
-	public String getAppoDataFormat() {
-		return appoDataFormat;
+	public String getAppoDataFormat4dataAtto() {
+		return appoDataFormat4dataAtto;
 	}
 
-	public void setAppoDataFormat(String appoDataFormat) {
-		this.appoDataFormat = appoDataFormat;
+	public void setAppoDataFormat4dataAtto(String appoDataFormat4dataAtto) {
+		this.appoDataFormat4dataAtto = appoDataFormat4dataAtto;
+	}
+
+	public String getAppoDataFormat4dtTermineScadenza() {
+		return appoDataFormat4dtTermineScadenza;
+	}
+
+	public void setAppoDataFormat4dtTermineScadenza(
+			String appoDataFormat4dtTermineScadenza) {
+		this.appoDataFormat4dtTermineScadenza = appoDataFormat4dtTermineScadenza;
 	}
 
 	public boolean isSenzaTermine() {

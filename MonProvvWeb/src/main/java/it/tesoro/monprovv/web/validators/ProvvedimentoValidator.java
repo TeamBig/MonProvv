@@ -24,88 +24,88 @@ public class ProvvedimentoValidator implements Validator {
 		if (target instanceof InserisciProvvedimentoDto) {
 			InserisciProvvedimentoDto provv = (InserisciProvvedimentoDto) target;
 			if (StringUtils.isEmpty(provv.getTipoGoverno())) {
-				errors.rejectValue("tipoGoverno", "generic.error.required",
+				errors.rejectValue("tipoGoverno", "tipoGoverno.error.required",
 						"Attenzione: \u00E8 necessario selezionare il governo");
 			}
 			if (StringUtils.isEmpty(provv.getTipologia())) {
-				errors.rejectValue("tipologia", "generic.error.required",
+				errors.rejectValue("tipologia", "tipologia.error.required",
 						"Attenzione: \u00E8 necessario selezionare la tipologia");
 			}
 			if (StringUtils.isEmpty(provv.getTipoAtto())) {
-				errors.rejectValue("tipoAtto", "generic.error.required",
+				errors.rejectValue("tipoAtto", "tipoAtto.error.required",
 						"Attenzione: \u00E8 necessario selezionare il tipo atto");
 			}
 			if (StringUtils.isEmpty(provv.getDataAtto())) {
-				errors.rejectValue("dataAtto", "generic.error.required",
+				errors.rejectValue("dataAtto", "dataAtto.error.required",
 						"Attenzione: \u00E8 necessario selezionare data atto");
 			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDataAtto()))){
-				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Data atto' non corretto");
+				errors.rejectValue("appoDataFormat4dataAtto","appoDataFormat.error.required" ,"Attenzione: formato 'Data atto' non corretto");
 				provv.setDataAtto(null);
 			}
 			if (StringUtils.isEmpty(provv.getNumeroAtto())) {
-				errors.rejectValue("numeroAtto", "generic.error.required",
+				errors.rejectValue("numeroAtto", "numeroAtto.error.required",
 						"Attenzione: \u00E8 necessario selezionare numero atto");
 			}
 			if (StringUtils.isEmpty(provv.getArt())) {
-				errors.rejectValue("art", "generic.error.required",
+				errors.rejectValue("art", "art.error.required",
 						"Attenzione: \u00E8 necessario selezionare l'articolo");
 			}
 			if (StringUtils.isEmpty(provv.getComma())) {
-				errors.rejectValue("comma", "generic.error.required",
-						"Attenzione: \u00E8 necessario selezionare il comma");
+				errors.rejectValue("comma", "comma.error.required",
+						"Attenzione: \u00E8 comma selezionare il comma");
 			}
 			if (StringUtils.isEmpty(provv.getTipoProvvDaAdottare())) {
-				errors.rejectValue("tipoProvvDaAdottare", "generic.error.required",
+				errors.rejectValue("tipoProvvDaAdottare", "tipoProvvDaAdottare.error.required",
 						"Attenzione: \u00E8 necessario selezionare il provvedimento da adottare");
 			}
 			if (StringUtils.isEmpty(provv.getTitoloOggetto())) {
-				errors.rejectValue("titoloOggetto", "generic.error.required",
+				errors.rejectValue("titoloOggetto", "titoloOggetto.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
 			if (StringUtils.isNotEmpty(provv.getDtTermineScadenza()) && "01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDtTermineScadenza()))){
-				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
+				errors.rejectValue("appoDataFormat4dtTermineScadenza","appoDataFormat.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
 				provv.setDtTermineScadenza(null);
 			}
 		}
 		if (target instanceof Provvedimento) {
 			Provvedimento provv = (Provvedimento) target;
 			if (StringUtils.isEmpty(provv.getGoverno())) {
-				errors.rejectValue("tipoGoverno", "generic.error.required",
+				errors.rejectValue("governo", "governo.error.required",
 						"Attenzione: \u00E8 necessario selezionare il governo");
 			}
 			if (StringUtils.isEmpty(provv.getTipoProvvedimento())) {
-				errors.rejectValue("tipologia", "generic.error.required",
+				errors.rejectValue("tipoProvvedimento", "tipoProvvedimento.error.required",
 						"Attenzione: \u00E8 necessario selezionare la tipologia");
 			}
 			if (StringUtils.isEmpty(provv.getTipoAtto())) {
-				errors.rejectValue("tipoAtto", "generic.error.required",
+				errors.rejectValue("tipoAtto", "tipoAtto.error.required",
 						"Attenzione: \u00E8 necessario selezionare il tipo atto");
 			}
 			if (StringUtils.isEmpty(provv.getDataAtto())) {
-				errors.rejectValue("dataAtto", "generic.error.required",
+				errors.rejectValue("dataAtto", "dataAtto.error.required",
 						"Attenzione: \u00E8 necessario selezionare data atto");
 			}else if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getDataAtto()))){
-				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Data atto' non corretto");
+				errors.rejectValue("appoDataFormat4dataAtto","appoDataFormat.error.required" ,"Attenzione: formato 'Data atto' non corretto");
 				provv.setDataAtto(null);
 			}
 			if (StringUtils.isEmpty(provv.getNumeroAtto())) {
-				errors.rejectValue("numeroAtto", "generic.error.required",
+				errors.rejectValue("numeroAtto", "numeroAtto.error.required",
 						"Attenzione: \u00E8 necessario selezionare numero atto");
 			}
 			if (StringUtils.isEmpty(provv.getArticolo())) {
-				errors.rejectValue("art", "generic.error.required",
+				errors.rejectValue("articolo", "articolo.error.required",
 						"Attenzione: \u00E8 necessario selezionare l'articolo");
 			}
 			if (StringUtils.isEmpty(provv.getComma())) {
-				errors.rejectValue("comma", "generic.error.required",
+				errors.rejectValue("comma", "comma.error.required",
 						"Attenzione: \u00E8 necessario selezionare il comma");
 			}
 			if (StringUtils.isEmpty(provv.getTipoProvvDaAdottare())) {
-				errors.rejectValue("tipoProvvDaAdottare", "generic.error.required",
+				errors.rejectValue("tipoProvvDaAdottare", "tipoProvvDaAdottare.error.required",
 						"Attenzione: \u00E8 necessario selezionare il provvedimento da adottare");
 			}
 			if (StringUtils.isEmpty(provv.getOggetto())) {
-				errors.rejectValue("titoloOggetto", "generic.error.required",
+				errors.rejectValue("oggetto", "oggetto.error.required",
 						"Attenzione: \u00E8 necessario selezionare il titolo / oggetto");
 			}
 			
@@ -114,7 +114,7 @@ public class ProvvedimentoValidator implements Validator {
 			}
 			
 			if (StringUtils.isNotEmpty(provv.getTermineScadenza()) && "01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(provv.getTermineScadenza()))){
-				errors.rejectValue("appoDataFormat","generic.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
+				errors.rejectValue("appoDataFormat4dtTermineScadenza","appoDataFormat.error.required" ,"Attenzione: formato 'Termine Scadenza' non corretto");
 				provv.setTermineScadenza(null);
 			}
 			
