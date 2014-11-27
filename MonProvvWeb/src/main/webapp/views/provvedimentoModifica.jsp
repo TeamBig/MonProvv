@@ -97,6 +97,7 @@
 								<span>${provvedimentoDettaglio.fonteNormativa}</span>
 								<springform:input path="fonteNormativa" id="fonteNormativa" cssClass="input-xlarge"/>
 							</div>
+<<<<<<< HEAD
 						</div> 
 						--%>
 						
@@ -110,6 +111,16 @@
 									</springform:select>
 									<springform:errors path="tipoAtto" cssClass="text-error help-inline"></springform:errors>
 								</div>
+=======
+						</div> --%>
+						<div class="control-group">
+							<label class="control-label" for="tipoAtto">${tipoAttoHeader}</label>
+							<div class="controls">
+								<springform:select path="tipoAtto" id="tipoAtto" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
+									<springform:options items="${listaTipoAtto}" itemValue="id" itemLabel="descrizione" />
+								</springform:select>
+>>>>>>> branch 'master' of https://github.com/TeamBig/MonProvv
 							</div>
 						</spring:bind>
 						
