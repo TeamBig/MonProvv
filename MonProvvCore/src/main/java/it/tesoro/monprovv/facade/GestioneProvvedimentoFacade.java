@@ -98,7 +98,7 @@ public class GestioneProvvedimentoFacade {
 	
 	public List<Stato> initStato(){
 		List<String> order = new ArrayList<String>();
-		order.add("id");
+		order.add("id desc");
 		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
 		SearchPatternUtil pattern = new SearchPatternUtil("tipo","P",true,true);
 		searchPatternObjects.add(pattern);
@@ -109,7 +109,7 @@ public class GestioneProvvedimentoFacade {
 	
 	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page) {
 		List<String> order = new ArrayList<String>();
-		order.add("id");
+		order.add("id desc");
 		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
 		searchPatternObjects = getCriteriRicercaList(provvDto);
 		return provvedimentoDAO.findByPattern(searchPatternObjects, page, order);

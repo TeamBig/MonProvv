@@ -35,43 +35,53 @@
 						<p>&nbsp;(<sup id="n2">*</sup>) <em>Campi obbligatori</em></p>
 					</div>
 					<div class="span10 offset2 dettaglio">
-						<div class="control-group">
-							<label class="control-label" for="tipoNuovoOrgano">${enteTipoHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-							<div class="controls">
-								<springform:select path="flgInternoEsterno" cssClass="input-xlarge" id="tipoNuovoOrgano">
-									<springform:option value=""> </springform:option>
-									<springform:options items="${tipos}" itemLabel="descrizione" itemValue="codice" />
-								</springform:select>
-								<springform:errors path="flgInternoEsterno" cssClass="text-error"></springform:errors>
-							</div>
-						</div>
 						
-						<div class="control-group" id="listaOrganiInterniNuovoOrganoDiv">
-							<label class="control-label" for="autocompleteUo">${enteInternoHeader} <sup style="font-weight: normal!important">(*)</sup></label>
+						<spring:bind path="flgInternoEsterno" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+								<springform:label path="flgInternoEsterno" cssClass="control-label" cssErrorClass="control-label text-error" for="tipoNuovoOrgano">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+								<div class="controls">
+									<springform:select path="flgInternoEsterno" cssClass="input-xlarge" id="tipoNuovoOrgano">
+										<springform:option value="">Sceglierne uno...</springform:option>
+										<springform:options items="${tipos}" itemLabel="descrizione" itemValue="codice" />
+									</springform:select>
+									<springform:errors path="flgInternoEsterno" cssClass="text-error help-inline"></springform:errors>
+								</div>
+							</div>
+						</spring:bind>
+						
+						<c:set value="OK" var="errore"  />
+						<spring:bind path="unitaOrgAstage" >
+							<c:if test="${(not empty status.errorMessage)}">
+								<c:set value="ERRORE" var="errore" />
+							</c:if>
+						</spring:bind>
+						<spring:bind path="denominazioneAstage" >
+							<c:if test="${(not empty status.errorMessage)}">
+								<c:set value="ERRORE" var="errore" />
+							</c:if>
+						</spring:bind>
+
+						<div class="control-group ${('ERRORE' == errore) ? ' error':''}" id="listaOrganiInterniNuovoOrganoDiv">
+							<label class="control-label ${('ERRORE' == errore) ? ' text-error':''}" for="autocompleteUo">${enteInternoHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<springform:input path="denominazioneAstage" id="autocompleteUo" cssClass="input-xlarge"/>
-								<springform:errors path="denominazioneAstage" cssClass="text-error"></springform:errors>
+								<springform:errors path="denominazioneAstage" cssClass="text-error help-inline"></springform:errors>
 								<springform:hidden path="unitaOrgAstage" id="hiddenIdUo"/>
-								<springform:errors path="unitaOrgAstage" cssClass="text-error"></springform:errors>
-								<%--
-								<springform:select path="unitaOrgAstage" cssClass="input-xlarge" id="tipoNuovoOrgano">
-									<springform:option value=""></springform:option>
-									<springform:options items="${organiInterni}" itemLabel="nome" itemValue="id" />
-								</springform:select>
-								--%>
-								
+								<springform:errors path="unitaOrgAstage" cssClass="text-error help-inline"></springform:errors>
 							</div>
 						</div>
 						
-						<div class="control-group" id="denominazioneNuovoOrganoDiv">
-							<label class="control-label" for="denominazione">${denominazioneHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-							<div class="controls">
-								<span>
-									<springform:input path="denominazione" id="denominazione" cssClass="input-xlarge"/>
-								</span>
-								<springform:errors path="denominazione" cssClass="text-error"></springform:errors>
-							</div>
-						</div>	
+						<spring:bind path="denominazione" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}" id="denominazioneNuovoOrganoDiv">
+								<springform:label path="denominazione" cssClass="control-label" cssErrorClass="control-label text-error" for="denominazione">${denominazioneHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+								<div class="controls">
+									<span>
+										<springform:input path="denominazione" id="denominazione" cssClass="input-xlarge"/>
+									</span>
+									<springform:errors path="denominazione" cssClass="text-error help-inline"></springform:errors>
+								</div>
+							</div>	
+						</spring:bind>
 						
 						<div class="control-group" id="denominazioneEstesaNuovoOrganoDiv">
 							<label class="control-label" for="denominazioneEstesa">${denominazioneEstesaHeader}</label>
@@ -81,14 +91,16 @@
 								</span>
 							</div>
 						</div>
-				
-						<div class="control-group">
-							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-							<div class="controls">
-								<span class="form-inline"><springform:radiobuttons path="flagConcertante" id="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
-								<springform:errors path="flagConcertante" cssClass="text-error"></springform:errors>
+						
+						<spring:bind path="flagConcertante" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+								<springform:label path="flagConcertante" cssClass="control-label" cssErrorClass="control-label text-error" for="flagConcertante1">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+								<div class="controls">
+									<span class="form-inline"><springform:radiobuttons id="flagConcertante" path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+									<springform:errors path="flagConcertante" cssClass="text-error help-inline"></springform:errors>
+								</div>
 							</div>
-						</div>
+						</spring:bind>
 						
 					</div>
 				</div>

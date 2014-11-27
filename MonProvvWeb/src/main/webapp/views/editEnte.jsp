@@ -42,8 +42,21 @@
 							</div>
 						</div>
 						--%>	
-						<div class="control-group">
-							<label class="control-label" for="denominazione">${denominazioneHeader} <sup style="font-weight: normal!important">(*)</sup></label>
+						
+						<c:set value="OK" var="errore"  />
+						<spring:bind path="unitaOrgAstage" >
+							<c:if test="${(not empty status.errorMessage)}">
+								<c:set value="ERRORE" var="errore" />
+							</c:if>
+						</spring:bind>
+						<spring:bind path="denominazione" >
+							<c:if test="${(not empty status.errorMessage)}">
+								<c:set value="ERRORE" var="errore" />
+							</c:if>
+						</spring:bind>
+					
+						<div class="control-group ${('ERRORE' == errore) ? ' error':''}">
+							<label class="control-label ${('ERRORE' == errore) ? ' text-error':''}" for="denominazione">${denominazioneHeader} <sup style="font-weight: normal!important">(*)</sup></label>
 							<div class="controls">
 								<span>
 									<c:if test="${not empty organoToEdit.unitaOrgAstage}">
@@ -53,8 +66,9 @@
 									<c:if test="${empty organoToEdit.unitaOrgAstage}">
 										<springform:input path="denominazione" cssClass="input-xlarge"/>
 									</c:if>
-									<springform:errors path="unitaOrgAstage" cssClass="text-error"></springform:errors>
-									<springform:errors path="denominazione" cssClass="text-error"></springform:errors>
+									
+									<springform:errors path="unitaOrgAstage" cssClass="text-error help-inline"></springform:errors>
+									<springform:errors path="denominazione" cssClass="text-error help-inline"></springform:errors>
 									
 								</span>
 							</div>
@@ -74,14 +88,16 @@
 								</span>
 							</div>
 						</div>
-				
-						<div class="control-group">
-							<label class="control-label" for="flagConcertante1">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></label>
-							<div class="controls">
-								<span class="form-inline"><springform:radiobuttons id="flagConcertante" path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
-								<springform:errors path="flagConcertante" cssClass="text-error"></springform:errors>
+					
+						<spring:bind path="flagConcertante" >
+							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
+								<springform:label path="flagConcertante" cssClass="control-label" cssErrorClass="control-label text-error" for="flagConcertante1">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+								<div class="controls">
+									<span class="form-inline"><springform:radiobuttons id="flagConcertante" path="flagConcertante" items="${cdDto}" itemValue="codice" itemLabel="descrizione"/></span>
+									<springform:errors path="flagConcertante" cssClass="text-error help-inline"></springform:errors>
+								</div>
 							</div>
-						</div>
+						</spring:bind>
 						
 						<div class="control-group">
 							<span class="control-label">${enteTipoHeader}</span>

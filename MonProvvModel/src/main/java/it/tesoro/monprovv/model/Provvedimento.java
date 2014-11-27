@@ -194,7 +194,10 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	private String motivazioneRifiuto;
 	
 	@Transient
-	private String appoDataFormat;
+	private String appoDataFormat4dataAtto;
+	
+	@Transient
+	private String appoDataFormat4dtTermineScadenza;
 
 	@Transient
 	public String getOggettoAsText() throws IOException, SQLException {
@@ -502,12 +505,23 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.senzaTermine = senzaTermine;//this.flgSenzaTermine = (senzaTermine)?"S":"N";
 	}
 
-	public String getAppoDataFormat() {
-		return appoDataFormat;
+	
+
+	public String getAppoDataFormat4dataAtto() {
+		return appoDataFormat4dataAtto;
 	}
 
-	public void setAppoDataFormat(String appoDataFormat) {
-		this.appoDataFormat = appoDataFormat;
+	public void setAppoDataFormat4dataAtto(String appoDataFormat4dataAtto) {
+		this.appoDataFormat4dataAtto = appoDataFormat4dataAtto;
+	}
+
+	public String getAppoDataFormat4dtTermineScadenza() {
+		return appoDataFormat4dtTermineScadenza;
+	}
+
+	public void setAppoDataFormat4dtTermineScadenza(
+			String appoDataFormat4dtTermineScadenza) {
+		this.appoDataFormat4dtTermineScadenza = appoDataFormat4dtTermineScadenza;
 	}
 
 	@Override
