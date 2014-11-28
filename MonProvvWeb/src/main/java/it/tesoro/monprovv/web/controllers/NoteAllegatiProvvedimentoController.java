@@ -188,7 +188,7 @@ public class NoteAllegatiProvvedimentoController {
 				break;
 			}
 		}
-		stor.setIdUtenteOperazione(principal.getUtente());
+		stor.setUtenteOperazione(principal.getUtente());
 		stor.setDataOperazione(new Date());
 
 		return stor;
@@ -214,7 +214,7 @@ public class NoteAllegatiProvvedimentoController {
 				break;
 			}
 		}
-		stor.setIdUtenteOperazione(principal.getUtente());
+		stor.setUtenteOperazione(principal.getUtente());
 		stor.setDataOperazione(new Date());
 
 		return stor;

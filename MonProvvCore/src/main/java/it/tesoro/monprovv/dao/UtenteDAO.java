@@ -13,8 +13,8 @@ import org.springframework.util.CollectionUtils;
 @Component("utenteDAO")
 public class UtenteDAO extends AbstractCommonDAO<Utente> {
 
-	public Utente findByCodiceFiscale(String codiceFiscale) {
-		String hql = "from Utente u where u.codiceFiscale = :codiceFiscale and flagAttivo = 'S' ";
+	public Utente findAttivoByCodiceFiscale(String codiceFiscale) {
+		String hql = "from Utente u where u.codiceFiscale = :codiceFiscale and flagAttivo = 'S' and u.organo.flagAttivo = 'S' ";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("codiceFiscale", codiceFiscale);
 		

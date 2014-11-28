@@ -52,7 +52,7 @@ public class Storico extends AbstractCommonEntity implements java.io.Serializabl
 	@JoinColumn(name = "ID_UTENTE_OPERAZIONE", referencedColumnName = "ID_UTENTE")
 	@Valid
 	@NotNull
-	private Utente idUtenteOperazione;
+	private Utente utenteOperazione;
 
 	@Column(name = "DATA_OPERAZIONE")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -91,12 +91,12 @@ public class Storico extends AbstractCommonEntity implements java.io.Serializabl
 		this.idEntita = idEntita;
 	}
 
-	public Utente getIdUtenteOperazione() {
-		return idUtenteOperazione;
+	public Utente getUtenteOperazione() {
+		return utenteOperazione;
 	}
 
-	public void setIdUtenteOperazione(Utente idUtenteOperazione) {
-		this.idUtenteOperazione = idUtenteOperazione;
+	public void setUtenteOperazione(Utente utenteOperazione) {
+		this.utenteOperazione = utenteOperazione;
 	}
 
 	public Date getDataOperazione() {
