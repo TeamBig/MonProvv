@@ -221,7 +221,7 @@
 									      	<i class="icon-check " title="Assegnazione presa in carico"></i>
 									      </c:when>
 									      <c:when test="${assegnazione.stato.codice eq 'FLA'}">
-									      	<i class="icon-thumbs-up-alt icon-large" title="Fine lavorazione"></i>
+									      	<i class="icon-smile icon-large text-green" title="Fine lavorazione"></i>
 									      </c:when>
 										  <c:when test="${assegnazione.stato.codice eq 'RIF'}">
 									      	<i class="icon-remove-sign " title="Assegnazione rifiutata"></i>

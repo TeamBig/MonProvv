@@ -69,6 +69,7 @@ public class MailService {
 				logger.debug("Funzione Invio mail disattivata");
 			}
 		} catch (Exception e) {
+			logger.error(e);
 			throw new MailException(e);
 		}
 		

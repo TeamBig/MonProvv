@@ -141,6 +141,21 @@
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>1.5.2</version>
 	</dependency>	
-
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>3.10.1</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>
+		<version>3.10.1</version>
+		<exclusions>
+			<exclusion>
+				<groupId>xml-apis</groupId>
+				<artifactId>xml-apis</artifactId>
+			</exclusion>
+		</exclusions> 
+	</dependency>
   </dependencies>
 </project>

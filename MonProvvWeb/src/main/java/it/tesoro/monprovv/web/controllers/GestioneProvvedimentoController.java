@@ -12,6 +12,7 @@ import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.dto.SalvaENotificaDto;
 import it.tesoro.monprovv.dto.SollecitoDto;
 import it.tesoro.monprovv.dto.UtenteDto;
+import it.tesoro.monprovv.exception.MailException;
 import it.tesoro.monprovv.facade.GestioneNotificaFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
@@ -247,13 +248,17 @@ public class GestioneProvvedimentoController {
 		caricaTabelleInferiore(model, provvRec);
 		
 		if( StringUtils.isEmpty(provvedimentoDettaglio.getOggettoSollecito()) || StringUtils.isEmpty(provvedimentoDettaglio.getTestoSollecito()) ){
-			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Sollecito non inviato, inserire sia l'oggetto che il testo del sollecito.", false);
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Sollecito non inviato, inserire sia l'oggetto che il testo del sollecito", false);
 		}else{
 			SollecitoDto sollecitoDto = new SollecitoDto(provvedimentoDettaglio.getOggettoSollecito(), provvedimentoDettaglio.getTestoSollecito(), provvedimentoDettaglio.getIdAssegnatarioSollecito());
-			gestioneProvvedimentoFacade.inserisciInviaSolleciti( sollecitoDto );
+			try {
+				gestioneProvvedimentoFacade.inserisciInviaSolleciti( sollecitoDto );
+			} catch (MailException me) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Errore nell'invio mail", false);
+			}
 		}
 		
-		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo.", false);
+		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo", false);
 		
 		return "provvedimentoDettaglio";
 		
@@ -363,8 +368,9 @@ public class GestioneProvvedimentoController {
 					
 					try {
 						mailService.eseguiInvioMail(mail);
-					} catch (Exception e) {
-						// TODO gestire eccezione invio mail
+					} catch (MailException e) {
+						alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_ERROR, "Errore nell'invio mail", false);
+						return "redirect:/private/provvedimenti/ricerca";
 					}
 					
 					criteria = new UtenteDto();
@@ -383,7 +389,7 @@ public class GestioneProvvedimentoController {
 
 		alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Salvataggio e Notifica effettuati con successo.", false);
 		
-		return "redirect:/private/provvedimenti/ricerca";//"provvedimentoDettaglio";
+		return "redirect:/private/provvedimenti/ricerca";
 	}
 	
 	@RequestMapping(value={"/private/provvedimenti/ricerca/dettaglio/salvaeinvianotifica"}, method = RequestMethod.GET)
