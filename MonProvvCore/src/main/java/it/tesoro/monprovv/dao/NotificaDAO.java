@@ -2,6 +2,7 @@ package it.tesoro.monprovv.dao;
 
 import it.tesoro.monprovv.dao.common.AbstractCommonDAO;
 import it.tesoro.monprovv.model.Notifica;
+import it.tesoro.monprovv.model.Ruolo;
 import it.tesoro.monprovv.model.Utente;
 
 import java.util.HashMap;
@@ -20,6 +21,12 @@ public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 		
 		String hql = HQL_NOTIFICHE_PER_UTENTE + " and n.flagLettura = 'N'";
 		
+		// escludo le notifiche operative
+		if (	(utente.getRuoloPrincipale() != null) 
+			&& (Ruolo.ROLE_LETTORE.equals(utente.getRuoloPrincipale().getCodice()) || Ruolo.ROLE_CONSULTANTE.equals(utente.getRuoloPrincipale().getCodice()) )  ) {
+			hql += " and n.tipoNotifica = 'I'";
+		}
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("idUtenteDestinatario", utente.getId());
 		params.put("idOrganoDestinatario", utente.getOrgano().getId());
@@ -32,6 +39,12 @@ public class NotificaDAO extends AbstractCommonDAO<Notifica> {
 		String hql = "select n " + HQL_NOTIFICHE_PER_UTENTE;
 		if (soloNonLette) {
 			hql += " and n.flagLettura = 'N'";
+		}
+		
+		// escludo le notifiche operative
+		if (	(utente.getRuoloPrincipale() != null) 
+			&& (Ruolo.ROLE_LETTORE.equals(utente.getRuoloPrincipale().getCodice()) || Ruolo.ROLE_CONSULTANTE.equals(utente.getRuoloPrincipale().getCodice()) )  ) {
+			hql += " and n.tipoNotifica = 'I'";
 		}
 		
 		hql += " order by n.dataInserimento desc";

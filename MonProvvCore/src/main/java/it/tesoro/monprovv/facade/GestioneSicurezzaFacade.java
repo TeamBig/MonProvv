@@ -126,7 +126,7 @@ public class GestioneSicurezzaFacade {
 	
 	public Utente recuperaUtentePerCF(String codiceFiscale) {
 		
-		return utenteDAO.findByCodiceFiscale(codiceFiscale);
+		return utenteDAO.findAttivoByCodiceFiscale(codiceFiscale);
 	}
 	
 	

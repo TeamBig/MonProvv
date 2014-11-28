@@ -745,5 +745,10 @@ public abstract class AbstractCommonDAO <T extends AbstractCommonEntity> {
 		return Hibernate.createClob(data);
 		//return Hibernate.getLobCreator(sessionFactory.getCurrentSession()).createClob(data);
 	}
+	
+	public int executeQuery(String hql) {
+		Query query = currentSession().createQuery(hql);
+		return query.executeUpdate();
+	}
 }
 	

@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,8 @@ import org.springframework.util.StringUtils;
 
 @Component("gestioneProvvedimentoFacade")
 public class GestioneProvvedimentoFacade {
+	
+	protected static Logger logger = Logger.getLogger(GestioneProvvedimentoFacade.class);
 	
 	@Autowired
 	private ProvvedimentoDAO provvedimentoDAO;
@@ -681,12 +684,11 @@ public class GestioneProvvedimentoFacade {
 		mail.setSubject(sollecitoDto.getOggettoSollecito());
 		mail.setContent(sollecitoDto.getTestoSollecito());
 		mail.setHtmlFormat(false);
-		for( Utente tmp : assegnazione.getOrgano().getUtenteList() ){
-			mail.setDestinatario(tmp.getEmail());
-			try {
+		for( Utente utenteDestinatario : assegnazione.getOrgano().getUtenteList() ){
+			
+			if (!utenteDestinatario.isLettoreConsultante()) {
+				mail.setDestinatario(utenteDestinatario.getEmail());
 				mailService.eseguiInvioMail(mail);
-			} catch (Exception e) {
-				// TODO gestire eccezione invio mail
 			}
 		}
 		

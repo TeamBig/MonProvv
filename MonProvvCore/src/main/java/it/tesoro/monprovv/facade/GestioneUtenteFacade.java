@@ -273,7 +273,7 @@ public class GestioneUtenteFacade {
 	}
 	
 	public Utente recuperaUtenteByCodiceFiscale(String codiceFiscale) {
-		return utenteDAO.findByCodiceFiscale(codiceFiscale);
+		return utenteDAO.findAttivoByCodiceFiscale(codiceFiscale);
 	}
 	
 	public UtenteAstage recuperaUtenteAstageByCodiceFiscale(String codiceFiscale) {

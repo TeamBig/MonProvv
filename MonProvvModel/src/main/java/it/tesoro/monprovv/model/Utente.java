@@ -340,7 +340,32 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	public void setDataNascitaHidden(String dataNascitaHidden) {
 		this.dataNascitaHidden = dataNascitaHidden;
 	}
-
+	
+	public Ruolo getRuoloPrincipale() {
+		if (ruoloUtenteList != null) {
+			for (RuoloUtente ru : ruoloUtenteList) {
+				if (!Ruolo.ROLE_ADMIN.equals(ru.getRuolo().getCodice())  
+						&& !Ruolo.ROLE_USER.equals(ru.getRuolo().getCodice())) {
+					return ru.getRuolo();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean isLettoreConsultante() {
+		if (ruoloUtenteList != null) {
+			for (RuoloUtente ru : ruoloUtenteList) {
+				if (Ruolo.ROLE_LETTORE.equals(ru.getRuolo().getCodice())  
+						|| Ruolo.ROLE_CONSULTANTE.equals(ru.getRuolo().getCodice())) {
+					return true;
+				}
+			}
+		} 
+		return false;
+	}
+ 
 	@Override
 	public int hashCode() {
 		final int prime = 31;

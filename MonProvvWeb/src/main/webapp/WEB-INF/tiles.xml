@@ -159,5 +159,11 @@
 		<put-attribute name="content" value="/views/tipologicheHome.jsp" />
 		<put-attribute name="titolo" value="tipologicheHome.title" />
 	</definition>
+	
+	<definition name="pregresso" extends="template">
+    	<put-attribute name="breadcrumb" value="" />
+		<put-attribute name="content" value="/views/pregresso.jsp" />
+		<put-attribute name="titolo" value="pregresso.title" />
+	</definition>
 
 </tiles-definitions>

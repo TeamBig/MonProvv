@@ -15,12 +15,14 @@
 					summary="Elenco Allegati" style="width: 100%">
 
 		<display:column title="Data" headerScope="col">
-			<fmt:formatDate value="${storico.dataOperazione}" pattern="dd/MM/yyyy" />
+			<fmt:formatDate value="${storico.dataOperazione}" pattern="dd/MM/yyyy HH:mm" />
 		</display:column>
 		<display:column title="Operazione" headerScope="col" >
 			<c:out value="${storico.tipoOperazione} ${storico.tipoEntita}"></c:out>
 		</display:column>
-		<display:column title="Organo" property="idUtenteOperazione.organo.denominazione" headerScope="col" />
-		<display:column title="Utente" property="utenteInserimento" headerScope="col" />
+		<display:column title="Organo" property="utenteOperazione.organo.denominazione" headerScope="col" />
+		<display:column title="Utente" headerScope="col" >
+			${storico.utenteOperazione.nome}&nbsp;${storico.utenteOperazione.cognome}
+		</display:column>
 </display:table>
 
