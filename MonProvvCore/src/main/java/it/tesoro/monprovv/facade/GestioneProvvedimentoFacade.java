@@ -219,6 +219,20 @@ public class GestioneProvvedimentoFacade {
 		return listaTipoProvvedimento;
 	}
 	
+	public List<Organo> initOrganoParere() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> lista = new ArrayList<Organo>();
+		Organo o = new Organo();
+		o.setId(new Integer(-1));
+		o.setDenominazione("Altro");
+		lista.addAll( organoDAO.findAttivi(order) );
+		lista.add(o);
+		return lista;
+	}
+	
+	
+	
 	public List<Provvedimento> initAllProvvedimenti(Integer page){
 		List<String> order = new ArrayList<String>();
 		List<Provvedimento> list = provvedimentoDAO.findAll(page, order);
@@ -229,6 +243,13 @@ public class GestioneProvvedimentoFacade {
 		Provvedimento prov = provvedimentoDAO.findById(id);
 		if(StringUtils.isEmpty(prov.getTermineScadenza()))
 			prov.setSenzaTermine(true);
+		if(!StringUtils.isEmpty(prov.getOrganoParere())){
+			if( (new Integer(-1).equals( prov.getOrganoParere() )) ){
+				prov.setDesOrganoParere("Altro");
+			}else{
+				prov.setDesOrganoParere((organoDAO.findById( prov.getOrganoParere() )).getDenominazione());
+			}
+		}
 		return prov;
 	}
 

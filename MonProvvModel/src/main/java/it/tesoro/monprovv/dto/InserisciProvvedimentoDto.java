@@ -41,6 +41,7 @@ public class InserisciProvvedimentoDto {
 		provv.setOrganoConcertante(this.getProponente());
 		provv.setNoteInterne(this.getNoteInterne());
 		provv.setSenzaTermine(this.isSenzaTermine());
+		provv.setOrganoParere(this.getOrganoParere());
 		// provv.setOggetto(this.getTitoloOggetto());
 		return provv;
 	}
@@ -74,7 +75,8 @@ public class InserisciProvvedimentoDto {
 	private String appoDataFormat4dataAtto;
 	private String appoDataFormat4dtTermineScadenza;
 	private boolean senzaTermine;
-
+	private Integer organoParere;
+	
 	public Stato getStatoDiAttuazione() {
 		return statoDiAttuazione;
 	}
@@ -307,7 +309,13 @@ public class InserisciProvvedimentoDto {
 	public void setSenzaTermine(boolean senzaTermine) {
 		this.senzaTermine = senzaTermine;
 	}
-	
-	
+
+	public Integer getOrganoParere() {
+		return organoParere;
+	}
+
+	public void setOrganoParere(Integer organoParere) {
+		this.organoParere = organoParere;
+	}
 
 }

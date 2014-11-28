@@ -180,7 +180,7 @@
 						<div class="control-group">
 							<span class="control-label">${parereHeader}</span>
 							<div class="controls">
-								<span>${provvedimentoDettaglio.parere}</span>
+								<span>${provvedimentoDettaglio.desOrganoParere}</span>
 							</div>
 						</div>
 						<div class="control-group">

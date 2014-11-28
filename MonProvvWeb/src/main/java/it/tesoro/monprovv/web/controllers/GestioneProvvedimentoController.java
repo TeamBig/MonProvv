@@ -891,6 +891,11 @@ public class GestioneProvvedimentoController {
 		return gestioneTipologicaFacade.initTipoProvvDaAdottare();
 	}
 	
+	@ModelAttribute("listaOrganoParere")
+	private List<Organo> initOrganoParere() {
+		return gestioneProvvedimentoFacade.initOrganoParere();
+	}
+	
 	@ModelAttribute("listaTipoAtto")
 	private List<TipoAtto> initTipoAtto() {
 		return gestioneTipologicaFacade.initTipoAtto();

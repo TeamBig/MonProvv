@@ -60,6 +60,7 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 		this.setTipoProvvDaAdottare(prov.getTipoProvvDaAdottare());
 		this.setTipoProvvedimento(prov.getTipoProvvedimento());
 		this.setOrganoConcertante(prov.getOrganoConcertante());
+		this.setOrganoParere(prov.getOrganoParere());
 		this.setVersione(prov.getVersione());
 		return this;
 	}
@@ -159,6 +160,17 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 	@OneToMany(targetEntity = Assegnazione.class, fetch = FetchType.EAGER, mappedBy = "provvedimento")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Assegnazione> assegnazioneList;
+
+//	@ManyToOne
+//	@NotFound(action = NotFoundAction.IGNORE)
+//	@JoinColumn(name = "ID_ORGANO_PARERE", insertable = false, updatable = false)
+//	private Organo organoParere;
+	
+	@Column(name = "ID_ORGANO_PARERE")
+	private Integer organoParere;
+	
+	@Transient
+	private String desOrganoParere;
 	
 //	@Column(name = "FLG_SENZA_TERMINE", length = 1)
 //	private String flgSenzaTermine;
@@ -455,6 +467,22 @@ public class Provvedimento extends AbstractCommonEntity implements Serializable 
 
 	public void setIdAssegnatarioSollecito(String idAssegnatarioSollecito) {
 		this.idAssegnatarioSollecito = idAssegnatarioSollecito;
+	}
+
+	public Integer getOrganoParere() {
+		return organoParere;
+	}
+
+	public void setOrganoParere(Integer organoParere) {
+		this.organoParere = organoParere;
+	}
+
+	public String getDesOrganoParere() {
+		return desOrganoParere;
+	}
+
+	public void setDesOrganoParere(String desOrganoParere) {
+		this.desOrganoParere = desOrganoParere;
 	}
 
 	public String getTestoNotaAssegnazione() {
