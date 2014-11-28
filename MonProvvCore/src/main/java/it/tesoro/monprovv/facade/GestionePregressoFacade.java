@@ -118,4 +118,12 @@ public class GestionePregressoFacade {
 		}
 		return null;
 	}
+	
+	
+	
+	public void eliminaPregresso() {
+		String hql = "delete from Provvedimento p where p.utenteInserimento = 'PREGRESSO'";
+		
+		provvedimentoDAO.executeQuery(hql);
+	}
 }
