@@ -212,7 +212,13 @@
  					<div class="control-group">
 						<label class="control-label" for="parere">${parereHeader}</label>
 						<div class="controls">
+							<springform:select path="organoParere" id="parere" cssClass="input-xlarge" >
+								<springform:option value="">Sceglierne uno...</springform:option>
+								<springform:options items="${listaOrganoParere}" itemValue="id" itemLabel="denominazione" />
+							</springform:select>
+							<%--
 							<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
+						 	--%>
 						</div>
 					</div>
  					<div class="control-group">

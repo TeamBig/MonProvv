@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component("organoDAO")
 public class OrganoDAO extends AbstractCommonDAO<Organo>{
 	
-	public List<Organo> findAttiviByFlagConcertante(String flagConcertante, List<String> order) {
+public List<Organo> findAttiviByFlagConcertante(String flagConcertante, List<String> order) {
 		
 		String hql = "from Organo o where o.flagConcertante = :flagConcertante and o.flagAttivo = 'S' ";
 		hql = addOrderBy(hql, order);
@@ -21,6 +21,14 @@ public class OrganoDAO extends AbstractCommonDAO<Organo>{
 		params.put("flagConcertante", flagConcertante);
 		
 		return findByHqlQuery(hql, params);
+		
+	}
+
+	public List<Organo> findAttivi(List<String> order) {
+		
+		String hql = "from Organo o where o.flagAttivo = 'S' ";
+		hql = addOrderBy(hql, order);
+		return findByHqlQuery(hql);
 		
 	}
 

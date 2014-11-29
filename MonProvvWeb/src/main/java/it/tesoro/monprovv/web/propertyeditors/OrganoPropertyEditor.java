@@ -26,7 +26,7 @@ public class OrganoPropertyEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		if(!StringUtils.isEmpty(text)){
+		if(StringUtils.isNotEmpty(text)){
 			setValue(gestioneEntiFacade.recuperaOrganoById(Integer.parseInt(text)));
 		}
 	}

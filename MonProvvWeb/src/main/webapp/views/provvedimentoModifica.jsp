@@ -97,7 +97,6 @@
 								<span>${provvedimentoDettaglio.fonteNormativa}</span>
 								<springform:input path="fonteNormativa" id="fonteNormativa" cssClass="input-xlarge"/>
 							</div>
-<<<<<<< HEAD
 						</div> 
 						--%>
 						
@@ -111,17 +110,7 @@
 									</springform:select>
 									<springform:errors path="tipoAtto" cssClass="text-error help-inline"></springform:errors>
 								</div>
-=======
-						</div> --%>
-						<div class="control-group">
-							<label class="control-label" for="tipoAtto">${tipoAttoHeader}</label>
-							<div class="controls">
-								<springform:select path="tipoAtto" id="tipoAtto" cssClass="input-xlarge" >
-									<springform:option value="">Sceglierne uno...</springform:option>
-									<springform:options items="${listaTipoAtto}" itemValue="id" itemLabel="descrizione" />
-								</springform:select>
->>>>>>> branch 'master' of https://github.com/TeamBig/MonProvv
-							</div>
+							</div> 
 						</spring:bind>
 						
 						
@@ -138,9 +127,9 @@
 						</spring:bind>
 					
 						<div class="control-group ${('ERRORE' == erroreInDataAtto) ? ' error':''}">
-							<springform:label path="dataAtto" cssClass="control-label ${('ERRORE' == erroreInDataAtto) ? ' text-error':''}" cssErrorClass="control-label text-error" for="dataAttov">${dataAttoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>	
+							<springform:label path="dataAtto" cssClass="control-label ${('ERRORE' == erroreInDataAtto) ? ' text-error':''}" cssErrorClass="control-label text-error" for="dataAttoV">${dataAttoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>	
 							<div class="controls">
-								<springform:input type="text" id="dataAttov" path="dataAtto" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
+								<springform:input type="text" id="dataAttoV" path="dataAtto" class="input-xlarge dataValid" />&nbsp;<i class="icon-calendar icon-large" id="dataAtto"></i>
 								<springform:errors path="dataAtto" cssClass="text-error help-inline"></springform:errors>
 								<springform:errors path="appoDataFormat4dataAtto" cssClass="text-error help-inline"></springform:errors>
 							</div>
@@ -263,8 +252,12 @@
 						<div class="control-group">
 							<label class="control-label" for="parere">${parereHeader}</label>
 							<div class="controls">
+								<springform:select path="organoParere" id="parere" cssClass="input-xlarge" >
+									<springform:option value="">Sceglierne uno...</springform:option>
+									<springform:options items="${listaOrganoParere}" itemValue="id" itemLabel="denominazione" />
+								</springform:select>
 								<%-- <span>${provvedimentoDettaglio.parere}</span> --%>
-								<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />
+								<%--<springform:textarea path="parere" class="input-xlarge" id="parere" cols="30" rows="4" />--%>
 							</div>
 						</div>
 						
