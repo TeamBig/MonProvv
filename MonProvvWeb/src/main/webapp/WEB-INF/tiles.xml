@@ -166,4 +166,9 @@
 		<put-attribute name="titolo" value="pregresso.title" />
 	</definition>
 
+	<definition name="guida" extends="template">
+    	<put-attribute name="breadcrumb" value="" />
+		<put-attribute name="content" value="/views/guida.jsp" />
+		<put-attribute name="titolo" value="guida.title" />
+	</definition>
 </tiles-definitions>

@@ -855,4 +855,8 @@ public class GestioneProvvedimentoFacade {
 		List<Organo> listaOrgani = organoDAO.findAttiviByFlagConcertante("S", order);
 		return listaOrgani;
 	}
+
+	public void aggiornaManuale(Allegato allegato) {
+		allegatoDAO.saveOrUpdate(allegato);
+	}
 } 

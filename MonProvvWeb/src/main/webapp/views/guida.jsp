@@ -10,7 +10,7 @@
 <spring:message var="dimensioneHeader" code="listaAllegati.header.dimensione" />
 <spring:message var="eliminaHeader" code="listaAssegnatari.header.elimina" />
 
-<spring:url value="/private/admin/pregresso?{p}={t}" var="url_post" >
+<spring:url value="/private/admin/manuale?{p}={t}" var="url_post" >
 	<spring:param name="p">${_csrf.parameterName}</spring:param>
 	<spring:param name="t">${_csrf.token}</spring:param>
 </spring:url>
@@ -23,7 +23,7 @@
 			<div class="span12">
 
 				<h3 class="text-left underline">
-					<span>Caricamento pregresso</span>
+					<span>Aggiornamento manuale d'uso</span>
 				</h3>
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 				<div class="form-horizontal"> 
 			
 					<div class="control-group">		
-						<label class="control-label" for="allegato">File excel</label>
+						<label class="control-label" for="allegato">Manuale</label>
 						<div class="controls">
 							<div class="input-group">
 								<input type="text" class="form-control input-xlarge" readonly="readonly" name="textAllegato" id="textAllegato">
@@ -53,7 +53,6 @@
 				<div class="control-group">
 					<div class="pull-right">
 						<button type="submit" class="btn btn-primary" name="procedi" >Carica &nbsp;<i class="icon-save"></i></button>
-						<button type="submit" class="btn" name="cancellaPregresso" >Cancella pregresso &nbsp;</button>
 					</div>
 				</div>
 			</div>
