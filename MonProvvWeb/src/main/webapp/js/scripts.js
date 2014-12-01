@@ -46,28 +46,43 @@ $(document).ready(function() {
     
     var campiRicerca = $("#campiRicerca");
     var btnToggleRicerca = $("#toggleRicerca");
+    var showCampiRicerca = $("#showCampiRicerca");
+    var showCampiRicercaAvanzati = $("#showCampiRicercaAvanzati");
+
+    if(showCampiRicerca.val()){
+    	btnToggleRicerca.trigger('click');
+    	btnToggleRicerca.html("Nascondi campi di ricerca &nbsp;<i class=\"icon-search\"></i>");
+    }else{
+    	btnToggleRicerca.html("Mostra campi di ricerca &nbsp;<i class=\"icon-search\"></i>");
+    }
     
-    btnToggleRicerca.html("Mostra campi di ricerca &nbsp;<i class=\"icon-search\"></i>");
     campiRicerca.on('hide', function () {
     	btnToggleRicerca.html("Mostra campi di ricerca &nbsp;<i class=\"icon-search\"></i>");
     }).on('show', function() {
     	btnToggleRicerca.html("Nascondi campi di ricerca &nbsp;<i class=\"icon-search\"></i>");
 	});
     
-    
-    
     var btnRicAvDown = $("#btnRicAvDown");
     var btnRicAvUp = $("#btnRicAvUp");
-    btnRicAvUp.hide();
-    $('#ricercaAvanzata').on('hide', function () {
-    	  btnRicAvDown.show();
-    	  btnRicAvUp.hide();
-    });
     
-    $('#ricercaAvanzata').on('show', function () {
-  	  btnRicAvDown.hide();
-  	  btnRicAvUp.show();
-    });
+    if(showCampiRicercaAvanzati.val()){
+    	btnRicAvDown.hide();
+		btnRicAvUp.show();   
+		$('#btnRicercaAvanzata').trigger('click');
+    }else{
+    	btnRicAvDown.show();
+		btnRicAvUp.hide();
+    }
+
+	$('#ricercaAvanzata').on('hide', function () {
+		btnRicAvDown.show();
+		btnRicAvUp.hide();
+	});
+	
+	$('#ricercaAvanzata').on('show', function () {
+		btnRicAvDown.hide();
+		btnRicAvUp.show();
+	});
     
     
     $("#ricerca").click(function() {

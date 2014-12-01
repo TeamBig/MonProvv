@@ -73,6 +73,7 @@
 							<button type="submit" class="btn " id="pulisci" name="buttonClean" value="clean">
 								Pulisci &nbsp;<i class="icon-eraser"></i>
 							</button>
+							<input type="hidden" name="showCampiRicerca" value="${filtriImpostati}" id="showCampiRicerca" />
 						</div>
 					</div>
 				</div>

@@ -584,6 +584,15 @@ public class GestioneProvvedimentoFacade {
 		List<Organo> listaOrgani = organoDAO.findAttiviByFlagConcertante("N", order);
 		return listaOrgani;
 	}
+	
+	public List<Organo> initOrganiAssegnatari() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> listaOrgani = organoDAO.findAttiviConInseritoreByFlagConcertante("N", order);
+		
+		
+		return listaOrgani;
+	}
 
 	public Assegnazione inserisciAssegnazione(Integer idOrgano) {
 		Organo organo = organoDAO.findById(idOrgano);
@@ -721,7 +730,8 @@ public class GestioneProvvedimentoFacade {
 		// invio notifica informativa
 		CustomUser user = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String testo = "L'utente " + user.getUtente().getNome() + " " + user.getUtente().getCognome() + " sollecita la presa in carico o la lavorazione del provvedimento " 
-				+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa(); 
+				+ assegnazione.getProvvedimento().getGoverno().getDenominazione() + " " + assegnazione.getProvvedimento().getId() + ", fonte normativa " + assegnazione.getProvvedimento().getFonteNormativa()
+				+". Testo del sollecito: " + sollecitoDto.getTestoSollecito(); 
 
 	
 		for (Utente utenteDestinatario : utenteDAO.findAttiviByOrgano(assegnazione.getOrgano().getId()) ) {

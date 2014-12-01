@@ -95,6 +95,16 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		int tableRisultatiSize = gestioneUtenteFacade.count(ricercaUtente);
 		model.addAttribute("listaUtenti", listaUtenti);
 		model.addAttribute("tableRisultatiSize", tableRisultatiSize);
+		
+		if( StringUtils.isNotEmpty( ricercaUtente.getCognome()) )
+			model.addAttribute("filtriImpostati","true");
+		
+		if( StringUtils.isNotEmpty( ricercaUtente.getCodiceFiscale()) )
+			model.addAttribute("filtriImpostati","true");
+		
+		if( StringUtils.isNotEmpty( ricercaUtente.getNome()) )
+			model.addAttribute("filtriImpostati","true");
+		
 	}
 	
 //	@RequestMapping(value = "/private/admin/utenti", method = RequestMethod.POST)

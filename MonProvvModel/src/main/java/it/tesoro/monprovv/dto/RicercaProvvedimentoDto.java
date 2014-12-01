@@ -20,6 +20,62 @@ public class RicercaProvvedimentoDto {
 	private String fonteNormativa;
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
 	private String[] ammUfficiCoinvolti;
+	
+	public boolean filtriImpostati(){
+		if( statoDiAttuazione != null ){
+			return true;
+		}
+		if( tipoGoverno != null ){
+			return true;
+		}
+		if( tipologia != null ){
+			return true;
+		}
+		if( art != null ){
+			return true;
+		}
+		if( comma != null && (!"".equals(comma)) ){
+			return true;
+		}
+		if( titoloOggetto != null && (!"".equals(titoloOggetto)) ){
+			return true;
+		}
+		if( dtTermineScadenzaDa != null ){
+			return true;
+		}
+		if( dtTermineScadenzaA != null ){
+			return true;
+		}
+		if( fonteNormativa != null && (!"".equals(fonteNormativa)) ){
+			return true;
+		}
+		if( tipoProvvDaAdottare != null ){
+			return true;
+		}
+		if( ammUfficiCoinvolti != null ){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean filtriAvanzatiImpostati(){
+		if( dtTermineScadenzaDa != null ){
+			return true;
+		}
+		if( dtTermineScadenzaA != null ){
+			return true;
+		}
+		if( fonteNormativa != null && (!"".equals(fonteNormativa)) ){
+			return true;
+		}
+		if( tipoProvvDaAdottare != null ){
+			return true;
+		}
+		if( ammUfficiCoinvolti != null && ammUfficiCoinvolti.length > 0){
+			return true;
+		}
+		return false;
+	}
 
 	public String getArt() {
 		return art;

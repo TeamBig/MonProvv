@@ -86,6 +86,8 @@ public class GestioneEntiController {
 		int tableRisultatiSize = gestioneEntiFacade.countOrgano(ricercaEnte);
 		model.addAttribute("listaOrgani", listaOrgani);
 		model.addAttribute("tableOrganiRisultatiSize", tableRisultatiSize);
+		if( StringUtils.isNotEmpty(ricercaEnte.getDenominazione())  )
+			model.addAttribute("filtriImpostati","true");
 	}
 	
 //	@RequestMapping(value = "/private/admin/enti", method = RequestMethod.POST)
@@ -99,7 +101,7 @@ public class GestioneEntiController {
 //		
 //		if("clean".equals( buttonClean )){
 //			status.setComplete();
-//	        session.removeAttribute("ricercaUtente");
+//	        session.removeAttribute("ricercaEnte");
 //			return "redirect:/private/admin/enti";
 //		}
 //		
@@ -115,7 +117,7 @@ public class GestioneEntiController {
 	public String initEntiPostClean(HttpSession session, SessionStatus status)  {
 		String retval = "redirect:/private/admin/enti";
 		status.setComplete();
-	    session.removeAttribute("ricercaUtente");
+	    session.removeAttribute("ricercaEnte");
 		return retval;
 	}
 	
