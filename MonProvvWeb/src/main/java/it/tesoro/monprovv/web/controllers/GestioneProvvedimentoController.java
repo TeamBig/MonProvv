@@ -50,7 +50,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -60,7 +62,6 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -80,7 +81,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@SessionAttributes("provvedimentoInserisci")
+@SessionAttributes({"provvedimentoInserisci","ricercaProvvedimenti"})
 @Controller
 public class GestioneProvvedimentoController {
 
@@ -110,55 +111,68 @@ public class GestioneProvvedimentoController {
 	@Autowired
 	private ReportService reportService;
 	
-	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
-	public String init(Model model,	SecurityContextHolderAwareRequestWrapper request, @PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento) {
+	
+	@ModelAttribute("ricercaProvvedimenti")
+	public RicercaProvvedimentoDto ricercaEnte(HttpServletRequest request) {
 		RicercaProvvedimentoDto dto = new RicercaProvvedimentoDto();
-		model.addAttribute("ricercaProvvedimenti", dto);
+		return dto;
+	}
+
+	private void initProvv(Model model, RicercaProvvedimentoDto provvedimento,
+			DisplayTagPagingAndSorting ps) {
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
-		if(ps!=null){
+		if(ps!=null)
 			if(StringUtils.isEmpty( provvedimento ) )
 				listProvvedimenti = gestioneProvvedimentoFacade.initAllProvvedimenti(ps.getPage());
 			else
 				listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, ps.getPage());
-		} else {
+		 else 
 			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, 1);
-		}
+		
+		model.addAttribute("listaProvvedimenti", listProvvedimenti);
+		
 		if(StringUtils.isEmpty( provvedimento ) )
 			model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
 		else
 			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
-		model.addAttribute("listaProvvedimenti", listProvvedimenti);
+		
+		if( provvedimento.filtriImpostati() )
+			model.addAttribute("filtriImpostati","true");
+		
+		if( provvedimento.filtriAvanzatiImpostati() )
+			model.addAttribute("filtriAvanzatiImpostati","true");
+		
+	}
+	
+	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.GET)
+	public String init(
+			Model model,
+			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
+			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
+		
+		initProvv(model, provvedimento, ps);
+		
 		return "ricercaProv";
 	}
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST, params="annulla")
-	public String resetRicercaProvvedimenti(Model model){
-		return "redirect:/private/provvedimenti/ricerca";
+	public String resetRicercaProvvedimenti(HttpSession session, SessionStatus status){
+		String retval = "redirect:/private/provvedimenti/ricerca";
+		status.setComplete();
+	    session.removeAttribute("ricercaProvvedimenti");
+		return retval;
 	}
 	
-	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST)
-	public String processRegistration(Model model, 
+	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST, params="ricerca")
+	public String processRegistration(Model model,
 			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
-			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps
-			) {
-		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
-		if(ps!=null){
-			if(StringUtils.isEmpty( provvedimento ) )
-				listProvvedimenti = gestioneProvvedimentoFacade.initAllProvvedimenti(ps.getPage());
-			else
-				listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, ps.getPage());
-		} else {
-			listProvvedimenti = gestioneProvvedimentoFacade.ricercaProvvedimenti(provvedimento, 1);
-		}
-		if(StringUtils.isEmpty( provvedimento ) )
-			model.addAttribute("tableProvvedimentiSize", countAllProvvedimenti());
-		else
-			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
-		model.addAttribute("listaProvvedimenti", listProvvedimenti);
+			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
 		
-
+		initProvv(model, provvedimento, ps);
 		return "ricercaProv";
 	}
+	
+	
 	//***** DETTAGLIO PROVVEDIMENTO ******//
 	@RequestMapping(value = { "/private/provvedimenti/ricerca/dettaglio" } , method = RequestMethod.GET)
 	public String dettaglio(Model model,@RequestParam(required = false) Integer id) {
@@ -242,11 +256,6 @@ public class GestioneProvvedimentoController {
 			Model model, 
 			@ModelAttribute("provvedimentoDettaglio") Provvedimento provvedimentoDettaglio){
 		
-		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
-		provvRec.setStato(provvedimentoDettaglio.getStato());
-		model.addAttribute("provvedimentoDettaglio", provvRec);
-		caricaTabelleInferiore(model, provvRec);
-		
 		if( StringUtils.isEmpty(provvedimentoDettaglio.getOggettoSollecito()) || StringUtils.isEmpty(provvedimentoDettaglio.getTestoSollecito()) ){
 			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Sollecito non inviato, inserire sia l'oggetto che il testo del sollecito", false);
 		}else{
@@ -259,6 +268,12 @@ public class GestioneProvvedimentoController {
 		}
 		
 		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo", false);
+		
+		//Ricarico il provvedimento e incremento il numero di invii notifica
+		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
+		provvRec.setStato(provvedimentoDettaglio.getStato());
+		model.addAttribute("provvedimentoDettaglio", provvRec);
+		caricaTabelleInferiore(model, provvRec);
 		
 		return "provvedimentoDettaglio";
 		
@@ -767,7 +782,8 @@ public class GestioneProvvedimentoController {
 		}
 		if(provvedimento.getCurrentStep().equals("3")){
 			model.addAttribute("titolo", "Assegnatari");
-			List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initOrgani();
+//			List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initOrgani();
+			List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initOrganiAssegnatari();
 			if(listaOrganiAssegnatari.contains(principal.getUtente().getOrgano()))
 				listaOrganiAssegnatari.remove(principal.getUtente().getOrgano());
 			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
@@ -916,6 +932,24 @@ public class GestioneProvvedimentoController {
 		if (provvedimento != null) {
 			if(listaOrganiAssegnatari.contains(principal.getUtente().getOrgano()))
 				listaOrganiAssegnatari.remove(principal.getUtente().getOrgano());
+			
+			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
+				listaOrganiAssegnatari.remove(provvedimento.getOrganoCapofila());
+		}
+		
+		return listaOrganiAssegnatari;
+	}
+	
+	@ModelAttribute("listaOrganiAssegnatari")
+	private List<Organo> initOrganiAssegnatari(@ModelAttribute("provvedimentoModifica") Provvedimento provvedimento) {
+		
+		CustomUser principal = (CustomUser)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initOrganiAssegnatari();
+		if (provvedimento != null) {
+			if(listaOrganiAssegnatari.contains(principal.getUtente().getOrgano()))
+				listaOrganiAssegnatari.remove(principal.getUtente().getOrgano());
+			
 			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
 				listaOrganiAssegnatari.remove(provvedimento.getOrganoCapofila());
 		}

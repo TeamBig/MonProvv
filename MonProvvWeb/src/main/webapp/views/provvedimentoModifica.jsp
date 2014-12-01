@@ -410,7 +410,7 @@
 						<label class="control-label" for="organo">Nuovo assegnatario</label>
 						<div class="controls">
 							<springform:select path="organo" id="organo" cssClass="input-xlarge" >
-								<springform:options items="${listaOrgani}" itemValue="id" itemLabel="denominazione" />
+								<springform:options items="${listaOrganiAssegnatari}" itemValue="id" itemLabel="denominazione" />
 							</springform:select>
 							<button type="button" id="insertAssegnatario" class="btn">Aggiungi &nbsp;<i class="icon-plus"></i></button>
 						</div>

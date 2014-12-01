@@ -21,7 +21,9 @@
 <spring:message var="allegatiHeader" code="listaProvvedimenti.header.allegati" />
 
 <div class="container collapse" id="campiRicerca">
-	<springform:form modelAttribute="ricercaProvvedimenti" action="#" method="POST" >
+	
+	<c:url value="/private/provvedimenti/ricerca" var="formPath" />
+	<springform:form action="${formPath}" method="POST" modelAttribute="ricercaProvvedimenti" cssClass="bo clfix" id="formCampiRicerca">
 		<div class="row">
 			<div class="span12">
 				<h3 class="underline">
@@ -168,6 +170,7 @@
 		</div>
 	</springform:form>
 </div>
+
 <div class="container" id="risultatiRicercaProvvedimenti">
 	<div class="row">
 		<div class="span12">
@@ -185,6 +188,10 @@
 					style="margin-right: 10px;">
 					Toggle ricerca &nbsp;<i class="icon-search"></i>
 				</button>
+				
+				<input type="hidden" name="showCampiRicerca" value="${filtriImpostati}" id="showCampiRicerca" />
+				<input type="hidden" name="showCampiRicercaAvanzati" value="${filtriAvanzatiImpostati}" id="showCampiRicercaAvanzati" />
+				
 			</h3>
 		</div>
 	</div>
