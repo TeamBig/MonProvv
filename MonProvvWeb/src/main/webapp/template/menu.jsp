@@ -70,7 +70,7 @@
 	</ul>
 	<ul class="nav navbar-nav pull-right">	
 		 <li>
-  		 	<a href="https://intranet.mef.gov.it/rubrica ">Rubrica <i class="icon-book"></i></a>
+  		 	<a href="https://portaleservizi.mef.gov.it/ps/aree_applicative/Rubrica/app/index_pers.html" target="_blank">Rubrica <i class="icon-book"></i></a>
   		 </li>
   		 <li>
   		 	<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=-1" var="url_guida" />
