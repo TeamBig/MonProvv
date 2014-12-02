@@ -66,6 +66,18 @@
 					</li>
 				</c:if>
 			</security:authorize>
-		</c:forEach>				  		 
+		</c:forEach>			
 	</ul>
+	<ul class="nav navbar-nav pull-right">	
+		 <li>
+  		 	<a href="https://intranet.mef.gov.it/rubrica ">Rubrica <i class="icon-book"></i></a>
+  		 </li>
+  		 <li>
+  		 	<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=-1" var="url_guida" />
+  		 	<a href="${url_guida}">Guida <i class="icon-question-sign"></i></a>
+  		 </li>
+	</ul>		  		
+	
+	 
+
 </div>

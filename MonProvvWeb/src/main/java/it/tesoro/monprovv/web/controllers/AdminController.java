@@ -1,6 +1,8 @@
 package it.tesoro.monprovv.web.controllers;
 
 import it.tesoro.monprovv.facade.GestionePregressoFacade;
+import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
+import it.tesoro.monprovv.model.Allegato;
 import it.tesoro.monprovv.model.Organo;
 import it.tesoro.monprovv.model.Provvedimento;
 import it.tesoro.monprovv.model.Stato;
@@ -12,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -53,6 +56,9 @@ public class AdminController {
 	private GestionePregressoFacade gestionePregressoFacade;
 	
 	@Autowired
+	private GestioneProvvedimentoFacade gestioneProvvedimentoFacade;
+	
+	@Autowired
 	private AlertUtils alertUtils;
 	
 	@RequestMapping(value= {"/private/admin"}, method = RequestMethod.GET)
@@ -66,6 +72,40 @@ public class AdminController {
 		}
 		
 		return "redirect:" + redirectUrl;
+	}
+	
+	@RequestMapping(value = "/private/admin/manuale", method = RequestMethod.GET)
+	public String manuale(Model model) {
+		return "guida";
+	}
+	
+	@RequestMapping(value = "/private/admin/manuale", method = RequestMethod.POST, params = "procedi")
+	public String uploadManuale(MultipartHttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		try {
+			
+			Iterator<String> itr = request.getFileNames();
+			MultipartFile file = request.getFile(itr.next());
+			
+					
+			Allegato allegato = gestioneProvvedimentoFacade.getAllegatoById(-1);
+			if (allegato == null) {
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Manuale non trovato sul database", false);
+				return "guida";
+			}
+			
+			Blob manuale = Hibernate.createBlob(file.getBytes());
+			allegato.setContenuto(manuale);
+			allegato.setDimensione(file.getBytes().length);
+			
+			gestioneProvvedimentoFacade.aggiornaManuale(allegato);
+			
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Manuale aggiornato con successo", false);
+			return "guida";
+		} catch (Exception e) {
+			alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Errore generico", false);
+			return "guida";
+		}
 	}
 	
 	
