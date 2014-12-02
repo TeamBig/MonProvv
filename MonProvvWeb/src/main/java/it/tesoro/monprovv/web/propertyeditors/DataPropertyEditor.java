@@ -1,17 +1,17 @@
 package it.tesoro.monprovv.web.propertyeditors;
 
-import it.tesoro.monprovv.utils.StringUtils;
-
 import java.beans.PropertyEditorSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 public class DataPropertyEditor extends PropertyEditorSupport {
 
 	public void setAsText(String value) {
 		try {
-			if (StringUtils.isNotEmpty(value)) {
+			if (!StringUtils.isBlank(value)) {
 				SimpleDateFormat sdp = new SimpleDateFormat("dd/MM/yyyy");
 				sdp.setLenient(false);
 				setValue(sdp.parse(value));
