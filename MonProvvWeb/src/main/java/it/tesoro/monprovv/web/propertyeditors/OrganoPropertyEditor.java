@@ -2,9 +2,13 @@ package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.model.Organo;
-import it.tesoro.monprovv.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
+
+import org.apache.commons.lang.StringUtils;
+
+
+
 
 public class OrganoPropertyEditor extends PropertyEditorSupport {
 
@@ -26,7 +30,9 @@ public class OrganoPropertyEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		if(StringUtils.isNotEmpty(text)){
+		if(StringUtils.isBlank(text)){
+			setValue(null);
+		}else{
 			setValue(gestioneEntiFacade.recuperaOrganoById(Integer.parseInt(text)));
 		}
 	}

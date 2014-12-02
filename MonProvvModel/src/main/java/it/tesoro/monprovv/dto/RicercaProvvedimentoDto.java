@@ -7,6 +7,8 @@ import it.tesoro.monprovv.model.TipoProvvedimento;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class RicercaProvvedimentoDto {
 
 	private Stato statoDiAttuazione;
@@ -31,31 +33,17 @@ public class RicercaProvvedimentoDto {
 		if( tipologia != null ){
 			return true;
 		}
-		if( art != null ){
+		if( ! StringUtils.isBlank( art ) ){
 			return true;
 		}
-		if( comma != null && (!"".equals(comma)) ){
+		if( ! StringUtils.isBlank( comma ) ){
 			return true;
 		}
 		if( titoloOggetto != null && (!"".equals(titoloOggetto)) ){
 			return true;
 		}
-		if( dtTermineScadenzaDa != null ){
-			return true;
-		}
-		if( dtTermineScadenzaA != null ){
-			return true;
-		}
-		if( fonteNormativa != null && (!"".equals(fonteNormativa)) ){
-			return true;
-		}
-		if( tipoProvvDaAdottare != null ){
-			return true;
-		}
-		if( ammUfficiCoinvolti != null ){
-			return true;
-		}
-		return false;
+		
+		return filtriAvanzatiImpostati();
 	}
 	
 	public boolean filtriAvanzatiImpostati(){
@@ -65,7 +53,7 @@ public class RicercaProvvedimentoDto {
 		if( dtTermineScadenzaA != null ){
 			return true;
 		}
-		if( fonteNormativa != null && (!"".equals(fonteNormativa)) ){
+		if( ! StringUtils.isBlank( fonteNormativa ) ){
 			return true;
 		}
 		if( tipoProvvDaAdottare != null ){

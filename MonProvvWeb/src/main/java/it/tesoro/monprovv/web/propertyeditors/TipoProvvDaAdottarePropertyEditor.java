@@ -2,9 +2,11 @@ package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneTipologicaFacade;
 import it.tesoro.monprovv.model.TipoProvvDaAdottare;
-import it.tesoro.monprovv.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
+
+import org.apache.commons.lang.StringUtils;
+
 
 public class TipoProvvDaAdottarePropertyEditor extends PropertyEditorSupport {
 
@@ -26,7 +28,9 @@ public class TipoProvvDaAdottarePropertyEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		if(!StringUtils.isEmpty(text)){
+		if(StringUtils.isBlank(text)){
+			setValue(null);
+		}else{
 			setValue(tipologicaFacade.recuperaTipoProvvDaAdottareById(Integer.parseInt(text)));
 		}
 	}

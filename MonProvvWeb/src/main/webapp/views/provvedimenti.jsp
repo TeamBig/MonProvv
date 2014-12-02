@@ -110,12 +110,12 @@
 						<label class="control-label" for="dataDa">Termine di
 							scadenza</label>
 						<div class="controls form-inline">
-							<label for="dp1v">Da&nbsp;</label> <input type="text" id="dp1v"
-								class="input-small dataValid" maxlength="10" placeholder="GG/MM/AAAAA">&nbsp;
-							<i class="icon-calendar icon-large" id="dp1"></i> <label
-								for="dp2v">&nbsp;&nbsp;A&nbsp;</label> 
-								<springform:input path="dtTermineScadenzaA" id="dp2v" cssClass="input-small dataValid" placeholder="GG/MM/AAAAA"/>&nbsp;<i
-								class="icon-calendar icon-large" id="dp2"></i>
+							<label for="dp1v">Da&nbsp;</label> 
+							<springform:input path="dtTermineScadenzaDa" id="dp1v" cssClass="input-small dataValid" placeholder="GG/MM/AAAAA"/>&nbsp;
+							<i class="icon-calendar icon-large" id="dp1"></i> 
+							<label for="dp2v">&nbsp;&nbsp;A&nbsp;</label> 
+							<springform:input path="dtTermineScadenzaA" id="dp2v" cssClass="input-small dataValid" placeholder="GG/MM/AAAAA"/>&nbsp;
+							<i class="icon-calendar icon-large" id="dp2"></i>
 						</div>
 					</div>
 					<div class="control-group">

@@ -2,9 +2,12 @@ package it.tesoro.monprovv.web.propertyeditors;
 
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
 import it.tesoro.monprovv.model.Ruolo;
-import it.tesoro.monprovv.utils.StringUtils;
 
 import java.beans.PropertyEditorSupport;
+
+import org.apache.commons.lang.StringUtils;
+
+
 
 public class RuoloPropertyEditor extends PropertyEditorSupport {
 
@@ -26,7 +29,9 @@ public class RuoloPropertyEditor extends PropertyEditorSupport {
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		if(!StringUtils.isEmpty(text)){
+		if(StringUtils.isBlank(text)){
+			setValue(null);
+		}else{
 			setValue(gestioneUtenteFacade.recuperaRuoloById(Integer.parseInt(text)));
 		}
 	}
