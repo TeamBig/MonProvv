@@ -1,20 +1,58 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>MonProvv</groupId>
-  <artifactId>MonProvvEar</artifactId>
-  <packaging>ear</packaging>
-  <version>1.0</version>
-  <name>Monitoraggio Provvedimenti Webapp</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
-  <dependency>
-  	<groupId>MonProvv</groupId>
-  	<artifactId>MonProvvWeb</artifactId>
-  	<version>1.0</version>
-  	<type>war</type>
-  </dependency>
-  </dependencies>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>MonProvv</groupId>
+	<artifactId>MonProvvEar</artifactId>
+	<packaging>ear</packaging>
+	<version>1.0</version>
+	<name>Monitoraggio Provvedimenti Webapp</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>MonProvv</groupId>
+			<artifactId>MonProvvWeb</artifactId>
+			<version>1.0</version>
+			<type>war</type>
+		</dependency>
+	</dependencies>
+	<profiles>
+		<profile>
+			<id>profilo-collaudo</id>
+			<activation>
+				<property>
+					<name>ambiente</name>
+					<value>collaudo</value>
+				</property>
+			</activation>
+			<properties>
+				<custom.context.root>/monprovv</custom.context.root>
+			</properties>
+		</profile>
+		<profile>
+			<id>profilo-esercizio</id>
+			<activation>
+				<property>
+					<name>ambiente</name>
+					<value>esercizio</value>
+				</property>
+			</activation>
+			<properties>
+				<custom.context.root>/monitoraggioprovvedimenti</custom.context.root>
+			</properties>
+		</profile>
+		<profile>
+			<id>profilo-sviluppo</id>
+			<activation>
+				<property>
+					<name>ambiente</name>
+					<value>sviluppo</value>
+				</property>
+			</activation>
+			<properties>
+				<custom.context.root>/monitoraggioprovvedimenti</custom.context.root>
+			</properties>
+		</profile>
+	</profiles>
   <build>
     <finalName>MonProvvEar</finalName>
 	<plugins>
@@ -28,7 +66,7 @@
 					<webModule>
 						<groupId>MonProvv</groupId>
 						<artifactId>MonProvvWeb</artifactId>
-						<contextRoot>/monitoraggioprovvedimenti</contextRoot>
+						<contextRoot>${custom.context.root}</contextRoot>
 					</webModule>
 				</modules>
 			</configuration>
