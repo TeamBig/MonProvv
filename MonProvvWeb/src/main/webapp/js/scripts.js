@@ -851,7 +851,7 @@ function gestioneExportXls() {
 		
 		var input = $("<input type='hidden' name='exportXls' />");
 		
-		$("form#ricercaProvvedimenti").append(input).submit();
+		$("form#formCampiRicerca").append(input).submit();
 		input.remove();
 	});
 }
