@@ -1,13 +1,12 @@
 package it.tesoro.monprovv.dto;
 
+import it.tesoro.monprovv.model.Assegnazione;
+import it.tesoro.monprovv.model.Provvedimento;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.util.CollectionUtils;
-
-import it.tesoro.monprovv.model.Assegnazione;
-import it.tesoro.monprovv.model.Provvedimento;
 
 public class ProvvedimentoStampaDto {
 	
@@ -25,9 +24,7 @@ public class ProvvedimentoStampaDto {
 	}
 	
 	public String getFonteInfo() {
-		return provvedimento.getTipoAtto().getDescrizione() + " " 
-				+ DateFormatUtils.format(provvedimento.getDataAtto(), "dd-MM-yyyy") + " " 
-				+ "Nr. " + provvedimento.getNumeroAtto();
+		return provvedimento.getFonteNormativa();
 	}
 	
 	public String getArticolo() {
@@ -66,7 +63,7 @@ public class ProvvedimentoStampaDto {
 			
 			String result = "";
 			for (Assegnazione assegnazione : provvedimento.getAssegnazioneList() ) {
-				result += assegnazione.getOrgano().getDenominazione() + "<br/>";
+				result += assegnazione.getOrgano().getDenominazione() + " (" + assegnazione.getStato().getDescrizione() + ")<br/>";
 			}
 			return result;
 		}

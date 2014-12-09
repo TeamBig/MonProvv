@@ -15,6 +15,9 @@
 			<type>war</type>
 		</dependency>
 	</dependencies>
+	<properties>
+		<custom.context.root>/monitoraggioprovvedimenti</custom.context.root>
+	</properties>
 	<profiles>
 		<profile>
 			<id>profilo-collaudo</id>
