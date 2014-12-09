@@ -48,9 +48,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 @Controller
-public class AdminController {
+public class AmministratoreController {
 
-	protected static Logger logger = Logger.getLogger(AdminController.class);
+	protected static Logger logger = Logger.getLogger(AmministratoreController.class);
 
 	@Autowired
 	private GestionePregressoFacade gestionePregressoFacade;
