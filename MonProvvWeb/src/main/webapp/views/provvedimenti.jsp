@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
 
@@ -215,7 +216,23 @@
 							<display:column title="${artHeader}" property="articolo" headerScope="col" />
 							<display:column title="${commaHeader}" property="comma" headerScope="col" />
 							<display:column title="${provvDaAdottareHeader}" property="tipoProvvDaAdottare.descrizione" headerScope="col" />
-							<display:column title="${titoloOggettoHeader}" property="oggettoAsText" headerScope="col"  style="max-width: 200px; overflow-x: hidden;" />
+							
+							<display:column title="${titoloOggettoHeader}" headerScope="col" style="max-width: 200px; overflow-x: hidden;">
+
+								<c:set var="lenOggettoAsText" value="${fn:length(provvedimento.oggettoAsText)}" />
+							
+								<c:choose>
+									<c:when test="${lenOggettoAsText > 70 }">
+										<c:set var="subOggettoAsText" value="${fn:substring(provvedimento.oggettoAsText, 0, 67)}" />
+										<span title="${provvedimento.oggettoAsText}">${subOggettoAsText}...</span>
+									</c:when>
+									<c:otherwise>
+										<span title="${provvedimento.oggettoAsText}">${provvedimento.oggettoAsText}</span>
+									</c:otherwise>
+								</c:choose>
+
+							</display:column>
+
 							<display:column title="${statoDiAttuazioneHeader}" property="stato.descrizione" headerScope="col" />
 							<display:column title="${capofilaHeader}" property="organoCapofila.denominazione" headerScope="col" />
 							<display:column title="${proponenteHeader}" property="organoConcertante.denominazione" headerScope="col" />
