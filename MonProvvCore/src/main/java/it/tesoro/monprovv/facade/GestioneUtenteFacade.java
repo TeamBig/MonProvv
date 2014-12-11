@@ -219,6 +219,7 @@ public class GestioneUtenteFacade {
 			
 			ele.setDataNascita( DateFormatUtils.format(tmp.getDataNascita(), "dd/MM/yyyy"));
 			
+			boolean flgTrovato = false;
 			for (int i = 6; i > 0; i--) {
 				try {
 					Method method = tmp.getUo().getClass().getMethod("getOrgIdLiv" + i, new Class[] {});
@@ -227,6 +228,8 @@ public class GestioneUtenteFacade {
 						if (organo.getUnitaOrgAstage().getId().equals(orgId)) {
 							ele.setOrgano(organo.getDenominazione());
 							ele.setIdOrgano(organo.getId());
+							flgTrovato = true;
+							break;
 						}
 					}
 				} catch (SecurityException e) {
@@ -235,7 +238,9 @@ public class GestioneUtenteFacade {
 				} catch (IllegalAccessException e) {
 				} catch (InvocationTargetException e) {
 				}
-
+				if(flgTrovato){
+					break;
+				}
 			}
 
 			retval.add(ele);
