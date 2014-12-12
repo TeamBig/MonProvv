@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
 	if (detectIE()) {
-		$.ajaxSetup({ cache: false });
+		$.ajaxSetup({ cache: false });  
 	}
 	
     $('.multiselect').multiselect({
