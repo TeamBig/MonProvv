@@ -1,5 +1,9 @@
 $(document).ready(function() {
 	
+	if (detectIE()) {
+		$.ajaxSetup({ cache: false });  
+	}
+	
     $('.multiselect').multiselect({
             nonSelectedText: 'Tutti',
             numberDisplayed: 2,
