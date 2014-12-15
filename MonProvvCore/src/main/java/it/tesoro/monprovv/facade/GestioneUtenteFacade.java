@@ -197,7 +197,7 @@ public class GestioneUtenteFacade {
 		String hql = "from UtenteAstage u where upper("
 				+ "concat(u.cognome , ' ' , u.nome , ' ' , u.cognome , ' ' , u.codiceFiscale)"
 				+ ") like :denominazione "
-				+ "and u.id not in (select ute.utenteAstage.id from Utente ute where ute.utenteAstage is not null) "
+				+ "and u.id not in (select ute.utenteAstage.id from Utente ute where ute.utenteAstage is not null and ute.flagAttivo = 'S') "
 				+ "order by cognome, nome asc";
 		List<UtenteAstage> utenteAstage = utenteAstageDAO.findByHqlQueryNumeroRecord(hql, params, 10);
 		
