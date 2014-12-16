@@ -669,10 +669,20 @@ function gestineInserimentoUtnete(){
 	}
 	
 	$("#statoDiAttuazioneDettaglio").change(function(){
-		$('<input />').attr('type', 'hidden')
-        .attr('name', 'cambioStato')
-        .appendTo('#provvedimentoDettaglio');
-		$( "#provvedimentoDettaglio" ).submit();
+		var newStatoDiAttuazioneDettaglioVal = $("#statoDiAttuazioneDettaglio").val();
+		if(newStatoDiAttuazioneDettaglioVal==5){
+			
+			$('<input />').attr('type', 'hidden')
+	        .attr('name', 'cambioStato')
+	        .appendTo('#provvedimentoDettaglio');
+			
+			var currentUrl = $(location).attr('pathname'); 
+			//var currentUrl = $(location).attr('href');
+			
+			var newUrl = currentUrl + '?id=' + $('#provvedimentoDettaglioId').val() + '#statoDiAttuazioneDettaglio';
+			$('#provvedimentoDettaglio').attr('action', newUrl).submit();
+			
+		}
 	});
 	
 	$("button#annullaIndietroDettaglio").click(function(){

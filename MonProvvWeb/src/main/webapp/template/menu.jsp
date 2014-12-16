@@ -69,13 +69,21 @@
 		</c:forEach>			
 	</ul>
 	<ul class="nav navbar-nav pull-right">	
+		 
+		  <li>
+  		 	<spring:url value="/private/legenda/home" var="url_legenda" />
+  		 	<a href="${url_legenda}">Legenda <i class="icon-question-sign"></i></a>
+  		 </li>
+  		 
 		 <li>
   		 	<a href="https://portaleservizi.mef.gov.it/ps/aree_applicative/Rubrica/app/index_pers.html" target="_blank">Rubrica <i class="icon-book"></i></a>
   		 </li>
+  		 
   		 <li>
   		 	<spring:url value="/private/provvedimenti/ricerca/downloadAllegato?id=-1" var="url_guida" />
-  		 	<a href="${url_guida}">Guida <i class="icon-question-sign"></i></a>
+  		 	<a href="${url_guida}">Guida <i class="icon-book"></i></a>
   		 </li>
+  		
 	</ul>		  		
 	
 	 

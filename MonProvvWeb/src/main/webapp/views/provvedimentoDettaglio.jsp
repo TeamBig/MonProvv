@@ -8,7 +8,7 @@
 
 <spring:eval expression="@config.getProperty('paginazione.risultatiPerPagina')" var="risultatiPerPagina" />
 
-<spring:message var="idHeader" code="listaProvvedimenti.header.id" />
+<spring:message var="idHeader" code="listaProvvedimenti.id" />
 <spring:message var="governoHeader" code="listaProvvedimenti.header.governo" />
 <spring:message var="tipologiaHeader" code="listaProvvedimenti.header.tipologia" />
 <spring:message var="fonteNormativaHeader" code="listaProvvedimenti.header.fonteNormativa" />
@@ -62,6 +62,13 @@
 			<springform:hidden path="versione" id="versioneProvvedimento" />
 			<div class="row">
 				<div class="span10 offset2 dettaglio">
+						<div class="control-group">
+							<span class="control-label">${idHeader}</span>
+							<div class="controls">
+								<span>${provvedimentoDettaglio.id}</span>
+								<input type="hidden" id="provvedimentoDettaglioId" value="${provvedimentoDettaglio.id}" /> 
+							</div>
+						</div>
 						<div class="control-group">
 							<span class="control-label">${governoHeader}</span>
 							<div class="controls">
