@@ -171,4 +171,10 @@
 		<put-attribute name="content" value="/views/guida.jsp" />
 		<put-attribute name="titolo" value="guida.title" />
 	</definition>
+	
+	<definition name="legendaMonProvv" extends="template">
+    	<put-attribute name="breadcrumb" value="" />
+		<put-attribute name="content" value="/views/legendaMonProvv.jsp" />
+		<put-attribute name="titolo" value="legenda.title" />
+	</definition>
 </tiles-definitions>
