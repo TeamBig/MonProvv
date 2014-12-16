@@ -150,7 +150,8 @@ public class GestioneSicurezzaController {
 		
 		if (   request.isUserInRole(Ruolo.ROLE_CONSULTANTE) 
 			|| request.isUserInRole(Ruolo.ROLE_LETTORE)
-			|| request.isUserInRole(Ruolo.ROLE_INSERITORE) ) {
+			|| request.isUserInRole(Ruolo.ROLE_INSERITORE)
+			|| request.isUserInRole(Ruolo.ROLE_INSERITORE_FINE_LAV) ) {
 			return "redirect:/private/provvedimenti/ricerca";
 		}
 		

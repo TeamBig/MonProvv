@@ -48,6 +48,7 @@
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'chiusuraLavori')" var="canModificaChiusuraLavori" />
 <security:authorize	access="hasPermission(#provvedimentoDettaglio, 'accettazione')" var="canAccettazione" />
 <security:authorize access="hasPermission(#provvedimentoDettaglio, 'lavorazione')" var="canLavorazione" />
+<security:authorize access="hasPermission(#provvedimentoDettaglio, 'fineLavorazione')" var="canFineLavorazione" />
 
 <springform:form modelAttribute="provvedimentoDettaglio" cssClass="form-horizontal" action="" method="POST">
 <fmt:formatDate value="${provvedimentoDettaglio.termineScadenza}" var="termineScadenzaFrt" pattern="dd/MM/yyyy" />
@@ -328,12 +329,15 @@
 									<button type="button" class="btn btn-primary" id="salvaeinvianotifica" name="salvaeinvianotifica">Salva e invia notifica&nbsp;<i class="icon-file-alt"></i></button>
 									<button type="submit" class="btn" name="annulla">Annulla &nbsp;<i class="icon-undo"></i></button>
 								</c:if>
+								
+								<c:if test="${ canFineLavorazione }">
+									<button type="submit" class="btn" name="fineLavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>								
+								</c:if>
 								<c:if test="${ canLavorazione }">
 									<button type="submit" class="btn btn-primary" name="noteAllegati">Inserisci note e allegati&nbsp;<i class="icon-file-alt"></i></button>
-									<button type="submit" class="btn" name="fineLavorazione">Fine lavorazione&nbsp;<i class="icon-share-alt"></i></button>
 									<button type="submit" class="btn" name="indietro">Indietro&nbsp;<i class="icon-arrow-left"></i></button>								
 								</c:if>
-								
+																
 								<c:if test="${ canAccettazione }">
 									<button type="submit" class="btn btn-primary" name="accettaAssegnazione">Accetta assegnazione&nbsp;<i class="icon-ok"></i></button>
 									<button type="button" class="btn" id="rifiutaAssegnazione">Rifiuta assegnazione&nbsp;<i class="icon-remove"></i></button>
