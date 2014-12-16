@@ -1003,12 +1003,19 @@ function gestioneNotifiche() {
 
 	// badge
 	var href = popoverNotifiche.attr("href");
-	$.get(href, function(data) {
-		if (data > 0) {
-			$("#countNotifiche").text(data);
-			$("#notifBadge").show();
-		}
-	});
+	
+	function updateCountNotif() {
+		$.get(href, function(data) {
+			if (data > 0) {
+				$("#countNotifiche").text(data);
+				$("#notifBadge").show();
+			}
+		});
+		setTimeout(updateCountNotif, 5000);
+	};
+	
+	updateCountNotif();
+	
 }
 
 
