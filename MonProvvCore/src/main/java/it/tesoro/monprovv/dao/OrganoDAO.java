@@ -20,7 +20,7 @@ public class OrganoDAO extends AbstractCommonDAO<Organo>{
 		
 		String hql = "from Organo o where o.flagConcertante = :flagConcertante and o.flagAttivo = 'S' and "
 				+ "exists (from Utente u where u.organo.id = o.id and "
-				+ "exists (from RuoloUtente ru where ru.utente.id = u.id and ru.ruolo.codice = '"+Ruolo.ROLE_INSERITORE+"')) ";
+				+ "exists (from RuoloUtente ru where ru.utente.id = u.id and (ru.ruolo.codice = '"+Ruolo.ROLE_INSERITORE+"') or (ru.ruolo.codice = '"+Ruolo.ROLE_INSERITORE_FINE_LAV+"'))  ) ";
 				
 		hql = addOrderBy(hql, order);
 		
