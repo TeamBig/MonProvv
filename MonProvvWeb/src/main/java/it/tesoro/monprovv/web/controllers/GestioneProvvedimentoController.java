@@ -119,7 +119,8 @@ public class GestioneProvvedimentoController {
 	}
 
 	private void initProvv(Model model, RicercaProvvedimentoDto provvedimento,
-			DisplayTagPagingAndSorting ps) {
+			DisplayTagPagingAndSorting ps, 
+			boolean filtriAperti) {
 		List<Provvedimento> listProvvedimenti = new ArrayList<Provvedimento>();
 		if(ps!=null)
 			if(StringUtils.isEmpty( provvedimento ) )
@@ -136,11 +137,11 @@ public class GestioneProvvedimentoController {
 		else
 			model.addAttribute("tableProvvedimentiSize", gestioneProvvedimentoFacade.countRicercaProvvedimenti(provvedimento));
 		
-		if( provvedimento.filtriImpostati() )
-			model.addAttribute("filtriImpostati","true");
+		if( provvedimento.filtriImpostati() || filtriAperti)
+			model.addAttribute("filtriImpostati", "true");
 		
 		if( provvedimento.filtriAvanzatiImpostati() )
-			model.addAttribute("filtriAvanzatiImpostati","true");
+			model.addAttribute("filtriAvanzatiImpostati", "true");
 		
 	}
 	
@@ -148,16 +149,17 @@ public class GestioneProvvedimentoController {
 	public String init(
 			Model model,
 			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
-			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
+			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps,
+			@RequestParam(required = false)boolean showCampiRicerca) {
 		
-		initProvv(model, provvedimento, ps);
+		initProvv(model, provvedimento, ps, showCampiRicerca);
 		
 		return "ricercaProv";
 	}
 	
 	@RequestMapping(value = { "/private/provvedimenti/ricerca" } , method = RequestMethod.POST, params="annulla")
 	public String resetRicercaProvvedimenti(HttpSession session, SessionStatus status){
-		String retval = "redirect:/private/provvedimenti/ricerca";
+		String retval = "redirect:/private/provvedimenti/ricerca?showCampiRicerca=true";
 		status.setComplete();
 	    session.removeAttribute("ricercaProvvedimenti");
 		return retval;
@@ -168,7 +170,8 @@ public class GestioneProvvedimentoController {
 			@ModelAttribute("ricercaProvvedimenti") RicercaProvvedimentoDto provvedimento,
 			@PagingAndSorting(tableId = "provvedimento") DisplayTagPagingAndSorting ps) {
 		
-		initProvv(model, provvedimento, ps);
+		initProvv(model, provvedimento, ps, true);
+		
 		return "ricercaProv";
 	}
 	
