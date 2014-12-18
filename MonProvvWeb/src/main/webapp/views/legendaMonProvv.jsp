@@ -71,7 +71,7 @@
 						<span class="span4">La fine lavorazione &#232; lo stato che
 							si raggiunge quando tutti gli assegnatari hanno partecipato alla
 							lavorazione e l'inseritore/capo fila allora procede a modificare
-							lo stato, così da permettere al Gabinetto di essere prontamente
+							lo stato, cos&#236; da permettere al Gabinetto di essere prontamente
 							aggiornato circa i provvedimenti che possono essere sottoposti
 							alla firma del Ministro;</span>
 					</div>
