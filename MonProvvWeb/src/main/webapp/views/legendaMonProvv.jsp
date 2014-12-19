@@ -49,7 +49,7 @@
 						<span class="span2">Sospeso</span>
 					</div>
 					<div class="controls">
-						<span class="span4">Lo stato di sospeso viene manualmente inserito dal profilo di Delegato/Referente/Capo fila nei casi sopra descritti. La lavorazione del provvedimento quindi viene interrotta e le relative informazioni congelate e non più modificabili. Solamente colui che ha inserito a sistema il provvedimento potrà permettere nuovamente la lavorazione;</span>
+						<span class="span4">Lo stato di sospeso viene manualmente inserito dal profilo di Delegato/Referente/Capo fila nei casi sopra descritti. La lavorazione del provvedimento quindi viene interrotta e le relative informazioni congelate e non pi&#249; modificabili. Solamente colui che ha inserito a sistema il provvedimento potr&#224; permettere nuovamente la lavorazione;</span>
 					</div>
 				</div>
 				<div class="control-group">
@@ -151,8 +151,8 @@
 						<span class="span2">Delegato</span>
 					</div>
 					<div class="controls">
-						<span class="span4">Il profilo del Delegato
-							permetter&#224; di:	</span>
+						<div class="span4">Il profilo del Delegato
+							permetter&#224; di:	
 						<ul>
 							<li>Consultare e ricercare tutte le informazioni relative a
 								tutti i provvedimenti inseriti a sistema;</li>
@@ -202,6 +202,7 @@
 							<li>Allegare uno o pi &#249; file (formato .pdf, word o
 								excel) al provvedimento;</li>
 						</ul>
+						</div>
 					</div>
 				</div>
 
@@ -210,12 +211,12 @@
 						<span class="span2">Referente</span>
 					</div>
 					<div class="controls">
-						<span class="span4">Il profilo del Referente avr&#224; le
-							stesse competenze del profilo Delegato con in aggiunta la possibilit&#224; di: </span>
+						<div class="span4">Il profilo del Referente avr&#224; le
+							stesse competenze del profilo Delegato con in aggiunta la possibilit&#224; di: 
 						<ul>
 							<li>Impostare lo stato di "fine lavorazione" per i provvedimenti di cui il proprio organo &#232; stato nominato assegnatario;</li>
 						</ul>
-
+						</div>
 						
 					</div>
 				</div>
@@ -240,11 +241,11 @@
 					</div>
 					<div class="controls">
 
-						<span class="span4">Il profilo Consultante &#232; riservato ad
+						<div class="span4"><span>Il profilo Consultante &#232; riservato ad
 							utenti di altre amministrazioni, abilitato a visualizzare
 							solamente la lista dei provvedimenti e ad utilizzare la funzione
 							di ricerca. Al profilo saranno inibite in particolare le seguenti
-							azioni: </span>
+							azioni:</span>
 						<ul>
 							<li>visualizzare il dettaglio dei provvedimenti</li>
 							<li>accedere alle note integrali (che sarebbero le
@@ -254,6 +255,7 @@
 							<li>effettuare tutte le operazioni disponibili dal
 								dettaglio del provvedimento;</li>
 						</ul>
+						</div>
 					</div>
 				</div>
 
