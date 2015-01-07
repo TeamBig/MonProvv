@@ -237,20 +237,23 @@
 			</div>
 			
 			<div class="span5">
-				<div class="control-group">
-					<div class="control-label">
-						<span class="span2">Referente</span>
-					</div>
-					<div class="controls">
-						<span class="span3">Il profilo del Referente avr&#224; le stesse competenze del profilo Delegato con in aggiunta la possibilit&#224; di: </span>
-						<div class="span3">
-							<ul>
-								<li>Impostare lo stato di "fine lavorazione" per i provvedimenti di cui il proprio organo &#232; stato nominato assegnatario;</li>
-							</ul>
+			
+				<div class="span5">
+					<div class="control-group">
+						<div class="control-label">
+							<span class="span2">Referente</span>
+						</div>
+						<div class="controls">
+							<span class="span3">Il profilo del Referente avr&#224; le stesse competenze del profilo Delegato con in aggiunta la possibilit&#224; di: </span>
+							<div class="span3">
+								<ul>
+									<li>Impostare lo stato di "fine lavorazione" per i provvedimenti di cui il proprio organo &#232; stato nominato assegnatario;</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
-				
+												
 				<div class="span5">
 					<div class="control-group">
 						<div class="control-label">
