@@ -38,7 +38,7 @@
 						
 						<spring:bind path="flgInternoEsterno" >
 							<div class="control-group ${(not empty status.errorMessage) ? ' error':''}">
-								<springform:label path="flgInternoEsterno" cssClass="control-label" cssErrorClass="control-label text-error" for="tipoNuovoOrgano">${enteConcertanteHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
+								<springform:label path="flgInternoEsterno" cssClass="control-label" cssErrorClass="control-label text-error" for="tipoNuovoOrgano">${enteTipoHeader} <sup style="font-weight: normal!important">(*)</sup></springform:label>
 								<div class="controls">
 									<springform:select path="flgInternoEsterno" cssClass="input-xlarge" id="tipoNuovoOrgano">
 										<springform:option value="">Sceglierne uno...</springform:option>
