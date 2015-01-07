@@ -100,7 +100,6 @@
 
 	<div class="row">
 	
-	
 		<div class="form-horizontal dettaglio span12">
 			<div class="control-group span5">
 				<div class="control-label">
