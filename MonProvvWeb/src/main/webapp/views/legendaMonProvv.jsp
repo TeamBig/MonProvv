@@ -269,18 +269,18 @@
 						</div>
 					</div>
 				</div>
-			
+
 				<div class="span5">
 					<div class="control-group">
 						<div class="control-label">
 							<span class="span2">Consultante</span>
 						</div>
 						<div class="controls">
-							<span class="span3">Il profilo Consultante &#232; riservato ad
-								utenti di altre amministrazioni, abilitato a visualizzare
-								solamente la lista dei provvedimenti e ad utilizzare la funzione
-								di ricerca. Al profilo saranno inibite in particolare le seguenti
-								azioni:</span>
+							<span class="span3">Il profilo Consultante &#232;
+								riservato ad utenti di altre amministrazioni, abilitato a
+								visualizzare solamente la lista dei provvedimenti e ad
+								utilizzare la funzione di ricerca. Al profilo saranno inibite in
+								particolare le seguenti azioni:</span>
 							<div class="span3">
 								<ul>
 									<li>visualizzare il dettaglio dei provvedimenti</li>
@@ -291,10 +291,11 @@
 									<li>effettuare tutte le operazioni disponibili dal
 										dettaglio del provvedimento;</li>
 								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
-				
+
 				<div class="span5">
 					<div class="control-group">
 						<div class="control-label">
@@ -310,9 +311,7 @@
 						</div>
 					</div>
 				</div>
-				
-			</div>
-		
+
 			</div>
 		</div>
 	</div>
