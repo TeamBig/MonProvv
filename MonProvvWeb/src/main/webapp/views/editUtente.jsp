@@ -29,6 +29,8 @@
 				<springform:hidden path="id"/>
 				<springform:hidden path="versione"/>
 				
+				<springform:hidden path="idOrgano"/>
+				
 				<h3 class="text-left underline">
 					<span>Modifica Utente</span>
 				</h3>

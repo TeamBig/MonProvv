@@ -25,7 +25,7 @@
 
 		<springform:form action="${formPath}" method="post" commandName="organoToEdit" cssClass="form-horizontal">
 				
-				<springform:hidden path="id"/>
+				<springform:hidden path="id" id="id"/>
 				<springform:hidden path="denominazione"/>
 				<springform:hidden path="denominazioneEstesa"/>
 				<springform:hidden path="flagConcertante"/>
@@ -76,7 +76,7 @@
 				</h3>
 				
 				
-					<div class="row">
+					<div class="row" id="utentiOrgano">
 						<div class="span12">
 						
 						<display:table 	name="${organoToEdit.utenteList}" 

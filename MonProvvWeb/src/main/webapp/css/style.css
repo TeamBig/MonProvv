@@ -419,6 +419,10 @@ NOTIFICHE
 	cursor: pointer;
 }
 
+#utentiOrgano .table > tbody > tr {
+	cursor: pointer;
+}
+
 #risultatiRicercaProvvedimenti .table > tbody > tr {
 	cursor: pointer;
 }

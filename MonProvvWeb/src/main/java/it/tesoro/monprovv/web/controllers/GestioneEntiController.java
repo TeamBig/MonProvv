@@ -361,14 +361,17 @@ public class GestioneEntiController {
 //	}
 	
 	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.POST, params="buttonSave")
-	public String modificaPostSave(@ModelAttribute("organoToEdit") Organo organoToEdit, Model model, BindingResult errors)  {
+	public String modificaPostSave(@ModelAttribute("organoToEdit") Organo organoToEdit, Model model, RedirectAttributes redirectAttributes, BindingResult errors)  {
 		String retVal = "entiDettaglioEnte"; 
 		enteValidator.validate(organoToEdit, errors);
 		if( !errors.hasErrors() ){
-			Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
-			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);
-			model.addAttribute("organoToEdit", organo );
-			model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());	
+			
+			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);	
+			retVal = "redirect:/private/admin/enti/dettaglio?id="+organoToEdit.getId();
+//			Organo organo = gestioneEntiFacade.aggiornaOrgano(organoToEdit);
+//			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Organo effettuato con successo", false);
+//			model.addAttribute("organoToEdit", organo );
+//			model.addAttribute("tableUtentiListOrganiRisultatiSize", organo.getUtenteList().size());	
 		}else{
 			for (FieldError f : errors.getFieldErrors()) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
@@ -382,14 +385,17 @@ public class GestioneEntiController {
 	
 	@RequestMapping(value= {"/private/admin/enti/modifica"}, method = RequestMethod.POST, params="buttonCancel")
 	public String modificaPostCancel(@ModelAttribute("organoToEdit") Organo organoToEdit, Model model, BindingResult errors)  {
-		String retVal = "entiDettaglioEnte"; 
-		Integer id = organoToEdit.getId();
-		organoToEdit = new Organo();
-		if( id != null ){
-			organoToEdit = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));
-		}
-		model.addAttribute("organoToEdit", organoToEdit );
-		model.addAttribute("tableUtentiListOrganiRisultatiSize", organoToEdit.getUtenteList().size());
+//		String retVal = "entiDettaglioEnte"; 
+//		Integer id = organoToEdit.getId();
+//		organoToEdit = new Organo();
+//		if( id != null ){
+//			organoToEdit = gestioneEntiFacade.recuperaOrganoById(Integer.valueOf(id));
+//		}
+//		model.addAttribute("organoToEdit", organoToEdit );
+//		model.addAttribute("tableUtentiListOrganiRisultatiSize", organoToEdit.getUtenteList().size());
+//		return retVal;
+		
+		String retVal = "redirect:/private/admin/enti/dettaglio?id="+organoToEdit.getId();
 		return retVal;
 	}
 

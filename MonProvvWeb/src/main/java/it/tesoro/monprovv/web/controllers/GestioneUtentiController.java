@@ -307,14 +307,16 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 		String retval = "redirect:/private/admin/utenti";	
 		return retval;
 	}
-	
+
 //	@RequestMapping(value= {"/private/admin/utenti/dettaglio/{id}"}, method = RequestMethod.GET)
 //	public String dettaglioGet(Model model, @PathVariable("id") String id)  {
-	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.GET)
-	public String dettaglioGet(Model model, @RequestParam(required = false) String id)  {
+	@RequestMapping(value= {"/private/admin/utenti/dettaglio", "/private/admin/enti/dettaglio/dettaglioUtente"}, method = RequestMethod.GET)
+	public String dettaglio4EnteGet(Model model, @RequestParam(required = false) String id, @RequestParam(required = false) String currentId)  {
 		String retVal = "utenteHomeUtente";
 		if( StringUtils.isNotEmpty(id) ){
 			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
+			if(StringUtils.isNotEmpty(currentId))
+				utente.setIdOrgano( Integer.valueOf( currentId ) );
 			model.addAttribute("utenteToEdit", utente );
 			retVal = "utenteDettUtente";
 		}
@@ -340,8 +342,11 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 	@RequestMapping(value= {"/private/admin/utenti/dettaglio"}, method = RequestMethod.POST, params="buttonBack")
 	public String dettaglioPostButtonBack(@ModelAttribute("utenteToEdit") Utente utente, 
 							Model model)  {
-		
 		String retVal = "redirect:/private/admin/utenti";
+		
+		if(StringUtils.isNotEmpty(utente.getIdOrgano()))
+			retVal = "redirect:/private/admin/enti/dettaglio?id="+utente.getIdOrgano();
+		
 		return retVal;
 	}
 	
@@ -350,19 +355,37 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 							Model model)  {
 		
 		String retVal = "redirect:/private/admin/utenti/modifica?id="+utente.getId();
+		
+		if(StringUtils.isNotEmpty(utente.getIdOrgano()))
+			retVal = "redirect:/private/admin/enti/dettaglio/modificaUtente?id="+utente.getId()+"&currentId="+utente.getIdOrgano();
+		
 		return retVal;
 	}
 //	@RequestMapping(value= {"/private/admin/utenti/modifica/{id}"}, method = RequestMethod.GET)
 //	public String modificaGet(Model model, @PathVariable("id") String id)  {
-	@RequestMapping(value= {"/private/admin/utenti/modifica"}, method = RequestMethod.GET)
-	public String modificaGet(Model model, @RequestParam(required = false) String id)  {
+	@RequestMapping(value= {"/private/admin/utenti/modifica", "/private/admin/enti/dettaglio/modificaUtente"}, method = RequestMethod.GET)
+	public String modifica4EnteGet(Model model, @RequestParam(required = false) String id, @RequestParam(required = false) String currentId)  {
 		String retVal = "utenteHomeUtente";
+		Utente utente = null;
+		
 		if( StringUtils.isNotEmpty(id) ){
 			loadCombo4NewUtente(model);
-			Utente utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
+			utente = gestioneUtenteFacade.recuperaUtenteById(Integer.valueOf(id));
+			if(StringUtils.isNotEmpty(currentId))
+				utente.setIdOrgano( Integer.valueOf( currentId ) );
 			model.addAttribute("utenteToEdit", utente );
 			retVal = "utenteEditUtente";
+		}else{
+			utente = (Utente) model.asMap().get("utenteToEdit");
+			if( StringUtils.isNotEmpty(utente) ){
+				loadCombo4NewUtente(model);
+				model.addAttribute("utenteToEdit", utente );
+				retVal = "utenteEditUtente";
+			}
 		}
+		
+		 
+		
 		return retVal;
 	}
 	
@@ -414,19 +437,35 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 
 		if( !errors.hasErrors() ){
 
-			Utente newUtente = gestioneUtenteFacade.aggiornaUtente(utente);
-
-			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);
-
-			model.addAttribute("utenteToEdit", newUtente );
+			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);	
+			retVal = "redirect:/private/admin/utenti/dettaglio?id="+utente.getId();
+			if(StringUtils.isNotEmpty(utente.getIdOrgano()))
+				retVal = "redirect:/private/admin/enti/dettaglio/dettaglioUtente?id="+utente.getId()+"&currentId="+utente.getIdOrgano();
+			
+//			Utente newUtente = gestioneUtenteFacade.aggiornaUtente(utente);
+//
+//			alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);
+//
+//			if(StringUtils.isNotEmpty(utente.getIdOrgano()))
+//				newUtente.setIdOrgano( Integer.valueOf( utente.getIdOrgano() ) );
+//			
+//			model.addAttribute("utenteToEdit", newUtente );
 
 		}else{
-			for (FieldError f : errors.getFieldErrors()) {
-				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+			if(StringUtils.isNotEmpty(utente.getIdOrgano())){
+				for (FieldError f : errors.getFieldErrors()) {
+					alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_ERROR, f);
+				}
+				redirectAttributes.addFlashAttribute("utenteToEdit", utente);
+				retVal = "redirect:/private/admin/enti/dettaglio/modificaUtente?currentId="+utente.getIdOrgano();
+			}else{
+				for (FieldError f : errors.getFieldErrors()) {
+					alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, f);
+				}
+				loadCombo4NewUtente(model);
+				model.addAttribute("utenteToEdit", utente);
+				retVal = "utenteEditUtente";
 			}
-			loadCombo4NewUtente(model);
-			model.addAttribute("utenteToEdit", utente);
-			retVal = "utenteEditUtente";
 		}
 		
 		return retVal;
@@ -437,11 +476,18 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 			Model model,
 			BindingResult errors, HttpServletRequest request
 			)  {
-		String retVal = "utenteDettUtente";
 		
-		model.addAttribute("utenteToEdit", gestioneUtenteFacade.recuperaUtenteById(utente.getId()));
+		String retVal = "redirect:/private/admin/utenti/dettaglio?id="+utente.getId();
+		if(StringUtils.isNotEmpty(utente.getIdOrgano()))
+			retVal = "redirect:/private/admin/enti/dettaglio/dettaglioUtente?id="+utente.getId()+"&currentId="+utente.getIdOrgano();
 		
 		return retVal;
+		
+		
+//		String retVal = "utenteDettUtente";	
+//		Utente reloadUtente = gestioneUtenteFacade.recuperaUtenteById(utente.getId());
+//		model.addAttribute("utenteToEdit", reloadUtente );
+//		return retVal;
 	}
 
 }

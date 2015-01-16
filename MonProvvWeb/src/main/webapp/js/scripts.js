@@ -162,6 +162,18 @@ $(document).ready(function() {
     });
     
     
+    $('#utentiOrgano .table > tbody > tr').click(function() {
+    	
+    	var currentId = $("#id").val();  
+    	var customerId = $(this).find("td:first").html();  
+    	
+    	if( $.isNumeric( customerId ) ){
+        	var currentUrl = $(location).attr('pathname'); 
+        	window.location.href = currentUrl+"/dettaglioUtente?id="+customerId+"&currentId="+currentId;
+    	}
+    });
+    
+    
     /****** GESTIONE AMMINISTRAZIONE ******/
 
     confirmCancellazioneAdmin();

@@ -30,6 +30,9 @@
 				<springform:hidden path="flagAttivo"/>
 				<springform:hidden path="utenteAstage" id="hiddenUtenteAstage"/>
 				
+				<springform:hidden path="idOrgano"/>
+				
+				
 				<h3 class="text-left underline">
 					<span>Dettaglio Utente</span>
 				</h3>

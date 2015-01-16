@@ -110,6 +110,9 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	private String sessoHidden;
 	
 	@Transient
+	private Integer idOrgano;
+	
+	@Transient
 	private String organoDenominazione;
 	
 	@Transient
@@ -323,6 +326,14 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 		if( StringUtils.isNotEmpty(sessoHidden) ){
 			this.sesso = sessoHidden;
 		}
+	}
+
+	public Integer getIdOrgano() {
+		return idOrgano;
+	}
+
+	public void setIdOrgano(Integer idOrgano) {
+		this.idOrgano = idOrgano;
 	}
 
 	public boolean isAmministratore() {
