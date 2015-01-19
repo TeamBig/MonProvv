@@ -35,7 +35,8 @@ public class UnitTest {
 		
 		int page = 1;
 		RicercaProvvedimentoDto provvDto =  new RicercaProvvedimentoDto();
-		
+		provvDto.setComma("comma");
+		provvDto.setTitoloOggetto("p");
 		provvedimentoFacade.ricercaProvvedimenti(provvDto , page );
 		
 	}

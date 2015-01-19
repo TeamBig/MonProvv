@@ -45,6 +45,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,35 +129,35 @@ public class GestioneProvvedimentoFacade {
 	}
 	
 	private Criteria baindCriteria(RicercaProvvedimentoDto provvDto){
-		
+	
 		Criteria criteria = provvedimentoDAO.newCriteria();
-		criteria.createAlias("organoCapofila", "organoCapofila");
-		criteria.createAlias("organoConcertante", "organoConcertante");
-		criteria.createAlias("assegnazioneList", "assegnatario");
+		criteria.createAlias("organoCapofila", "organoCapofila", Criteria.LEFT_JOIN);
+		criteria.createAlias("organoConcertante", "organoConcertante", Criteria.LEFT_JOIN);
+		criteria.createAlias("assegnazioneList", "assegnatario", Criteria.LEFT_JOIN);
 	
 		if(!StringUtils.isEmpty(provvDto.getArt()))
-			criteria.add(Restrictions.ilike("articolo", "%"+provvDto.getArt()+"%" ));
+			criteria.add(Restrictions.ilike("articolo", provvDto.getArt().toLowerCase(), MatchMode.ANYWHERE ));
 		
 		if(!StringUtils.isEmpty(provvDto.getComma()))
-			criteria.add(Restrictions.ilike("comma", "%"+provvDto.getComma()+"%" ));
+			criteria.add(Restrictions.ilike("comma", provvDto.getComma().toLowerCase(), MatchMode.ANYWHERE ));
 		
 		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto()))
-			criteria.add(Restrictions.ilike("oggetto", "%"+provvDto.getTitoloOggetto()+"%" ));
+			criteria.add(Restrictions.sqlRestriction("lower(this_.OGGETTO) like '%" + provvDto.getTitoloOggetto().toLowerCase() + "%'" ));
 			
 		if(!StringUtils.isEmpty(provvDto.getFonteNormativa()))
-			criteria.add(Restrictions.ilike("fonteNormativa", "%"+provvDto.getFonteNormativa()+"%" ));
+			criteria.add(Restrictions.ilike("fonteNormativa", provvDto.getFonteNormativa().toLowerCase(), MatchMode.ANYWHERE ));
 		
 		if(!StringUtils.isEmpty(provvDto.getTipologia()))
-			criteria.add(Restrictions.eq("tipoProvvedimento", provvDto.getTipologia().getId().toString() ));
+			criteria.add(Restrictions.eq("tipoProvvedimento", provvDto.getTipologia() ));
 
 		if(!StringUtils.isEmpty(provvDto.getTipoGoverno()))
-			criteria.add(Restrictions.eq("governo", provvDto.getTipoGoverno().getId().toString() ));
+			criteria.add(Restrictions.eq("governo", provvDto.getTipoGoverno() ));
 		
 		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione()))
-			criteria.add(Restrictions.eq("stato", provvDto.getStatoDiAttuazione().getId().toString() ));
+			criteria.add(Restrictions.eq("stato", provvDto.getStatoDiAttuazione() ));
 
 		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare()))
-			criteria.add(Restrictions.eq("tipoProvvDaAdottare", provvDto.getTipoProvvDaAdottare().getId().toString() ));
+			criteria.add(Restrictions.eq("tipoProvvDaAdottare", provvDto.getTipoProvvDaAdottare() ));
 				
 		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti()) && provvDto.getAmmUfficiCoinvolti().length>0){
 			criteria.add(
