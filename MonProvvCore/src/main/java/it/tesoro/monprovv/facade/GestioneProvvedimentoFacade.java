@@ -44,6 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -110,69 +113,131 @@ public class GestioneProvvedimentoFacade {
 	}
 	
 	
+//	public List<Provvedimento> ricercaProvvedimentiOLD(RicercaProvvedimentoDto provvDto, int page) {
+//		List<String> order = new ArrayList<String>();
+//		order.add("id desc");
+//		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+//		searchPatternObjects = getCriteriRicercaList(provvDto);
+//		return provvedimentoDAO.findByPattern(searchPatternObjects, page, order);
+//	}
+	
 	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page) {
-		List<String> order = new ArrayList<String>();
-		order.add("id desc");
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		searchPatternObjects = getCriteriRicercaList(provvDto);
-		return provvedimentoDAO.findByPattern(searchPatternObjects, page, order);
+		Criteria baindCriteria = baindCriteria(provvDto);
+		baindCriteria.addOrder(Order.desc("id"));
+		return provvedimentoDAO.findByCriteria(baindCriteria, page);
+	}
+	
+	private Criteria baindCriteria(RicercaProvvedimentoDto provvDto){
+		
+		Criteria criteria = provvedimentoDAO.newCriteria();
+		criteria.createAlias("organoCapofila", "organoCapofila");
+		criteria.createAlias("organoConcertante", "organoConcertante");
+		criteria.createAlias("assegnazioneList", "assegnatario");
+	
+		if(!StringUtils.isEmpty(provvDto.getArt()))
+			criteria.add(Restrictions.ilike("articolo", "%"+provvDto.getArt()+"%" ));
+		
+		if(!StringUtils.isEmpty(provvDto.getComma()))
+			criteria.add(Restrictions.ilike("comma", "%"+provvDto.getComma()+"%" ));
+		
+		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto()))
+			criteria.add(Restrictions.ilike("oggetto", "%"+provvDto.getTitoloOggetto()+"%" ));
+			
+		if(!StringUtils.isEmpty(provvDto.getFonteNormativa()))
+			criteria.add(Restrictions.ilike("fonteNormativa", "%"+provvDto.getFonteNormativa()+"%" ));
+		
+		if(!StringUtils.isEmpty(provvDto.getTipologia()))
+			criteria.add(Restrictions.eq("tipoProvvedimento", provvDto.getTipologia().getId().toString() ));
+
+		if(!StringUtils.isEmpty(provvDto.getTipoGoverno()))
+			criteria.add(Restrictions.eq("governo", provvDto.getTipoGoverno().getId().toString() ));
+		
+		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione()))
+			criteria.add(Restrictions.eq("stato", provvDto.getStatoDiAttuazione().getId().toString() ));
+
+		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare()))
+			criteria.add(Restrictions.eq("tipoProvvDaAdottare", provvDto.getTipoProvvDaAdottare().getId().toString() ));
+				
+		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti()) && provvDto.getAmmUfficiCoinvolti().length>0){
+			criteria.add(
+					Restrictions.or(
+							Restrictions.in("organoCapofila.id", provvDto.getAmmUfficiCoinvolti()), 
+							
+							Restrictions.or(
+									Restrictions.in("organoConcertante.id", provvDto.getAmmUfficiCoinvolti()),
+									Restrictions.in("assegnatario.organo.id", provvDto.getAmmUfficiCoinvolti())
+									)
+							)
+					);
+		}
+		
+		return criteria;
 	}
 	
 	public int countRicercaProvvedimenti(RicercaProvvedimentoDto provvDto) {
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		searchPatternObjects = getCriteriRicercaList(provvDto);
-		return provvedimentoDAO.countByPattern(searchPatternObjects);
+		Criteria baindCriteria = baindCriteria(provvDto);
+		return provvedimentoDAO.countByCriteria(baindCriteria);
 	}
 	
-	private List<SearchPatternUtil> getCriteriRicercaList(RicercaProvvedimentoDto provvDto){
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		if(!StringUtils.isEmpty(provvDto.getArt())){
-			SearchPatternUtil pattern = new SearchPatternUtil("articolo",provvDto.getArt(),true,true);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getComma())){
-			SearchPatternUtil pattern = new SearchPatternUtil("comma",provvDto.getComma(),true,true);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto())){
-			SearchPatternUtil pattern = new SearchPatternUtil("oggetto",provvDto.getTitoloOggetto(),true,true);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getFonteNormativa())){
-			SearchPatternUtil pattern = new SearchPatternUtil("fonteNormativa",provvDto.getFonteNormativa(),true,true);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getTipologia())){
-			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvedimento",provvDto.getTipologia().getId().toString(),false,false);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getTipoGoverno())){
-			SearchPatternUtil pattern = new SearchPatternUtil("governo",provvDto.getTipoGoverno().getId().toString(),false,false);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione())){
-			SearchPatternUtil pattern = new SearchPatternUtil("stato",provvDto.getStatoDiAttuazione().getId().toString(),false,false);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare())){
-			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),false,false);
-			searchPatternObjects.add(pattern);
-		}
-		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti()) && provvDto.getAmmUfficiCoinvolti().length>0){
-			String paramIn = "IN (";
-			List<String> listaUfficiCoinvolti = Arrays.asList(provvDto.getAmmUfficiCoinvolti());
-			for(String param : listaUfficiCoinvolti){
-				paramIn +=param;
-				if(listaUfficiCoinvolti.indexOf(param)!=listaUfficiCoinvolti.size()-1){
-					paramIn +=",";
-				}
-			}
-			paramIn +=")";
-			SearchPatternUtil pattern = new SearchPatternUtil("organoCapofila",paramIn,false,false,true);
-			searchPatternObjects.add(pattern);
-		}
-		return searchPatternObjects;		
-	}
+//	public int countRicercaProvvedimentiOLD(RicercaProvvedimentoDto provvDto) {
+//		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+//		searchPatternObjects = getCriteriRicercaList(provvDto);
+//		return provvedimentoDAO.countByPattern(searchPatternObjects);
+//	}
+	
+//	private List<SearchPatternUtil> getCriteriRicercaList(RicercaProvvedimentoDto provvDto){
+//		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+//		if(!StringUtils.isEmpty(provvDto.getArt())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("articolo",provvDto.getArt(),true,true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getComma())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("comma",provvDto.getComma(),true,true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("oggetto",provvDto.getTitoloOggetto(),true,true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getFonteNormativa())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("fonteNormativa",provvDto.getFonteNormativa(),true,true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTipologia())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvedimento",provvDto.getTipologia().getId().toString(),false,false);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTipoGoverno())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("governo",provvDto.getTipoGoverno().getId().toString(),false,false);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getStatoDiAttuazione())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("stato",provvDto.getStatoDiAttuazione().getId().toString(),false,false);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getTipoProvvDaAdottare())){
+//			SearchPatternUtil pattern = new SearchPatternUtil("tipoProvvDaAdottare",provvDto.getTipoProvvDaAdottare().getId().toString(),false,false);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(!StringUtils.isEmpty(provvDto.getAmmUfficiCoinvolti()) && provvDto.getAmmUfficiCoinvolti().length>0){
+//			String paramIn = "IN (";
+//			List<String> listaUfficiCoinvolti = Arrays.asList(provvDto.getAmmUfficiCoinvolti());
+//			for(String param : listaUfficiCoinvolti){
+//				paramIn +=param;
+//				if(listaUfficiCoinvolti.indexOf(param)!=listaUfficiCoinvolti.size()-1){
+//					paramIn +=",";
+//				}
+//			}
+//			paramIn +=")";
+//			SearchPatternUtil patternOrganoCapofila = new SearchPatternUtil("organoCapofila",paramIn,false,false,true);
+//			searchPatternObjects.add(patternOrganoCapofila);
+//			
+//			SearchPatternUtil patternOrganoConcertante = new SearchPatternUtil("organoConcertante",paramIn,false,false,true);
+//			searchPatternObjects.add(patternOrganoConcertante);
+//			
+//		}
+//		return searchPatternObjects;		
+//	}
 	
 	
 //	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page){
@@ -585,6 +650,13 @@ public class GestioneProvvedimentoFacade {
 		return listaOrgani;
 	}
 	
+	public List<Organo> initListaAmmUfficiCoinvolti() {
+		List<String> order = new ArrayList<String>();
+		order.add("denominazione");
+		List<Organo> listaOrgani = organoDAO.findAll(order);
+		return listaOrgani;
+	}
+	
 	public List<Organo> initOrganiAssegnatari() {
 		List<String> order = new ArrayList<String>();
 		order.add("denominazione");
@@ -832,14 +904,28 @@ public class GestioneProvvedimentoFacade {
 		notaDAO.save(nota);
 	}
 
+//	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(RicercaProvvedimentoDto provvDto){
+//		
+//		List<String> order = new ArrayList<String>();
+//		order.add("id");
+//		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+//		searchPatternObjects = getCriteriRicercaList(provvDto);
+//		List<Provvedimento> provvedimenti = provvedimentoDAO.findByPattern(searchPatternObjects, 0, order);
+//		
+//		
+//		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();
+//		for (Provvedimento provvedimento : provvedimenti) {
+//			provvedimentiDto.add(new ProvvedimentoStampaDto(provvedimento));
+//		}
+//		
+//		return provvedimentiDto;	
+//	}
+	
 	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(RicercaProvvedimentoDto provvDto){
 		
-		List<String> order = new ArrayList<String>();
-		order.add("id");
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		searchPatternObjects = getCriteriRicercaList(provvDto);
-		List<Provvedimento> provvedimenti = provvedimentoDAO.findByPattern(searchPatternObjects, 0, order);
-		
+		Criteria baindCriteria = baindCriteria(provvDto);
+		baindCriteria.addOrder(Order.asc("id"));
+		List<Provvedimento> provvedimenti = provvedimentoDAO.findByCriteria(baindCriteria);
 		
 		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();
 		for (Provvedimento provvedimento : provvedimenti) {
@@ -848,6 +934,7 @@ public class GestioneProvvedimentoFacade {
 		
 		return provvedimentiDto;	
 	}
+	
 
 	public List<Organo> initProponente() {
 		List<String> order = new ArrayList<String>();

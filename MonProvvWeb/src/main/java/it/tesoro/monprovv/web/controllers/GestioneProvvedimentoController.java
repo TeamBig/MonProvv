@@ -265,13 +265,12 @@ public class GestioneProvvedimentoController {
 			SollecitoDto sollecitoDto = new SollecitoDto(provvedimentoDettaglio.getOggettoSollecito(), provvedimentoDettaglio.getTestoSollecito(), provvedimentoDettaglio.getIdAssegnatarioSollecito());
 			try {
 				gestioneProvvedimentoFacade.inserisciInviaSolleciti( sollecitoDto );
+				alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo", false);
 			} catch (MailException me) {
 				alertUtils.message(model, AlertUtils.ALERT_TYPE_ERROR, "Errore nell'invio mail", false);
 			}
 		}
-		
-		alertUtils.message(model, AlertUtils.ALERT_TYPE_SUCCESS, "Sollecito inviato con successo", false);
-		
+
 		//Ricarico il provvedimento e incremento il numero di invii notifica
 		Provvedimento provvRec = gestioneProvvedimentoFacade.ricercaProvvedimentoById(id);
 		provvRec.setStato(provvedimentoDettaglio.getStato());
@@ -939,6 +938,14 @@ public class GestioneProvvedimentoController {
 			if(listaOrganiAssegnatari.contains(provvedimento.getOrganoCapofila()))
 				listaOrganiAssegnatari.remove(provvedimento.getOrganoCapofila());
 		}
+		
+		return listaOrganiAssegnatari;
+	}
+	
+	@ModelAttribute("listaAmmUfficiCoinvolti")
+	private List<Organo> initListaAmmUfficiCoinvolti() {
+		
+		List<Organo> listaOrganiAssegnatari = gestioneProvvedimentoFacade.initListaAmmUfficiCoinvolti();
 		
 		return listaOrganiAssegnatari;
 	}

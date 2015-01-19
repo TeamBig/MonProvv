@@ -1,5 +1,6 @@
 package it.tesoro.monprovv;
 
+import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
@@ -27,6 +28,17 @@ public class UnitTest {
 	
 	@Autowired 
 	private GestioneProvvedimentoFacade provvedimentoFacade;
+	
+	
+	@Test
+	public void ricercaProvv(){
+		
+		int page = 1;
+		RicercaProvvedimentoDto provvDto =  new RicercaProvvedimentoDto();
+		
+		provvedimentoFacade.ricercaProvvedimenti(provvDto , page );
+		
+	}
 	
 //	@Test
 //	public void testOrgano(){

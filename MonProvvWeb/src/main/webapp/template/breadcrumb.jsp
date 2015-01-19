@@ -39,7 +39,7 @@
 						<c:if test="${not empty funzione_descrizione}">
 							<c:if test="${not status.last}">
 								<c:choose>
-									<c:when test="${not empty funzione_linkable}">
+									<c:when test="${funzione_linkable eq '1'}">
 										<a href="${url}" title="vai alla pagina ${funzione_descrizione}"><c:out value="${funzione_descrizione}" /></a>
 									</c:when>
 									<c:otherwise>

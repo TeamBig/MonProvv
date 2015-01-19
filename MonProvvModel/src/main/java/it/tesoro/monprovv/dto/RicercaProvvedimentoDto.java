@@ -21,7 +21,7 @@ public class RicercaProvvedimentoDto {
 	private Date dtTermineScadenzaA;
 	private String fonteNormativa;
 	private TipoProvvDaAdottare tipoProvvDaAdottare;
-	private String[] ammUfficiCoinvolti;
+	private Integer[] ammUfficiCoinvolti;
 	
 	public boolean filtriImpostati(){
 		if( statoDiAttuazione != null ){
@@ -145,11 +145,11 @@ public class RicercaProvvedimentoDto {
 		this.tipoProvvDaAdottare = tipoProvvDaAdottare;
 	}
 
-	public String[] getAmmUfficiCoinvolti() {
+	public Integer[] getAmmUfficiCoinvolti() {
 		return ammUfficiCoinvolti;
 	}
 
-	public void setAmmUfficiCoinvolti(String[] ammUfficiCoinvolti) {
+	public void setAmmUfficiCoinvolti(Integer[] ammUfficiCoinvolti) {
 		this.ammUfficiCoinvolti = ammUfficiCoinvolti;
 	}
 

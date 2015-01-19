@@ -90,16 +90,7 @@
 								<display:column title="${cognomeHeader}" property="cognome" headerScope="col" />
 								<display:column title="${cfHeader}" property="codiceFiscale" headerScope="col" />
 								<display:column title="${emailHeader}" property="email" headerScope="col" />
-								<display:column title="${tipoHeader}" headerScope="col" >
-									<c:choose>
-										<c:when test="${flagIntEst == 'I'}">
-										Interna
-										</c:when>
-										<c:otherwise>Esterna</c:otherwise>
-									</c:choose>
-								</display:column>
-																
-								
+								<display:column title="${tipoHeader}" property="tipo" headerScope="col" />
 							</display:table>
 							
 						</div>
