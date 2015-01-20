@@ -45,6 +45,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -131,6 +132,9 @@ public class GestioneProvvedimentoFacade {
 	private Criteria baindCriteria(RicercaProvvedimentoDto provvDto){
 	
 		Criteria criteria = provvedimentoDAO.newCriteria();
+		
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+		
 		criteria.createAlias("organoCapofila", "organoCapofila", Criteria.LEFT_JOIN);
 		criteria.createAlias("organoConcertante", "organoConcertante", Criteria.LEFT_JOIN);
 		criteria.createAlias("assegnazioneList", "assegnatario", Criteria.LEFT_JOIN);
