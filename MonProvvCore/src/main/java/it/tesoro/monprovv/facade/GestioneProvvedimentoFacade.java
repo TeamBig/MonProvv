@@ -45,6 +45,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -124,12 +125,12 @@ public class GestioneProvvedimentoFacade {
 //	}
 	
 	public List<Provvedimento> ricercaProvvedimenti(RicercaProvvedimentoDto provvDto, int page) {
-		Criteria baindCriteria = baindCriteria(provvDto);
-		baindCriteria.addOrder(Order.desc("id"));
-		return provvedimentoDAO.findByCriteria(baindCriteria, page);
+		Criteria criteria = criteriaBinder(provvDto);
+		criteria.addOrder(Order.desc("id"));
+		return provvedimentoDAO.findByCriteria(criteria, page);
 	}
 	
-	private Criteria baindCriteria(RicercaProvvedimentoDto provvDto){
+	private Criteria criteriaBinder(RicercaProvvedimentoDto provvDto){
 	
 		Criteria criteria = provvedimentoDAO.newCriteria();
 		
@@ -145,8 +146,11 @@ public class GestioneProvvedimentoFacade {
 		if(!StringUtils.isEmpty(provvDto.getComma()))
 			criteria.add(Restrictions.ilike("comma", provvDto.getComma().toLowerCase(), MatchMode.ANYWHERE ));
 		
-		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto()))
-			criteria.add(Restrictions.sqlRestriction("lower(this_.OGGETTO) like '%" + provvDto.getTitoloOggetto().toLowerCase() + "%'" ));
+		if(!StringUtils.isEmpty(provvDto.getTitoloOggetto())){
+			criteria.add(Restrictions.sqlRestriction("lower(this_.OGGETTO) like ?", '%'+provvDto.getTitoloOggetto().toLowerCase()+"%" , Hibernate.STRING) );
+		}
+			
+		
 			
 		if(!StringUtils.isEmpty(provvDto.getFonteNormativa()))
 			criteria.add(Restrictions.ilike("fonteNormativa", provvDto.getFonteNormativa().toLowerCase(), MatchMode.ANYWHERE ));
@@ -180,8 +184,8 @@ public class GestioneProvvedimentoFacade {
 	}
 	
 	public int countRicercaProvvedimenti(RicercaProvvedimentoDto provvDto) {
-		Criteria baindCriteria = baindCriteria(provvDto);
-		return provvedimentoDAO.countByCriteria(baindCriteria);
+		Criteria criteria = criteriaBinder(provvDto);
+		return provvedimentoDAO.countByCriteria(criteria);
 	}
 	
 //	public int countRicercaProvvedimentiOLD(RicercaProvvedimentoDto provvDto) {
@@ -928,9 +932,9 @@ public class GestioneProvvedimentoFacade {
 	
 	public List<ProvvedimentoStampaDto> recuperaProvvedimentiPerExport(RicercaProvvedimentoDto provvDto){
 		
-		Criteria baindCriteria = baindCriteria(provvDto);
-		baindCriteria.addOrder(Order.asc("id"));
-		List<Provvedimento> provvedimenti = provvedimentoDAO.findByCriteria(baindCriteria);
+		Criteria criteria = criteriaBinder(provvDto);
+		criteria.addOrder(Order.asc("id"));
+		List<Provvedimento> provvedimenti = provvedimentoDAO.findByCriteria(criteria);
 		
 		List<ProvvedimentoStampaDto> provvedimentiDto = new ArrayList<ProvvedimentoStampaDto>();
 		for (Provvedimento provvedimento : provvedimenti) {

@@ -25,8 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component("gestioneUtenteFacade")
 public class GestioneUtenteFacade {
@@ -79,12 +84,16 @@ public class GestioneUtenteFacade {
 //		return utenteDAO.findAll(page, order);
 //	}
 
-	public List<Utente> recupera(int page, UtenteDto criteria) {
-		List<String> order = new ArrayList<String>();
-		order.add("cognome");
-		order.add("nome");
-		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
-		return utenteDAO.findByPattern(searchPatternObjects, page, order);
+	public List<Utente> recupera(int page, UtenteDto filtro) {
+//		List<String> order = new ArrayList<String>();
+//		order.add("cognome");
+//		order.add("nome");
+//		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
+//		return utenteDAO.findByPattern(searchPatternObjects, page, order);
+		Criteria criteria = criteriaBinder(filtro);
+		criteria.addOrder(Order.asc("cognome"));
+		criteria.addOrder(Order.asc("nome"));
+		return utenteDAO.findByCriteria(criteria, page);
 	}
 	
 	public List<Utente> recuperaUtenti4Notifica(String param) {
@@ -125,57 +134,78 @@ public class GestioneUtenteFacade {
 		emailExtraDAO.save(emailExtra);
 	}
 
-	private List<SearchPatternUtil> popolaCriteria(UtenteDto criteria) {
-		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
-		SearchPatternUtil pattern = null;
-		if(criteria.getNome() != null){
-			pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "nome" );
-			pattern.setPattern(criteria.getNome());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
-		if(criteria.getCognome() != null){
-			pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "cognome" );
-			pattern.setPattern(criteria.getCognome());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
-		if(criteria.getCodiceFiscale() != null){
-			pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "codiceFiscale" );
-			pattern.setPattern(criteria.getCodiceFiscale());
-			pattern.setPreponi(true);
-			pattern.setPostponi(true);
-			searchPatternObjects.add(pattern);
-		}
-		if(criteria.getEmail() != null){
-			pattern = new SearchPatternUtil();
-			pattern.setNomeCampo( "email" );
-			pattern.setPattern(criteria.getEmail());
-			pattern.setPreponi(false);
-			pattern.setPostponi(false);
-			searchPatternObjects.add(pattern);
-		}
-		pattern = new SearchPatternUtil();
-		pattern.setNomeCampo( "flagAttivo" );
-		pattern.setPattern(criteria.getFlagAttivo());
-		pattern.setPreponi(false);
-		pattern.setPostponi(false);
-		searchPatternObjects.add(pattern);
-		return searchPatternObjects;
+	private Criteria criteriaBinder(UtenteDto filtro) {
+		
+		Criteria criteria = utenteDAO.newCriteria();
+		
+//		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+//		criteria.createAlias("ruoloUtenteList", "ruoloUtente", Criteria.LEFT_JOIN);
+		
+		if(!StringUtils.isEmpty(filtro.getNome()))
+			criteria.add(Restrictions.ilike("nome", filtro.getNome().toLowerCase(), MatchMode.ANYWHERE ));
+		if(!StringUtils.isEmpty(filtro.getCognome()))
+			criteria.add(Restrictions.ilike("cognome", filtro.getCognome().toLowerCase(), MatchMode.ANYWHERE ));
+		if(!StringUtils.isEmpty(filtro.getCodiceFiscale()))
+			criteria.add(Restrictions.ilike("codiceFiscale", filtro.getCodiceFiscale().toLowerCase(), MatchMode.ANYWHERE ));
+		if(!StringUtils.isEmpty(filtro.getEmail()))
+			criteria.add(Restrictions.ilike("email", filtro.getEmail().toLowerCase(), MatchMode.ANYWHERE ));
+		criteria.add(Restrictions.eq("flagAttivo", "S" ));
+		return criteria;
 	}
+	
+//	private List<SearchPatternUtil> popolaCriteria(UtenteDto criteria) {
+//		List<SearchPatternUtil> searchPatternObjects = new ArrayList<SearchPatternUtil>();
+//		SearchPatternUtil pattern = null;
+//		if(criteria.getNome() != null){
+//			pattern = new SearchPatternUtil();
+//			pattern.setNomeCampo( "nome" );
+//			pattern.setPattern(criteria.getNome());
+//			pattern.setPreponi(true);
+//			pattern.setPostponi(true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(criteria.getCognome() != null){
+//			pattern = new SearchPatternUtil();
+//			pattern.setNomeCampo( "cognome" );
+//			pattern.setPattern(criteria.getCognome());
+//			pattern.setPreponi(true);
+//			pattern.setPostponi(true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(criteria.getCodiceFiscale() != null){
+//			pattern = new SearchPatternUtil();
+//			pattern.setNomeCampo( "codiceFiscale" );
+//			pattern.setPattern(criteria.getCodiceFiscale());
+//			pattern.setPreponi(true);
+//			pattern.setPostponi(true);
+//			searchPatternObjects.add(pattern);
+//		}
+//		if(criteria.getEmail() != null){
+//			pattern = new SearchPatternUtil();
+//			pattern.setNomeCampo( "email" );
+//			pattern.setPattern(criteria.getEmail());
+//			pattern.setPreponi(false);
+//			pattern.setPostponi(false);
+//			searchPatternObjects.add(pattern);
+//		}
+//		pattern = new SearchPatternUtil();
+//		pattern.setNomeCampo( "flagAttivo" );
+//		pattern.setPattern(criteria.getFlagAttivo());
+//		pattern.setPreponi(false);
+//		pattern.setPostponi(false);
+//		searchPatternObjects.add(pattern);
+//		return searchPatternObjects;
+//	}
 
 //	public int count() {
 //		return utenteDAO.countAll();
 //	}
 
-	public int count(UtenteDto criteria) {
-		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
-		return utenteDAO.countByPattern(searchPatternObjects);
+	public int count(UtenteDto filtro) {
+//		List<SearchPatternUtil> searchPatternObjects = popolaCriteria(criteria);
+//		return utenteDAO.countByPattern(searchPatternObjects);
+		Criteria criteria = criteriaBinder(filtro);
+		return utenteDAO.countByCriteria(criteria);
 	}
 
 	public List<IdDescrizioneDto> recuperaOrganiEsterni(String denominazione) {

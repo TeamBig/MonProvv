@@ -30,7 +30,7 @@ public class UnitaOrgAstagePropertyEditor extends PropertyEditorSupport {
 		if(StringUtils.isBlank(text)){
 			setValue(null);
 		}else{
-			setValue(gestioneEntiFacade.recuperaunitaOrgAstageById(Integer.parseInt(text)));
+			setValue(gestioneEntiFacade.recuperaUnitaOrgAstageById(Integer.parseInt(text)));
 		}
 	}
 

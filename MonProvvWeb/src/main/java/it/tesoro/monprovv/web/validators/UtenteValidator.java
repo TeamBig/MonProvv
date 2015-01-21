@@ -1,5 +1,6 @@
 package it.tesoro.monprovv.web.validators;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import it.tesoro.monprovv.model.Utente;
@@ -58,11 +59,18 @@ public class UtenteValidator implements Validator {
 		}
 		if(StringUtils.isEmpty(utente.getDataNascita())){
 			errors.rejectValue("dataNascitaHidden","data.nascita.obbligatoria" ,"Il campo 'Data di nascita' \u00E8 obbligatorio");
-		}else 		
-		if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format(utente.getDataNascita() ))){
-			errors.rejectValue("dataNascitaHidden","formato.data.non.valido" ,"Formato 'Data di nascita' non corretto");
-			utente.setDataNascita(null);
-		}
+		} else
+			try {
+				if(((new SimpleDateFormat("dd/MM/yyyy")).parse("01/01/1900")).after(utente.getDataNascita())){
+					errors.rejectValue("dataNascitaHidden","formato.data.non.valido" ,"Formato 'Data di nascita' non corretto");
+				}else
+				if("01/01/1950".equals( new SimpleDateFormat("dd/MM/yyyy").format( utente.getDataNascita() ))){
+					errors.rejectValue("dataNascitaHidden","formato.data.non.valido" ,"Formato 'Data di nascita' non corretto");
+					utente.setDataNascita(null);
+				}
+			} catch (ParseException e) {
+				errors.rejectValue("dataNascitaHidden","formato.data.non.valido" ,"Formato 'Data di nascita' non corretto");
+			}
 		
 		
 		if(StringUtils.isEmpty(utente.getOrgano()))

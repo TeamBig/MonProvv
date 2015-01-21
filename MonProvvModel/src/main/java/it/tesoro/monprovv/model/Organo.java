@@ -21,6 +21,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "ORGANO")
@@ -74,6 +75,7 @@ public class Organo extends AbstractCommonEntity implements Serializable {
 	}
 	
 	@OneToMany(targetEntity=Utente.class, fetch=FetchType.EAGER, mappedBy="organo")
+	@Where(clause="FLAG_ATTIVO='S'")
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Utente> utenteList;
 	

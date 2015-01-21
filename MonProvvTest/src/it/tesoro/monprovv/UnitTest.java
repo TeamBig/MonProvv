@@ -1,6 +1,7 @@
 package it.tesoro.monprovv;
 
 import it.tesoro.monprovv.dto.RicercaProvvedimentoDto;
+import it.tesoro.monprovv.dto.UtenteDto;
 import it.tesoro.monprovv.facade.GestioneEntiFacade;
 import it.tesoro.monprovv.facade.GestioneProvvedimentoFacade;
 import it.tesoro.monprovv.facade.GestioneUtenteFacade;
@@ -35,9 +36,27 @@ public class UnitTest {
 		
 		int page = 1;
 		RicercaProvvedimentoDto provvDto =  new RicercaProvvedimentoDto();
-		provvDto.setComma("comma");
+//		provvDto.setComma("comma");
 		provvDto.setTitoloOggetto("p");
 		provvedimentoFacade.ricercaProvvedimenti(provvDto , page );
+		
+	}
+	
+	
+	@Test
+	public void ricercaOrgano(){
+		
+		int id = 142;
+		gestioneEntiFacade.recuperaOrganoById( id );
+		
+	}
+	
+	@Test
+	public void ricercaUtenti(){
+		
+		int page = 142;
+		UtenteDto filtro = new UtenteDto();
+		gestioneUtenteFacade.recupera(page, filtro );
 		
 	}
 	

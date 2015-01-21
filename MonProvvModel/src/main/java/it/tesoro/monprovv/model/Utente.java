@@ -24,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.constraints.Email;
@@ -124,6 +126,7 @@ public class Utente extends AbstractCommonEntity implements java.io.Serializable
 	private UtenteAstage utenteAstage;
 	
 	@OneToMany(mappedBy = "utente", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<RuoloUtente> ruoloUtenteList;
 
 	public String getTipo(){

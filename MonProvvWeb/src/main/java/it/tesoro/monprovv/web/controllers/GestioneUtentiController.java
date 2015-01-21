@@ -437,6 +437,8 @@ protected static Logger logger = Logger.getLogger(GestioneUtentiController.class
 
 		if( !errors.hasErrors() ){
 
+			gestioneUtenteFacade.aggiornaUtente(utente);
+			
 			alertUtils.message(redirectAttributes, AlertUtils.ALERT_TYPE_SUCCESS, "Aggiornamento Utente effettuato con successo", false);	
 			retVal = "redirect:/private/admin/utenti/dettaglio?id="+utente.getId();
 			if(StringUtils.isNotEmpty(utente.getIdOrgano()))
