@@ -78,15 +78,16 @@ public class CustomRequestHeaderAuthenticationFilter extends AbstractPreAuthenti
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		
+		//Imposto la compatibilità di IE
+		((HttpServletResponse)response).setHeader("X-UA-Compatible", "IE=edge");
+		
 		String currentPath = ((HttpServletRequest)request).getServletPath();
 		
 		if (gestioneSicurezzaFacade.checkLogout(currentPath) ) {
 			((HttpServletResponse)response).sendRedirect( ((HttpServletRequest)request).getContextPath() + "/public/logout");
 			return;
 		}
-		
-   
-		
+
 		super.doFilter(request, response, chain);
 	}
 	

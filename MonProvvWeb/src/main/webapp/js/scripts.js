@@ -1358,7 +1358,7 @@ function gestioneNormattiva(){
 			  $('<a>',{
 				    text:staticUrl,
 				    href:staticUrl,
-				    id:'linkNormattiva',			    
+				    id:'linkNormattiva'			    
 				}).appendTo('#linkNormattivaSpan');
 			  if($("#collNormattiva").val()!=undefined && $("#collNormattiva").val()!=""){
 				  $("#linkNormattiva").text($("#collNormattiva").val());
@@ -1385,7 +1385,7 @@ function gestioneNormattiva(){
 	});
 	  if($("#linkNormattiva").val()==undefined){
 		  $('<a>',{
-			    id:'linkNormattiva',			    
+			    id:'linkNormattiva'			    
 			}).appendTo('#linkNormattivaSpan');
 		  if($("#collNormattiva").val()!=undefined && $("#collNormattiva").val()!=""){
 			  $("#linkNormattiva").text($("#collNormattiva").val());
