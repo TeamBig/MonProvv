@@ -21,6 +21,10 @@
 	<meta http-equiv="content-language" content="it" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" /> 
+	<!--[if IE 8]><meta http-equiv="x-ua-compatible" content="IE=EmulateIE8" /><![endif]-->
+	
+	
 	<!-- Protezione CSRF -->
 	<meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
@@ -53,7 +57,7 @@
 	<!-- Fav icons -->
 	<link rel="shortcut icon" href="${base}img/favicon.ico" type="x-icon">
 	<link rel="icon" href="${base}img/favicon.ico" type="x-icon">
-  
+	  
 	<script type="text/javascript" src="${base}js/jquery.min.js"></script>
 	<script type="text/javascript" src="${base}js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="${base}js/bootstrap-multiselect.js"></script>
